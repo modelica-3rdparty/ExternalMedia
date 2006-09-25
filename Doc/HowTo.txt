@@ -1,0 +1,166 @@
+ExternalMedia HowTo
+
+Welcome to the ExternalMedia HowTo guide. This library package is 
+meant to help you interfacing your favourite external fluid computation 
+code(s) to Modelica. The package consists of three components:
+
+1. A Modelica package which contains all the Modelica basic infrastructure
+   to use your own external code
+   ExternalMedia.mo
+   
+2. A C++ base class (TwoPhaseMedium), which holds all the properties of the
+   fluid in a specific node, as well as all the function to compute them
+   and retrieve them. This class must be extended by you to add the code 
+   that will actually call the external fluid computation routines.
+   
+3. A C/C++ interface layer. This is needed because Modelica does not currently
+   support external C++ objects, but just external C static functions. 
+   This layer maintains a collection of TwoPhaseMedium C++ objects, which are
+   managed by C static functions who are the counterparts of the Modelica 
+   external C functions within ExternalMedia.mo
+
+Currently, the ExternalMedia library only supports two-phase media, using
+Dymola 6 and Microsoft Visual Studio. In the future, we might add support
+for single-phase pure and mixture media, as well as for OpenModelica and gcc.
+
+-----------------------------------------------------------------------------
+Here are the steps to follow to successfully deploy an external two phase 
+medium package, using MS Visual Studio and Dymola 6.0. For the sake of the 
+example, we'll assume that the external software you're interfacing to
+is named WonderFluidProp. The interface code is compiled into a DLL, which
+allows faster debugging of the interface, since it is just necessary to
+replace the dll, without re-compiling the Modelica simulator each time.
+In the future, we might add support for both static and dynamic libraries.
+
+A - Initial installation
+
+A1. 
+
+Copy the externaltwophasemedium.h file to Dymola\Source. This will be needed
+by Dymola to compile the dsmodel.c file; you only need to do this once, unless
+you reinstall Dymola from scratch.
+
+A2.
+
+Compile the DummyTwoPhaseMedium project into a DLL. This contains:
+
+externaltwophasemedium_lib.h
+externaltwophasemedium_lib.cpp
+twophasemedium.h
+twophasemedium.cpp
+dummytwophasemedium.h
+dummytwophasemedium.cpp
+
+Copy the DLL to Windows\System32, so that Windows can access it.
+
+A3.
+
+Open Dymola and set Simulation | Setup | Compiler to MS Visual Studio.
+Open the ExternalMedia.Test.TestDummyTwoPhaseMedium model, compile and run it
+The actual computed properties will make no sense, but this simple test will
+help you pinpoint problems with your compiler's setup.
+
+B - Developing your own external medium model
+
+B1.
+
+Create your own TwoPhaseMedium-derived class by copying and renaming
+templatetwophasemedium.h and templatetwophasemedium.cpp to
+wonderfluidpropmedium.h  and wonderfluidpropmedium.cpp.
+
+Then, create a new VisualStudio project named WonderFluidProp, containing:
+
+externaltwophasemedium_lib.h
+externaltwophasemedium_lib.cpp
+twophasemedium.h
+twophasemedium.cpp
+wonderfluidpropmedium.h
+wonderfluidpropmedium.cpp
+
+B2. 
+
+Open wonderfluidpropmedium.h, and perform a global (case sensitive!) 
+Find&Replace, changing TemplateTwoPhaseMedium to WonderFluidPropMedium
+
+Open wonderfluidpropmedium.cpp, and perform a global (case sensitive!) 
+Find&Replace, changing TemplateTwoPhaseMedium to WonderFluidPropMedium
+
+B3. 
+
+Within wonderfluidpropmedium.cpp, write the implementation of the setState 
+and setSat function. The simplest solution is that each of the setState 
+functions computes all the protected variables of the TwoPhaseMedium class.
+In this way, all the accessor functions implemented within TwoPhaseMedium
+are already OK for your own WonderFluidPropMedium class. 
+If you don't want to compute everything at once within the setState and 
+setSat function, you might add some flags to the class, to keep track
+of what properties have been computed, and have all member functions 
+(temperature_(), density_() etc.) check if their corresponding protected
+variable has already been computed, or just compute and store it. This
+requires redefining the member functions, which are virtual.
+
+B4. 
+
+Adapt the interface layer so that it actually uses your WonderFluidPropMedium 
+objects: open the externaltwophasemedium_lib.cpp file and change the first
+two directive into
+
+# include "wonderfluidprop.h"
+# define SpecificTwoPhaseMedium WonderFluidPropMedium
+
+B5.
+
+Build the project into a DLL (wonderfluidprop.dll). Copy:
+
+wonderfluidprop.lib to Dymola\bin\lib 
+wonderfluidprop.dll to Windows\System32.
+
+The first file is a statically linked interface to the dll (this is
+required since Dymola does not currently support DLLs directly). The 
+second file contains the actual compiled code.
+
+B6. 
+
+Copy and rename the ExternalMedium.ExternalTwoPhaseMediumTemplate
+package to your own WonderFluidPropmMedium package. This package inherits
+from Modelica.Media.PartialExternalTwoPhaseMedium, and adds the proper 
+external C function annotations to it. Then open it, go to the definition
+of the ExternalFunctions sub-package and change the name of the
+LibName string to "wonderfluidprop"
+
+B7.
+
+Run the test XXXX
+
+Done!
+
+B99.
+
+If you later change the WonderFluidPropMedium.cpp code (e.g. to debug it),
+you just need to repeat step B5, without recompiling the Modelica simulator,
+since the new DLL will dynamically replace the old one at runtime.
+
+--------------------------------------------------------------------------
+Installation Notes
+
+Once you've compiled the DLL, you can release the external package to third 
+parties. Required files:
+
+- wonderFluidProp.lib
+- WonderFluidProp.dll
+- externaltwophasemedium.h
+- ExternalMedia.mo
+- WonderFluidProp.mo
+- the actual code of WonderFluidProp, unless you compile everything
+  into the WonderFluidProp.dll
+
+Copy:
+
+externaltwophasemedium.h to Dymola\Sources
+wonderfluidprop.lib to Dymola\bin\lib 
+wonderfluidprop.dll to Windows\System32.
+
+You can now use WonderFluidProp.mo in all your models using a 
+PartialTwoPhaseMedium, provided that you also load the ExternalMedia package,
+which holds the base classes. 
+
