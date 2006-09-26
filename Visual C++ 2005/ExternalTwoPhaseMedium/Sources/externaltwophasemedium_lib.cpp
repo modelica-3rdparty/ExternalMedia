@@ -74,20 +74,30 @@ void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *
 	// Check whether this is the first call to the library
 	if (firstCall)
 		initializeLibrary();
+
 	MediumMap::mediums[uniqueID]->setSat_p(p);
-	*sat_uniqueID = uniqueID;
-	*sat_psat = p;
-	*sat_Tsat = MediumMap::mediums[uniqueID]->Ts();
+
+	if (sat_uniqueID != NULL)
+		*sat_uniqueID = uniqueID;
+	if (sat_psat != NULL)
+		*sat_psat = p;
+	if (sat_Tsat != NULL)
+		*sat_Tsat = MediumMap::mediums[uniqueID]->Ts();
 }
 
 void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID){
 	// Check whether this is the first call to the library
 	if (firstCall)
 		initializeLibrary();
+
 	MediumMap::mediums[uniqueID]->setSat_T(T);
-	*sat_uniqueID = uniqueID;
-	*sat_Tsat = T;
-	*sat_psat = MediumMap::mediums[uniqueID]->ps();
+	
+	if (sat_uniqueID != NULL)
+		*sat_uniqueID = uniqueID;
+	if (sat_psat != NULL)
+		*sat_Tsat = T;
+	if (sat_Tsat != NULL)
+		*sat_psat = MediumMap::mediums[uniqueID]->ps();
 }
 
 double saturationPressure_(double T, const char *mediumName){
@@ -126,36 +136,52 @@ void setState_dT_(double d, double T, int phase, int uniqueID, int *state_unique
 	// Check whether this is the first call to the library
 	if (firstCall)
 		initializeLibrary();
+
 	MediumMap::mediums[uniqueID]->setState_dT(d, T, phase);
-	*state_uniqueID = uniqueID;
-	*state_phase = phase;
+
+	if (state_uniqueID != NULL)
+		*state_uniqueID = uniqueID;
+	if (state_phase != NULL)
+		*state_phase = phase;
 }
 
 void setState_ph_(double p, double h, int phase, int uniqueID, int *state_uniqueID, int *state_phase){
 	// Check whether this is the first call to the library
 	if (firstCall)
 		initializeLibrary();
+
 	MediumMap::mediums[uniqueID]->setState_ph(p, h, phase);
-	*state_uniqueID = uniqueID;
-	*state_phase = phase;
+
+	if (state_uniqueID != NULL)
+		*state_uniqueID = uniqueID;
+	if (state_phase != NULL)
+		*state_phase = phase;
 }
 
 void setState_ps_(double p, double s, int phase, int uniqueID, int *state_uniqueID, int *state_phase){
 	// Check whether this is the first call to the library
 	if (firstCall)
 		initializeLibrary();
+
 	MediumMap::mediums[uniqueID]->setState_ps(p, s, phase);
-	*state_uniqueID = uniqueID;
-	*state_phase = phase;
+
+	if (state_uniqueID != NULL)
+		*state_uniqueID = uniqueID;
+	if (state_phase != NULL)
+		*state_phase = phase;
 }
 
 void setState_pT_(double p, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase){
 	// Check whether this is the first call to the library
 	if (firstCall)
 		initializeLibrary();
+
 	MediumMap::mediums[uniqueID]->setState_pT(p, T);
-	*state_uniqueID = uniqueID;
-	*state_phase = phase;
+
+	if (state_uniqueID != NULL)
+		*state_uniqueID = uniqueID;
+	if (state_phase != NULL)
+		*state_phase = phase;
 }
 
 double density_(int uniqueID){
@@ -178,11 +204,11 @@ double temperature_(int uniqueID){
 	return MediumMap::mediums[uniqueID]->T();
 }
 
-double beta_(int uniqueID){
+double isobaricExpansionCoefficient_(int uniqueID){
 	return MediumMap::mediums[uniqueID]->beta();
 }
 
-double kappa_(int uniqueID){
+double isothermalCompressibility_(int uniqueID){
 	return MediumMap::mediums[uniqueID]->kappa();
 }
 

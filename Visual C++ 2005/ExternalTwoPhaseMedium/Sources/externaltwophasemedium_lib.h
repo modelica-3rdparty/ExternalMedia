@@ -46,8 +46,8 @@ extern "C" DLLExport double specificEnthalpy_(int uniqueID);
 extern "C" DLLExport double specificEntropy_(int uniqueID);
 extern "C" DLLExport double temperature_(int uniqueID);
 
-extern "C" DLLExport double beta_(int uniqueID);
-extern "C" DLLExport double kappa_(int uniqueID);
+extern "C" DLLExport double isobaricExpansionCoefficient_(int uniqueID);
+extern "C" DLLExport double isothermalCompressibility_(int uniqueID);
 extern "C" DLLExport double specificHeatCapacityCp_(int uniqueID);
 extern "C" DLLExport double specificHeatCapacityCv_(int uniqueID);
 

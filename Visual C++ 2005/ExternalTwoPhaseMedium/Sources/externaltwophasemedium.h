@@ -43,8 +43,8 @@ extern double specificEnthalpy_(int uniqueID);
 extern double specificEntropy_(int uniqueID);
 extern double temperature_(int uniqueID);
 
-extern double beta_(int uniqueID);
-extern double kappa_(int uniqueID);
+extern double isobaricExpansionCoefficient_(int uniqueID);
+extern double isothermalCompressibility_(int uniqueID);
 extern double specificHeatCapacityCp_(int uniqueID);
 extern double specificHeatCapacityCv_(int uniqueID);
 
