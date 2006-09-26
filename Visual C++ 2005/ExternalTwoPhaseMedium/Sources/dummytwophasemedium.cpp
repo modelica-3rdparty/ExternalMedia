@@ -35,6 +35,11 @@ void DummyTwoPhaseMedium::setState_dT(const double &d, const double &T, const in
 }
 
 void DummyTwoPhaseMedium::setState_ph(const double &p, const double &h, const int &phase){
+	_d = 10.0;
+	_h = 20.0;
+	_p = 30.0;
+	_s = 40.0;
+	_T = 50.0;
 }
 
 void DummyTwoPhaseMedium::setState_ps(const double &p, const double &s, const int &phase){
