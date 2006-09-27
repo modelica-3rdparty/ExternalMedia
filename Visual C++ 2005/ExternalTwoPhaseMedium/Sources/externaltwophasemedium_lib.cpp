@@ -101,11 +101,19 @@ void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *
 }
 
 double saturationPressure_(double T, const char *mediumName){
-	return MediumMap::mediums[uniqueID]->saturationPressure(T, mediumName);
+	// Check whether this is the first call to the library
+	if (firstCall)
+		initializeLibrary();
+
+	return MediumMap::mediums[0]->saturationPressure(T, mediumName);
 }
 
 double saturationTemperature_(double p, const char *mediumName){
-	return MediumMap::mediums[uniqueID]->saturationTemperature(p, mediumName);
+	// Check whether this is the first call to the library
+	if (firstCall)
+		initializeLibrary();
+
+	return MediumMap::mediums[0]->saturationTemperature(p, mediumName);
 }
 
 double bubbleDensity_(int uniqueID){
