@@ -1,9 +1,9 @@
 package Test 
-  model TestDummyTwoPhaseMedium 
-    package Medium = ExternalMedia.Media.DummyTwoPhaseMedium;
+  model TestExternalTwoPhaseMedium 
+    package Medium = ExternalMedia.Media.ExternalTwoPhaseMedium;
     Medium.BaseProperties medium;
   equation 
     medium.p = 1e6;
     medium.h = 1e5;
-  end TestDummyTwoPhaseMedium;
+  end TestExternalTwoPhaseMedium;
 end Test;
