@@ -58,19 +58,17 @@ partial package PartialExternalTwoPhaseMedium
       d = density(state);
       h = specificEnthalpy(state);
       s = specificEntropy(state);
-      /*
     elseif (basePropertiesInputChoice == IC.ps) then
       state = setState_ps(p, s, phase, uniqueID);
       sat = setSat_p(p, uniqueID);
       d = density(state);
       h = specificEnthalpy(state);
       T = temperature(state);
-*/
     end if;
     u = h - p/d;
   end BaseProperties;
   
-  redeclare replaceable function setState_ph 
+  redeclare replaceable partial function setState_ph 
     input AbsolutePressure p "pressure";
     input SpecificEnthalpy h "specific enthalpy";
     input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
@@ -78,7 +76,7 @@ partial package PartialExternalTwoPhaseMedium
     output ThermodynamicState state;
   end setState_ph;
   
-  redeclare replaceable function setState_pT 
+  redeclare replaceable partial function setState_pT 
     input AbsolutePressure p "pressure";
     input Temperature T "temperature";
     input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
@@ -86,7 +84,7 @@ partial package PartialExternalTwoPhaseMedium
     output ThermodynamicState state;
   end setState_pT;
   
-  redeclare replaceable function setState_dT 
+  redeclare replaceable partial function setState_dT 
     input Density d "density";
     input Temperature T "temperature";
     input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
@@ -94,7 +92,7 @@ partial package PartialExternalTwoPhaseMedium
     output ThermodynamicState state;
   end setState_dT;
   
-  redeclare replaceable function setState_ps 
+  redeclare replaceable partial function setState_ps 
     input AbsolutePressure p "pressure";
     input SpecificEntropy s "specific entropy";
     input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
@@ -102,13 +100,13 @@ partial package PartialExternalTwoPhaseMedium
     output ThermodynamicState state;
   end setState_ps;
   
-  redeclare replaceable function setSat_p 
+  redeclare replaceable partial function setSat_p 
     input AbsolutePressure p "pressure";
     input Integer uniqueID "unique ID number";
     output SaturationProperties sat "saturation property record";
   end setSat_p;
   
-  redeclare replaceable function setSat_T 
+  redeclare replaceable partial function setSat_T 
     input Temperature T "temperature";
     input Integer uniqueID "unique ID number";
     output SaturationProperties sat "saturation property record";
@@ -119,16 +117,16 @@ partial package PartialExternalTwoPhaseMedium
     MM := getMolarMass(state.uniqueID);
   end molarMass;
   
-  replaceable function createMedium 
+  replaceable partial function createMedium 
     input Integer oldUniqueID "old unique ID number";
     output Integer uniqueID "unique ID number";
   end createMedium;
   
-  replaceable function deleteMedium 
+  replaceable partial function deleteMedium 
     input Integer uniqueID "unique ID number";
   end deleteMedium;
   
-  replaceable function getMolarMass 
+  replaceable partial function getMolarMass 
     input Integer uniqueID "unique ID number";
     output MolarMass MM "molar mass";
   end getMolarMass;
@@ -162,16 +160,27 @@ partial package PartialExternalTwoPhaseMedium
   end setState_psX;
   
   redeclare replaceable function density_ph "Return density from p and h" 
-      annotation(derivative = density_ph_der);
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input SpecificEnthalpy h "Specific enthalpy";
     input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
     input Integer uniqueID = 0 "Unique ID";
     output Density d "Density";
+    annotation(derivative = density_ph_der);
   algorithm 
     d := density(setState_ph(p, h, phase, uniqueID));
   end density_ph;
+  
+  replaceable partial function density_ph_der 
+    extends Modelica.Icons.Function;
+    input AbsolutePressure p "Pressure";
+    input SpecificEnthalpy h "Specific enthalpy";
+    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID = 0 "Unique ID";
+    input Real p_der;
+    input Real h_der;
+    output Real d_der;
+  end density_ph_der;
   
   redeclare replaceable function temperature_ph 
     "Return temperature from p and h" 

@@ -105,6 +105,11 @@ package ExternalTwoPhaseMedium
   external "C" sv=  dewDensity_(sat.uniqueID);
   end dewEntropy;
   
+  redeclare replaceable function extends density_ph_der 
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" d_der=  density_ph_der_(p, h, phase, uniqueID, p_der, h_der);
+  end density_ph_der;
+  
   redeclare replaceable function extends createMedium 
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
   external "C" uniqueID=  createMedium_(mediumName, oldUniqueID);
