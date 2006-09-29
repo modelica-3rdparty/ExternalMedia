@@ -127,17 +127,17 @@ bool TwoPhaseMedium::inputIsEqual_T(const double &T){
 }
 
 bool TwoPhaseMedium::inputsAreEqual_dT(const double &d, const double &T, const int &phase){
-	return (fabs(_d - d) < EPSILON && fabs(_T - T) < EPSILON && _phase == phase);
+	return (fabs(_d - d)/std::max(_d,1e-12) < EPSILON && fabs(_T - T)/std::max(_T,1e-12) < EPSILON && _phase == phase);
 }
 
 bool TwoPhaseMedium::inputsAreEqual_ph(const double &p, const double &h, const int &phase){
-	return (fabs(_p - p) < EPSILON && fabs(_h - h) < EPSILON && _phase == phase);
+	return (fabs(_p - p)/std::max(_p,1e-12) < EPSILON && fabs(_h - h)/std::max(_h,1e-12) < EPSILON && _phase == phase);
 }
 
 bool TwoPhaseMedium::inputsAreEqual_ps(const double &p, const double &s, const int &phase){
-	return (fabs(_p - p) < EPSILON && fabs(_s - s) < EPSILON && _phase == phase);
+	return (fabs(_p - p)/std::max(_p,1e-12) < EPSILON && fabs(_s - s)/std::max(_s,1e-12) < EPSILON && _phase == phase);
 }
 
 bool TwoPhaseMedium::inputsAreEqual_pT(const double &p, const double &T){
-	return (fabs(_p - p) < EPSILON && fabs(_T - T) < EPSILON);
+	return (fabs(_p - p)/std::max(_p,1e-12) < EPSILON && fabs(_T - T)/std::max(_T,1e-12) < EPSILON);
 }

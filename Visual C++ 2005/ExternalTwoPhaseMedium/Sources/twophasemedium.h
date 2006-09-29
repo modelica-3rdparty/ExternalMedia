@@ -12,8 +12,8 @@
 #ifndef TWOPHASEMEDIUM_H_
 #define TWOPHASEMEDIUM_H_
 
-// Define maximum difference between input values
-#define EPSILON 1e-12
+// Define maximum relative difference between input values
+#define EPSILON 1e-6
 
 #include <string>
 using std::string;
