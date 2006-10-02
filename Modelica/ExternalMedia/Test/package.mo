@@ -3,7 +3,7 @@ package Test
     package Medium = ExternalMedia.Media.ExternalTwoPhaseMedium;
     Medium.BaseProperties medium;
   equation 
-    medium.p = 1e6;
-    medium.h = 1e5;
+    medium.p = 1e5;
+    medium.T = 273+100*time;
   end TestExternalTwoPhaseMedium;
 end Test;
