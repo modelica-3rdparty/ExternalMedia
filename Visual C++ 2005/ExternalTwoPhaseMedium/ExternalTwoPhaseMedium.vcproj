@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="DummyTwoPhaseMedium"
-	ProjectGUID="{EEC97E9E-A035-4575-9FAF-DC971347C389}"
+	Name="ExternalTwoPhaseMedium"
+	ProjectGUID="{E327B299-277F-404B-B855-AA08D76243B5}"
 	RootNamespace="ExternalTwoPhaseMedium"
 	Keyword="Win32Proj"
 	>
@@ -176,11 +176,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Sources\twophasemedium.cpp"
+				RelativePath=".\Sources\basetwophasemedium.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\twophasemedium.h"
+				RelativePath=".\Sources\basetwophasemedium.h"
 				>
 			</File>
 		</Filter>
@@ -207,14 +207,14 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="DummyTwoPhaseMedium class"
+			Name="TwoPhaseMedium class"
 			>
 			<File
-				RelativePath=".\Sources\dummytwophasemedium.cpp"
+				RelativePath=".\Sources\twophasemedium.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\dummytwophasemedium.h"
+				RelativePath=".\Sources\twophasemedium.h"
 				>
 			</File>
 		</Filter>

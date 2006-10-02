@@ -1,143 +1,94 @@
 /* *****************************************************************
- * Implementation of the base class TwoPhaseMedium.cpp
+ * Implementation of class TwoPhaseMedium
  *
- * Francesco Casella, Christoph Richter Sep 2006
+ * TwoPhaseMedium is the default object embedding the fluid property
+ * computations at a given point of the plant. 
+ * 
+ * To test the compiler setup, uncomment the directive
+ * #define COMPILER_TEST; the TwoPhaseMedium object will compute
+ * dummy properties, without needing to be interfaced with any
+ * actual external fluid property computation code.
+ *
+ * To implement the interface to your own external fluid property
+ * computation software, comment the directive
+ * #define COMPILER_TEST, and fill in the blanks in the code with 
+ * the appropriate function calls to your external code.
+ * 
+ * TwoPhaseMedium extends BaseTwoPhaseMedium.
+ *
+ * Christoph Richter, Francesco Casella, Sep 2006
  ********************************************************************/
 
 #include "twophasemedium.h"
 #include <math.h>
 
-TwoPhaseMedium::TwoPhaseMedium(const string &mediumName){
-	_mediumName = mediumName;
+#define COMPILER_TEST
+
+TwoPhaseMedium::TwoPhaseMedium(const string &mediumName) : BaseTwoPhaseMedium(mediumName){
 }
 
 TwoPhaseMedium::~TwoPhaseMedium(){
 }
 
-double TwoPhaseMedium::beta() const{
-	return _beta;
+void TwoPhaseMedium::setState_ph(const double &p, const double &h, const int &phase){
+#ifdef COMPILER_TEST
+	_p = p;
+	_h = h;
+	_T = h/4200 + 273.15;
+	_d = 1000 - h/4200;
+	_s = 4200 * log(_T/273);
+#else
+// Place your code here
+#endif
 }
 
-double TwoPhaseMedium::cp() const{
-	return _cp;
+void TwoPhaseMedium::setState_pT(const double &p, const double &T){
+	_p = p;
+	_T = T;
+	_h = (T - 273.15)*4200;
+	_d = 1000 - _h/4200;
+	_s = 4200 * log(_T/273);
 }
 
-double TwoPhaseMedium::cv() const{
-	return _cv;
+void TwoPhaseMedium::setState_dT(const double &d, const double &T, const int &phase){
+#ifdef COMPILER_TEST
+	_d = d;
+	_T = _T;
+	_h = (T - 273.15)*4200;
+	_p = 1e5;
+	_s = 4200 * log(_T/273);
+#else
+// Place your code here
+#endif
 }
 
-double TwoPhaseMedium::d() const{
-	return _d;
+void TwoPhaseMedium::setState_ps(const double &p, const double &s, const int &phase){
+#ifdef COMPILER_TEST
+	_p = p;
+	_s = s;
+	_T = 273.15*exp(s/4200);
+	_h = (_T - 273.15)*4200;
+	_d = 1000 - _h/4200;
+#else
+// Place your code here
+#endif
 }
 
-double TwoPhaseMedium::h() const{
-	return _h;
+void TwoPhaseMedium::setSat_p(const double &p){
+#ifdef COMPILER_TEST
+#else
+// Place your code here
+#endif
 }
 
-double TwoPhaseMedium::kappa() const{
-	return _kappa;
+void TwoPhaseMedium::setSat_T(const double &T){
 }
 
-double TwoPhaseMedium::p() const{
-	return _p;
+double TwoPhaseMedium::saturationPressure(const double &T, const string &mediumName){
+	return 0.0;
 }
 
-double TwoPhaseMedium::s() const{
-	return _s;
+double TwoPhaseMedium::saturationTemperature(const double &p, const string &mediumName){
+	return 0.0;
 }
 
-double TwoPhaseMedium::T() const{
-	return _T;
-}
-
-double TwoPhaseMedium::ps() const{
-	return _ps;
-}
-
-double TwoPhaseMedium::Ts() const{
-	return _Ts;
-}
-
-double TwoPhaseMedium::dl() const{
-	return _dl;
-}
-
-double TwoPhaseMedium::dv() const{
-	return _dv;
-}
-
-double TwoPhaseMedium::hl() const{
-	return _hl;
-}
-
-double TwoPhaseMedium::hv() const{
-	return _hv;
-}
-
-double TwoPhaseMedium::sl() const{
-	return _sl;
-}
-
-double TwoPhaseMedium::sv() const{
-	return _sv;
-}
-
-double TwoPhaseMedium::dc() const{
-	return _dc;
-}
-
-double TwoPhaseMedium::pc() const{
-	return _pc;
-}
-
-double TwoPhaseMedium::Tc() const{
-	return _Tc;
-}
-
-double TwoPhaseMedium::MM() const{
-	return _MM;
-}
-
-double TwoPhaseMedium::eta() const{
-	return _eta;
-}
-
-double TwoPhaseMedium::lambda() const{
-	return _lambda;
-}
-
-double TwoPhaseMedium::Pr() const{
-	return _Pr;
-}
-
-double TwoPhaseMedium::sigma() const{
-	return _sigma;
-}
-	
-void TwoPhaseMedium::initializeLibrary() const{
-	return;  // do nothing by default
-}
-
-bool TwoPhaseMedium::inputIsEqual_p(const double &p){
-	return (fabs(_ps - p) < EPSILON);
-}
-
-bool TwoPhaseMedium::inputIsEqual_T(const double &T){
-	return (fabs(_Ts - T) < EPSILON);
-}
-
-bool TwoPhaseMedium::inputsAreEqual_dT(const double &d, const double &T, const int &phase){
-	return (fabs(_d - d)/std::max(_d,1e-12) < EPSILON && fabs(_T - T)/std::max(_T,1e-12) < EPSILON && _phase == phase);
-}
-
-bool TwoPhaseMedium::inputsAreEqual_ph(const double &p, const double &h, const int &phase){
-	return (fabs(_p - p)/std::max(_p,1e-12) < EPSILON && fabs(_h - h)/std::max(_h,1e-12) < EPSILON && _phase == phase);
-}
-
-bool TwoPhaseMedium::inputsAreEqual_ps(const double &p, const double &s, const int &phase){
-	return (fabs(_p - p)/std::max(_p,1e-12) < EPSILON && fabs(_s - s)/std::max(_s,1e-12) < EPSILON && _phase == phase);
-}
-
-bool TwoPhaseMedium::inputsAreEqual_pT(const double &p, const double &T){
-	return (fabs(_p - p)/std::max(_p,1e-12) < EPSILON && fabs(_T - T)/std::max(_T,1e-12) < EPSILON);
-}

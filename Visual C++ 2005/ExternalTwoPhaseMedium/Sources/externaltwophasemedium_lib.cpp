@@ -2,24 +2,12 @@
  * C/C++ layer for external medium models extending from 
  * PartialExternalTwoPhaseMedium.
  *
- * This file needs to be customized, see the next 10 lines
- *
  * Francesco Casella, Christoph Richter, Sep 2006
  ********************************************************************/
 
-// Replace "dummytwophasemedium.h" with the .h file of your own
-// TwoPhaseMedium-derived class
-#include "dummytwophasemedium.h"
-
-// Replace DummyTwoPhaseMedium with the name of your own
-// TwoPhaseMedium-derived class
-#define SpecificTwoPhaseMedium DummyTwoPhaseMedium  
-
-/**********************************************************
- * No more modifications required from this point onwards!*
- **********************************************************/
 
 #include "externaltwophasemedium_lib.h"
+#include "twophasemedium.h"
 #include "mediummap.h"
 
 // Static integer for the unique ID number
@@ -31,7 +19,7 @@ static bool firstCall(true);
 // Function to initialize library
 static void initializeLibrary(){
 	// Create medium at MediumMap::mediums[0]
-	MediumMap::mediums[0] = new SpecificTwoPhaseMedium("Empty");  // see #define on top
+	MediumMap::mediums[0] = new TwoPhaseMedium("Empty");  // see #define on top
 	// Set first call to be false
 	firstCall = false;
 }
@@ -43,7 +31,7 @@ int createMedium_(const char *mediumName, int oldUniqueID){
 	// Return only a unique ID if oldUniqueID == 0
 	if (oldUniqueID == 0){
 		++uniqueID;
-		MediumMap::mediums[uniqueID] = new SpecificTwoPhaseMedium(mediumName);  // see #define on top
+		MediumMap::mediums[uniqueID] = new TwoPhaseMedium(mediumName);  // see #define on top
 		return uniqueID;
 	} else {
 		return oldUniqueID;

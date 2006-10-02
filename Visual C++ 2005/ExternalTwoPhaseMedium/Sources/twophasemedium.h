@@ -1,120 +1,29 @@
 /* *****************************************************************
- * Interface of the base class TwoPhaseMedium.cpp
+ * Interface of class TwoPhaseMedium
  *
- * This class holds all the properties of the
- * fluid in a specific node, as well as all the function to compute them
- * and retrieve them. This class must be extended by you to add the code 
- * that will actually call the external fluid computation routines.
- *  
- * Francesco Casella, Christoph Richter Sep 2006
+ * TwoPhaseMedium is the default object embedding the fluid property
+ * computations at a given point of the plant. 
+ *
+ * TwoPhaseMedium extends BaseTwoPhaseMedium.
+ *
+ * Christoph Richter, Francesco Casella, Sep 2006
  ********************************************************************/
 
-#ifndef TWOPHASEMEDIUM_H_
-#define TWOPHASEMEDIUM_H_
+# include "basetwophasemedium.h"  // Base class definition
 
-// Define maximum relative difference between input values
-#define EPSILON 1e-6
-
-#include <string>
-using std::string;
-
-class TwoPhaseMedium{
+class TwoPhaseMedium : public BaseTwoPhaseMedium{
 public:
 	TwoPhaseMedium(const string &mediumName);
-	virtual ~TwoPhaseMedium();
+	~TwoPhaseMedium();
 
-	virtual double beta() const;
-	virtual double cp() const;
-	virtual double cv() const;
-	virtual double d() const;
-	virtual double h() const;
-	virtual double kappa() const;
-	virtual double p() const;
-	virtual double s() const;
-	virtual double T() const;
+	void setSat_p(const double &p);
+	void setSat_T(const double &T);
 
-	virtual double ps() const;
-	virtual double Ts() const;
+	double saturationPressure(const double &T, const string &mediumName);
+	double saturationTemperature(const double &p, const string &mediumName);
 
-	virtual double dl() const;
-	virtual double dv() const;
-	virtual double hl() const;
-	virtual double hv() const;
-	virtual double sl() const;
-	virtual double sv() const;
-
-	virtual double dc() const;
-	virtual double pc() const;
-	virtual double Tc() const;
-
-	virtual double MM() const;
-
-	virtual double eta() const;
-	virtual double lambda() const;
-	virtual double Pr() const;
-	virtual double sigma() const;
-
-	virtual void setSat_p(const double &p) = 0;
-	virtual void setSat_T(const double &T) = 0;
-
-	virtual double saturationPressure(const double &T, const string &mediumName) = 0;
-	virtual double saturationTemperature(const double &p, const string &mediumName) = 0;
-
-	virtual void setState_dT(const double &d, const double &T, const int &phase) = 0;
-	virtual void setState_ph(const double &p, const double &h, const int &phase) = 0;
-	virtual void setState_ps(const double &p, const double &s, const int &phase) = 0;
-	virtual void setState_pT(const double &p, const double &T) = 0;
-
-	// Functions to check whether input values changed since last library call
-	virtual bool inputIsEqual_p(const double &p);
-	virtual bool inputIsEqual_T(const double &T);
-
-	virtual bool inputsAreEqual_dT(const double &d, const double &T, const int &phase);
-	virtual bool inputsAreEqual_ph(const double &p, const double &h, const int &phase);
-	virtual bool inputsAreEqual_ps(const double &p, const double &s, const int &phase);
-	virtual bool inputsAreEqual_pT(const double &p, const double &T);
-
-protected:	
-	// This function initializes the external library code
-	// It should be only called once, by using firstCall
-	virtual void initializeLibrary() const;
-   
-	// Static boolean to decide whether library has already been initialized
-    static bool firstCall;
-
-	string _mediumName;			// medium name
-	int _phase;		// 2 for two-phase, 1 for one-phase, 0 if not known
-
-	double _beta;	// isothermal expansion coefficient
-	double _cp;		// specific heat capacity cp
-	double _cv;		// specific heat capacity cv
-	double _d;		// density
-	double _h;		// specific enthalpy
-	double _kappa;	// compressibility
-	double _p;		// pressure
-	double _s;		// specific entropy
-	double _T;		// temperature
-
-	double _ps;		// saturation pressure
-	double _Ts;		// saturation temperature
-
-	double _dl;		// bubble density
-	double _dv;		// dew density
-	double _hl;		// bubble specific enthalpy
-	double _hv;		// dew specific enthalpy
-	double _sl;		// bubble specific entropy
-	double _sv;		// dew specific entropy
-
-	double _dc;		// critical density
-	double _pc;		// critical pressure
-	double _Tc;		// critical temperature
-
-	double _MM;		// molar mass
-
-	double _eta;	// dynamic viscosity
-	double _lambda;	// thermal conductivity
-	double _Pr;		// Prandtl number
-	double _sigma;	// surface tension
+	void setState_dT(const double &d, const double &T, const int &phase);
+	void setState_ph(const double &p, const double &h, const int &phase);
+	void setState_ps(const double &p, const double &s, const int &phase);
+	void setState_pT(const double &p, const double &T);
 };
-
-#endif /*TWOPHASEMEDIUM_H_*/
