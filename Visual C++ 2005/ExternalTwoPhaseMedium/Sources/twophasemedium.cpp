@@ -35,7 +35,7 @@ void TwoPhaseMedium::setState_ph(const double &p, const double &h, const int &ph
 	_p = p;
 	_h = h;
 	_T = h/4200 + 273.15;
-	_d = 1000 - h/4200;
+	_d = (1000 - h/4200)*(1+_p/21000e5);
 	_s = 4200 * log(_T/273);
 #else
 // Place your code here
@@ -46,7 +46,7 @@ void TwoPhaseMedium::setState_pT(const double &p, const double &T){
 	_p = p;
 	_T = T;
 	_h = (T - 273.15)*4200;
-	_d = 1000 - _h/4200;
+	_d = (1000 - _h/4200)*(1+_p/21000e5);
 	_s = 4200 * log(_T/273);
 }
 
@@ -68,7 +68,7 @@ void TwoPhaseMedium::setState_ps(const double &p, const double &s, const int &ph
 	_s = s;
 	_T = 273.15*exp(s/4200);
 	_h = (_T - 273.15)*4200;
-	_d = 1000 - _h/4200;
+	_d = (1000 - _h/4200)*(1+_p/21000e5);
 #else
 // Place your code here
 #endif
