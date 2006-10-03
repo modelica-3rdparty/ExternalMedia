@@ -72,7 +72,7 @@ partial package PartialExternalTwoPhaseMedium
     input AbsolutePressure p "pressure";
     input SpecificEnthalpy h "specific enthalpy";
     input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID "unique ID number";
+    input Integer uniqueID = 0 "unique ID number";
     output ThermodynamicState state;
   end setState_ph;
   
@@ -80,7 +80,7 @@ partial package PartialExternalTwoPhaseMedium
     input AbsolutePressure p "pressure";
     input Temperature T "temperature";
     input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID "unique ID number";
+    input Integer uniqueID = 0 "unique ID number";
     output ThermodynamicState state;
   end setState_pT;
   
@@ -88,7 +88,7 @@ partial package PartialExternalTwoPhaseMedium
     input Density d "density";
     input Temperature T "temperature";
     input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID "unique ID number";
+    input Integer uniqueID = 0 "unique ID number";
     output ThermodynamicState state;
   end setState_dT;
   
@@ -96,7 +96,7 @@ partial package PartialExternalTwoPhaseMedium
     input AbsolutePressure p "pressure";
     input SpecificEntropy s "specific entropy";
     input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID "unique ID number";
+    input Integer uniqueID = 0 "unique ID number";
     output ThermodynamicState state;
   end setState_ps;
   
