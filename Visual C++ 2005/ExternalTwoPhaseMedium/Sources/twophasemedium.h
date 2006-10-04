@@ -9,6 +9,9 @@
  * Christoph Richter, Francesco Casella, Sep 2006
  ********************************************************************/
 
+#ifndef TWOPHASEMEDIUM_H_
+#define TWOPHASEMEDIUM_H_
+
 # include "basetwophasemedium.h"  // Base class definition
 
 class TwoPhaseMedium : public BaseTwoPhaseMedium{
@@ -27,3 +30,5 @@ public:
 	void setState_ps(const double &p, const double &s, const int &phase);
 	void setState_pT(const double &p, const double &T);
 };
+
+#endif /*TWOPHASEMEDIUM_H_*/
