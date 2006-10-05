@@ -71,7 +71,7 @@ void CFluidProp::SetFluid( char* ModelName, int nComp, char* Comp[], double* Con
 
    SAFEARRAY FAR* sa_Conc;
    sa_Conc = SafeArrayCreate( VT_R8, 1, sa_bounds_Conc);
-   for( i = 0; i < (long)nComp; i++)
+   for(long i = 0; i < (long)nComp; i++)
       SafeArrayPutElement(sa_Conc, &i, &Conc[i]);
 
    // Now load the fluid parameters for the model selected.
@@ -109,7 +109,7 @@ void CFluidProp::AllProps( char* InputSpec, double Input1, double Input2, double
    for( long i = 0; i < (signed)sa_bounds_x[0].cElements; i++)
       SafeArrayGetElement( sa_x, &i, &x[i]);
 
-   for( i = 0; i < (signed)sa_bounds_y[0].cElements; i++)
+   for(long i = 0; i < (signed)sa_bounds_y[0].cElements; i++)
       SafeArrayGetElement( sa_y, &i, &y[i]);
 
    // Destroy the SafeArrays

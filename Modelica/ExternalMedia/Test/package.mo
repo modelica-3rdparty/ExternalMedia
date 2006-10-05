@@ -7,7 +7,7 @@ package Test
     Medium.ThermodynamicState state_2;
   equation 
     medium_1.p = 1e5;
-    medium_1.T = 273+100*time;
+    medium_1.T = 293+50*time;
   
     medium_2.p = 1e5 + time * 1e5;
     medium_2.h = 1e5;
