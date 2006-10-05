@@ -23,8 +23,8 @@ TwoPhaseMedium::TwoPhaseMedium(const string &mediumName) : BaseTwoPhaseMedium(me
     double Conc[20];
 
 	FluidProp = new CFluidProp();
-	Comp[0] = "";
-    FluidProp->SetFluid("IF97", 1, Comp, Conc, ErrorMsg);
+	Comp[0] = "H2O";
+    FluidProp->SetFluid("RefProp", 1, Comp, Conc, ErrorMsg);
 	_MM = 0.018015268f;
 /*
     if ( strcmp( ErrorMsg, "No errors"))
