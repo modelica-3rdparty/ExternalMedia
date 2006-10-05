@@ -13,7 +13,6 @@
 
 #include "basetwophasemedium.h"
 
-#include "twophasemedium.h"
 #include <math.h>
 
 BaseTwoPhaseMedium::BaseTwoPhaseMedium(const string &mediumName){

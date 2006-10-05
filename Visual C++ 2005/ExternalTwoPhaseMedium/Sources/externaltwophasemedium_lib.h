@@ -24,7 +24,7 @@ extern "C" DLLExport double criticalEntropy_(int uniqueID);
 
 extern "C" DLLExport void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID);
 extern "C" DLLExport void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID);
-
+	
 extern "C" DLLExport double saturationPressure_(double T, const char *mediumName);
 extern "C" DLLExport double saturationTemperature_(double p, const char *mediumName);
 
