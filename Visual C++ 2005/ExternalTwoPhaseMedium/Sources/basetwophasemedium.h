@@ -12,7 +12,7 @@
 #define BASETWOPHASEMEDIUM_H_
 
 // Define maximum relative difference between input values
-#define EPSILON 1e-6
+#define EPSILON 1e-10
 
 #include <string>
 using std::string;
@@ -26,6 +26,8 @@ public:
 	virtual double cp() const;
 	virtual double cv() const;
 	virtual double d() const;
+	virtual double dd_dp_h() const;
+	virtual double dd_dh_p() const;
 	virtual double h() const;
 	virtual double kappa() const;
 	virtual double p() const;
@@ -84,15 +86,17 @@ protected:
 	string _mediumName;			// medium name
 	int _phase;		// 2 for two-phase, 1 for one-phase, 0 if not known
 
-	double _beta;	// isothermal expansion coefficient
-	double _cp;		// specific heat capacity cp
-	double _cv;		// specific heat capacity cv
-	double _d;		// density
-	double _h;		// specific enthalpy
-	double _kappa;	// compressibility
-	double _p;		// pressure
-	double _s;		// specific entropy
-	double _T;		// temperature
+	double _beta;	 // isothermal expansion coefficient
+	double _cp;		 // specific heat capacity cp
+	double _cv;		 // specific heat capacity cv
+	double _d;		 // density
+	double _dd_dp_h; // derivative of density by pressure at constant enthalpy
+	double _dd_dh_p; // derivative of density by enthalpy at constant pressure
+	double _h;		 // specific enthalpy
+	double _kappa;	 // compressibility
+	double _p;		 // pressure
+	double _s;		 // specific entropy
+	double _T;		 // temperature
 
 	double _ps;		// saturation pressure
 	double _Ts;		// saturation temperature

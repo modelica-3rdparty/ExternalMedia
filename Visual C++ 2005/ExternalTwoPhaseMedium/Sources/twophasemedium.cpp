@@ -6,6 +6,8 @@
  * 
  * TwoPhaseMedium extends BaseTwoPhaseMedium.
  *
+ * See the header file for further documentation
+ *
  * Christoph Richter, Francesco Casella, Sep 2006
  ********************************************************************/
 
@@ -25,6 +27,7 @@ TwoPhaseMedium::TwoPhaseMedium(const string &mediumName) : BaseTwoPhaseMedium(me
 	FluidProp = new CFluidProp();
 	Comp[0] = "H2O";
     FluidProp->SetFluid("RefProp", 1, Comp, Conc, ErrorMsg);
+	// FluidProp->SetUnit("SI", " ", " ", " ");
 	_MM = 0.018015268f;
 /*
     if ( strcmp( ErrorMsg, "No errors"))
@@ -37,12 +40,11 @@ TwoPhaseMedium::TwoPhaseMedium(const string &mediumName) : BaseTwoPhaseMedium(me
 #else
     // Place your code here
 #endif
-
 }
 
 TwoPhaseMedium::~TwoPhaseMedium(){
 #if defined (COMPILER_TEST)
-	// Do nothing
+	// Nothing to do
 #elif defined (FLUIDPROP)
 	// Destroy object
 	delete FluidProp;
@@ -55,9 +57,11 @@ void TwoPhaseMedium::setState_ph(const double &p, const double &h, const int &ph
 #if defined (COMPILER_TEST)
 	_p = p;
 	_h = h;
-	_T = h/4200 + 273.15;
-	_d = (1000 - h/4200)*(1+_p/21000e5);
-	_s = 4200 * log(_T/273);
+	_T = h/4200.0 + 273.15;
+	_d = (1000.0 - h/4200.0)*(1.0 + _p/21000e5);
+	_dd_dp_h = (1000.0 - h/4200.0)/21000e5;
+	_dd_dh_p = -(1.0 + _p/21000e5)/4200.0;
+	_s = 4200.0 * log(_T/273.15);
 #elif defined (FLUIDPROP)
 	// FluidProp variables (with their default units)
     char* ErrorMsg;
@@ -72,10 +76,12 @@ void TwoPhaseMedium::setState_ph(const double &p, const double &h, const int &ph
 	_cp = cp_*1000.0;		// specific heat capacity cp
 	_cv = cv_*1000.0;		// specific heat capacity cv
 	_d = d_;				// density
+	_dd_dp_h = psi_;        // derivative of density by pressure at constant h
+	_dd_dh_p = ksi_;        // derivative of density by enthalpy at constant p
 	_h = h;					// specific enthalpy
 	_kappa = 0;				// compressibility
 	_p = p;					// pressure
-	_s = s_*1000.0;		// specific entropy
+	_s = s_*1000.0;		    // specific entropy
 	_T = T_ + 273.15;		// temperature
 
 	_ps = 0;		// saturation pressure
@@ -105,10 +111,13 @@ void TwoPhaseMedium::setState_pT(const double &p, const double &T){
 #if defined (COMPILER_TEST)
 	_p = p;
 	_T = T;
-	_h = (T - 273.15)*4200;
-	_d = (1000 - _h/4200)*(1+_p/21000e5);
-	_s = 4200 * log(_T/273);
+	_h = (T - 273.15)*4200.0;
+	_d = (1000.0 - _h/4200.0)*(1 + _p/21000e5);
+	_dd_dp_h = (1000.0 - _h/4200.0)/21000e5;
+	_dd_dh_p = -(1.0 + _p/21000e5)/4200.0;
+	_s = 4200.0 * log(_T/273.15);
 #elif defined (FLUIDPROP)
+// XXX To be completed
 #else
 // Place your code here
 #endif
@@ -120,9 +129,11 @@ void TwoPhaseMedium::setState_dT(const double &d, const double &T, const int &ph
 	_T = _T;
 	_h = (T - 273.15)*4200;
 	_p = 1e5;
-	_s = 4200 * log(_T/273);
+	_dd_dp_h = (1000.0 - _h/4200.0)/21000e5;
+	_dd_dh_p = -(1.0 + _p/21000e5)/4200.0;
+	_s = 4200.0 * log(_T/273.15);
 #elif defined (FLUIDPROP)
-
+// XXX To be completed
 #else
 // Place your code here
 #endif
@@ -134,9 +145,11 @@ void TwoPhaseMedium::setState_ps(const double &p, const double &s, const int &ph
 	_s = s;
 	_T = 273.15*exp(s/4200);
 	_h = (_T - 273.15)*4200;
-	_d = (1000 - _h/4200)*(1+_p/21000e5);
+	_d = (1000.0 - _h/4200.0)*(1.0 + _p/21000e5);
+	_dd_dp_h = (1000.0 - _h/4200.0)/21000e5;
+	_dd_dh_p = -(1.0+_p/21000e5)/4200.0;
 #elif defined (FLUIDPROP)
-
+// XXX To be completed
 #else
 // Place your code here
 #endif

@@ -41,6 +41,8 @@ extern "C" DLLExport void setState_ps_(double p, double s, int phase, int unique
 extern "C" DLLExport void setState_pT_(double p, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase);
 
 extern "C" DLLExport double density_(int uniqueID);
+extern "C" DLLExport double density_ph_der_(int uniqueID, double p_der, double h_der);
+
 extern "C" DLLExport double pressure_(int uniqueID);
 extern "C" DLLExport double specificEnthalpy_(int uniqueID);
 extern "C" DLLExport double specificEntropy_(int uniqueID);

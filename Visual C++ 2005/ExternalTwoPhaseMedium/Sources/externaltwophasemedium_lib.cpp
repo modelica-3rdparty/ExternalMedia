@@ -184,6 +184,11 @@ double density_(int uniqueID){
 	return MediumMap::mediums[uniqueID]->d();
 }
 
+double density_ph_der_(int uniqueID, double p_der, double h_der){
+	return MediumMap::mediums[uniqueID]->dd_dp_h()*p_der +
+		   MediumMap::mediums[uniqueID]->dd_dh_p()*h_der;
+}
+
 double pressure_(int uniqueID){
 	return MediumMap::mediums[uniqueID]->p();
 }

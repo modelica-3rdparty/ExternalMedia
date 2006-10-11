@@ -38,6 +38,14 @@ double BaseTwoPhaseMedium::d() const{
 	return _d;
 }
 
+double BaseTwoPhaseMedium::dd_dp_h() const{
+	return _dd_dp_h;
+}
+
+double BaseTwoPhaseMedium::dd_dh_p() const{
+	return _dd_dh_p;
+}
+
 double BaseTwoPhaseMedium::h() const{
 	return _h;
 }

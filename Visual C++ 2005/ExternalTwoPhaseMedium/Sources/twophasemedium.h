@@ -28,8 +28,8 @@
 # include "basetwophasemedium.h"  // Base class definition
 
 // Uncomment the directives as needed
-#define COMPILER_TEST
-// #define FLUIDPROP
+// #define COMPILER_TEST
+#define FLUIDPROP
 
 #ifdef FLUIDPROP
 #include "FluidProp_IF.h"
@@ -52,7 +52,7 @@ public:
 	void setState_pT(const double &p, const double &T);
 private:
 #ifdef FLUIDPROP
-	CFluidProp *FluidProp;
+	CFluidProp *FluidProp;  // Instance of FluidProp wrapper object
 #endif
 };
 
