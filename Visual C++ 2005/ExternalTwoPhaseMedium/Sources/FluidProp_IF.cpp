@@ -46,7 +46,7 @@ CFluidProp::~CFluidProp()
    CoUninitialize();
 }
 
-void CFluidProp::SetFluid( char* ModelName, int nComp, char* Comp[], double* Conc, char*& ErrorMsg)
+void CFluidProp::SetFluid(const char* ModelName, int nComp, const char* Comp[], double* Conc, char*& ErrorMsg)
 {
    // _com_util::Convert model name to binary string
    BSTR BSTR_Model = _com_util::ConvertStringToBSTR( ModelName);

@@ -11,7 +11,11 @@
 #ifndef EXTERNALTWOPHASEMEDIUM_H_
 #define EXTERNALTWOPHASEMEDIUM_H_
 
-extern int createMedium_(const char *mediumName, int oldUniqueID);
+extern int createMedium_(const char *mediumName, 
+						 const char *libraryName,
+						 const char *substanceName,
+						 int oldUniqueID);
+
 extern void deleteMedium_(int uniqueID);
 
 extern double molarMass_(int uniqueID);
@@ -19,8 +23,10 @@ extern double criticalDensity_(int uniqueID);
 extern double criticalPressure_(int uniqueID);
 extern double criticalTemperature_(int uniqueID);
 
-extern void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID);
-extern void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID);
+void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
+			   const char *mediumName, const char *libraryName, const char *substanceName);
+void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
+			   const char *mediumName, const char *libraryName, const char *substanceName);
 
 extern double saturationPressure_(double T, const char *mediumName);
 extern double saturationTemperature_(double p, const char *mediumName);
@@ -32,10 +38,14 @@ extern double dewEnthalpy_(int uniqueID);
 extern double bubbleEntropy_(int uniqueID);
 extern double dewEntropy_(int uniqueID);
 
-extern void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase);
-extern void setState_ph_(double p, double h, int phase, int uniqueID, int *state_uniqueID, int *state_phase);
-extern void setState_ps_(double p, double s, int phase, int uniqueID, int *state_uniqueID, int *state_phase);
-extern void setState_pT_(double p, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase);
+extern void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
+			   	         const char *mediumName, const char *libraryName, const char *substanceName);
+extern void setState_ph_(double p, double h, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
+				         const char *mediumName, const char *libraryName, const char *substanceName);
+extern void setState_ps_(double p, double s, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
+				         const char *mediumName, const char *libraryName, const char *substanceName);
+extern void setState_pT_(double p, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
+				         const char *mediumName, const char *libraryName, const char *substanceName);
 
 extern double density_(int uniqueID);
 extern double density_ph_der_(int uniqueID, double p_der, double h_der);

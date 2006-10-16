@@ -12,7 +12,11 @@
 #define DLLExport
 #endif /*_USRDLL*/
 
-extern "C" DLLExport int createMedium_(const char *mediumName, int oldUniqueID);
+extern "C" DLLExport int createMedium_(const char *mediumName, 
+						               const char *libraryName,
+						               const char *substanceName,
+						               int oldUniqueID);
+
 extern "C" DLLExport void deleteMedium_(int uniqueID);
 
 extern "C" DLLExport double molarMass_(int uniqueID);
@@ -22,9 +26,11 @@ extern "C" DLLExport double criticalTemperature_(int uniqueID);
 extern "C" DLLExport double criticalEnthalpy_(int uniqueID);
 extern "C" DLLExport double criticalEntropy_(int uniqueID);
 
-extern "C" DLLExport void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID);
-extern "C" DLLExport void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID);
-	
+extern "C" DLLExport void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
+			                        const char *mediumName, const char *libraryName, const char *substanceName);
+extern "C" DLLExport void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
+			                        const char *mediumName, const char *libraryName, const char *substanceName);
+
 extern "C" DLLExport double saturationPressure_(double T, const char *mediumName);
 extern "C" DLLExport double saturationTemperature_(double p, const char *mediumName);
 
@@ -35,10 +41,14 @@ extern "C" DLLExport double dewEnthalpy_(int uniqueID);
 extern "C" DLLExport double bubbleEntropy_(int uniqueID);
 extern "C" DLLExport double dewEntropy_(int uniqueID);
 
-extern "C" DLLExport void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase);
-extern "C" DLLExport void setState_ph_(double p, double h, int phase, int uniqueID, int *state_uniqueID, int *state_phase);
-extern "C" DLLExport void setState_ps_(double p, double s, int phase, int uniqueID, int *state_uniqueID, int *state_phase);
-extern "C" DLLExport void setState_pT_(double p, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase);
+extern "C" DLLExport void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
+			   	                       const char *mediumName, const char *libraryName, const char *substanceName);
+extern"C" DLLExport  void setState_ph_(double p, double h, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
+				                       const char *mediumName, const char *libraryName, const char *substanceName);
+extern "C" DLLExport void setState_ps_(double p, double s, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
+				                       const char *mediumName, const char *libraryName, const char *substanceName);
+extern "C" DLLExport void setState_pT_(double p, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
+				                       const char *mediumName, const char *libraryName, const char *substanceName);
 
 extern "C" DLLExport double density_(int uniqueID);
 extern "C" DLLExport double density_ph_der_(int uniqueID, double p_der, double h_der);

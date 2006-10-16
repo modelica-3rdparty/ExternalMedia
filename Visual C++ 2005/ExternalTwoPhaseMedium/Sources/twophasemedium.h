@@ -37,7 +37,9 @@
 
 class TwoPhaseMedium : public BaseTwoPhaseMedium{
 public:
-	TwoPhaseMedium(const string &mediumName);
+	TwoPhaseMedium(const string &mediumName, 
+		           const string &libraryName,
+		           const string &substanceName);
 	~TwoPhaseMedium();
 
 	void setSat_p(const double &p);

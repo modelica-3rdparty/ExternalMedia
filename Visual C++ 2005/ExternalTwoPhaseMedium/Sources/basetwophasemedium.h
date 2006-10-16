@@ -19,7 +19,9 @@ using std::string;
 
 class BaseTwoPhaseMedium{
 public:
-	BaseTwoPhaseMedium(const string &mediumName);
+	BaseTwoPhaseMedium(const string &mediumName, 
+		               const string &libraryName,
+		               const string &substanceName);
 	virtual ~BaseTwoPhaseMedium();
 
 	virtual double beta() const;
@@ -84,6 +86,9 @@ protected:
     static bool firstCall;
 
 	string _mediumName;			// medium name
+	string _libraryName;        // external library name
+	string _substanceName;      // substance name
+
 	int _phase;		// 2 for two-phase, 1 for one-phase, 0 if not known
 
 	double _beta;	 // isothermal expansion coefficient

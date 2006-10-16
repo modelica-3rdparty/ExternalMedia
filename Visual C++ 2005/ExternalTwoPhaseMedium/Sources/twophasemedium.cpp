@@ -14,19 +14,23 @@
 // General purpose includes
 #include "twophasemedium.h"
 #include <math.h>
+#include <string>
 
-TwoPhaseMedium::TwoPhaseMedium(const string &mediumName) : BaseTwoPhaseMedium(mediumName){
+TwoPhaseMedium::TwoPhaseMedium(const string &mediumName, 
+							   const string &libraryName,
+                               const string &substanceName) : 
+   BaseTwoPhaseMedium(mediumName, libraryName, substanceName){
 #if defined (COMPILER_TEST)
 	 // The (constant) molar mass should be defined when the object is created
 	_MM = 0.18; 
 #elif defined (FLUIDPROP)
 	char* ErrorMsg;
-    char* Comp[20];
+	const char *Comp[20];
     double Conc[20];
 
 	FluidProp = new CFluidProp();
-	Comp[0] = "H2O";
-    FluidProp->SetFluid("RefProp", 1, Comp, Conc, ErrorMsg);
+	Comp[0] = substanceName.c_str();
+    FluidProp->SetFluid(libraryName.c_str(), 1, Comp, Conc, ErrorMsg);
 	// FluidProp->SetUnit("SI", " ", " ", " ");
 	_MM = 0.018015268f;
 /*

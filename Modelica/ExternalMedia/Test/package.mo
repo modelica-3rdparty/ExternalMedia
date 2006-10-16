@@ -1,6 +1,6 @@
 package Test 
   model TestExternalTwoPhaseMedium 
-    package Medium = ExternalMedia.Media.ExternalTwoPhaseMedium;
+    replaceable package Medium = ExternalMedia.Media.ExternalTwoPhaseMedium;
     Medium.BaseProperties medium_1;
     Medium.BaseProperties medium_2;
     Medium.ThermodynamicState state_1;
@@ -15,10 +15,12 @@ package Test
     state_1 = Medium.setState_pT(1e5,273+100*time);
     state_2 = Medium.setState_ph(1e5, 1e5+time*1e5);
   end TestExternalTwoPhaseMedium;
+
+
 model TestExternalTwoPhaseMediumDynamic 
   import SI = Modelica.SIunits;
   // package Medium = Modelica.Media.Water.StandardWater;
-  package Medium = ExternalMedia.Media.ExternalTwoPhaseMedium;
+  replaceable package Medium = ExternalMedia.Media.ExternalTwoPhaseMedium;
   parameter SI.Volume V = 1 "Storage Volume";
   parameter Real p_atm = 101325 "Atmospheric pressure";
   parameter SI.Temperature Tstart = 300;
@@ -63,5 +65,15 @@ initial equation
   annotation (experiment(StopTime=80, Tolerance=1e-007),experimentSetupOutput(
         equdistant=false));
 end TestExternalTwoPhaseMediumDynamic;
+
+model TestFluidPropIF95 
+  extends TestExternalTwoPhaseMedium(redeclare package Medium = 
+        Media.FluidPropMedia.WaterIF95);  
+end TestFluidPropIF95;
+
+model TestFluidPropIF95Dynamic 
+  extends TestExternalTwoPhaseMediumDynamic(redeclare package Medium = 
+        Media.FluidPropMedia.WaterIF95);  
+end TestFluidPropIF95Dynamic;
 
 end Test;

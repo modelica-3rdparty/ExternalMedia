@@ -18,7 +18,7 @@ class CFluidProp
       ~CFluidProp();
 
 	  // Set the fluid name and composition
-      void SetFluid( char* ModelName, int nComp, char* Comp[], double* Conc, char*& ErrorMsg);
+      void SetFluid(const char* ModelName, int nComp, const char* Comp[], double* Conc, char*& ErrorMsg);
 
 	  // Compute all the properties at once 
 	  void   AllProps( char* InputSpec, double Input1, double Input2, double& P, double& T,

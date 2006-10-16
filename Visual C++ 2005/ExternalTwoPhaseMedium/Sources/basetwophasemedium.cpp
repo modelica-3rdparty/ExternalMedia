@@ -15,8 +15,12 @@
 
 #include <math.h>
 
-BaseTwoPhaseMedium::BaseTwoPhaseMedium(const string &mediumName){
+BaseTwoPhaseMedium::BaseTwoPhaseMedium(const string &mediumName, 
+		                               const string &libraryName,
+		                               const string &substanceName){
 	_mediumName = mediumName;
+	_libraryName = libraryName;
+	_substanceName = substanceName;
 }
 
 BaseTwoPhaseMedium::~BaseTwoPhaseMedium(){
