@@ -1,4 +1,5 @@
 #include "FluidProp_IF.h"
+#include <stdio.h>
 
 #pragma comment(lib, "comsupp.lib")
 
@@ -50,7 +51,6 @@ void CFluidProp::SetFluid(const char* ModelName, int nComp, const char* Comp[], 
 {
    // _com_util::Convert model name to binary string
    BSTR BSTR_Model = _com_util::ConvertStringToBSTR( ModelName);
-
    // _com_util::Convert character array Comp via binary strings (BSTR) into an OLE SafeArray
    SAFEARRAYBOUND sa_bounds_Comp[1];
    sa_bounds_Comp[0].lLbound = 0;
@@ -80,6 +80,21 @@ void CFluidProp::SetFluid(const char* ModelName, int nComp, const char* Comp[], 
 
    // Error handling
    ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+
+   /*
+   // Set units to SI
+   if ( !strcmp(ErrorMsg, "No errors"))
+   {     
+      char* UnitSet     = "SI";
+      char* EmptyString = " ";
+	  BSTR BSTR_UnitSet     = _com_util::ConvertStringToBSTR(UnitSet);
+      BSTR BSTR_EmptyString = _com_util::ConvertStringToBSTR(EmptyString);
+      FluidProp_COM->SetUnits( BSTR_UnitSet, BSTR_EmptyString, BSTR_EmptyString, BSTR_EmptyString, &BSTR_Error);
+
+      // Error handling unit conversion
+      ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   }
+   */
 }
 
 void CFluidProp::AllProps( char* InputSpec, double Input1, double Input2, double& P, double& T,

@@ -66,14 +66,17 @@ initial equation
         equdistant=false));
 end TestExternalTwoPhaseMediumDynamic;
 
+
 model TestFluidPropIF95 
   extends TestExternalTwoPhaseMedium(redeclare package Medium = 
-        Media.FluidPropMedia.WaterIF95);  
+        Media.FluidPropMedia.WaterIF95);
 end TestFluidPropIF95;
+
 
 model TestFluidPropIF95Dynamic 
   extends TestExternalTwoPhaseMediumDynamic(redeclare package Medium = 
-        Media.FluidPropMedia.WaterIF95);  
+        Media.FluidPropMedia.WaterIF95);
+  annotation (experiment(StopTime=100), experimentSetupOutput);
 end TestFluidPropIF95Dynamic;
 
 end Test;

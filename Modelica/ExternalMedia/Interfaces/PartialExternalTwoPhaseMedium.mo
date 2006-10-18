@@ -2,13 +2,13 @@ partial package PartialExternalTwoPhaseMedium
   extends Modelica.Media.Interfaces.PartialTwoPhaseMedium(
     mediumName = "ExternalMedium",
     singleState = false,
-    onePhase = false,
-    substanceNames = {substanceName});
+    onePhase = false);
   import IC = ExternalMedia.Common.InputChoices;
   
   constant String libraryName = "" 
     "Might be used to set the external library to be used";
-  constant String substanceName = "" "Only one substance can be specified";
+  final constant String substanceName = substanceNames[1] 
+    "Only one substance can be specified";
   
   constant IC.InputChoice inputChoice=IC.ph 
     "Default choice of input variables for property computations";

@@ -2,5 +2,5 @@ package FluidPropMedia
   package WaterIF95 =  ExternalTwoPhaseMedium (
     mediumName = "Water",
     libraryName = "RefProp",
-    substanceNames = {"H20"});
+    substanceName = "H2O");
 end FluidPropMedia;

@@ -29,8 +29,9 @@ TwoPhaseMedium::TwoPhaseMedium(const string &mediumName,
     double Conc[20];
 
 	FluidProp = new CFluidProp();
-	Comp[0] = substanceName.c_str();
+    Comp[0] = substanceName.c_str();
     FluidProp->SetFluid(libraryName.c_str(), 1, Comp, Conc, ErrorMsg);
+
 	// FluidProp->SetUnit("SI", " ", " ", " ");
 	_MM = 0.018015268f;
 /*
