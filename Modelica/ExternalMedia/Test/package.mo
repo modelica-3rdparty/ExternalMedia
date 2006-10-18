@@ -5,6 +5,14 @@ package Test
     Medium.BaseProperties medium_2;
     Medium.ThermodynamicState state_1;
     Medium.ThermodynamicState state_2;
+    Medium.Density d1;
+    Medium.Density d2;
+    Medium.Temperature T1;
+    Medium.Temperature T2;
+    Medium.SpecificEntropy s1;
+    Medium.SpecificEntropy s2;
+    Medium.SpecificEnthalpy h1;
+    Medium.SpecificEnthalpy h2;
   equation 
     medium_1.p = 1e5;
     medium_1.T = 293+50*time;
@@ -14,6 +22,16 @@ package Test
   
     state_1 = Medium.setState_pT(1e5,273+100*time);
     state_2 = Medium.setState_ph(1e5, 1e5+time*1e5);
+  
+    d1 = Medium.density(state_1);
+    d2 = Medium.density(state_2);
+    T1 = Medium.temperature(state_1);
+    T2 = Medium.temperature(state_2);
+    s1 = Medium.specificEntropy(state_1);
+    s2 = Medium.specificEntropy(state_2);
+    h1 = Medium.specificEnthalpy(state_1);
+    h2 = Medium.specificEnthalpy(state_2);
+  
   end TestExternalTwoPhaseMedium;
 
 
