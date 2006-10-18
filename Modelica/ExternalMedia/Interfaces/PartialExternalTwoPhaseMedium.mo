@@ -130,9 +130,6 @@ partial package PartialExternalTwoPhaseMedium
     output Integer uniqueID "unique ID number";
   end createMedium;
   
-  replaceable partial function deleteMedium 
-    input Integer uniqueID "unique ID number";
-  end deleteMedium;
   
   replaceable partial function getMolarMass 
     input Integer uniqueID "unique ID number";

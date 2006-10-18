@@ -11,10 +11,10 @@ package Common
     replaceable type InputChoice 
     extends Integer(min=0,max=3);
     annotation(Evaluate=true,choices(
-      choice=Modelica.Media.Common.InputChoices.dT "(d,T) as inputs",
-      choice=Modelica.Media.Common.InputChoices.ph "(p,h) as inputs",
-      choice=Modelica.Media.Common.InputChoices.ps "(p,s) as inputs",
-      choice=Modelica.Media.Common.InputChoices.pT "(p,T) as inputs"));
+      choice=ExternalMedia.Common.InputChoices.dT "(d,T) as inputs",
+      choice=ExternalMedia.Common.InputChoices.ph "(p,h) as inputs",
+      choice=ExternalMedia.Common.InputChoices.ps "(p,s) as inputs",
+      choice=ExternalMedia.Common.InputChoices.pT "(p,T) as inputs"));
     end InputChoice;
   end InputChoices;
 end Common;

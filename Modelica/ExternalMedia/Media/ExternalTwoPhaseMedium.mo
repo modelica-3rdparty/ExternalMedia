@@ -144,11 +144,6 @@ package ExternalTwoPhaseMedium
   external "C" uniqueID=  createMedium_(mediumName, libraryName, substanceName, oldUniqueID);
   end createMedium;
   
-  redeclare replaceable function extends deleteMedium 
-    
-    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" deleteMedium_(uniqueID);
-  end deleteMedium;
   
   redeclare replaceable function extends getMolarMass 
     
