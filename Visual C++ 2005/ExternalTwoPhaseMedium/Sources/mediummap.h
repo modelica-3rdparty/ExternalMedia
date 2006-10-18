@@ -12,14 +12,21 @@
 #ifndef MEDIUMMAP_H_
 #define MEDIUMMAP_H_
 
-#include <map>
-using std::map;
+#include "include.h"
+
+#include "solvermap.h"
 
 class TwoPhaseMedium;
 
 class MediumMap{
 public:
 	static map<int, TwoPhaseMedium*> mediums;
+
+	static int addMedium(const string &mediumName, const string &libraryName, const string &substanceName);
+	static TwoPhaseMedium *medium(const int &uniqueID);
+
+protected:
+	static int uniqueID;
 };
 
 #endif /*MEDIUMMAP_H_*/

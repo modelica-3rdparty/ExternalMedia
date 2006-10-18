@@ -171,16 +171,14 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Base TwoPhaseMedium class"
-			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			Name="FluidPropsSolver class"
 			>
 			<File
-				RelativePath=".\Sources\basetwophasemedium.cpp"
+				RelativePath=".\Sources\fluidpropssolver.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\basetwophasemedium.h"
+				RelativePath=".\Sources\fluidpropssolver.h"
 				>
 			</File>
 		</Filter>
@@ -230,6 +228,34 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="SolverMap class"
+			>
+			<File
+				RelativePath=".\Sources\solvermap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Sources\solvermap.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="BaseSolver class"
+			>
+			<File
+				RelativePath=".\Sources\basesolver.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Sources\basesolver.h"
+				>
+			</File>
+		</Filter>
+		<File
+			RelativePath=".\Sources\include.h"
+			>
+		</File>
 		<File
 			RelativePath=".\readme.txt"
 			>

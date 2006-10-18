@@ -4,42 +4,20 @@
  * TwoPhaseMedium is the default object embedding the fluid property
  * computations at a given point of the plant. 
  *
- * To test the compiler setup, uncomment the directive
- * #define COMPILER_TEST; the TwoPhaseMedium object will compute
- * dummy properties, without needing to be interfaced with any
- * actual external fluid property computation code.
- *
- * To compile the FluidProp interface, uncomment the directive
- * #define FLUIDPROP.
- *
- * To implement the interface to your own external fluid property
- * computation software, comment the directive
- * #define COMPILER_TEST, and fill in the blanks in the code with 
- * the appropriate function calls to your external code.
-*
- * TwoPhaseMedium extends BaseTwoPhaseMedium.
- *
  * Christoph Richter, Francesco Casella, Sep 2006
  ********************************************************************/
 
 #ifndef TWOPHASEMEDIUM_H_
 #define TWOPHASEMEDIUM_H_
 
-# include "basetwophasemedium.h"  // Base class definition
+#include "include.h"
 
-// Uncomment the directives as needed
-// #define COMPILER_TEST
-#define FLUIDPROP
+#include "basesolver.h"
 
-#ifdef FLUIDPROP
-#include "FluidProp_IF.h"
-#endif
-
-class TwoPhaseMedium : public BaseTwoPhaseMedium{
+class TwoPhaseMedium{
 public:
-	TwoPhaseMedium(const string &mediumName, 
-		           const string &libraryName,
-		           const string &substanceName);
+	TwoPhaseMedium(const string &mediumName, const string &libraryName, 
+				   const string &substanceName, BaseSolver *const solver);
 	~TwoPhaseMedium();
 
 	void setSat_p(const double &p);
@@ -52,10 +30,48 @@ public:
 	void setState_ph(const double &p, const double &h, const int &phase);
 	void setState_ps(const double &p, const double &s, const int &phase);
 	void setState_pT(const double &p, const double &T);
-private:
-#ifdef FLUIDPROP
-	CFluidProp *FluidProp;  // Instance of FluidProp wrapper object
-#endif
+
+	// Fluid properties
+	string mediumName;		// medium name
+	string libraryName;		// library name
+	string substanceName;	// substance name
+
+	BaseSolver *solver;		// pointer to solver
+
+	int phase;			// 2 for two-phase, 1 for one-phase, 0 if not known
+
+	double beta;		// isothermal expansion coefficient
+	double cp;			// specific heat capacity cp
+	double cv;			// specific heat capacity cv
+	double d;			// density
+	double dd_dp_h;		// derivative of density by pressure at constant enthalpy
+	double dd_dh_p;		// derivative of density by enthalpy at constant pressure
+	double h;			// specific enthalpy
+	double kappa;		// compressibility
+	double p;			// pressure
+	double s;			// specific entropy
+	double T;			// temperature
+
+	double ps;			// saturation pressure
+	double Ts;			// saturation temperature
+
+	double dl;			// bubble density
+	double dv;			// dew density
+	double hl;			// bubble specific enthalpy
+	double hv;			// dew specific enthalpy
+	double sl;			// bubble specific entropy
+	double sv;			// dew specific entropy
+
+	double dc;			// critical density
+	double pc;			// critical pressure
+	double Tc;			// critical temperature
+
+	double MM;			// molar mass
+
+	double eta;			// dynamic viscosity
+	double lambda;		// thermal conductivity
+	double Pr;			// Prandtl number
+	double sigma;		// surface tension
 };
 
 #endif /*TWOPHASEMEDIUM_H_*/

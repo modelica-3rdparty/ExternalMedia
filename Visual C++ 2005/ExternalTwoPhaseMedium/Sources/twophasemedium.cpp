@@ -11,164 +11,42 @@
  * Christoph Richter, Francesco Casella, Sep 2006
  ********************************************************************/
 
-// General purpose includes
 #include "twophasemedium.h"
+
+// General purpose includes
 #include <math.h>
-#include <string>
 
-TwoPhaseMedium::TwoPhaseMedium(const string &mediumName, 
-							   const string &libraryName,
-                               const string &substanceName) : 
-   BaseTwoPhaseMedium(mediumName, libraryName, substanceName){
-#if defined (COMPILER_TEST)
-	 // The (constant) molar mass should be defined when the object is created
-	_MM = 0.18; 
-#elif defined (FLUIDPROP)
-	char* ErrorMsg;
-	const char *Comp[20];
-    double Conc[20];
-
-	FluidProp = new CFluidProp();
-    Comp[0] = substanceName.c_str();
-    FluidProp->SetFluid(libraryName.c_str(), 1, Comp, Conc, ErrorMsg);
-
-	// FluidProp->SetUnit("SI", " ", " ", " ");
-	_MM = 0.018015268f;
-/*
-    if ( strcmp( ErrorMsg, "No errors"))
-    {
-        cout << endl;
-        cout << ErrorMsg << endl;
-		return;
-    }
-	*/
-#else
-    // Place your code here
-#endif
+TwoPhaseMedium::TwoPhaseMedium(const string &mediumName, const string &libraryName, const string &substanceName, BaseSolver *const solver)
+	: mediumName(mediumName), libraryName(libraryName), substanceName(substanceName), solver(solver){
+	// Set medium constants
+	solver->setMediumConstants(this);
 }
 
 TwoPhaseMedium::~TwoPhaseMedium(){
-#if defined (COMPILER_TEST)
-	// Nothing to do
-#elif defined (FLUIDPROP)
-	// Destroy object
-	delete FluidProp;
-#else
-    // Place your code here
-#endif
-}
-
-void TwoPhaseMedium::setState_ph(const double &p, const double &h, const int &phase){
-#if defined (COMPILER_TEST)
-	_p = p;
-	_h = h;
-	_T = h/4200.0 + 273.15;
-	_d = (1000.0 - h/4200.0)*(1.0 + _p/21000e5);
-	_dd_dp_h = (1000.0 - h/4200.0)/21000e5;
-	_dd_dh_p = -(1.0 + _p/21000e5)/4200.0;
-	_s = 4200.0 * log(_T/273.15);
-#elif defined (FLUIDPROP)
-	// FluidProp variables (with their default units)
-    char* ErrorMsg;
-    double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
-		   cv_, cp_, c_, alpha_, beta_, chi_, fi_, ksi_,
-		   psi_, gamma_, eta_, lambda_;
-	// Compute all FluidProp variables
-	FluidProp->AllProps( "Ph", p*1e-5, h*1e-3, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
-                         alpha_, beta_, chi_, fi_, ksi_, psi_, gamma_, eta_, lambda_, ErrorMsg);
-    // Fill in the TwoPhaseMedium variables (in SI units)
-	_beta = 0;				// isothermal expansion coefficient
-	_cp = cp_*1000.0;		// specific heat capacity cp
-	_cv = cv_*1000.0;		// specific heat capacity cv
-	_d = d_;				// density
-	_dd_dp_h = psi_;        // derivative of density by pressure at constant h
-	_dd_dh_p = ksi_;        // derivative of density by enthalpy at constant p
-	_h = h;					// specific enthalpy
-	_kappa = 0;				// compressibility
-	_p = p;					// pressure
-	_s = s_*1000.0;		    // specific entropy
-	_T = T_ + 273.15;		// temperature
-
-	_ps = 0;		// saturation pressure
-	_Ts = 0;		// saturation temperature
-
-	_dl = 0;		// bubble density
-	_dv = 0;		// dew density
-	_hl = 0;		// bubble specific enthalpy
-	_hv = 0;		// dew specific enthalpy
-	_sl = 0;		// bubble specific entropy
-	_sv = 0;		// dew specific entropy
-
-	_dc = 0;		// critical density
-	_pc = 0;		// critical pressure
-	_Tc = 0;		// critical temperature
-
-	_eta = eta_;	    // dynamic viscosity
-	_lambda = lambda_;	// thermal conductivity
-	_Pr = 0;			// Prandtl number
-	_sigma = 0;			// surface tension
-#else
-// Place your code here
-#endif
-}
-
-void TwoPhaseMedium::setState_pT(const double &p, const double &T){
-#if defined (COMPILER_TEST)
-	_p = p;
-	_T = T;
-	_h = (T - 273.15)*4200.0;
-	_d = (1000.0 - _h/4200.0)*(1 + _p/21000e5);
-	_dd_dp_h = (1000.0 - _h/4200.0)/21000e5;
-	_dd_dh_p = -(1.0 + _p/21000e5)/4200.0;
-	_s = 4200.0 * log(_T/273.15);
-#elif defined (FLUIDPROP)
-// XXX To be completed
-#else
-// Place your code here
-#endif
-}
-
-void TwoPhaseMedium::setState_dT(const double &d, const double &T, const int &phase){
-#if defined (COMPILER_TEST)
-	_d = d;
-	_T = _T;
-	_h = (T - 273.15)*4200;
-	_p = 1e5;
-	_dd_dp_h = (1000.0 - _h/4200.0)/21000e5;
-	_dd_dh_p = -(1.0 + _p/21000e5)/4200.0;
-	_s = 4200.0 * log(_T/273.15);
-#elif defined (FLUIDPROP)
-// XXX To be completed
-#else
-// Place your code here
-#endif
-}
-
-void TwoPhaseMedium::setState_ps(const double &p, const double &s, const int &phase){
-#if defined (COMPILER_TEST)
-	_p = p;
-	_s = s;
-	_T = 273.15*exp(s/4200);
-	_h = (_T - 273.15)*4200;
-	_d = (1000.0 - _h/4200.0)*(1.0 + _p/21000e5);
-	_dd_dp_h = (1000.0 - _h/4200.0)/21000e5;
-	_dd_dh_p = -(1.0+_p/21000e5)/4200.0;
-#elif defined (FLUIDPROP)
-// XXX To be completed
-#else
-// Place your code here
-#endif
 }
 
 void TwoPhaseMedium::setSat_p(const double &p){
-#if defined (COMPILER_TEST)
-#elif defined (FLUIDPROP)
-#else
-// Place your code here
-#endif
+	solver->setSat_p(p, this);
 }
 
 void TwoPhaseMedium::setSat_T(const double &T){
+	solver->setSat_T(T, this);
+}
+
+void TwoPhaseMedium::setState_dT(const double &d, const double &T, const int &phase){
+	solver->setState_dT(d, T, phase, this);
+}
+
+void TwoPhaseMedium::setState_ph(const double &p, const double &h, const int &phase){
+	solver->setState_ph(p, h, phase, this);
+}
+
+void TwoPhaseMedium::setState_ps(const double &p, const double &s, const int &phase){
+	solver->setState_ps(p, s, phase, this);
+}
+
+void TwoPhaseMedium::setState_pT(const double &p, const double &T){
+	solver->setState_pT(p, T, this);
 }
 
 double TwoPhaseMedium::saturationPressure(const double &T, const string &mediumName){

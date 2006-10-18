@@ -12,12 +12,7 @@
 #define DLLExport
 #endif /*_USRDLL*/
 
-extern "C" DLLExport int createMedium_(const char *mediumName, 
-						               const char *libraryName,
-						               const char *substanceName,
-						               int oldUniqueID);
-
-extern "C" DLLExport void deleteMedium_(int uniqueID);
+extern "C" DLLExport int createMedium_(const char *mediumName, const char *libraryName, const char *substanceName, int oldUniqueID);
 
 extern "C" DLLExport double molarMass_(int uniqueID);
 extern "C" DLLExport double criticalDensity_(int uniqueID);
