@@ -3,22 +3,22 @@
 
 #include "include.h"
 
-class TwoPhaseMedium;
+struct TwoPhaseMediumProperties;
 
 class BaseSolver{
 public:
 	BaseSolver(const string &libraryName, const string &substanceName);
 	virtual ~BaseSolver();
 
-	virtual void setMediumConstants(TwoPhaseMedium *const medium);
+	virtual void setMediumConstants(TwoPhaseMediumProperties *const properties);
 
-	virtual void setSat_p(const double &p, TwoPhaseMedium *const medium);
-	virtual void setSat_T(const double &T, TwoPhaseMedium *const medium);
+	virtual void setSat_p(const double &p, TwoPhaseMediumProperties *const properties);
+	virtual void setSat_T(const double &T, TwoPhaseMediumProperties *const properties);
 
-	virtual void setState_dT(const double &d, const double &T, const int &phase, TwoPhaseMedium *const medium);
-	virtual void setState_ph(const double &p, const double &h, const int &phase, TwoPhaseMedium *const medium);
-	virtual void setState_ps(const double &p, const double &s, const int &phase, TwoPhaseMedium *const medium);
-	virtual void setState_pT(const double &p, const double &T, TwoPhaseMedium *const medium);
+	virtual void setState_dT(const double &d, const double &T, const int &phase, TwoPhaseMediumProperties *const properties);
+	virtual void setState_ph(const double &p, const double &h, const int &phase, TwoPhaseMediumProperties *const properties);
+	virtual void setState_ps(const double &p, const double &s, const int &phase, TwoPhaseMediumProperties *const properties);
+	virtual void setState_pT(const double &p, const double &T, TwoPhaseMediumProperties *const properties);
 
 	// Solver properties
 	string libraryName;		// library name

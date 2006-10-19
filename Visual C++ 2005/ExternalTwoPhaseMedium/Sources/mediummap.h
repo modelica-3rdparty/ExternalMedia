@@ -16,14 +16,14 @@
 
 #include "solvermap.h"
 
-class TwoPhaseMedium;
+class BaseTwoPhaseMedium;
 
 class MediumMap{
 public:
-	static map<int, TwoPhaseMedium*> mediums;
+	static map<int, BaseTwoPhaseMedium*> mediums;
 
 	static int addMedium(const string &mediumName, const string &libraryName, const string &substanceName);
-	static TwoPhaseMedium *medium(const int &uniqueID);
+	static BaseTwoPhaseMedium *medium(const int &uniqueID);
 
 protected:
 	static int uniqueID;

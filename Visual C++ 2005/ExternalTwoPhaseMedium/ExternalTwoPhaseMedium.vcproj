@@ -171,14 +171,14 @@
 	</References>
 	<Files>
 		<Filter
-			Name="FluidPropsSolver class"
+			Name="Medium Map"
 			>
 			<File
-				RelativePath=".\Sources\fluidpropssolver.cpp"
+				RelativePath=".\Sources\mediummap.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\fluidpropssolver.h"
+				RelativePath=".\Sources\mediummap.h"
 				>
 			</File>
 		</Filter>
@@ -205,7 +205,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="TwoPhaseMedium class"
+			Name="Two-phase medium"
 			>
 			<File
 				RelativePath=".\Sources\twophasemedium.cpp"
@@ -217,31 +217,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="MediumMap class"
-			>
-			<File
-				RelativePath=".\Sources\mediummap.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Sources\mediummap.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="SolverMap class"
-			>
-			<File
-				RelativePath=".\Sources\solvermap.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Sources\solvermap.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="BaseSolver class"
+			Name="Base Solver"
 			>
 			<File
 				RelativePath=".\Sources\basesolver.cpp"
@@ -249,6 +225,46 @@
 			</File>
 			<File
 				RelativePath=".\Sources\basesolver.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Base two-phase medium"
+			>
+			<File
+				RelativePath=".\Sources\basetwophasemedium.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Sources\basetwophasemedium.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Sources\twophasemediumproperties.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="FluidProp solver"
+			>
+			<File
+				RelativePath=".\Sources\fluidpropssolver.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Sources\fluidpropssolver.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Solver Map"
+			>
+			<File
+				RelativePath=".\Sources\solvermap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Sources\solvermap.h"
 				>
 			</File>
 		</Filter>

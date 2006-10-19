@@ -17,36 +17,36 @@
 #include <math.h>
 
 TwoPhaseMedium::TwoPhaseMedium(const string &mediumName, const string &libraryName, const string &substanceName, BaseSolver *const solver)
-	: mediumName(mediumName), libraryName(libraryName), substanceName(substanceName), solver(solver){
+	: BaseTwoPhaseMedium(mediumName, libraryName, substanceName, solver){
 	// Set medium constants
-	solver->setMediumConstants(this);
+	_solver->setMediumConstants(_properties);
 }
 
 TwoPhaseMedium::~TwoPhaseMedium(){
 }
 
 void TwoPhaseMedium::setSat_p(const double &p){
-	solver->setSat_p(p, this);
+	_solver->setSat_p(p, _properties);
 }
 
 void TwoPhaseMedium::setSat_T(const double &T){
-	solver->setSat_T(T, this);
+	_solver->setSat_T(T, _properties);
 }
 
 void TwoPhaseMedium::setState_dT(const double &d, const double &T, const int &phase){
-	solver->setState_dT(d, T, phase, this);
+	_solver->setState_dT(d, T, phase, _properties);
 }
 
 void TwoPhaseMedium::setState_ph(const double &p, const double &h, const int &phase){
-	solver->setState_ph(p, h, phase, this);
+	_solver->setState_ph(p, h, phase, _properties);
 }
 
 void TwoPhaseMedium::setState_ps(const double &p, const double &s, const int &phase){
-	solver->setState_ps(p, s, phase, this);
+	_solver->setState_ps(p, s, phase, _properties);
 }
 
 void TwoPhaseMedium::setState_pT(const double &p, const double &T){
-	solver->setState_pT(p, T, this);
+	_solver->setState_pT(p, T, _properties);
 }
 
 double TwoPhaseMedium::saturationPressure(const double &T, const string &mediumName){

@@ -11,17 +11,15 @@
 #ifndef BASETWOPHASEMEDIUM_H_
 #define BASETWOPHASEMEDIUM_H_
 
-// Define maximum relative difference between input values
-#define EPSILON 1e-10
+#include "include.h"
 
-#include <string>
-using std::string;
+#include "basesolver.h"
+#include "twophasemediumproperties.h"
 
 class BaseTwoPhaseMedium{
 public:
-	BaseTwoPhaseMedium(const string &mediumName, 
-		               const string &libraryName,
-		               const string &substanceName);
+	BaseTwoPhaseMedium(const string &mediumName, const string &libraryName, 
+		const string &substanceName, BaseSolver *const solver);
 	virtual ~BaseTwoPhaseMedium();
 
 	virtual double beta() const;
@@ -68,61 +66,12 @@ public:
 	virtual void setState_ps(const double &p, const double &s, const int &phase) = 0;
 	virtual void setState_pT(const double &p, const double &T) = 0;
 
-	// Functions to check whether input values changed since last library call
-	virtual bool inputIsEqual_p(const double &p);
-	virtual bool inputIsEqual_T(const double &T);
-
-	virtual bool inputsAreEqual_dT(const double &d, const double &T, const int &phase);
-	virtual bool inputsAreEqual_ph(const double &p, const double &h, const int &phase);
-	virtual bool inputsAreEqual_ps(const double &p, const double &s, const int &phase);
-	virtual bool inputsAreEqual_pT(const double &p, const double &T);
-
 protected:	
-	// This function initializes the external library code
-	// It should be only called once, by using firstCall
-	virtual void initializeLibrary() const;
-   
-	// Static boolean to decide whether library has already been initialized
-    static bool firstCall;
+	// Pointer to medium property record
+	TwoPhaseMediumProperties *_properties;
 
-	string _mediumName;			// medium name
-	string _libraryName;        // external library name
-	string _substanceName;      // substance name
-
-	int _phase;		// 2 for two-phase, 1 for one-phase, 0 if not known
-
-	double _beta;	 // isothermal expansion coefficient
-	double _cp;		 // specific heat capacity cp
-	double _cv;		 // specific heat capacity cv
-	double _d;		 // density
-	double _dd_dp_h; // derivative of density by pressure at constant enthalpy
-	double _dd_dh_p; // derivative of density by enthalpy at constant pressure
-	double _h;		 // specific enthalpy
-	double _kappa;	 // compressibility
-	double _p;		 // pressure
-	double _s;		 // specific entropy
-	double _T;		 // temperature
-
-	double _ps;		// saturation pressure
-	double _Ts;		// saturation temperature
-
-	double _dl;		// bubble density
-	double _dv;		// dew density
-	double _hl;		// bubble specific enthalpy
-	double _hv;		// dew specific enthalpy
-	double _sl;		// bubble specific entropy
-	double _sv;		// dew specific entropy
-
-	double _dc;		// critical density
-	double _pc;		// critical pressure
-	double _Tc;		// critical temperature
-
-	double _MM;		// molar mass
-
-	double _eta;	// dynamic viscosity
-	double _lambda;	// thermal conductivity
-	double _Pr;		// Prandtl number
-	double _sigma;	// surface tension
+	// Pointer to solver
+	BaseSolver *_solver;
 };
 
 #endif /*BASETWOPHASEMEDIUM_H_*/

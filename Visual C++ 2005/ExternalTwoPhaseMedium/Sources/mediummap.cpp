@@ -13,13 +13,19 @@ int MediumMap::addMedium(const std::string &mediumName, const std::string &libra
 	++uniqueID;
 	// Check whether solver for specified medium already exists
 	BaseSolver *baseSolver = SolverMap::addSolver(libraryName, substanceName);
-	// Create new medium data
+	// Create new medium
+
+	/* ***************************************************/
+	/* This is the place where one could specify a more  */
+	/* advanced medium extending from BaseTwoPhaseMedium */
+	/* ***************************************************/
+
 	mediums[uniqueID] = new TwoPhaseMedium(mediumName, libraryName, substanceName, baseSolver);
 	// Return unique ID number
 	return uniqueID;
 }
 
-TwoPhaseMedium *MediumMap::medium(const int &uniqueID){
+BaseTwoPhaseMedium *MediumMap::medium(const int &uniqueID){
 	// Check whether unique ID number is valid
 	if (uniqueID > MediumMap::uniqueID){
 		return new TwoPhaseMedium("", "", "", 0);
@@ -27,6 +33,6 @@ TwoPhaseMedium *MediumMap::medium(const int &uniqueID){
 	return mediums[uniqueID];
 }
 
-map<int, TwoPhaseMedium*> MediumMap::mediums;
+map<int, BaseTwoPhaseMedium*> MediumMap::mediums;
 
 int MediumMap::uniqueID(0);

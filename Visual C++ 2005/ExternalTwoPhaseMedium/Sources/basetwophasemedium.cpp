@@ -15,149 +15,122 @@
 
 #include <math.h>
 
-BaseTwoPhaseMedium::BaseTwoPhaseMedium(const string &mediumName, 
-		                               const string &libraryName,
-		                               const string &substanceName){
-	_mediumName = mediumName;
-	_libraryName = libraryName;
-	_substanceName = substanceName;
+BaseTwoPhaseMedium::BaseTwoPhaseMedium(const string &mediumName, const string &libraryName, const string &substanceName, BaseSolver *const solver)
+	: _solver(solver){
+	_properties = new TwoPhaseMediumProperties();
+	_properties->mediumName = mediumName;
+	_properties->libraryName = libraryName;
+	_properties->substanceName = substanceName;
 }
 
 BaseTwoPhaseMedium::~BaseTwoPhaseMedium(){
+	delete _properties; _properties = 0;
 }
 
 double BaseTwoPhaseMedium::beta() const{
-	return _beta;
+	return _properties->beta;
 }
 
 double BaseTwoPhaseMedium::cp() const{
-	return _cp;
+	return _properties->cp;
 }
 
 double BaseTwoPhaseMedium::cv() const{
-	return _cv;
+	return _properties->cv;
 }
 
 double BaseTwoPhaseMedium::d() const{
-	return _d;
+	return _properties->d;
 }
 
 double BaseTwoPhaseMedium::dd_dp_h() const{
-	return _dd_dp_h;
+	return _properties->dd_dp_h;
 }
 
 double BaseTwoPhaseMedium::dd_dh_p() const{
-	return _dd_dh_p;
+	return _properties->dd_dh_p;
 }
 
 double BaseTwoPhaseMedium::h() const{
-	return _h;
+	return _properties->h;
 }
 
 double BaseTwoPhaseMedium::kappa() const{
-	return _kappa;
+	return _properties->kappa;
 }
 
 double BaseTwoPhaseMedium::p() const{
-	return _p;
+	return _properties->p;
 }
 
 double BaseTwoPhaseMedium::s() const{
-	return _s;
+	return _properties->s;
 }
 
 double BaseTwoPhaseMedium::T() const{
-	return _T;
+	return _properties->T;
 }
 
 double BaseTwoPhaseMedium::ps() const{
-	return _ps;
+	return _properties->ps;
 }
 
 double BaseTwoPhaseMedium::Ts() const{
-	return _Ts;
+	return _properties->Ts;
 }
 
 double BaseTwoPhaseMedium::dl() const{
-	return _dl;
+	return _properties->dl;
 }
 
 double BaseTwoPhaseMedium::dv() const{
-	return _dv;
+	return _properties->dv;
 }
 
 double BaseTwoPhaseMedium::hl() const{
-	return _hl;
+	return _properties->hl;
 }
 
 double BaseTwoPhaseMedium::hv() const{
-	return _hv;
+	return _properties->hv;
 }
 
 double BaseTwoPhaseMedium::sl() const{
-	return _sl;
+	return _properties->sl;
 }
 
 double BaseTwoPhaseMedium::sv() const{
-	return _sv;
+	return _properties->sv;
 }
 
 double BaseTwoPhaseMedium::dc() const{
-	return _dc;
+	return _properties->dc;
 }
 
 double BaseTwoPhaseMedium::pc() const{
-	return _pc;
+	return _properties->pc;
 }
 
 double BaseTwoPhaseMedium::Tc() const{
-	return _Tc;
+	return _properties->Tc;
 }
 
 double BaseTwoPhaseMedium::MM() const{
-	return _MM;
+	return _properties->MM;
 }
 
 double BaseTwoPhaseMedium::eta() const{
-	return _eta;
+	return _properties->eta;
 }
 
 double BaseTwoPhaseMedium::lambda() const{
-	return _lambda;
+	return _properties->lambda;
 }
 
 double BaseTwoPhaseMedium::Pr() const{
-	return _Pr;
+	return _properties->Pr;
 }
 
 double BaseTwoPhaseMedium::sigma() const{
-	return _sigma;
-}
-	
-void BaseTwoPhaseMedium::initializeLibrary() const{
-	return;  // do nothing by default
-}
-
-bool BaseTwoPhaseMedium::inputIsEqual_p(const double &p){
-	return (fabs(_ps - p) < EPSILON);
-}
-
-bool BaseTwoPhaseMedium::inputIsEqual_T(const double &T){
-	return (fabs(_Ts - T) < EPSILON);
-}
-
-bool BaseTwoPhaseMedium::inputsAreEqual_dT(const double &d, const double &T, const int &phase){
-	return (fabs(_d - d)/std::max(_d,1e-12) < EPSILON && fabs(_T - T)/std::max(_T,1e-12) < EPSILON && _phase == phase);
-}
-
-bool BaseTwoPhaseMedium::inputsAreEqual_ph(const double &p, const double &h, const int &phase){
-	return (fabs(_p - p)/std::max(_p,1e-12) < EPSILON && fabs(_h - h)/std::max(_h,1e-12) < EPSILON && _phase == phase);
-}
-
-bool BaseTwoPhaseMedium::inputsAreEqual_ps(const double &p, const double &s, const int &phase){
-	return (fabs(_p - p)/std::max(_p,1e-12) < EPSILON && fabs(_s - s)/std::max(_s,1e-12) < EPSILON && _phase == phase);
-}
-
-bool BaseTwoPhaseMedium::inputsAreEqual_pT(const double &p, const double &T){
-	return (fabs(_p - p)/std::max(_p,1e-12) < EPSILON && fabs(_T - T)/std::max(_T,1e-12) < EPSILON);
+	return _properties->sigma;
 }
