@@ -20,7 +20,7 @@ int MediumMap::addMedium(const std::string &mediumName, const std::string &libra
 	/* advanced medium extending from BaseTwoPhaseMedium */
 	/* ***************************************************/
 
-	mediums[uniqueID] = new TwoPhaseMedium(mediumName, libraryName, substanceName, baseSolver);
+	mediums[uniqueID] = new TwoPhaseMedium(mediumName, libraryName, substanceName, baseSolver, uniqueID);
 	// Return unique ID number
 	return uniqueID;
 }
@@ -28,7 +28,7 @@ int MediumMap::addMedium(const std::string &mediumName, const std::string &libra
 BaseTwoPhaseMedium *MediumMap::medium(const int &uniqueID){
 	// Check whether unique ID number is valid
 	if (uniqueID > MediumMap::uniqueID){
-		return new TwoPhaseMedium("", "", "", 0);
+		return 0;
 	}
 	return mediums[uniqueID];
 }

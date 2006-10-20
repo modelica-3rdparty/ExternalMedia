@@ -15,16 +15,13 @@
 
 #include <math.h>
 
-BaseTwoPhaseMedium::BaseTwoPhaseMedium(const string &mediumName, const string &libraryName, const string &substanceName, BaseSolver *const solver)
-	: _solver(solver){
-	_properties = new TwoPhaseMediumProperties();
-	_properties->mediumName = mediumName;
-	_properties->libraryName = libraryName;
-	_properties->substanceName = substanceName;
+BaseTwoPhaseMedium::BaseTwoPhaseMedium(const string &mediumName, const string &libraryName, 
+									   const string &substanceName, BaseSolver *const solver, 
+									   const int &uniqueID)
+	: _solver(solver), _uniqueID(uniqueID){
 }
 
 BaseTwoPhaseMedium::~BaseTwoPhaseMedium(){
-	delete _properties; _properties = 0;
 }
 
 double BaseTwoPhaseMedium::beta() const{
@@ -133,4 +130,36 @@ double BaseTwoPhaseMedium::Pr() const{
 
 double BaseTwoPhaseMedium::sigma() const{
 	return _properties->sigma;
+}
+
+void BaseTwoPhaseMedium::setSat_p(const double &p){
+	_solver->setSat_p(p, _properties);
+}
+
+void BaseTwoPhaseMedium::setSat_T(const double &T){
+	_solver->setSat_T(T, _properties);
+}
+
+void BaseTwoPhaseMedium::setState_dT(const double &d, const double &T, const int &phase){
+	_solver->setState_dT(d, T, phase, _properties);
+}
+
+void BaseTwoPhaseMedium::setState_ph(const double &p, const double &h, const int &phase){
+	_solver->setState_ph(p, h, phase, _properties);
+}
+
+void BaseTwoPhaseMedium::setState_ps(const double &p, const double &s, const int &phase){
+	_solver->setState_ps(p, s, phase, _properties);
+}
+
+void BaseTwoPhaseMedium::setState_pT(const double &p, const double &T){
+	_solver->setState_pT(p, T, _properties);
+}
+
+double BaseTwoPhaseMedium::saturationPressure(const double &T, const string &mediumName){
+	return 0.0;
+}
+
+double BaseTwoPhaseMedium::saturationTemperature(const double &p, const string &mediumName){
+	return 0.0;
 }

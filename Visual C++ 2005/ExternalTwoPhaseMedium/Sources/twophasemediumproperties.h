@@ -5,8 +5,8 @@
 
 struct TwoPhaseMediumProperties{
 	string mediumName;			// medium name
-	string libraryName;        // external library name
-	string substanceName;      // substance name
+	string libraryName;			// external library name
+	string substanceName;		// substance name
 
 	int phase;		// 2 for two-phase, 1 for one-phase, 0 if not known
 

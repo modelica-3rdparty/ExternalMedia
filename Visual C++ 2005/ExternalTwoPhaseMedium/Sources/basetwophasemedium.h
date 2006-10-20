@@ -19,56 +19,61 @@
 class BaseTwoPhaseMedium{
 public:
 	BaseTwoPhaseMedium(const string &mediumName, const string &libraryName, 
-		const string &substanceName, BaseSolver *const solver);
+					   const string &substanceName, BaseSolver *const solver,
+					   const int &uniqueID);
 	virtual ~BaseTwoPhaseMedium();
 
-	virtual double beta() const;
-	virtual double cp() const;
-	virtual double cv() const;
-	virtual double d() const;
-	virtual double dd_dp_h() const;
-	virtual double dd_dh_p() const;
-	virtual double h() const;
-	virtual double kappa() const;
-	virtual double p() const;
-	virtual double s() const;
-	virtual double T() const;
+	int uniqueID() const;
 
-	virtual double ps() const;
-	virtual double Ts() const;
+	double beta() const;
+	double cp() const;
+	double cv() const;
+	double d() const;
+	double dd_dp_h() const;
+	double dd_dh_p() const;
+	double h() const;
+	double kappa() const;
+	double p() const;
+	double s() const;
+	double T() const;
 
-	virtual double dl() const;
-	virtual double dv() const;
-	virtual double hl() const;
-	virtual double hv() const;
-	virtual double sl() const;
-	virtual double sv() const;
+	double ps() const;
+	double Ts() const;
 
-	virtual double dc() const;
-	virtual double pc() const;
-	virtual double Tc() const;
+	double dl() const;
+	double dv() const;
+	double hl() const;
+	double hv() const;
+	double sl() const;
+	double sv() const;
 
-	virtual double MM() const;
+	double dc() const;
+	double pc() const;
+	double Tc() const;
 
-	virtual double eta() const;
-	virtual double lambda() const;
-	virtual double Pr() const;
-	virtual double sigma() const;
+	double MM() const;
 
-	virtual void setSat_p(const double &p) = 0;
-	virtual void setSat_T(const double &T) = 0;
+	double eta() const;
+	double lambda() const;
+	double Pr() const;
+	double sigma() const;
 
-	virtual double saturationPressure(const double &T, const string &mediumName) = 0;
-	virtual double saturationTemperature(const double &p, const string &mediumName) = 0;
+	virtual void setSat_p(const double &p);
+	virtual void setSat_T(const double &T);
 
-	virtual void setState_dT(const double &d, const double &T, const int &phase) = 0;
-	virtual void setState_ph(const double &p, const double &h, const int &phase) = 0;
-	virtual void setState_ps(const double &p, const double &s, const int &phase) = 0;
-	virtual void setState_pT(const double &p, const double &T) = 0;
+	virtual double saturationPressure(const double &T, const string &mediumName);
+	virtual double saturationTemperature(const double &p, const string &mediumName);
+
+	virtual void setState_dT(const double &d, const double &T, const int &phase);
+	virtual void setState_ph(const double &p, const double &h, const int &phase);
+	virtual void setState_ps(const double &p, const double &s, const int &phase);
+	virtual void setState_pT(const double &p, const double &T);
 
 protected:	
 	// Pointer to medium property record
 	TwoPhaseMediumProperties *_properties;
+
+	int _uniqueID;		// unique ID number
 
 	// Pointer to solver
 	BaseSolver *_solver;

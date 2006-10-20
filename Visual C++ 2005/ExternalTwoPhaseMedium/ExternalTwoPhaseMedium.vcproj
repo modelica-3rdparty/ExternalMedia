@@ -171,52 +171,6 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Medium Map"
-			>
-			<File
-				RelativePath=".\Sources\mediummap.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Sources\mediummap.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Interface layer"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
-			>
-			<File
-				RelativePath=".\Sources\externaltwophasemedium_lib.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Sources\externaltwophasemedium_lib.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Dymola"
-			>
-			<File
-				RelativePath=".\Sources\externaltwophasemedium.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Two-phase medium"
-			>
-			<File
-				RelativePath=".\Sources\twophasemedium.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Sources\twophasemedium.h"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="Base Solver"
 			>
 			<File
@@ -245,6 +199,14 @@
 			</File>
 		</Filter>
 		<Filter
+			Name="Dymola"
+			>
+			<File
+				RelativePath=".\Sources\externaltwophasemedium.h"
+				>
+			</File>
+		</Filter>
+		<Filter
 			Name="FluidProp solver"
 			>
 			<File
@@ -257,6 +219,30 @@
 			</File>
 		</Filter>
 		<Filter
+			Name="Interface layer"
+			>
+			<File
+				RelativePath=".\Sources\externaltwophasemedium_lib.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Sources\externaltwophasemedium_lib.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Medium Map"
+			>
+			<File
+				RelativePath=".\Sources\mediummap.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Sources\mediummap.h"
+				>
+			</File>
+		</Filter>
+		<Filter
 			Name="Solver Map"
 			>
 			<File
@@ -265,6 +251,18 @@
 			</File>
 			<File
 				RelativePath=".\Sources\solvermap.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Two-phase medium"
+			>
+			<File
+				RelativePath=".\Sources\twophasemedium.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Sources\twophasemedium.h"
 				>
 			</File>
 		</Filter>
