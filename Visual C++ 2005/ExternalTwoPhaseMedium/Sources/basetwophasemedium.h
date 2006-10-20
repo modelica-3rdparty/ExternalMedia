@@ -73,8 +73,6 @@ protected:
 	// Pointer to medium property record
 	TwoPhaseMediumProperties *_properties;
 
-	int _uniqueID;		// unique ID number
-
 	// Pointer to solver
 	BaseSolver *_solver;
 };

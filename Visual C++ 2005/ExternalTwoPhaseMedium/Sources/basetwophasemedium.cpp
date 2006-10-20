@@ -18,7 +18,7 @@
 BaseTwoPhaseMedium::BaseTwoPhaseMedium(const string &mediumName, const string &libraryName, 
 									   const string &substanceName, BaseSolver *const solver, 
 									   const int &uniqueID)
-	: _solver(solver), _uniqueID(uniqueID){
+	: _solver(solver){
 }
 
 BaseTwoPhaseMedium::~BaseTwoPhaseMedium(){
@@ -162,4 +162,8 @@ double BaseTwoPhaseMedium::saturationPressure(const double &T, const string &med
 
 double BaseTwoPhaseMedium::saturationTemperature(const double &p, const string &mediumName){
 	return 0.0;
+}
+
+int BaseTwoPhaseMedium::uniqueID() const{
+	return _properties->uniqueID;
 }
