@@ -11,7 +11,8 @@
 #include "mediummap.h"
 #include "twophasemedium.h"
 
-int createMedium_(const char *mediumName, const char *libraryName, const char *substanceName, int oldUniqueID){
+int createMedium_(const char *mediumName, const char *libraryName, 
+				  const char *substanceName, int oldUniqueID){
 	// Allocate a new object and return a unique ID if oldUniqueID == 0
 	if (oldUniqueID == 0){
 		return MediumMap::addMedium(mediumName, libraryName, substanceName);

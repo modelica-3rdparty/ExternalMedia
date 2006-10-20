@@ -9,7 +9,7 @@ class SolverMap{
 public:
 	static map<string, BaseSolver*> solvers;
 
-	static BaseSolver *addSolver(const string &libraryName, const string &substanceName);
+	static BaseSolver *addSolver(const string &mediumName, const string &libraryName, const string &substanceName);
 };
 
 #endif /*SOLVERMAP_H_*/

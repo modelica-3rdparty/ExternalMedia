@@ -12,7 +12,8 @@
 #define DLLExport
 #endif /*_USRDLL*/
 
-extern "C" DLLExport int createMedium_(const char *mediumName, const char *libraryName, const char *substanceName, int oldUniqueID);
+extern "C" DLLExport int createMedium_(const char *mediumName, const char *libraryName, 
+									   const char *substanceName, int oldUniqueID);
 
 extern "C" DLLExport double molarMass_(int uniqueID);
 extern "C" DLLExport double criticalDensity_(int uniqueID);
@@ -26,8 +27,8 @@ extern "C" DLLExport void setSat_p_(double p, int uniqueID, double *sat_psat, do
 extern "C" DLLExport void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
 			                        const char *mediumName, const char *libraryName, const char *substanceName);
 
-extern "C" DLLExport double saturationPressure_(double T, const char *mediumName);
-extern "C" DLLExport double saturationTemperature_(double p, const char *mediumName);
+extern "C" DLLExport double saturationPressure_(double T, const char *mediumName, const char *libraryName, const char *substanceName);
+extern "C" DLLExport double saturationTemperature_(double p, const char *mediumName, const char *libraryName, const char *substanceName);
 
 extern "C" DLLExport double bubbleDensity_(int uniqueID);
 extern "C" DLLExport double dewDensity_(int uniqueID);

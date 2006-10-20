@@ -2,7 +2,7 @@
 
 #include "basesolver.h"
 
-BaseSolver *SolverMap::addSolver(const string &libraryName, const string &substanceName){
+BaseSolver *SolverMap::addSolver(const string &mediumName, const string &libraryName, const string &substanceName){
 	// Check whether solver already exists
 	string solverKey(libraryName + "." + substanceName);
 	if (solvers.find(solverKey) != solvers.end()){
@@ -15,7 +15,7 @@ BaseSolver *SolverMap::addSolver(const string &libraryName, const string &substa
 	/* specific solvers! This is not done yet!			 */
 	/* ***************************************************/
 
-	solvers[solverKey] = new BaseSolver(libraryName, substanceName);
+	solvers[solverKey] = new BaseSolver(mediumName, libraryName, substanceName);
 	return solvers[solverKey];
 };
 

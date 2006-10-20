@@ -5,7 +5,7 @@
 
 class FluidPropsSolver : public BaseSolver{
 public:
-	FluidPropsSolver(const string &libraryName, const string &substanceName);
+	FluidPropsSolver(const string &mediumName, const string &libraryName, const string &substanceName);
 	~FluidPropsSolver();
 };
 

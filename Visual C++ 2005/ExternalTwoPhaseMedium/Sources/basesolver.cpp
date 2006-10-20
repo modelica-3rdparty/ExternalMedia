@@ -2,8 +2,8 @@
 
 #include "twophasemediumproperties.h"
 
-BaseSolver::BaseSolver(const string &libraryName, const string &substanceName)
-	: libraryName(libraryName), substanceName(substanceName){
+BaseSolver::BaseSolver(const string &mediumName, const string &libraryName, const string &substanceName)
+	: mediumName(mediumName), libraryName(libraryName), substanceName(substanceName){
 }
 
 BaseSolver::~BaseSolver(){

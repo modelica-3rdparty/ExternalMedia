@@ -7,7 +7,7 @@ struct TwoPhaseMediumProperties;
 
 class BaseSolver{
 public:
-	BaseSolver(const string &libraryName, const string &substanceName);
+	BaseSolver(const string &mediumName, const string &libraryName, const string &substanceName);
 	virtual ~BaseSolver();
 
 	virtual void setMediumConstants(TwoPhaseMediumProperties *const properties);
@@ -21,6 +21,7 @@ public:
 	virtual void setState_pT(const double &p, const double &T, TwoPhaseMediumProperties *const properties);
 
 	// Solver properties
+	string mediumName;		// medium name
 	string libraryName;		// library name
 	string substanceName;	// substance name
 };

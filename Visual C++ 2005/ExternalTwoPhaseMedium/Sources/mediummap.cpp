@@ -12,7 +12,7 @@ int MediumMap::addMedium(const std::string &mediumName, const std::string &libra
 	// Increase unique ID number
 	++uniqueID;
 	// Check whether solver for specified medium already exists
-	BaseSolver *baseSolver = SolverMap::addSolver(libraryName, substanceName);
+	BaseSolver *baseSolver = SolverMap::addSolver(mediumName, libraryName, substanceName);
 	// Create new medium
 
 	/* ***************************************************/
