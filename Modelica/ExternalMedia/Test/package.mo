@@ -1,42 +1,29 @@
 package Test 
-  model TestExternalTwoPhaseMedium 
-    replaceable package Medium = ExternalMedia.Media.ExternalTwoPhaseMedium;
+  model TestMediumExplicit 
+    replaceable package Medium = Media.TestMedium;
     Medium.BaseProperties medium_1;
     Medium.BaseProperties medium_2;
-    Medium.ThermodynamicState state_1;
-    Medium.ThermodynamicState state_2;
-    Medium.Density d1;
-    Medium.Density d2;
-    Medium.Temperature T1;
-    Medium.Temperature T2;
-    Medium.SpecificEntropy s1;
-    Medium.SpecificEntropy s2;
-    Medium.SpecificEnthalpy h1;
-    Medium.SpecificEnthalpy h2;
   equation 
     medium_1.p = 1e5;
-    medium_1.T = 293+50*time;
+    medium_1.h = 1e5 + 2e5*time;
+    medium_2.p = 1e5;
+    medium_2.h = 1e5 + 1e5*time;
+  end TestMediumExplicit;
+ 
+  model TestMediumImplicit 
+    replaceable package Medium = Media.TestMedium;
+    Medium.BaseProperties medium_1;
+    Medium.BaseProperties medium_2;
+  equation 
+    medium_1.p = 1e5;
+    medium_1.T = 300 + 25*time;
+    medium_2.p = 1e5;
+    medium_2.T = 300 + 50*time;
+  end TestMediumImplicit;
   
-    medium_2.p = 1e5 + time * 1e5;
-    medium_2.h = 1e5;
   
-    state_1 = Medium.setState_pT(1e5,273+100*time);
-    state_2 = Medium.setState_ph(1e5, 1e5+time*1e5);
-  
-    d1 = Medium.density(state_1);
-    d2 = Medium.density(state_2);
-    T1 = Medium.temperature(state_1);
-    T2 = Medium.temperature(state_2);
-    s1 = Medium.specificEntropy(state_1);
-    s2 = Medium.specificEntropy(state_2);
-    h1 = Medium.specificEnthalpy(state_1);
-    h2 = Medium.specificEnthalpy(state_2);
-  
-  end TestExternalTwoPhaseMedium;
-
-model TestExternalTwoPhaseMediumDynamic 
+model TestMediumDynamic 
   import SI = Modelica.SIunits;
-  // package Medium = Modelica.Media.Water.StandardWater;
   replaceable package Medium = ExternalMedia.Media.ExternalTwoPhaseMedium;
   parameter SI.Volume V = 1 "Storage Volume";
   parameter Real p_atm = 101325 "Atmospheric pressure";
@@ -59,19 +46,19 @@ equation
   U = medium.u*M;
   der(M) = win - wout;
   der(U) = win*hin - wout*hout + Q;
-  
+    
   // Preferred states
   p = medium.p;
   h = medium.h;
-  
+    
   // Inlet pump equations
   medium.p - p_atm = 2e5 - (1e5/100^2)*win^2;
   hin = 1e5;
-  
+    
   // Outlet valve equation
   wout = Kv * sqrt(medium.d*(medium.p - p_atm));
   hout = medium.h;
-  
+    
   // Input variables
   Kv = if time<50 then Kv0 else Kv0*1.1;
   Q = if time < 1 then 0 else 1e7;
@@ -81,16 +68,22 @@ initial equation
   medium.h = 1e5;
   annotation (experiment(StopTime=80, Tolerance=1e-007),experimentSetupOutput(
         equdistant=false));
-end TestExternalTwoPhaseMediumDynamic;
-
-model TestFluidPropIF95 
-  extends TestExternalTwoPhaseMedium(redeclare package Medium = 
+end TestMediumDynamic;
+ 
+model FluidPropIF95Explicit 
+  extends TestMediumExplicit(redeclare package Medium = 
         Media.FluidPropMedia.WaterIF95);
-end TestFluidPropIF95;
-
-model TestFluidPropIF95Dynamic 
-  extends TestExternalTwoPhaseMediumDynamic(redeclare package Medium = 
+end FluidPropIF95Explicit;
+  
+model FluidPropIF95Implicit 
+  extends TestMediumImplicit(redeclare package Medium = 
         Media.FluidPropMedia.WaterIF95);
-  annotation (experiment(StopTime=100), experimentSetupOutput);
-end TestFluidPropIF95Dynamic;
+end FluidPropIF95Implicit;
+ 
+model FluidPropIF95Dynamic 
+  extends TestMediumDynamic(redeclare package Medium = 
+        Media.FluidPropMedia.WaterIF95);
+    annotation (experiment(StopTime=80, Tolerance=1e-007), 
+        experimentSetupOutput(equdistant=false));
+end FluidPropIF95Dynamic;
 end Test;

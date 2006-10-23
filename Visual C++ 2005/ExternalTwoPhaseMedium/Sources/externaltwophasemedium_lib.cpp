@@ -10,12 +10,14 @@
 
 #include "mediummap.h"
 #include "twophasemedium.h"
+#include <stdio.h>
 
 int createMedium_(const char *mediumName, const char *libraryName, 
 				  const char *substanceName, int oldUniqueID){
 	// Allocate a new object and return a unique ID if oldUniqueID == 0
 	if (oldUniqueID == 0){
-		return MediumMap::addMedium(mediumName, libraryName, substanceName);
+		int uniqueID = MediumMap::addMedium(mediumName, libraryName, substanceName);
+		return uniqueID;
 	} else {
 	// Do nothing if oldUniqueID > 0 (medium object already allocated)
 		return oldUniqueID;
@@ -114,6 +116,9 @@ void setState_dT_(double d, double T, int phase, int uniqueID, int *state_unique
 
 void setState_ph_(double p, double h, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 				  const char *mediumName, const char *libraryName, const char *substanceName){
+	if (uniqueID == 0)
+      printf("setState_ph called with p = %f, h = %f, uniqueID = %d\n", p, h, uniqueID);
+
 	MediumMap::medium(uniqueID)->setState_ph(p, h, phase);
 
 	if (state_uniqueID != NULL)
