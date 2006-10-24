@@ -1,6 +1,8 @@
 #include "fluidpropsolver.h"
 #include "twophasemediumproperties.h"
 
+#ifdef FLUIDPROP
+
 FluidPropSolver::FluidPropSolver(const string &mediumName, const string &libraryName, const string &substanceName)
 	: BaseSolver(mediumName, libraryName, substanceName){
 	char* ErrorMsg;
@@ -89,3 +91,5 @@ void FluidPropSolver::setState_dT(const double &d, const double &T, const int &p
 void FluidPropSolver::setState_ps(const double &p, const double &s, const int &phase, TwoPhaseMediumProperties *const properties){
    /// XXX to be completed
 }
+
+#endif // FLUIDPROP

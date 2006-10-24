@@ -171,7 +171,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Base Solver"
+			Name="Base solver"
 			>
 			<File
 				RelativePath=".\Sources\basesolver.cpp"
@@ -210,11 +210,11 @@
 			Name="FluidProp solver"
 			>
 			<File
-				RelativePath=".\Sources\fluidpropssolver.cpp"
+				RelativePath=".\Sources\fluidpropsolver.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\fluidpropssolver.h"
+				RelativePath=".\Sources\fluidpropsolver.h"
 				>
 			</File>
 		</Filter>
@@ -243,7 +243,7 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Solver Map"
+			Name="Solver map"
 			>
 			<File
 				RelativePath=".\Sources\solvermap.cpp"
@@ -263,6 +263,18 @@
 			</File>
 			<File
 				RelativePath=".\Sources\twophasemedium.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Test solver"
+			>
+			<File
+				RelativePath=".\Sources\testsolver.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Sources\testsolver.h"
 				>
 			</File>
 		</Filter>

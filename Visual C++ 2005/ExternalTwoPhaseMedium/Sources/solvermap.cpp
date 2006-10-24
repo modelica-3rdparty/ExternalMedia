@@ -14,8 +14,10 @@ BaseSolver *SolverMap::addSolver(const string &mediumName, const string &library
 	// CompilerTest solver
 	if (libraryName.find("TestMedium") == 0)
 	  solvers[solverKey] = new TestSolver(mediumName, libraryName, substanceName);
+#ifdef FLUIDPROP
 	else if (libraryName.find("FluidProp") == 0)
 	  solvers[solverKey] = new FluidPropSolver(mediumName, libraryName, substanceName);
+#endif // FLUIDPROPr
 	return solvers[solverKey];
 };
 

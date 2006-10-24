@@ -2,6 +2,9 @@
 #define FLUIDPROPSOLVER_H_
 
 #include "basesolver.h"
+
+#ifdef FLUIDPROP
+
 #include "FluidProp_IF.h"
 
 class FluidPropSolver : public BaseSolver{
@@ -22,5 +25,6 @@ protected:
     CFluidProp FluidProp;  // Instance of FluidProp wrapper object
 };
 
+#endif // FLUIDPROP
 
 #endif /*FLUIDPROPSOLVER_H_*/
