@@ -1,7 +1,7 @@
 //============================================================================================//
 //                                                                                            //
-//                               Microsoft Visual C++ 6.0 Client                              //
-//                               -------------------------------                              //
+//                               Microsoft Visual C++ 6.0 FluidProp Client                              //
+//                               -----------------------------------------                             //
 //                                                                                            //
 //  This is an example of a client application in Microsoft Visual C++ 6.0 for FluidProp,     //
 //  a COM server module for the calculation of fluid properties. FluidProp is a common        //

@@ -3,6 +3,7 @@
  *
  * Christoph Richter, Francesco Casella, Sep 2006
  ********************************************************************/
+
 #ifndef EXTERNALTWOPHASEMEDIUM_LIB_H_
 #define EXTERNALTWOPHASEMEDIUM_LIB_H_
 

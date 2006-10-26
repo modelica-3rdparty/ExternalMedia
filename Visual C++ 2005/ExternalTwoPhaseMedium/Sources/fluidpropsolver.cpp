@@ -1,3 +1,9 @@
+/* *****************************************************************
+ * Implementation of class FluidProp solver
+ *
+ * Francesco Casella, Christoph Richter, Oct 2006
+ ********************************************************************/
+
 #include "fluidpropsolver.h"
 #include "twophasemediumproperties.h"
 
@@ -11,8 +17,12 @@ FluidPropSolver::FluidPropSolver(const string &mediumName, const string &library
 
     Comp[0] = substanceName.c_str();
     FluidProp.SetFluid(libraryName.substr(libraryName.find(".")+1).c_str(), 1, Comp, Conc, ErrorMsg);
-	printf("FluidProp error message:\n");
-	printf("%s", ErrorMsg);
+	if (strncmp(ErrorMsg,"No errors",9) != 0)
+	{
+		char error[100];
+		sprintf(error, "FluidProp error: %s\n", ErrorMsg);
+		ERROR_MSG(error);
+	}
 	// FluidProp.SetUnit("SI", " ", " ", " ");
 
 	/*

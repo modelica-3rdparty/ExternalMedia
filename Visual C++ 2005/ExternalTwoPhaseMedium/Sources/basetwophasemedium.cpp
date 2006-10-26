@@ -1,5 +1,5 @@
 /* *****************************************************************
- * Implementation of the base class BaseTwoPhaseMedium.cpp
+ * Implementation of the base class BaseTwoPhaseMedium
  *
  * The BaseTwoPhaseMedium class defines all the variables and member
  * functions which are needed to use external Modelica medium models

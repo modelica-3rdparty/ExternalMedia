@@ -87,4 +87,10 @@ model FluidPropIF95Dynamic
     annotation (experiment(StopTime=80, Tolerance=1e-007),
         experimentSetupOutput(equdistant=false));
 end FluidPropIF95Dynamic;
+
+model WrongMedium "Test error reporting for unsupported external media" 
+  extends TestMediumExplicit(redeclare package Medium = 
+        Media.ExternalTwoPhaseMedium);
+end WrongMedium;
+
 end Test;

@@ -1,7 +1,8 @@
 /* *****************************************************************
- * Class that contains the medium map
+ * Interface of the MediumMap class
  *
- * This class is used to hold a static medium map. One could
+ * This class is used to hold a static medium map. Each entry
+ * corresponds to a different integer uniqueID. One could
  * implement save value return functions within this class.
  * It is currently not checked whether the requested access key
  * uniqueID exists in the map.

@@ -1,3 +1,13 @@
+/* *****************************************************************
+ * Interface of class CFluidProp
+ *
+ * This is a wrapper class around a FluidProp object
+ *
+ * Also requires FluidProp_IF.cpp and FluidProp_COM.h
+ *
+ * Teus van der Stelt, Sep 2006
+ ********************************************************************/
+
 #ifndef FluidProp_IF_h
 #define FluidProp_IF_h
 

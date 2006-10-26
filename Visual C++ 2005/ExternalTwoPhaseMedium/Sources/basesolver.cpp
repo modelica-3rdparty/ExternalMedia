@@ -1,3 +1,9 @@
+/* *****************************************************************
+ * Implementation of class BaseSolver
+ *
+ * Christoph Richter, Francesco Casella, Sep 2006
+ ********************************************************************/
+
 #include "basesolver.h"
 
 #include "twophasemediumproperties.h"

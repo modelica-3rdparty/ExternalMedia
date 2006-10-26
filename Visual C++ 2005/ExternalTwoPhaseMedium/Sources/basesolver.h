@@ -1,3 +1,12 @@
+/* *****************************************************************
+ * Interface of class BaseSolver
+ *
+ * This is the base class of all the external solver objects
+ * (e.g. TestSolver, FluidPropSolver)
+ *
+ * Christoph Richter, Francesco Casella, Sep 2006
+ ********************************************************************/
+
 #ifndef BASESOLVER_H_
 #define BASESOLVER_H_
 
