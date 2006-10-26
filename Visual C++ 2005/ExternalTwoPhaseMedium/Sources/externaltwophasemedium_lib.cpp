@@ -117,7 +117,7 @@ void setState_dT_(double d, double T, int phase, int uniqueID, int *state_unique
 void setState_ph_(double p, double h, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 				  const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-      printf("setState_ph called with p = %f, h = %f, uniqueID = %d\n", p, h, uniqueID);
+      printf("Error! setState_ph called with uniqueID = %d, (p = %f, h = %f)\n", uniqueID, p, h);
 
 	MediumMap::medium(uniqueID)->setState_ph(p, h, phase);
 

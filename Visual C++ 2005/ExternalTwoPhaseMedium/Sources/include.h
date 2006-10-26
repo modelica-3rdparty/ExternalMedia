@@ -10,6 +10,6 @@ using std::map;
 #include <string>
 using std::string;
 
-//#define FLUIDPROP
+#define FLUIDPROP
 
 #endif /*INCLUDE_H_*/

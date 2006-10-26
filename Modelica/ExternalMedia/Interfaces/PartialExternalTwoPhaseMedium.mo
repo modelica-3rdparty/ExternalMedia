@@ -51,9 +51,9 @@ partial package PartialExternalTwoPhaseMedium
       // density_ph(), which has an appropriate derivative annotation,
       // is used instead. The implementation of density_ph() uses 
       // setState with the same inputs, so there's no actual overhead
-      d = density_ph(p, h, state.phase, state.uniqueID);
-      s = specificEntropy_ph(p, h, state.phase, state.uniqueID);
-      T = temperature_ph(p, h, state.phase, state.uniqueID);
+      d = density_ph(p, h, phase, uniqueID);
+      s = specificEntropy_ph(p, h, phase, uniqueID);
+      T = temperature_ph(p, h, phase, uniqueID);
     elseif (basePropertiesInputChoice == IC.dT) then
       state = setState_dT(d, T, phase, uniqueID);
       sat = setSat_T(T, uniqueID);
