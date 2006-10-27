@@ -24,6 +24,30 @@ BaseTwoPhaseMedium::BaseTwoPhaseMedium(const string &mediumName, const string &l
 BaseTwoPhaseMedium::~BaseTwoPhaseMedium(){
 }
 
+int BaseTwoPhaseMedium::uniqueID() const{
+	return _properties->uniqueID;
+}
+
+string BaseTwoPhaseMedium::mediumName() const{
+	return _properties->mediumName;
+}
+
+string BaseTwoPhaseMedium::libraryName() const{
+	return _properties->libraryName;
+}
+
+string BaseTwoPhaseMedium::substanceName() const{
+	return _properties->substanceName;
+}
+
+TwoPhaseMediumProperties *BaseTwoPhaseMedium::properties() const{
+	return _properties;
+}
+
+BaseSolver *BaseTwoPhaseMedium::solver() const{
+	return _solver;
+}
+
 double BaseTwoPhaseMedium::beta() const{
 	return _properties->beta;
 }
@@ -164,6 +188,3 @@ double BaseTwoPhaseMedium::saturationTemperature(const double &p, const string &
 	return 0.0;
 }
 
-int BaseTwoPhaseMedium::uniqueID() const{
-	return _properties->uniqueID;
-}

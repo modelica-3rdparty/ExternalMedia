@@ -18,9 +18,10 @@ class BaseSolver;
 
 class SolverMap{
 public:
-	static map<string, BaseSolver*> solvers;
-
 	static BaseSolver *addSolver(const string &mediumName, const string &libraryName, const string &substanceName);
+
+protected:
+	static map<string, BaseSolver*> _solvers;
 };
 
 #endif /*SOLVERMAP_H_*/

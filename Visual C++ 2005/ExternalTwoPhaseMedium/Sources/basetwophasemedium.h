@@ -24,6 +24,11 @@ public:
 	virtual ~BaseTwoPhaseMedium();
 
 	int uniqueID() const;
+	string mediumName() const;
+	string libraryName() const;
+	string substanceName() const;
+	TwoPhaseMediumProperties *properties() const;
+	BaseSolver *solver() const;
 
 	double beta() const;
 	double cp() const;

@@ -21,13 +21,13 @@ class BaseTwoPhaseMedium;
 
 class MediumMap{
 public:
-	static map<int, BaseTwoPhaseMedium*> mediums;
-
 	static int addMedium(const string &mediumName, const string &libraryName, const string &substanceName);
 	static BaseTwoPhaseMedium *medium(const int &uniqueID);
 
 protected:
-	static int uniqueID;
+	static int _uniqueID;
+
+	static map<int, BaseTwoPhaseMedium*> _mediums;
 };
 
 #endif /*MEDIUMMAP_H_*/
