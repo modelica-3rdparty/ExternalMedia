@@ -80,32 +80,32 @@ partial package PartialExternalTwoPhaseMedium
   redeclare replaceable partial function setState_ph 
     input AbsolutePressure p "pressure";
     input SpecificEnthalpy h "specific enthalpy";
-    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID = 0 "unique ID number";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "unique ID number";
     output ThermodynamicState state;
   end setState_ph;
   
   redeclare replaceable partial function setState_pT 
     input AbsolutePressure p "pressure";
     input Temperature T "temperature";
-    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID = 0 "unique ID number";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "unique ID number";
     output ThermodynamicState state;
   end setState_pT;
   
   redeclare replaceable partial function setState_dT 
     input Density d "density";
     input Temperature T "temperature";
-    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID = 0 "unique ID number";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "unique ID number";
     output ThermodynamicState state;
   end setState_dT;
   
   redeclare replaceable partial function setState_ps 
     input AbsolutePressure p "pressure";
     input SpecificEntropy s "specific entropy";
-    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID = 0 "unique ID number";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "unique ID number";
     output ThermodynamicState state;
   end setState_ps;
   
@@ -137,28 +137,28 @@ partial package PartialExternalTwoPhaseMedium
   end getMolarMass;
   
   redeclare function extends setState_phX 
-    input Integer uniqueID = 0 "Unique ID";
+    input Integer uniqueID "Unique ID";
   algorithm 
     // The composition is an empty vector
     state :=setState_ph(p, h, phase, uniqueID);
   end setState_phX;
   
   redeclare function extends setState_pTX 
-    input Integer uniqueID = 0 "Unique ID";
+    input Integer uniqueID "Unique ID";
   algorithm 
     // The composition is an empty vector
     state :=setState_pT(p, T, phase, uniqueID);
   end setState_pTX;
   
   redeclare function extends setState_dTX 
-    input Integer uniqueID = 0 "Unique ID";
+    input Integer uniqueID "Unique ID";
   algorithm 
     // The composition is an empty vector
     state :=setState_dT(d, T, phase, uniqueID);
   end setState_dTX;
   
   redeclare function extends setState_psX 
-    input Integer uniqueID = 0 "Unique ID";
+    input Integer uniqueID "Unique ID";
   algorithm 
     // The composition is an empty vector
     state :=setState_ps(p, s, phase, uniqueID);
@@ -168,8 +168,8 @@ partial package PartialExternalTwoPhaseMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input SpecificEnthalpy h "Specific enthalpy";
-    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID = 0 "Unique ID";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "Unique ID";
     output Density d "Density";
     annotation(derivative(noDerivative = phase, noDerivative = uniqueID) = density_ph_der);
     annotation(Inline = false);
@@ -181,8 +181,8 @@ partial package PartialExternalTwoPhaseMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input SpecificEnthalpy h "Specific enthalpy";
-    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID = 0 "Unique ID";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "Unique ID";
     input Real p_der;
     input Real h_der;
     output Real d_der;
@@ -192,8 +192,8 @@ partial package PartialExternalTwoPhaseMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input Temperature T "Temperature";
-    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID = 0 "Unique ID";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "Unique ID";
     output Density d "Density";
     annotation(derivative = density_pT_der);
   algorithm 
@@ -204,8 +204,8 @@ partial package PartialExternalTwoPhaseMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input Temperature T "Temperature";
-    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID = 0 "Unique ID";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "Unique ID";
     input Real p_der;
     input Real T_der;
     output Real d_der;
@@ -215,8 +215,8 @@ partial package PartialExternalTwoPhaseMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input SpecificEntropy s "Specific entropy";
-    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID = 0 "Unique ID";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "Unique ID";
     output Density d "Density";
   algorithm 
     d := density(setState_ps(p, s, phase, uniqueID));
@@ -226,8 +226,8 @@ partial package PartialExternalTwoPhaseMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input SpecificEntropy s "Specific entropy";
-    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID = 0 "Unique ID";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "Unique ID";
     input Real p_der;
     input Real h_der;
     output Real d_der;
@@ -238,8 +238,8 @@ partial package PartialExternalTwoPhaseMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input SpecificEnthalpy h "Specific enthalpy";
-    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID = 0 "Unique ID";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "Unique ID";
     output Temperature T "Temperature";
   algorithm 
     T := temperature(setState_ph(p, h, phase, uniqueID));
@@ -250,8 +250,8 @@ partial package PartialExternalTwoPhaseMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input SpecificEntropy s "Specific entropy";
-    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID = 0 "Unique ID";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "Unique ID";
     output Temperature T "Temperature";
   algorithm 
     T := temperature(setState_ps(p, s, phase, uniqueID));
@@ -262,8 +262,8 @@ partial package PartialExternalTwoPhaseMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input SpecificEnthalpy h "Specific enthalpy";
-    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID = 0 "Unique ID";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "Unique ID";
     output SpecificEntropy s "specific entropy";
   algorithm 
     s := specificEntropy(setState_ph(p, h, phase, uniqueID));
@@ -273,8 +273,8 @@ partial package PartialExternalTwoPhaseMedium
     extends Modelica.Icons.Function;
     input Density d "Density";
     input Temperature T "Temperature";
-    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID = 0 "Unique ID";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "Unique ID";
     output AbsolutePressure p "Pressure";
   algorithm 
     p := pressure(setState_dT(d, T, phase, uniqueID));
@@ -285,8 +285,8 @@ partial package PartialExternalTwoPhaseMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input Temperature T "Temperature";
-    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID = 0 "Unique ID";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "Unique ID";
     output SpecificEnthalpy h "specific enthalpy";
   algorithm 
     h := specificEnthalpy(setState_pT(p, T, phase, uniqueID));
@@ -298,8 +298,8 @@ partial package PartialExternalTwoPhaseMedium
     extends Modelica.Icons.Function;
     input Pressure p "Pressure";
     input Temperature T "Temperature";
-    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID = 0 "Unique ID";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "Unique ID";
     output SpecificEntropy s "specific entropy";
   algorithm 
     s := specificEntropy(setState_pT(p, T, phase, uniqueID));
@@ -311,8 +311,8 @@ partial package PartialExternalTwoPhaseMedium
     extends Modelica.Icons.Function;
     input Density d "Density";
     input Temperature T "Temperature";
-    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID = 0 "Unique ID";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "Unique ID";
     output SpecificEnthalpy h "specific enthalpy";
   algorithm 
     h := specificEnthalpy(setState_dT(d, T, phase, uniqueID));
@@ -324,8 +324,8 @@ partial package PartialExternalTwoPhaseMedium
     extends Modelica.Icons.Function;
     input Density d "Density";
     input Temperature T "Temperature";
-    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID = 0 "Unique ID";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "Unique ID";
     output SpecificEntropy s "specific entropy";
   algorithm 
     s := specificEntropy(setState_dt(d, T, phase, uniqueID));
@@ -337,8 +337,8 @@ partial package PartialExternalTwoPhaseMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input SpecificEntropy s "Specific entropy";
-    input FixedPhase phase=0 "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID = 0 "Unique ID";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "Unique ID";
     output SpecificEnthalpy h "specific enthalpy";
   algorithm 
     h := specificEnthalpy(setState_ps(p,s, phase, uniqueID));
