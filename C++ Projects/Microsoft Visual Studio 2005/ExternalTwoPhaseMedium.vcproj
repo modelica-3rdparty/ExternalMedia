@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;EXTERNALTWOPHASEMEDIUM_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;EXTERNALTWOPHASEMEDIUM_EXPORTS;_CRT_SECURE_NO_DEPRECATE;BUILDING_MEDIA_DLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -115,7 +115,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;EXTERNALTWOPHASEMEDIUM_EXPORTS; _CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;EXTERNALTWOPHASEMEDIUM_EXPORTS; _CRT_SECURE_NO_DEPRECATE;BUILDING_MEDIA_DLL"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -174,11 +174,11 @@
 			Name="Base solver"
 			>
 			<File
-				RelativePath=".\Sources\basesolver.cpp"
+				RelativePath="..\Sources\basesolver.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\basesolver.h"
+				RelativePath="..\Sources\basesolver.h"
 				>
 			</File>
 		</Filter>
@@ -186,15 +186,15 @@
 			Name="Base two-phase medium"
 			>
 			<File
-				RelativePath=".\Sources\basetwophasemedium.cpp"
+				RelativePath="..\Sources\basetwophasemedium.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\basetwophasemedium.h"
+				RelativePath="..\Sources\basetwophasemedium.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\twophasemediumproperties.h"
+				RelativePath="..\Sources\twophasemediumproperties.h"
 				>
 			</File>
 		</Filter>
@@ -202,7 +202,7 @@
 			Name="Dymola"
 			>
 			<File
-				RelativePath=".\Sources\externaltwophasemedium.h"
+				RelativePath="..\Sources\externaltwophasemedium.h"
 				>
 			</File>
 		</Filter>
@@ -210,11 +210,11 @@
 			Name="FluidProp solver"
 			>
 			<File
-				RelativePath=".\Sources\fluidpropsolver.cpp"
+				RelativePath="..\Sources\fluidpropsolver.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\fluidpropsolver.h"
+				RelativePath="..\Sources\fluidpropsolver.h"
 				>
 			</File>
 		</Filter>
@@ -222,11 +222,11 @@
 			Name="Interface layer"
 			>
 			<File
-				RelativePath=".\Sources\externaltwophasemedium_lib.cpp"
+				RelativePath="..\Sources\externaltwophasemedium_lib.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\externaltwophasemedium_lib.h"
+				RelativePath="..\Sources\externaltwophasemedium_lib.h"
 				>
 			</File>
 		</Filter>
@@ -234,11 +234,11 @@
 			Name="Medium Map"
 			>
 			<File
-				RelativePath=".\Sources\mediummap.cpp"
+				RelativePath="..\Sources\mediummap.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\mediummap.h"
+				RelativePath="..\Sources\mediummap.h"
 				>
 			</File>
 		</Filter>
@@ -246,11 +246,11 @@
 			Name="Solver map"
 			>
 			<File
-				RelativePath=".\Sources\solvermap.cpp"
+				RelativePath="..\Sources\solvermap.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\solvermap.h"
+				RelativePath="..\Sources\solvermap.h"
 				>
 			</File>
 		</Filter>
@@ -258,11 +258,11 @@
 			Name="Two-phase medium"
 			>
 			<File
-				RelativePath=".\Sources\twophasemedium.cpp"
+				RelativePath="..\Sources\twophasemedium.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\twophasemedium.h"
+				RelativePath="..\Sources\twophasemedium.h"
 				>
 			</File>
 		</Filter>
@@ -270,16 +270,16 @@
 			Name="Test solver"
 			>
 			<File
-				RelativePath=".\Sources\testsolver.cpp"
+				RelativePath="..\Sources\testsolver.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Sources\testsolver.h"
+				RelativePath="..\Sources\testsolver.h"
 				>
 			</File>
 		</Filter>
 		<File
-			RelativePath=".\Sources\include.h"
+			RelativePath="..\Sources\include.h"
 			>
 		</File>
 		<File

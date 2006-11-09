@@ -8,7 +8,10 @@
 
 #include "basesolver.h"
 #include "testsolver.h"
+
+#ifdef FLUIDPROP
 #include "fluidpropsolver.h"
+#endif // FLUIDPROP
 
 BaseSolver *SolverMap::addSolver(const string &mediumName, const string &libraryName, const string &substanceName){
 	// Check whether solver already exists
