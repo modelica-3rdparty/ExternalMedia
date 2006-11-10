@@ -30,4 +30,4 @@ all:
 	g++ -o tester main.cpp -L. -lExternalTwoPhaseMedium
 			
 clean:
-	-del *.a *.def *.dll *.exp *.lib *.o 
+	-del *.a *.def *.exp *.o 
