@@ -1,7 +1,7 @@
 #include "FluidProp_IF.h"
 #include <stdio.h>
 
-#pragma comment(lib, "comsupp.lib")
+#pragma comment(lib, "comsuppw.lib")
 
 
 // {F30D147D-1F7C-4092-B481-ADE326A2ECD5}
@@ -79,23 +79,24 @@ void CFluidProp::SetFluid(const char* ModelName, int nComp, const char* Comp[], 
    FluidProp_COM->SetFluid( BSTR_Model, nComp, &sa_Comp, &sa_Conc, &BSTR_Error);
 
    // Error handling
-   ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
-
-   /*
-   // Set units to SI
-   if ( !strcmp(ErrorMsg, "No errors"))
-   {     
-      char* UnitSet     = "SI";
-      char* EmptyString = " ";
-	  BSTR BSTR_UnitSet     = _com_util::ConvertStringToBSTR(UnitSet);
-      BSTR BSTR_EmptyString = _com_util::ConvertStringToBSTR(EmptyString);
-      FluidProp_COM->SetUnits( BSTR_UnitSet, BSTR_EmptyString, BSTR_EmptyString, BSTR_EmptyString, &BSTR_Error);
-
-      // Error handling unit conversion
-      ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
-   }
-   */
+   ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);  
 }
+
+void CFluidProp::SetUnits(const char* UnitSet, const char* MassOrMole, const char* Properties, const char* Units, char*& ErrorMsg)
+{
+  // Set units to SI
+  if ( !strcmp(ErrorMsg, "No errors"))
+  {     
+	BSTR BSTR_UnitSet     = _com_util::ConvertStringToBSTR(UnitSet);
+	BSTR BSTR_MassOrMole  = _com_util::ConvertStringToBSTR(MassOrMole);
+    BSTR BSTR_Properties  = _com_util::ConvertStringToBSTR(Properties);
+    BSTR BSTR_Units       = _com_util::ConvertStringToBSTR(Units);
+    BSTR BSTR_Error;
+    FluidProp_COM->SetUnits( BSTR_UnitSet, BSTR_MassOrMole, BSTR_Properties, BSTR_Units, &BSTR_Error);
+    // Error handling unit conversion
+    ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   }
+ }
 
 void CFluidProp::AllProps( char* InputSpec, double Input1, double Input2, double& P, double& T,
                            double& v, double& d, double& h, double& s, double& u, double& q,

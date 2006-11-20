@@ -15,24 +15,27 @@ FluidPropSolver::FluidPropSolver(const string &mediumName, const string &library
 	const char *Comp[20];
     double Conc[20];
 
-    Comp[0] = substanceName.c_str();
+    // Build FluidProp object with the libraryName and substanceName info
+	Comp[0] = substanceName.c_str();
     FluidProp.SetFluid(libraryName.substr(libraryName.find(".")+1).c_str(), 1, Comp, Conc, ErrorMsg);
 	if (strncmp(ErrorMsg,"No errors",9) != 0)
 	{
+		// Build error message and pass it to the Modelica environment
 		char error[100];
 		sprintf(error, "FluidProp error: %s\n", ErrorMsg);
 		ERROR_MSG(error);
 	}
-	// FluidProp.SetUnit("SI", " ", " ", " ");
 
-	/*
-    if ( strcmp( ErrorMsg, "No errors"))
-    {
-        cout << endl;
-        cout << ErrorMsg << endl;
-		return;
-    }
-	*/
+	// Set SI units 
+	FluidProp.SetUnits("SI", " ", " ", " ", ErrorMsg);
+    if (strncmp(ErrorMsg,"No errors",9) != 0)
+	{
+		// Build error message and pass it to the Modelica environment
+		char error[100];
+		sprintf(error, "FluidProp error: %s\n", ErrorMsg);
+		ERROR_MSG(error);
+	}
+
 }
 
 FluidPropSolver::~FluidPropSolver(){
@@ -55,20 +58,20 @@ void FluidPropSolver::setState_ph(const double &p, const double &h, const int &p
 		   cv_, cp_, c_, alpha_, beta_, chi_, fi_, ksi_,
 		   psi_, gamma_, eta_, lambda_;
 	// Compute all FluidProp variables
-	FluidProp.AllProps( "Ph", p*1e-5, h*1e-3, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
+	FluidProp.AllProps( "Ph", p, h, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
                          alpha_, beta_, chi_, fi_, ksi_, psi_, gamma_, eta_, lambda_, ErrorMsg);
     // Fill in the TwoPhaseMedium variables (in SI units)
 	properties->beta = 0;				// isothermal expansion coefficient
-	properties->cp = cp_*1000.0;		// specific heat capacity cp
-	properties->cv = cv_*1000.0;		// specific heat capacity cv
-	properties->d = d_;				// density
-	properties->dd_dp_h = psi_;        // derivative of density by pressure at constant h
-	properties->dd_dh_p = ksi_;        // derivative of density by enthalpy at constant p
+	properties->cp = cp_; 		        // specific heat capacity cp
+	properties->cv = cv_;		        // specific heat capacity cv
+	properties->d = d_;				    // density
+	properties->dd_dp_h = psi_;         // derivative of density by pressure at constant h
+	properties->dd_dh_p = ksi_;         // derivative of density by enthalpy at constant p
 	properties->h = h;					// specific enthalpy
 	properties->kappa = 0;				// compressibility
 	properties->p = p;					// pressure
-	properties->s = s_*1000.0;		    // specific entropy
-	properties->T = T_ + 273.15;		// temperature
+	properties->s = s_;     		    // specific entropy
+	properties->T = T_;         		// temperature
 
 	properties->ps = 0;		// saturation pressure
 	properties->Ts = 0;		// saturation temperature

@@ -210,6 +210,18 @@
 			Name="FluidProp solver"
 			>
 			<File
+				RelativePath="..\Sources\FluidProp_COM.H"
+				>
+			</File>
+			<File
+				RelativePath="..\Sources\FluidProp_IF.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\Sources\FluidProp_IF.H"
+				>
+			</File>
+			<File
 				RelativePath="..\Sources\fluidpropsolver.cpp"
 				>
 			</File>

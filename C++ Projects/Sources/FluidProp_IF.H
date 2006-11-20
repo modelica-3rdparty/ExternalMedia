@@ -30,6 +30,9 @@ class CFluidProp
 	  // Set the fluid name and composition
       void SetFluid(const char* ModelName, int nComp, const char* Comp[], double* Conc, char*& ErrorMsg);
 
+	  // Set the units of measurement
+	  void SetUnits(const char* UnitSet, const char* MassOrMole, const char* Properties, const char* Units, char*& ErrorMsg);
+
 	  // Compute all the properties at once 
 	  void   AllProps( char* InputSpec, double Input1, double Input2, double& P, double& T,
                        double& v, double& d, double& h, double& s, double& u, double& q,
