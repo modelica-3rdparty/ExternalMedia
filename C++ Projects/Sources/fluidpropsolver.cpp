@@ -8,19 +8,20 @@
 #include "twophasemediumproperties.h"
 
 #ifdef FLUIDPROP
-
+#define _AFXDLL
 FluidPropSolver::FluidPropSolver(const string &mediumName,
 								 const string &libraryName,
 								 const string &substanceName)
 	: BaseSolver(mediumName, libraryName, substanceName){
-	char* ErrorMsg;
-	const char *Comp[20];
+	string ErrorMsg;
+	string Comp[20];
     double Conc[20];
 
     // Build FluidProp object with the libraryName and substanceName info
 	Comp[0] = substanceName.c_str();
-    FluidProp.SetFluid(libraryName.substr(libraryName.find(".")+1).c_str(), 1, Comp, Conc, ErrorMsg);
-	if (strncmp(ErrorMsg,"No errors",9) != 0)  // An error occurred
+    FluidProp.SetFluid(libraryName.substr(libraryName.find(".")+1), 1, Comp, Conc, &ErrorMsg);
+//	if (strncmp(ErrorMsg,"No errors",9) != 0)  // An error occurred
+	if (ErrorMsg != "No errors")  // An error occurred
 	{
 		// Build error message and pass it to the Modelica environment
 		char error[100];
@@ -29,8 +30,9 @@ FluidPropSolver::FluidPropSolver(const string &mediumName,
 	}
 
 	// Set SI units 
-	FluidProp.SetUnits("SI", " ", " ", " ", ErrorMsg);
-    if (strncmp(ErrorMsg,"No errors",9) != 0)  // An error occurred
+	FluidProp.SetUnits("SI", " ", " ", " ", &ErrorMsg);
+//  if (strncmp(ErrorMsg,"No errors",9) != 0)  // An error occurred
+	if (ErrorMsg != "No errors")  // An error occurred
 	{
 		// Build error message and pass it to the Modelica environment
 		char error[100];
@@ -55,13 +57,13 @@ void FluidPropSolver::setSat_T(const double &T, TwoPhaseMediumProperties *const 
 
 void FluidPropSolver::setState_ph(const double &p, const double &h, const int &phase, TwoPhaseMediumProperties *const properties){
 	// FluidProp variables (with their default units)
-    char* ErrorMsg;
+	string ErrorMsg;
     double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
 		   cv_, cp_, c_, alpha_, beta_, chi_, fi_, ksi_,
 		   psi_, gamma_, eta_, lambda_;
 	// Compute all FluidProp variables
 	FluidProp.AllProps( "Ph", p, h, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
-                         alpha_, beta_, chi_, fi_, ksi_, psi_, gamma_, eta_, lambda_, ErrorMsg);
+                         alpha_, beta_, chi_, fi_, ksi_, psi_, gamma_, eta_, lambda_, &ErrorMsg);
     // Fill in the TwoPhaseMedium variables (in SI units)
 	properties->beta = 0;				// isothermal expansion coefficient
 	properties->cp = cp_; 		        // specific heat capacity cp

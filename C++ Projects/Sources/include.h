@@ -18,7 +18,7 @@
 // #define OPEN_MODELICA
 
 // Selection of used external fluid property computation packages
-//#define FLUIDPROP
+#define FLUIDPROP
 
 /********************************************************************
  *                 End of user option selection

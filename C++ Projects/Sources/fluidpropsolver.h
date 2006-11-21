@@ -53,7 +53,7 @@ public:
 	virtual void setState_pT(const double &p, const double &T, TwoPhaseMediumProperties *const properties);
 
 protected:
-    CFluidProp FluidProp;  // Instance of FluidProp wrapper object
+    TFluidProp FluidProp;  // Instance of FluidProp wrapper object
 };
 
 #endif // FLUIDPROP
