@@ -22,7 +22,18 @@ partial package PartialExternalTwoPhaseMedium
     Integer uniqueID "unique ID number";
   end SaturationProperties;
   
-  redeclare model extends BaseProperties 
+  redeclare model extends BaseProperties(
+    p(stateSelect = if basePropertiesInputChoice == IC.ph or 
+                       basePropertiesInputChoice == IC.pT or 
+                       basePropertiesInputChoice == IC.ps then 
+                            StateSelect.prefer else StateSelect.default),
+    T(stateSelect = if basePropertiesInputChoice == IC.pT or 
+                       basePropertiesInputChoice == IC.dT then 
+                         StateSelect.prefer else StateSelect.default),
+    h(stateSelect = if basePropertiesInputChoice == IC.ph then 
+                         StateSelect.prefer else StateSelect.default),
+    d(stateSelect = if basePropertiesInputChoice == IC.dT then 
+                         StateSelect.prefer else StateSelect.default)) 
     import IC = ExternalMedia.Common.InputChoices;
     parameter IC.InputChoice basePropertiesInputChoice=inputChoice 
       "Choice of input variables for property computations";
@@ -30,7 +41,10 @@ partial package PartialExternalTwoPhaseMedium
       "2 for two-phase, 1 for one-phase, 0 if not known";
     
     Integer uniqueID(final start=0) "Unique ID of BaseProperty object";
-    SpecificEntropy s "Specific entropy";
+    SpecificEntropy s(
+      stateSelect = if basePropertiesInputChoice == IC.ps then 
+                       StateSelect.prefer else StateSelect.default) 
+      "Specific entropy";
     SaturationProperties sat "saturation property record";
   algorithm 
     when (initial()) then

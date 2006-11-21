@@ -36,8 +36,8 @@ model TestMediumDynamic "Test case using TestMedium and dynamic equations"
   SI.SpecificEnthalpy hout;
   SI.Power Q;
   Real Kv;
-  SI.Pressure p(stateSelect = StateSelect.prefer, start = 1e5);
-  SI.SpecificEnthalpy h(stateSelect = StateSelect.prefer, start = 2e5);
+//  SI.Pressure p(stateSelect = StateSelect.prefer, start = 1e5);
+//  SI.SpecificEnthalpy h(stateSelect = StateSelect.prefer, start = 2e5);
 equation 
   // Mass & energy balance equation
   M = medium.d*V;
@@ -46,8 +46,8 @@ equation
   der(U) = win*hin - wout*hout + Q;
   
   // Preferred states
-  p = medium.p;
-  h = medium.h;
+//  p = medium.p;
+//  h = medium.h;
   
   // Inlet pump equations
   medium.p - p_atm = 2e5 - (1e5/100^2)*win^2;
