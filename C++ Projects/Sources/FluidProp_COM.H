@@ -127,6 +127,38 @@ interface IFluidProp_COM : public IDispatch
                                             BSTR Units, BSTR* ErrorMsg) = 0;
      virtual void __stdcall SetRefState   ( double T_ref, double P_ref, BSTR* ErrorMsg) = 0;
 
+     virtual void __stdcall StanMix_Psat_k1( double k1, double T, double* Psat, BSTR* ErrorMsg) = 0;
+
+	 virtual void __stdcall zFlow_vu      ( double* P, double* T, double v, double* h, 
+                                            double* s, double u, double* alpha, double* beta, 
+                                            double* chi, double* fi, double* gamma,
+                                            BSTR* ErrorMsg) = 0;
+
+     virtual void __stdcall LiquidCmp_M   ( BSTR InputSpec, double Input1, double Input2,
+                                            SAFEARRAY** Output, BSTR* ErrorMsg) = 0;
+     virtual void __stdcall VaporCmp_M    ( BSTR InputSpec, double Input1, double Input2,
+                                            SAFEARRAY** Output, BSTR* ErrorMsg) = 0;
+	 virtual void __stdcall AllProps_M    ( BSTR InputSpec, double Input1, double Input2,
+                                            double* P, double* T, double* v, double* d,
+                                            double* h, double* s, double* u, double* q,
+                                            SAFEARRAY** x, SAFEARRAY** y, double* cv, double* cp,
+                                            double* c, double* alpha, double* beta, double* chi,
+                                            double* fi, double* ksi, double* psi, double* gamma,
+                                            double* eta, double* lambda, BSTR* ErrorMsg) = 0;
+
+     virtual void __stdcall AllPropsSat   ( BSTR InputSpec, double Input1, double Input2,
+                                            double* P, double* T, double* v, double* d,
+                                            double* h, double* s, double* u, double* q,
+                                            SAFEARRAY** x, SAFEARRAY** y, double* cv, double* cp,
+                                            double* c, double* alpha, double* beta, double* chi,
+                                            double* fi, double* ksi, double* psi, double* zeta,
+                                            double* gamma, double* eta, double* lambda, 
+											double* d_liq, double* d_vap, double* h_liq, 
+											double* h_vap, double* T_sat,  double* dd_liq_dP, 
+											double* dd_vap_dP, double* dh_liq_dP, double* dh_vap_dP, 
+											double* dT_sat_dP, double* dd_liq_dP_hL, 
+											double* dd_liq_dP_h2, double* dd_vap_dP_h2, 
+											double* dd_vap_dP_hV, BSTR* ErrorMsg) = 0;
 };
 
 

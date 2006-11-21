@@ -587,6 +587,51 @@ void TFluidProp::AllProps( string InputSpec, double Input1, double Input2, doubl
    *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
 }
 
+void TFluidProp::AllPropsSat( string InputSpec, double Input1, double Input2, double& P, double& T,
+                              double& v, double& d, double& h, double& s, double& u, double& q,
+                              double* x, double* y, double& cv, double& cp, double& c, double& alpha,
+                              double& beta, double& chi, double& fi, double& ksi, double& psi,
+                              double& zeta, double& gamma, double& eta, double& lambda, 
+							  double& d_liq, double& d_vap, double& h_liq, double& h_vap, 
+						      double& T_sat,  double& dd_liq_dP, double& dd_vap_dP, double& dh_liq_dP, 
+						      double& dh_vap_dP, double& dT_sat_dP, double& dd_liq_dP_hL, 
+						      double& dd_liq_dP_h2, double& dd_vap_dP_h2, double& dd_vap_dP_hV, 							  
+							  string* ErrorMsg)
+{
+   BSTR BSTR_InputSpec = _com_util::ConvertStringToBSTR( InputSpec.c_str());
+   BSTR BSTR_Error;
+
+   // Convert double arrays with liquid and vapor phase compositions x and y into OLE SafeArrays
+   SAFEARRAYBOUND sa_bounds_x[1], sa_bounds_y[1];
+   sa_bounds_x[0].lLbound = 0;
+   sa_bounds_y[0].lLbound = 0;
+   sa_bounds_x[0].cElements = 20;
+   sa_bounds_y[0].cElements = 20;
+   SAFEARRAY *sa_x, *sa_y;
+   sa_x = SafeArrayCreate( VT_R8, 1, sa_bounds_x);
+   sa_y = SafeArrayCreate( VT_R8, 1, sa_bounds_y);
+
+   FluidProp_COM->AllPropsSat( BSTR_InputSpec, Input1, Input2, &P, &T, &v, &d, &h, &s, &u, &q, &sa_x,
+                               &sa_y, &cv, &cp, &c, &alpha, &beta, &chi, &fi, &ksi, &psi, &zeta, 
+                               &gamma, &eta, &lambda, &d_liq, &d_vap, &h_liq, &h_vap, &T_sat, &dd_liq_dP, 
+							   &dd_vap_dP, &dh_liq_dP, &dh_vap_dP, &dT_sat_dP, &dd_liq_dP_hL, 
+						       &dd_liq_dP_h2, &dd_vap_dP_h2, &dd_vap_dP_hV, &BSTR_Error);
+
+   // Retrieve array with liquid and vapor phase compositions from SafeArrays
+   for( long i = 0; i < (signed)sa_bounds_x[0].cElements; i++)
+      SafeArrayGetElement( sa_x, &i, &x[i]);
+
+   for( long i = 0; i < (signed)sa_bounds_y[0].cElements; i++)
+      SafeArrayGetElement( sa_y, &i, &y[i]);
+
+   // Destroy the SafeArrays
+   SafeArrayDestroy( sa_x);
+   SafeArrayDestroy( sa_y);
+
+   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+}
+
+
 double TFluidProp::Solve( string FuncSpec, double FuncVal, string InputSpec, long Target,
                           double FixedVal, double MinVal, double MaxVal, string* ErrorMsg)
 {

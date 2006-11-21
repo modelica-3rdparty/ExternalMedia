@@ -83,6 +83,19 @@ class TFluidProp
                            double* x, double* y, double& cv, double& cp, double& c, double& alpha,
                            double& beta, double& chi, double& fi, double& ksi, double& psi,
                            double& gamma, double& eta, double& lambda, string* ErrorMsg);
+
+	  // Compute all the properties at once, including saturation properties
+	  void   AllPropsSat( string InputSpec, double Input1, double Input2, double& P, double& T,
+                          double& v, double& d, double& h, double& s, double& u, double& q,
+                          double* x, double* y, double& cv, double& cp, double& c, double& alpha,
+                          double& beta, double& chi, double& fi, double& ksi, double& psi,
+                          double& zeta, double& gamma, double& eta, double& lambda, 
+						  double& d_liq, double& d_vap, double& h_liq, double& h_vap, 
+						  double& T_sat,  double& dd_liq_dP, double& dd_vap_dP, double& dh_liq_dP, 
+						  double& dh_vap_dP, double& dT_sat_dP, double& dd_liq_dP_hL, 
+						  double& dd_liq_dP_h2, double& dd_vap_dP_h2, double& dd_vap_dP_hV, 
+						  string* ErrorMsg);
+
       double Solve       ( string FuncSpec, double FuncVal, string InputSpec, long Target,
                            double FixedVal, double MinVal, double MaxVal, string* ErrorMsg);
 
