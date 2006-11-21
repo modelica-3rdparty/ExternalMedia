@@ -9,7 +9,9 @@
 
 #ifdef FLUIDPROP
 
-FluidPropSolver::FluidPropSolver(const string &mediumName, const string &libraryName, const string &substanceName)
+FluidPropSolver::FluidPropSolver(const string &mediumName,
+								 const string &libraryName,
+								 const string &substanceName)
 	: BaseSolver(mediumName, libraryName, substanceName){
 	char* ErrorMsg;
 	const char *Comp[20];
@@ -18,7 +20,7 @@ FluidPropSolver::FluidPropSolver(const string &mediumName, const string &library
     // Build FluidProp object with the libraryName and substanceName info
 	Comp[0] = substanceName.c_str();
     FluidProp.SetFluid(libraryName.substr(libraryName.find(".")+1).c_str(), 1, Comp, Conc, ErrorMsg);
-	if (strncmp(ErrorMsg,"No errors",9) != 0)
+	if (strncmp(ErrorMsg,"No errors",9) != 0)  // An error occurred
 	{
 		// Build error message and pass it to the Modelica environment
 		char error[100];
@@ -28,14 +30,13 @@ FluidPropSolver::FluidPropSolver(const string &mediumName, const string &library
 
 	// Set SI units 
 	FluidProp.SetUnits("SI", " ", " ", " ", ErrorMsg);
-    if (strncmp(ErrorMsg,"No errors",9) != 0)
+    if (strncmp(ErrorMsg,"No errors",9) != 0)  // An error occurred
 	{
 		// Build error message and pass it to the Modelica environment
 		char error[100];
 		sprintf(error, "FluidProp error: %s\n", ErrorMsg);
 		ERROR_MSG(error);
 	}
-
 }
 
 FluidPropSolver::~FluidPropSolver(){
@@ -43,6 +44,7 @@ FluidPropSolver::~FluidPropSolver(){
 
 void FluidPropSolver::setMediumConstants(TwoPhaseMediumProperties *const properties){
   properties->MM = 0.018015268;  // XXX get this from FluidProp!
+  // properties->MM = FluidProp.Mmol();
 }
 
 void FluidPropSolver::setSat_p(const double &p, TwoPhaseMediumProperties *const properties){
