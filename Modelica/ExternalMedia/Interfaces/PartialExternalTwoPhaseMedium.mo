@@ -56,9 +56,7 @@ partial package PartialExternalTwoPhaseMedium
   equation 
     if (basePropertiesInputChoice == IC.ph) then
       // Compute the state record (including the unique ID)
-      // and the sat record
       state = setState_ph(p, h, phase, uniqueID);
-      sat = setSat_p(p, uniqueID);
       // Compute the remaining variables.
       // It is not possible to use the standard functions like
       // d = density(state), because differentiation for index
@@ -71,24 +69,25 @@ partial package PartialExternalTwoPhaseMedium
       T = temperature_ph(p, h, phase, uniqueID);
     elseif (basePropertiesInputChoice == IC.dT) then
       state = setState_dT(d, T, phase, uniqueID);
-      sat = setSat_T(T, uniqueID);
       h = specificEnthalpy(state);
       p = pressure(state);
       s = specificEntropy(state);
     elseif (basePropertiesInputChoice == IC.pT) then
       state = setState_pT(p, T, phase, uniqueID);
-      sat = setSat_p(p, uniqueID);
       d = density(state);
       h = specificEnthalpy(state);
       s = specificEntropy(state);
     elseif (basePropertiesInputChoice == IC.ps) then
       state = setState_ps(p, s, phase, uniqueID);
-      sat = setSat_p(p, uniqueID);
       d = density(state);
       h = specificEnthalpy(state);
       T = temperature(state);
     end if;
+    // Compute the internal energy
     u = h - p/d;
+    // Compute the saturation properties record
+    sat = setSat_p(p, uniqueID);
+    
   end BaseProperties;
   
   redeclare replaceable partial function setState_ph 
