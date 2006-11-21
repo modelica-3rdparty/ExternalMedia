@@ -17,6 +17,8 @@ TestSolver::~TestSolver(){
 
 void TestSolver::setMediumConstants(TwoPhaseMediumProperties *const properties){
   properties->MM = 0.18;
+  properties->pc = 220.6e5;
+  properties->Tc = 647.1;
 }
 
 void TestSolver::setSat_p(const double &p, TwoPhaseMediumProperties *const properties){

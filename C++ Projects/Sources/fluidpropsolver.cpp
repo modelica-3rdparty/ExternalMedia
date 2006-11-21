@@ -20,7 +20,6 @@ FluidPropSolver::FluidPropSolver(const string &mediumName,
     // Build FluidProp object with the libraryName and substanceName info
 	Comp[0] = substanceName.c_str();
     FluidProp.SetFluid(libraryName.substr(libraryName.find(".")+1), 1, Comp, Conc, &ErrorMsg);
-//	if (strncmp(ErrorMsg,"No errors",9) != 0)  // An error occurred
 	if (ErrorMsg != "No errors")  // An error occurred
 	{
 		// Build error message and pass it to the Modelica environment
@@ -31,7 +30,6 @@ FluidPropSolver::FluidPropSolver(const string &mediumName,
 
 	// Set SI units 
 	FluidProp.SetUnits("SI", " ", " ", " ", &ErrorMsg);
-//  if (strncmp(ErrorMsg,"No errors",9) != 0)  // An error occurred
 	if (ErrorMsg != "No errors")  // An error occurred
 	{
 		// Build error message and pass it to the Modelica environment
@@ -45,8 +43,34 @@ FluidPropSolver::~FluidPropSolver(){
 }
 
 void FluidPropSolver::setMediumConstants(TwoPhaseMediumProperties *const properties){
-  properties->MM = 0.018015268;  // XXX get this from FluidProp!
-  // properties->MM = FluidProp.Mmol();
+  string ErrorMsg;
+
+  properties->MM = FluidProp.Mmol(&ErrorMsg);
+  if (ErrorMsg != "No errors")  // An error occurred
+	{
+	// Build error message and pass it to the Modelica environment
+	char error[100];
+	sprintf(error, "FluidProp error: %s\n", ErrorMsg);
+	ERROR_MSG(error);
+	}
+
+  properties->Tc = FluidProp.Tcrit(&ErrorMsg);
+  if (ErrorMsg != "No errors")  // An error occurred
+	{
+	// Build error message and pass it to the Modelica environment
+	char error[100];
+	sprintf(error, "FluidProp error: %s\n", ErrorMsg);
+	ERROR_MSG(error);
+	}
+
+  properties->pc = FluidProp.Pcrit(&ErrorMsg);
+  if (ErrorMsg != "No errors")  // An error occurred
+	{
+	// Build error message and pass it to the Modelica environment
+	char error[100];
+	sprintf(error, "FluidProp error: %s\n", ErrorMsg);
+	ERROR_MSG(error);
+	}
 }
 
 void FluidPropSolver::setSat_p(const double &p, TwoPhaseMediumProperties *const properties){
