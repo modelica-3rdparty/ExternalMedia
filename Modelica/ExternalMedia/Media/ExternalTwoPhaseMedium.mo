@@ -133,6 +133,30 @@ package ExternalTwoPhaseMedium
   external "C" sv=  dewDensity_(sat.uniqueID);
   end dewEntropy;
   
+  redeclare replaceable function extends dBubbleDensity_dPressure 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" ddldp=  dBubbleDensity_dPressure_(sat.uniqueID);
+  end dBubbleDensity_dPressure;
+  
+  redeclare replaceable function extends dDewDensity_dPressure 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" ddvdp=  dDewDensity_dPressure_(sat.uniqueID);
+  end dDewDensity_dPressure;
+  
+  redeclare replaceable function extends dBubbleEnthalpy_dPressure 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" dhldp=  dBubbleEnthalpy_dPressure_(sat.uniqueID);
+  end dBubbleEnthalpy_dPressure;
+  
+  redeclare replaceable function extends dDewEnthalpy_dPressure 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" dhvdp=  dDewEnthalpy_dPressure_(sat.uniqueID);
+  end dDewEnthalpy_dPressure;
+  
   redeclare replaceable function extends density_ph_der 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
@@ -150,5 +174,17 @@ package ExternalTwoPhaseMedium
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
   external "C" MM=  molarMass_(uniqueID);
   end getMolarMass;
+  
+  redeclare replaceable function extends getCriticalTemperature 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" Tcrit=   criticalTemperature_(uniqueID);
+  end getCriticalTemperature;
+  
+   redeclare replaceable function extends getCriticalPressure 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" pcrit = criticalPressure_(uniqueID);
+   end getCriticalPressure;
   
 end ExternalTwoPhaseMedium;
