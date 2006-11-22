@@ -24,86 +24,6 @@ int createMedium_(const char *mediumName, const char *libraryName,
 	}
 }
 
-double molarMass_(int uniqueID){
-	return MediumMap::medium(uniqueID)->MM();
-}
-
-double criticalDensity_(int uniqueID){
-	return MediumMap::medium(uniqueID)->dc();
-}
-
-double criticalPressure_(int uniqueID){
-	return MediumMap::medium(uniqueID)->pc();
-}
-
-double criticalTemperature_(int uniqueID){
-	return MediumMap::medium(uniqueID)->Tc();
-}
-
-void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
-			   const char *mediumName, const char *libraryName, const char *substanceName){
-	MediumMap::medium(uniqueID)->setSat_p(p);
-
-	if (sat_uniqueID != NULL)
-		*sat_uniqueID = uniqueID;
-	if (sat_psat != NULL)
-		*sat_psat = p;
-	if (sat_Tsat != NULL)
-		*sat_Tsat = MediumMap::medium(uniqueID)->Ts();
-}
-
-void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
-			   const char *mediumName, const char *libraryName, const char *substanceName){
-	MediumMap::medium(uniqueID)->setSat_T(T);
-	
-	if (sat_uniqueID != NULL)
-		*sat_uniqueID = uniqueID;
-	if (sat_psat != NULL)
-		*sat_Tsat = T;
-	if (sat_Tsat != NULL)
-		*sat_psat = MediumMap::medium(uniqueID)->ps();
-}
-
-double saturationPressure_(double T, const char *mediumName,
-						   const char *libraryName, const char *substanceName){
-	/* ***************************************************/
-	/* To be implemented								 */
-	/* ***************************************************/
-	return 0.0;
-}
-
-double saturationTemperature_(double p, const char *mediumName,
-							  const char *libraryName, const char *substanceName){
-	/* ***************************************************/
-	/* To be implemented								 */
-	/* ***************************************************/
-	return 0.0;
-}
-
-double bubbleDensity_(int uniqueID){
-	return MediumMap::medium(uniqueID)->dl();
-}
-
-double dewDensity_(int uniqueID){
-	return MediumMap::medium(uniqueID)->dv();
-}
-
-double bubbleEnthalpy_(int uniqueID){
-	return MediumMap::medium(uniqueID)->hl();
-}
-
-double dewEnthalpy_(int uniqueID){
-	return MediumMap::medium(uniqueID)->hv();
-}
-
-double bubbleEntropy_(int uniqueID){
-	return MediumMap::medium(uniqueID)->sl();
-}
-
-double dewEntropy_(int uniqueID){
-	return MediumMap::medium(uniqueID)->sv();
-}
-
 void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 				  const char *mediumName, const char *libraryName, const char *substanceName){
 	MediumMap::medium(uniqueID)->setState_dT(d, T, phase);
@@ -147,6 +67,34 @@ void setState_pT_(double p, double T, int phase, int uniqueID, int *state_unique
 		*state_phase = phase;
 }
 
+void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
+			   const char *mediumName, const char *libraryName, const char *substanceName){
+	MediumMap::medium(uniqueID)->setSat_p(p);
+
+	if (sat_uniqueID != NULL)
+		*sat_uniqueID = uniqueID;
+	if (sat_psat != NULL)
+		*sat_psat = p;
+	if (sat_Tsat != NULL)
+		*sat_Tsat = MediumMap::medium(uniqueID)->Ts();
+}
+
+void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
+			   const char *mediumName, const char *libraryName, const char *substanceName){
+	MediumMap::medium(uniqueID)->setSat_T(T);
+	
+	if (sat_uniqueID != NULL)
+		*sat_uniqueID = uniqueID;
+	if (sat_psat != NULL)
+		*sat_Tsat = T;
+	// XXX This doesn' work currently
+	/*
+	if (sat_Tsat != NULL)
+		*sat_psat = MediumMap::medium(uniqueID)->ps();
+	*/
+
+}
+
 double density_(int uniqueID){
 	return MediumMap::medium(uniqueID)->d();
 }
@@ -170,6 +118,46 @@ double specificEntropy_(int uniqueID){
 
 double temperature_(int uniqueID){
 	return MediumMap::medium(uniqueID)->T();
+}
+
+double bubbleDensity_(int uniqueID){
+	return MediumMap::medium(uniqueID)->dl();
+}
+
+double dewDensity_(int uniqueID){
+	return MediumMap::medium(uniqueID)->dv();
+}
+
+double bubbleEnthalpy_(int uniqueID){
+	return MediumMap::medium(uniqueID)->hl();
+}
+
+double dewEnthalpy_(int uniqueID){
+	return MediumMap::medium(uniqueID)->hv();
+}
+
+double bubbleEntropy_(int uniqueID){
+	return MediumMap::medium(uniqueID)->sl();
+}
+
+double dewEntropy_(int uniqueID){
+	return MediumMap::medium(uniqueID)->sv();
+}
+
+double dBubbleDensity_dPressure_(int uniqueID){
+	return MediumMap::medium(uniqueID)->d_dl_dp();
+}
+
+double dDewDensity_dPressure_(int uniqueID){
+	return MediumMap::medium(uniqueID)->d_dv_dp();
+}
+
+double dBubbleEnthalpy_dPressure_(int uniqueID){
+	return MediumMap::medium(uniqueID)->d_hl_dp();
+}
+
+double dDewEnthalpy_dPressure_(int uniqueID){
+	return MediumMap::medium(uniqueID)->d_hv_dp();
 }
 
 double isobaricExpansionCoefficient_(int uniqueID){
@@ -203,3 +191,35 @@ double prandtlNumber_(int uniqueID){
 double surfaceTension_(double psat, double Tsat, int uniqueID){
 	return MediumMap::medium(uniqueID)->sigma();
 }
+
+double molarMass_(int uniqueID){
+	return MediumMap::medium(uniqueID)->MM();
+}
+
+double criticalDensity_(int uniqueID){
+	return MediumMap::medium(uniqueID)->dc();
+}
+
+double criticalPressure_(int uniqueID){
+	return MediumMap::medium(uniqueID)->pc();
+}
+
+double criticalTemperature_(int uniqueID){
+	return MediumMap::medium(uniqueID)->Tc();
+}
+double saturationPressure_(double T, const char *mediumName,
+						   const char *libraryName, const char *substanceName){
+	/* ***************************************************/
+	/* To be implemented								 */
+	/* ***************************************************/
+	return 0.0;
+}
+
+double saturationTemperature_(double p, const char *mediumName,
+							  const char *libraryName, const char *substanceName){
+	/* ***************************************************/
+	/* To be implemented								 */
+	/* ***************************************************/
+	return 0.0;
+}
+
