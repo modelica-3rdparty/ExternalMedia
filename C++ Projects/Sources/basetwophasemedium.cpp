@@ -92,10 +92,6 @@ double BaseTwoPhaseMedium::T() const{
 	return _properties->T;
 }
 
-double BaseTwoPhaseMedium::ps() const{
-	return _properties->ps;
-}
-
 double BaseTwoPhaseMedium::Ts() const{
 	return _properties->Ts;
 }
@@ -122,6 +118,26 @@ double BaseTwoPhaseMedium::sl() const{
 
 double BaseTwoPhaseMedium::sv() const{
 	return _properties->sv;
+}
+
+double BaseTwoPhaseMedium::d_Ts_dp() const{
+	return _properties->d_Ts_dp;
+}
+
+double BaseTwoPhaseMedium::d_dl_dp() const{
+	return _properties->d_dl_dp;
+}
+
+double BaseTwoPhaseMedium::d_dv_dp() const{
+	return _properties->d_dv_dp;
+}
+
+double BaseTwoPhaseMedium::d_hl_dp() const{
+	return _properties->d_hl_dp;
+}
+
+double BaseTwoPhaseMedium::d_hv_dp() const{
+	return _properties->d_hv_dp;
 }
 
 double BaseTwoPhaseMedium::dc() const{

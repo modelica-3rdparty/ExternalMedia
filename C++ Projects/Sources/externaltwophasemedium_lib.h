@@ -41,6 +41,10 @@ extern "C" {
 	MEDIA_DLL double dewEnthalpy_(int uniqueID);
 	MEDIA_DLL double bubbleEntropy_(int uniqueID);
 	MEDIA_DLL double dewEntropy_(int uniqueID);
+    MEDIA_DLL double dBubbleDensity_dPressure_(int uniqueID);
+	MEDIA_DLL double dDewDensity_dPressure_(int uniqueID);
+	MEDIA_DLL double dBubbleEnthalpy_dPressure_(int uniqueID);
+	MEDIA_DLL double dDewEnthalpy_dPressure_(int uniqueID);
 
 	MEDIA_DLL void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 								const char *mediumName, const char *libraryName, const char *substanceName);

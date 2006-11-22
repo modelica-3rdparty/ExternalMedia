@@ -56,6 +56,12 @@ public:
 	double pc() const;
 	double Tc() const;
 
+    double d_Ts_dp() const;
+	double d_dl_dp() const;
+	double d_dv_dp() const;
+	double d_hl_dp() const;
+	double d_hv_dp() const;
+
 	double MM() const;
 
 	double eta() const;

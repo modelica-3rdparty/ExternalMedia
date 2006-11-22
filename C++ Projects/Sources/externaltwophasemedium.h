@@ -33,6 +33,10 @@ extern double bubbleEnthalpy_(int uniqueID);
 extern double dewEnthalpy_(int uniqueID);
 extern double bubbleEntropy_(int uniqueID);
 extern double dewEntropy_(int uniqueID);
+extern double dBubbleDensity_dPressure_(int uniqueID);
+extern double dDewDensity_dPressure_(int uniqueID);
+extern double dBubbleEnthalpy_dPressure_(int uniqueID);
+extern double dDewEnthalpy_dPressure_(int uniqueID);
 
 extern void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 			   	         const char *mediumName, const char *libraryName, const char *substanceName);

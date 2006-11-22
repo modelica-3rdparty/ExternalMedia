@@ -84,10 +84,17 @@ void FluidPropSolver::setState_ph(const double &p, const double &h, const int &p
 	string ErrorMsg;
     double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
 		   cv_, cp_, c_, alpha_, beta_, chi_, fi_, ksi_,
-		   psi_, gamma_, eta_, lambda_;
+		   psi_, zeta_ , gamma_, eta_, lambda_,
+		   d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
+		   dh_vap_dP_, dT_sat_dP_, dd_liq_dP_hL_, dd_liq_dP_h2_, dd_vap_dP_h2_, dd_vap_dP_hV_;
+
 	// Compute all FluidProp variables
-	FluidProp.AllProps( "Ph", p, h, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
-                         alpha_, beta_, chi_, fi_, ksi_, psi_, gamma_, eta_, lambda_, &ErrorMsg);
+	FluidProp.AllPropsSat("Ph", p , h, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
+		                  alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, gamma_, eta_, lambda_,  
+	    			      d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
+						  dh_vap_dP_, dT_sat_dP_, dd_liq_dP_hL_, dd_liq_dP_h2_, dd_vap_dP_h2_, dd_vap_dP_hV_, 
+						  &ErrorMsg);
+
     // Fill in the TwoPhaseMedium variables (in SI units)
 	properties->beta = 0;				// isothermal expansion coefficient
 	properties->cp = cp_; 		        // specific heat capacity cp
@@ -101,15 +108,25 @@ void FluidPropSolver::setState_ph(const double &p, const double &h, const int &p
 	properties->s = s_;     		    // specific entropy
 	properties->T = T_;         		// temperature
 
-	properties->ps = 0;		// saturation pressure
-	properties->Ts = 0;		// saturation temperature
+	properties->Ts = T_sat_;		// saturation temperature
 
-	properties->dl = 0;		// bubble density
-	properties->dv = 0;		// dew density
-	properties->hl = 0;		// bubble specific enthalpy
-	properties->hv = 0;		// dew specific enthalpy
+	properties->dl = d_liq_;	// bubble density
+	properties->dv = d_vap_;	// dew density
+	properties->hl = h_liq_;	// bubble specific enthalpy
+	properties->hv = h_vap_;	// dew specific enthalpy
 	properties->sl = 0;		// bubble specific entropy
 	properties->sv = 0;		// dew specific entropy
+
+	properties->d_Ts_dp = dT_sat_dP_;  // derivative of Ts by pressure
+	properties->d_dl_dp = dd_liq_dP_; // derivative of dls by pressure
+	properties->d_dv_dp = dd_vap_dP_; // derivative of dvs by pressure
+    properties->d_hl_dp = dh_liq_dP_; // derivative of hls by pressure
+	properties->d_hv_dp = dh_vap_dP_; // derivative of hvs by pressure
+
+	properties->d_dl_dP_hL = dd_liq_dP_hL_; // derivative of density by pressure at constant enthalpy, bubble point, liquid side
+	properties->d_dl_dP_h2 = dd_liq_dP_h2_; // derivative of density by pressure at constant enthalpy, bubble point, 2-phase side
+	properties->d_dv_dP_hV = dd_vap_dP_hV_; // derivative of density by pressure at constant enthalpy, bubble point, vapour side
+	properties->d_dv_dP_h2 = dd_vap_dP_h2_; // derivative of density by pressure at constant enthalpy, bubble point, 2-phase side
 
 	properties->dc = 0;		// critical density
 	properties->pc = 0;		// critical pressure

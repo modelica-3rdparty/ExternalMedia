@@ -33,7 +33,8 @@ struct TwoPhaseMediumProperties{
 	double s;		// specific entropy
 	double T;		// temperature
 
-	double ps;		// saturation pressure
+    // Saturation properties at the fluid pressure
+
 	double Ts;		// saturation temperature
 
 	double dl;		// bubble density
@@ -53,6 +54,17 @@ struct TwoPhaseMediumProperties{
 	double lambda;	// thermal conductivity
 	double Pr;		// Prandtl number
 	double sigma;	// surface tension
+
+    double d_Ts_dp;  // derivative of Ts by pressure
+	double d_dl_dp; // derivative of dls by pressure
+	double d_dv_dp; // derivative of dvs by pressure
+    double d_hl_dp; // derivative of hls by pressure
+	double d_hv_dp; // derivative of hvs by pressure
+
+	double d_dl_dP_hL; // derivative of density by pressure at constant enthalpy, bubble point, liquid side
+	double d_dl_dP_h2; // derivative of density by pressure at constant enthalpy, bubble point, 2-phase side
+	double d_dv_dP_hV; // derivative of density by pressure at constant enthalpy, bubble point, vapour side
+	double d_dv_dP_h2; // derivative of density by pressure at constant enthalpy, bubble point, 2-phase side
 };
 
 #endif /*TWOPHASEMEDIUMPROPERTIES_H_*/
