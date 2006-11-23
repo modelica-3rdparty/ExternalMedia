@@ -1,13 +1,37 @@
 package Test 
   model TestMediumExplicit "Test case using TestMedium and explicit equations" 
     replaceable package Medium = Media.TestMedium;
-    Medium.BaseProperties medium_1;
-    Medium.BaseProperties medium_2;
+    Medium.BaseProperties medium;
+    Medium.BaseProperties medium2;
+    Real Ts;
+    Real dl;
+    Real dv;
+    Real hl;
+    Real hv;
+    // Real d_Ts_dp;
+    Real d_dl_dp;
+    Real d_dv_dp;
+    Real d_hl_dp;
+    Real d_hv_dp;
+  
   equation 
-    medium_1.p = 1e5;
-    medium_1.h = 1e5 + 2e5*time;
-    medium_2.p = 1e5;
-    medium_2.h = 1e5 + 1e5*time;
+  //  medium.p = 1e5;
+  //  medium.h = 1e5 + 2e5*time;
+    medium.p = 1e5+1e5*time;
+    medium.h = 1e5;
+    Ts = medium.sat.Tsat;
+    dl = Medium.bubbleDensity(medium.sat);
+    dv = Medium.dewDensity(medium.sat);
+    hl = Medium.bubbleEnthalpy(medium.sat);
+    hv = Medium.dewEnthalpy(medium.sat);
+    // d_Ts_dp = Medium.saturationTemperature_derp(medium.sat);
+    d_dl_dp = Medium.dBubbleDensity_dPressure(medium.sat);
+    d_dv_dp = Medium.dDewDensity_dPressure(medium.sat);
+    d_hl_dp = Medium.dBubbleEnthalpy_dPressure(medium.sat);
+    d_hv_dp = Medium.dDewEnthalpy_dPressure(medium.sat);
+    medium2.p = 1e5;
+    medium2.h = 1e5 + 1e5*time;
+  
   end TestMediumExplicit;
 
 
@@ -102,5 +126,40 @@ model WrongMedium
   extends TestMediumExplicit(redeclare package Medium = 
         Media.ExternalTwoPhaseMedium);
 end WrongMedium;
+
+model TestWaterExplicit "Test case using TestMedium and explicit equations" 
+  replaceable package Medium = Modelica.Media.Water.StandardWater;
+  Medium.BaseProperties medium;
+  Medium.BaseProperties medium2;
+  Real Ts;
+  Real dl;
+  Real dv;
+  Real hl;
+  Real hv;
+  Real d_Ts_dp;
+  Real d_dl_dp;
+  Real d_dv_dp;
+  Real d_hl_dp;
+  Real d_hv_dp;
+  
+equation 
+//  medium.p = 1e5;
+//  medium.h = 1e5 + 2e5*time;
+  medium.p = 10e5+1e5*time;
+  medium.h = 1e5;
+  Ts = medium.sat.Tsat;
+  dl = Medium.bubbleDensity(medium.sat);
+  dv = Medium.dewDensity(medium.sat);
+  hl = Medium.bubbleEnthalpy(medium.sat);
+  hv = Medium.dewEnthalpy(medium.sat);
+  d_Ts_dp = Medium.saturationTemperature_derp(medium.p);
+  d_dl_dp = Medium.dBubbleDensity_dPressure(medium.sat);
+  d_dv_dp = Medium.dDewDensity_dPressure(medium.sat);
+  d_hl_dp = Medium.dBubbleEnthalpy_dPressure(medium.sat);
+  d_hv_dp = Medium.dDewEnthalpy_dPressure(medium.sat);
+  medium2.p = 1e5;
+  medium2.h = 1e5 + 1e5*time;
+  
+end TestWaterExplicit;
 
 end Test;
