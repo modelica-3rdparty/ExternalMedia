@@ -91,6 +91,8 @@ partial package PartialExternalTwoPhaseMedium
   end BaseProperties;
   
   redeclare replaceable partial function setState_ph 
+    "Return thermodynamic state record from p and h" 
+    extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
     input SpecificEnthalpy h "specific enthalpy";
     input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
@@ -99,6 +101,8 @@ partial package PartialExternalTwoPhaseMedium
   end setState_ph;
   
   redeclare replaceable partial function setState_pT 
+    "Return thermodynamic state record from p and T" 
+    extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
     input Temperature T "temperature";
     input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
@@ -107,6 +111,8 @@ partial package PartialExternalTwoPhaseMedium
   end setState_pT;
   
   redeclare replaceable partial function setState_dT 
+    "Return thermodynamic state record from d and T" 
+    extends Modelica.Icons.Function;
     input Density d "density";
     input Temperature T "temperature";
     input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
@@ -115,6 +121,8 @@ partial package PartialExternalTwoPhaseMedium
   end setState_dT;
   
   redeclare replaceable partial function setState_ps 
+    "Return thermodynamic state record from p and s" 
+    extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
     input SpecificEntropy s "specific entropy";
     input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
@@ -123,16 +131,48 @@ partial package PartialExternalTwoPhaseMedium
   end setState_ps;
   
   redeclare replaceable partial function setSat_p 
+    "Return saturation properties from p" 
+    extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
     input Integer uniqueID "unique ID number";
     output SaturationProperties sat "saturation property record";
   end setSat_p;
   
   redeclare replaceable partial function setSat_T 
+    "Return saturation properties from p" 
+    extends Modelica.Icons.Function;
     input Temperature T "temperature";
     input Integer uniqueID "unique ID number";
     output SaturationProperties sat "saturation property record";
   end setSat_T;
+  
+  redeclare replaceable partial function saturationPressure 
+    "Returns saturation pressure" 
+    extends Modelica.Icons.Function;
+    input Temperature T "temperature";
+    output AbsolutePressure p "saturation pressure";
+  end saturationPressure;
+  
+  redeclare replaceable partial function saturationTemperature 
+    "Returns saturation temperature" 
+    extends Modelica.Icons.Function;
+    input AbsolutePressure p "pressure";
+    output Temperature T "saturation temperature";
+  end saturationTemperature;
+  
+  redeclare replaceable partial function saturationPressure_sat 
+    "Returns saturation temperature" 
+    extends Modelica.Icons.Function;
+    input SaturationProperties sat "saturation property record";
+    output AbsolutePressure p "saturation pressure";
+  end saturationPressure_sat;
+  
+  redeclare replaceable partial function saturationTemperature_sat 
+    "Returns saturation pressure" 
+    extends Modelica.Icons.Function;
+    input SaturationProperties sat "saturation property record";
+    output Temperature T "saturation temperature";
+  end saturationTemperature_sat;
   
   redeclare function extends molarMass 
   algorithm 

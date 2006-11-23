@@ -30,6 +30,9 @@ extern "C" {
 	MEDIA_DLL double saturationPressure_(double T, const char *mediumName, const char *libraryName, const char *substanceName);
 	MEDIA_DLL double saturationTemperature_(double p, const char *mediumName, const char *libraryName, const char *substanceName);
 
+	MEDIA_DLL double saturationPressure_sat_(int uniqueID);
+	MEDIA_DLL double saturationTemperature_sat_(int uniqueID);
+
 	MEDIA_DLL double bubbleDensity_(int uniqueID);
 	MEDIA_DLL double dewDensity_(int uniqueID);
 	MEDIA_DLL double bubbleEnthalpy_(int uniqueID);

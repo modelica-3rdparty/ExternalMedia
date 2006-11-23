@@ -42,7 +42,6 @@ public:
 	double s() const;
 	double T() const;
 
-	double ps() const;
 	double Ts() const;
 
 	double dl() const;

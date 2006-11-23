@@ -43,6 +43,32 @@ package ExternalTwoPhaseMedium
                             mediumName, libraryName, substanceName);
   end setSat_T;
   
+  redeclare replaceable function extends saturationPressure 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" p=  saturationPressure_(T, mediumName, libraryName, substanceName);
+  end saturationPressure;
+  
+  redeclare replaceable function extends saturationTemperature 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" T = 
+                  saturationTemperature_(p, mediumName, libraryName, substanceName);
+  end saturationTemperature;
+  
+  redeclare replaceable function extends saturationPressure_sat 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" p=  saturationPressure_sat_(sat.uniqueID);
+  end saturationPressure_sat;
+  
+  redeclare replaceable function extends saturationTemperature_sat 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" T = 
+                  saturationTemperature_sat_(sat.uniqueID);
+  end saturationTemperature_sat;
+  
   redeclare replaceable function extends density 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");

@@ -22,12 +22,19 @@ class BaseTwoPhaseMedium;
 class MediumMap{
 public:
 	static int addMedium(const string &mediumName, const string &libraryName, const string &substanceName);
+	static void addSolverMedium(const string &solverKey, BaseSolver *const baseSolver);
+	
 	static BaseTwoPhaseMedium *medium(const int &uniqueID);
+	static BaseTwoPhaseMedium *solverMedium(const string &solverKey);
 
 protected:
 	static int _uniqueID;
 
+	// Map for mediums with unique ID as identifier
 	static map<int, BaseTwoPhaseMedium*> _mediums;
+	// Map for mediums that are used for function calls without specified unique ID
+	// such as saturationTemperature_() and saturationPressure_()
+	static map<string, BaseTwoPhaseMedium*> _solverMediums;
 };
 
 #endif /*MEDIUMMAP_H_*/

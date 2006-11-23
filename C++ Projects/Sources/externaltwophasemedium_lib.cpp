@@ -119,6 +119,14 @@ double temperature_(int uniqueID){
 	return MediumMap::medium(uniqueID)->T();
 }
 
+double saturationPressure_sat_(int uniqueID){
+	return MediumMap::medium(uniqueID)->p();
+}
+
+double saturationTemperature_sat_(int uniqueID){
+	return MediumMap::medium(uniqueID)->Ts();
+}
+
 double bubbleDensity_(int uniqueID){
 	return MediumMap::medium(uniqueID)->dl();
 }
@@ -197,17 +205,23 @@ double molarMass_(int uniqueID){
 
 double saturationPressure_(double T, const char *mediumName,
 						   const char *libraryName, const char *substanceName){
-	/* ***************************************************/
-	/* To be implemented								 */
-	/* ***************************************************/
-	return 0.0;
+	// Ensure, that solver and default medium object already exist
+	SolverMap::addSolver(mediumName, libraryName, substanceName);
+	// Get medium object
+	BaseTwoPhaseMedium *medium = MediumMap::solverMedium(SolverMap::solverKey(libraryName, substanceName));
+	// Compute saturation pressure
+	medium->setSat_T(T);
+	return medium->p();
 }
 
 double saturationTemperature_(double p, const char *mediumName,
 							  const char *libraryName, const char *substanceName){
-	/* ***************************************************/
-	/* To be implemented								 */
-	/* ***************************************************/
-	return 0.0;
+	// Ensure, that solver and default medium object already exist
+	SolverMap::addSolver(mediumName, libraryName, substanceName);
+	// Get medium object
+	BaseTwoPhaseMedium *medium = MediumMap::solverMedium(SolverMap::solverKey(libraryName, substanceName));
+	// Compute saturation pressure
+	medium->setSat_p(p);
+	return medium->Ts();
 }
 

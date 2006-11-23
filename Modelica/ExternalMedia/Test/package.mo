@@ -34,7 +34,6 @@ package Test
   
   end TestMediumExplicit;
 
-
   model TestMediumImplicit "Test case using TestMedium and implicit equations" 
     replaceable package Medium = Media.TestMedium;
     Medium.BaseProperties medium_1;
@@ -42,7 +41,6 @@ package Test
     medium_1.p = 1e5;
     medium_1.T = 300 + 25*time;
   end TestMediumImplicit;
-
 
 model TestMediumDynamic "Test case using TestMedium and dynamic equations" 
   import SI = Modelica.SIunits;
@@ -98,13 +96,11 @@ initial equation
         equdistant=false));
 end TestMediumDynamic;
 
-
 model FluidPropIF95Explicit 
   "Test case using FluidProp - RefProp IF95 medium and explicit equations" 
   extends TestMediumExplicit(redeclare package Medium = 
         Media.FluidPropMedia.WaterIF95);
 end FluidPropIF95Explicit;
-
 
 model FluidPropIF95Implicit 
   "Test case using FluidProp - RefProp IF95 medium and implicit equations" 
@@ -112,14 +108,12 @@ model FluidPropIF95Implicit
         Media.FluidPropMedia.WaterIF95);
 end FluidPropIF95Implicit;
 
-
 model FluidPropIF95Dynamic "Test case using TestMedium and dynamic equations" 
   extends TestMediumDynamic(redeclare package Medium = 
         Media.FluidPropMedia.WaterIF95);
     annotation (experiment(StopTime=80, Tolerance=1e-007),
         experimentSetupOutput(equdistant=false));
 end FluidPropIF95Dynamic;
-
 
 model WrongMedium 
   "Test the error reporting messages for unsupported external media" 
@@ -161,5 +155,4 @@ equation
   medium2.h = 1e5 + 1e5*time;
   
 end TestWaterExplicit;
-
 end Test;

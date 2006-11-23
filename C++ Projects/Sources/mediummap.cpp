@@ -27,14 +27,26 @@ int MediumMap::addMedium(const std::string &mediumName, const std::string &libra
 	return _uniqueID;
 }
 
+void MediumMap::addSolverMedium(const string &solverKey, BaseSolver *const baseSolver){
+	// Create new medium
+	_solverMediums[solverKey] = new TwoPhaseMedium(baseSolver->mediumName, baseSolver->libraryName, baseSolver->substanceName, baseSolver, -1);
+}
+
 BaseTwoPhaseMedium *MediumMap::medium(const int &uniqueID){
 	// Check whether unique ID number is valid
-	if (uniqueID > _uniqueID){
+	// This check is not complete and will basically make a couple of functions
+	// fail is a 0 is returned. There is some room for improvements.
+	if (uniqueID > _uniqueID)
 		return 0;
-	}
 	return _mediums[uniqueID];
 }
 
+BaseTwoPhaseMedium *MediumMap::solverMedium(const string &solverKey){
+	return _solverMediums[solverKey];
+}
+
 map<int, BaseTwoPhaseMedium*> MediumMap::_mediums;
+
+map<string, BaseTwoPhaseMedium*> MediumMap::_solverMediums;
 
 int MediumMap::_uniqueID(0);

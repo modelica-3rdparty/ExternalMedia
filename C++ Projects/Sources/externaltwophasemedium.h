@@ -24,6 +24,9 @@ extern void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat
 extern double saturationPressure_(double T, const char *mediumName, const char *libraryName, const char *substanceName);
 extern double saturationTemperature_(double p, const char *mediumName, const char *libraryName, const char *substanceName);
 
+double saturationPressure_sat_(int uniqueID);
+double saturationTemperature_sat_(int uniqueID);
+
 extern double bubbleDensity_(int uniqueID);
 extern double dewDensity_(int uniqueID);
 extern double bubbleEnthalpy_(int uniqueID);

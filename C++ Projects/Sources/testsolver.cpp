@@ -22,9 +22,13 @@ void TestSolver::setMediumConstants(TwoPhaseMediumProperties *const properties){
 }
 
 void TestSolver::setSat_p(const double &p, TwoPhaseMediumProperties *const properties){
+	properties->p = p;
+	properties->Ts = 372.0 + (393.0-373.0)*(p - 1.0e5)/1.0e5;
 }
 
 void TestSolver::setSat_T(const double &T, TwoPhaseMediumProperties *const properties){
+	properties->T = T;
+	properties->p = 1e5;
 }
 
 void TestSolver::setState_ph(const double &p, const double &h, const int &phase, TwoPhaseMediumProperties *const properties){

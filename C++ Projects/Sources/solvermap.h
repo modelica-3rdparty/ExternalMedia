@@ -20,6 +20,8 @@ class SolverMap{
 public:
 	static BaseSolver *addSolver(const string &mediumName, const string &libraryName, const string &substanceName);
 
+	static string solverKey(const string &libraryName, const string &substanceName);
+
 protected:
 	static map<string, BaseSolver*> _solvers;
 };
