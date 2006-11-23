@@ -15,9 +15,6 @@ extern int createMedium_(const char *mediumName, const char *libraryName,
 							 const char *substanceName, int oldUniqueID);
 
 extern double molarMass_(int uniqueID);
-extern double criticalDensity_(int uniqueID);
-extern double criticalPressure_(int uniqueID);
-extern double criticalTemperature_(int uniqueID);
 
 extern void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
 			   const char *mediumName, const char *libraryName, const char *substanceName);

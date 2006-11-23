@@ -21,11 +21,6 @@ extern "C" {
 								const char *substanceName, int oldUniqueID);
 
 	MEDIA_DLL double molarMass_(int uniqueID);
-	MEDIA_DLL double criticalDensity_(int uniqueID);
-	MEDIA_DLL double criticalPressure_(int uniqueID);
-	MEDIA_DLL double criticalTemperature_(int uniqueID);
-	MEDIA_DLL double criticalEnthalpy_(int uniqueID);
-	MEDIA_DLL double criticalEntropy_(int uniqueID);
 
 	MEDIA_DLL void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
 							 const char *mediumName, const char *libraryName, const char *substanceName);

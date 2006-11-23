@@ -16,8 +16,7 @@ int createMedium_(const char *mediumName, const char *libraryName,
 				  const char *substanceName, int oldUniqueID){
 	// Allocate a new object and return a unique ID if oldUniqueID == 0
 	if (oldUniqueID == 0){
-		int uniqueID = MediumMap::addMedium(mediumName, libraryName, substanceName);
-		return uniqueID;
+		return MediumMap::addMedium(mediumName, libraryName, substanceName);
 	} else {
 	// Do nothing if oldUniqueID > 0 (medium object already allocated)
 		return oldUniqueID;
@@ -196,17 +195,6 @@ double molarMass_(int uniqueID){
 	return MediumMap::medium(uniqueID)->MM();
 }
 
-double criticalDensity_(int uniqueID){
-	return MediumMap::medium(uniqueID)->dc();
-}
-
-double criticalPressure_(int uniqueID){
-	return MediumMap::medium(uniqueID)->pc();
-}
-
-double criticalTemperature_(int uniqueID){
-	return MediumMap::medium(uniqueID)->Tc();
-}
 double saturationPressure_(double T, const char *mediumName,
 						   const char *libraryName, const char *substanceName){
 	/* ***************************************************/
