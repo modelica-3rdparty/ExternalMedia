@@ -21,10 +21,16 @@ class BaseTwoPhaseMedium;
 
 class MediumMap{
 public:
+	// Add a new medium object to the medium map, and return its uniqueID
 	static int addMedium(const string &mediumName, const string &libraryName, const string &substanceName);
+	
+	// Add the default medium object for the solver to the default solver media map
 	static void addSolverMedium(const string &solverKey, BaseSolver *const baseSolver);
 	
+	// Return a pointer to the medium object identified by the uniqueID
 	static BaseTwoPhaseMedium *medium(const int &uniqueID);
+
+	// Return a pointer to the default medium for the solver
 	static BaseTwoPhaseMedium *solverMedium(const string &solverKey);
 
 protected:
