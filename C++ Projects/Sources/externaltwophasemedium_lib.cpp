@@ -10,7 +10,6 @@
 
 #include "mediummap.h"
 #include "twophasemedium.h"
-#include <stdio.h>
 
 int createMedium_(const char *mediumName, const char *libraryName, 
 				  const char *substanceName, int oldUniqueID){

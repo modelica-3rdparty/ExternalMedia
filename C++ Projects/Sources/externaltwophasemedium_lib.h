@@ -7,7 +7,11 @@
 #ifndef EXTERNALTWOPHASEMEDIUM_LIB_H_
 #define EXTERNALTWOPHASEMEDIUM_LIB_H_
 
-#ifdef BUILDING_MEDIA_DLL
+#include "include.h"
+
+#if defined BUILD_DLL
+#define MEDIA_DLL __declspec(dllexport)
+#elif defined BUILD_LIB
 #define MEDIA_DLL __declspec(dllexport)
 #else
 #define MEDIA_DLL __declspec(dllimport)

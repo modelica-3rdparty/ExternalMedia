@@ -18,7 +18,11 @@
 // #define OPEN_MODELICA
 
 // Selection of used external fluid property computation packages
-#define FLUIDPROP
+// #define FLUIDPROP
+
+// Select the build type of this project
+#define BUILD_DLL
+// #define BUILD_LIB
 
 /********************************************************************
  *                 End of user option selection
@@ -32,10 +36,7 @@ using std::map;
 #include <string>
 using std::string;
 
-// Error message generation macro
-// Prints an error messages on the console and waits for the user to press 
-// the return key - in the future, better logging and graceful simulation
-// termination will be supported
-#define ERROR_MSG(error_string) {printf("\a%s\nPress return to end the simulation\n", error_string); getchar(); exit(1);}
+// Include error handling
+#include "errorhandling.h"
 
 #endif /*INCLUDE_H_*/

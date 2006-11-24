@@ -34,7 +34,7 @@ BaseSolver *SolverMap::addSolver(const string &mediumName, const string &library
 	  // Generate error message
 	  char error[100];
 	  sprintf(error, "Error: libraryName = %s is not supported by any external solver\n", libraryName.c_str());
-	  ERROR_MSG(error);
+	  errorMessage(error);
 	}
 	
 	// Create new medium object for function calls without specified unique ID
