@@ -9,71 +9,63 @@
 
 #include "include.h"
 
-#if defined BUILD_DLL
-#define MEDIA_DLL __declspec(dllexport)
-#elif defined BUILD_LIB
-#define MEDIA_DLL __declspec(dllexport)
-#else
-#define MEDIA_DLL __declspec(dllimport)
-#endif // BUILDING_MEDIA_DLL
-
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
-	MEDIA_DLL int createMedium_(const char *mediumName, const char *libraryName, 
+	EXPORT int createMedium_(const char *mediumName, const char *libraryName, 
 								const char *substanceName, int oldUniqueID);
 
-	MEDIA_DLL double molarMass_(int uniqueID);
+	EXPORT double molarMass_(int uniqueID);
 
-	MEDIA_DLL void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
+	EXPORT void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
 							 const char *mediumName, const char *libraryName, const char *substanceName);
-	MEDIA_DLL void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
+	EXPORT void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
 							 const char *mediumName, const char *libraryName, const char *substanceName);
 
-	MEDIA_DLL double saturationPressure_(double T, const char *mediumName, const char *libraryName, const char *substanceName);
-	MEDIA_DLL double saturationTemperature_(double p, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double saturationPressure_(double T, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double saturationTemperature_(double p, const char *mediumName, const char *libraryName, const char *substanceName);
 
-	MEDIA_DLL double saturationPressure_sat_(int uniqueID);
-	MEDIA_DLL double saturationTemperature_sat_(int uniqueID);
+	EXPORT double saturationPressure_sat_(int uniqueID);
+	EXPORT double saturationTemperature_sat_(int uniqueID);
 
-	MEDIA_DLL double bubbleDensity_(int uniqueID);
-	MEDIA_DLL double dewDensity_(int uniqueID);
-	MEDIA_DLL double bubbleEnthalpy_(int uniqueID);
-	MEDIA_DLL double dewEnthalpy_(int uniqueID);
-	MEDIA_DLL double bubbleEntropy_(int uniqueID);
-	MEDIA_DLL double dewEntropy_(int uniqueID);
-    MEDIA_DLL double dBubbleDensity_dPressure_(int uniqueID);
-	MEDIA_DLL double dDewDensity_dPressure_(int uniqueID);
-	MEDIA_DLL double dBubbleEnthalpy_dPressure_(int uniqueID);
-	MEDIA_DLL double dDewEnthalpy_dPressure_(int uniqueID);
+	EXPORT double bubbleDensity_(int uniqueID);
+	EXPORT double dewDensity_(int uniqueID);
+	EXPORT double bubbleEnthalpy_(int uniqueID);
+	EXPORT double dewEnthalpy_(int uniqueID);
+	EXPORT double bubbleEntropy_(int uniqueID);
+	EXPORT double dewEntropy_(int uniqueID);
+    EXPORT double dBubbleDensity_dPressure_(int uniqueID);
+	EXPORT double dDewDensity_dPressure_(int uniqueID);
+	EXPORT double dBubbleEnthalpy_dPressure_(int uniqueID);
+	EXPORT double dDewEnthalpy_dPressure_(int uniqueID);
 
-	MEDIA_DLL void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
+	EXPORT void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 								const char *mediumName, const char *libraryName, const char *substanceName);
-	MEDIA_DLL void setState_ph_(double p, double h, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
+	EXPORT void setState_ph_(double p, double h, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 								const char *mediumName, const char *libraryName, const char *substanceName);
-	MEDIA_DLL void setState_ps_(double p, double s, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
+	EXPORT void setState_ps_(double p, double s, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 								const char *mediumName, const char *libraryName, const char *substanceName);
-	MEDIA_DLL void setState_pT_(double p, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
+	EXPORT void setState_pT_(double p, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 								const char *mediumName, const char *libraryName, const char *substanceName);
 
-	MEDIA_DLL double density_(int uniqueID);
-	MEDIA_DLL double density_ph_der_(int uniqueID, double p_der, double h_der);
+	EXPORT double density_(int uniqueID);
+	EXPORT double density_ph_der_(int uniqueID, double p_der, double h_der);
 
-	MEDIA_DLL double pressure_(int uniqueID);
-	MEDIA_DLL double specificEnthalpy_(int uniqueID);
-	MEDIA_DLL double specificEntropy_(int uniqueID);
-	MEDIA_DLL double temperature_(int uniqueID);
+	EXPORT double pressure_(int uniqueID);
+	EXPORT double specificEnthalpy_(int uniqueID);
+	EXPORT double specificEntropy_(int uniqueID);
+	EXPORT double temperature_(int uniqueID);
 
-	MEDIA_DLL double isobaricExpansionCoefficient_(int uniqueID);
-	MEDIA_DLL double isothermalCompressibility_(int uniqueID);
-	MEDIA_DLL double specificHeatCapacityCp_(int uniqueID);
-	MEDIA_DLL double specificHeatCapacityCv_(int uniqueID);
+	EXPORT double isobaricExpansionCoefficient_(int uniqueID);
+	EXPORT double isothermalCompressibility_(int uniqueID);
+	EXPORT double specificHeatCapacityCp_(int uniqueID);
+	EXPORT double specificHeatCapacityCv_(int uniqueID);
 
-	MEDIA_DLL double dynamicViscosity_(int uniqueID);
-	MEDIA_DLL double thermalConductivity_(int uniqueID);
-	MEDIA_DLL double prandtlNumber_(int uniqueID);
-	MEDIA_DLL double surfaceTension_(double psat, double Tsat, int uniqueID);
+	EXPORT double dynamicViscosity_(int uniqueID);
+	EXPORT double thermalConductivity_(int uniqueID);
+	EXPORT double prandtlNumber_(int uniqueID);
+	EXPORT double surfaceTension_(double psat, double Tsat, int uniqueID);
 
 #ifdef __cplusplus
 }

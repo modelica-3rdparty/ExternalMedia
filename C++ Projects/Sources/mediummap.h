@@ -26,6 +26,8 @@ public:
 	
 	// Add the default medium object for the solver to the default solver media map
 	static void addSolverMedium(const string &solverKey, BaseSolver *const baseSolver);
+	static void changeMedium(const string &mediumName, const string &libraryName, const string &substanceName, const int &uniqueID);
+	static void deleteMedium(const int &uniqueID);
 	
 	// Return a pointer to the medium object identified by the uniqueID
 	static BaseTwoPhaseMedium *medium(const int &uniqueID);

@@ -32,6 +32,18 @@ void MediumMap::addSolverMedium(const string &solverKey, BaseSolver *const baseS
 	_solverMediums[solverKey] = new TwoPhaseMedium(baseSolver->mediumName, baseSolver->libraryName, baseSolver->substanceName, baseSolver, -1);
 }
 
+void MediumMap::changeMedium(const string &mediumName, const string &libraryName, const string &substanceName, const int &uniqueID){
+	// This function changes an existing medium
+	BaseSolver *baseSolver = SolverMap::addSolver(mediumName, libraryName, substanceName);
+
+	_mediums[uniqueID]->setSolver(baseSolver);
+}
+
+void MediumMap::deleteMedium(const int &uniqueID){
+	// Delete medium from map
+	delete _mediums[uniqueID]; _mediums[uniqueID] = 0;
+}
+
 BaseTwoPhaseMedium *MediumMap::medium(const int &uniqueID){
 	// Check whether unique ID number is valid
 	// This check is not complete and will basically make a couple of functions

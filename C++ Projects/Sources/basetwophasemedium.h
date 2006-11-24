@@ -29,6 +29,7 @@ public:
 	string substanceName() const;
 	TwoPhaseMediumProperties *properties() const;
 	BaseSolver *solver() const;
+	virtual void setSolver(BaseSolver *const solver);
 
 	double beta() const;
 	double cp() const;
@@ -70,9 +71,6 @@ public:
 
 	virtual void setSat_p(const double &p);
 	virtual void setSat_T(const double &T);
-
-	virtual double saturationPressure(const double &T, const string &mediumName);
-	virtual double saturationTemperature(const double &p, const string &mediumName);
 
 	virtual void setState_dT(const double &d, const double &T, const int &phase);
 	virtual void setState_ph(const double &p, const double &h, const int &phase);

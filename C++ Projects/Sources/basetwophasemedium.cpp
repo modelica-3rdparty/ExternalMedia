@@ -48,6 +48,10 @@ BaseSolver *BaseTwoPhaseMedium::solver() const{
 	return _solver;
 }
 
+void BaseTwoPhaseMedium::setSolver(BaseSolver *const solver){
+	_solver = solver;
+}
+
 double BaseTwoPhaseMedium::beta() const{
 	return _properties->beta;
 }
@@ -195,12 +199,3 @@ void BaseTwoPhaseMedium::setState_ps(const double &p, const double &s, const int
 void BaseTwoPhaseMedium::setState_pT(const double &p, const double &T){
 	_solver->setState_pT(p, T, _properties);
 }
-
-double BaseTwoPhaseMedium::saturationPressure(const double &T, const string &mediumName){
-	return 0.0;
-}
-
-double BaseTwoPhaseMedium::saturationTemperature(const double &p, const string &mediumName){
-	return 0.0;
-}
-

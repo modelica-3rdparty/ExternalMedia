@@ -34,3 +34,9 @@ TwoPhaseMedium::~TwoPhaseMedium(){
 	// Delete medium property struct
 	delete _properties; _properties = 0;
 }
+
+void TwoPhaseMedium::setSolver(BaseSolver *const solver){
+	BaseTwoPhaseMedium::setSolver(solver);
+	// Set medium constants
+	_solver->setMediumConstants(_properties);
+}

@@ -39,4 +39,13 @@ using std::string;
 // Include error handling
 #include "errorhandling.h"
 
+// Define export
+#if defined BUILD_DLL
+#define EXPORT __declspec(dllexport)
+#elif defined BUILD_LIB
+#define EXPORT __declspec(dllexport)
+#else
+#define EXPORT __declspec(dllimport)
+#endif
+
 #endif /*INCLUDE_H_*/
