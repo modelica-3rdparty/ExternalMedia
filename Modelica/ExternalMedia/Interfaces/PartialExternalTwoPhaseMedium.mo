@@ -22,11 +22,11 @@ partial package PartialExternalTwoPhaseMedium
     criticalPressure=  getCriticalPressure(),
     criticalMolarVolume=  1,
     acentricFactor=  0,
-    triplePointTemperature=  273.16,
-    triplePointPressure=  611.7,
-    meltingPoint=  273.15,
-    normalBoilingPoint=  373.124,
-    dipoleMoment=  1.8);
+    triplePointTemperature=  280.0,
+    triplePointPressure=  500.0,
+    meltingPoint=  280,
+    normalBoilingPoint=  380.0,
+    dipoleMoment=  2.0);
   
   constant IC.InputChoice inputChoice=IC.ph 
     "Default choice of input variables for property computations";
@@ -67,8 +67,7 @@ partial package PartialExternalTwoPhaseMedium
     when (initial()) then
       uniqueID := createMedium(uniqueID);
       assert(uniqueID>0, "Error in external medium library");
-      //      MM := fluidConstants[1].molarMass;
-      MM := 0.0004;
+      MM := externalFluidConstants.molarMass;
       R := Modelica.Constants.R/MM;
     end when;
   equation 
