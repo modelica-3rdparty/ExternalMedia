@@ -1,3 +1,13 @@
+/* *****************************************************************
+ * Error handling for external library
+ *
+ * Errors in the external fluid property library have to be reported
+ * to the Modelica layer. This class defines the required interface
+ * functions.
+ * 
+ * Francesco Casella, Christoph Richter Nov 2006
+ ********************************************************************/
+
 #ifndef ERRORHANDLING_H_
 #define ERRORHANDLING_H_
 
