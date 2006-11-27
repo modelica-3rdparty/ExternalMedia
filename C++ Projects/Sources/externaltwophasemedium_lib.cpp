@@ -30,7 +30,7 @@ double getMolarMass_(const char *mediumName, const char *libraryName,
     solver = SolverMap::addSolver(mediumName, libraryName, substanceName);
     
 	// return molar mass
-	return solver->getMolarMass();
+	return solver->molarMass();
 }
 
 double getCriticalTemperature_(const char *mediumName, const char *libraryName,  
@@ -41,7 +41,7 @@ double getCriticalTemperature_(const char *mediumName, const char *libraryName,
     solver = SolverMap::addSolver(mediumName, libraryName, substanceName);
     
 	// return critical temperature
-	return solver->getCriticalTemperature();
+	return solver->criticalTemperature();
 }
 
 double getCriticalPressure_(const char *mediumName, const char *libraryName,  
@@ -52,7 +52,7 @@ double getCriticalPressure_(const char *mediumName, const char *libraryName,
     solver = SolverMap::addSolver(mediumName, libraryName, substanceName);
     
 	// return critical pressure
-	return solver->getCriticalPressure();
+	return solver->criticalPressure();
 }
 
 void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,

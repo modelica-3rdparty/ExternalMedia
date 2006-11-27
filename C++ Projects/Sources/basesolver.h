@@ -33,9 +33,12 @@ public:
 	virtual void setState_ps(double &p, double &s, int &phase, TwoPhaseMediumProperties *const properties);
 	virtual void setState_pT(double &p, double &T, TwoPhaseMediumProperties *const properties);
 
-    double getMolarMass();
-	double getCriticalTemperature();
-	double getCriticalPressure();
+    double molarMass() const;
+	double criticalTemperature() const;
+	double criticalPressure() const;
+	double criticalDensity() const;
+	double criticalEnthalpy() const;
+	double criticalEntropy() const;
 
 	// Solver properties
 	string mediumName;		// medium name

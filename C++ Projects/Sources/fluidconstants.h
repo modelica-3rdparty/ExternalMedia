@@ -16,6 +16,9 @@ struct FluidConstants{
 	double MM;		// molar mass
 	double pc;		// critical pressure
 	double Tc;		// critical temperature
+	double dc;		// critical density
+	double hc;		// critical specific enthalpy
+	double sc;		// critical specific entropy
 };
 
 #endif /*FLUIDCONSTANTS_H_*/

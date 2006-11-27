@@ -15,16 +15,28 @@ BaseSolver::BaseSolver(const string &mediumName, const string &libraryName, cons
 BaseSolver::~BaseSolver(){
 }
    
-double BaseSolver::getMolarMass(){
+double BaseSolver::molarMass() const{
 	return fluidConstants.MM;
 }
 
-double BaseSolver::getCriticalTemperature(){
+double BaseSolver::criticalTemperature() const{
 	return fluidConstants.Tc;
 }
 
-double BaseSolver::getCriticalPressure(){
+double BaseSolver::criticalPressure() const{
 	return fluidConstants.pc;
+}
+
+double BaseSolver::criticalDensity() const{
+	return fluidConstants.dc;
+}
+
+double BaseSolver::criticalEnthalpy() const{
+	return fluidConstants.hc;
+}
+
+double BaseSolver::criticalEntropy() const{
+	return fluidConstants.sc;
 }
 
 void BaseSolver::setFluidConstants(){
