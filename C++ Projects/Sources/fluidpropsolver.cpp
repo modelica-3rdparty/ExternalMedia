@@ -25,7 +25,7 @@ FluidPropSolver::FluidPropSolver(const string &mediumName,
 		// Build error message and pass it to the Modelica environment
 		char error[100];
 		sprintf(error, "FluidProp error: %s\n", ErrorMsg);
-		ERROR_MSG(error);
+		errorMessage(error);
 	}
 
 	// Set SI units 
@@ -35,7 +35,7 @@ FluidPropSolver::FluidPropSolver(const string &mediumName,
 		// Build error message and pass it to the Modelica environment
 		char error[100];
 		sprintf(error, "FluidProp error: %s\n", ErrorMsg);
-		ERROR_MSG(error);
+		errorMessage(error);
 	}
 
 	// Set fluid constants
@@ -54,7 +54,7 @@ void FluidPropSolver::setFluidConstants(){
 	// Build error message and pass it to the Modelica environment
 	char error[100];
 	sprintf(error, "FluidProp error: %s\n", ErrorMsg);
-	ERROR_MSG(error);
+	errorMessage(error);
 	}
 
   fluidConstants.Tc = FluidProp.Tcrit(&ErrorMsg);
@@ -63,7 +63,7 @@ void FluidPropSolver::setFluidConstants(){
 	// Build error message and pass it to the Modelica environment
 	char error[100];
 	sprintf(error, "FluidProp error: %s\n", ErrorMsg);
-	ERROR_MSG(error);
+	errorMessage(error);
 	}
 
   fluidConstants.pc = FluidProp.Pcrit(&ErrorMsg);
@@ -72,7 +72,7 @@ void FluidPropSolver::setFluidConstants(){
 	// Build error message and pass it to the Modelica environment
 	char error[100];
 	sprintf(error, "FluidProp error: %s\n", ErrorMsg);
-	ERROR_MSG(error);
+	errorMessage(error);
 	}
 }
 
