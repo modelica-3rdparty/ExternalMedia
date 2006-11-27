@@ -35,6 +35,4 @@ TwoPhaseMedium::~TwoPhaseMedium(){
 
 void TwoPhaseMedium::setSolver(BaseSolver *const solver){
 	BaseTwoPhaseMedium::setSolver(solver);
-	// Set medium constants
-	_solver->setMediumConstants(_properties);
 }

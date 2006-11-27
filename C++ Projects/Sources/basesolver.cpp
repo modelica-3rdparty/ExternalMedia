@@ -30,7 +30,6 @@ double BaseSolver::getCriticalPressure(){
 void BaseSolver::setFluidConstants(){
 }
 
-void BaseSolver::setSat_p(const double &p, TwoPhaseMediumProperties *const properties){
 void BaseSolver::setSat_p(double &p, TwoPhaseMediumProperties *const properties){
 }
 
