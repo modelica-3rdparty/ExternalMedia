@@ -21,17 +21,17 @@ void TestSolver::setMediumConstants(TwoPhaseMediumProperties *const properties){
   properties->Tc = 647.1;
 }
 
-void TestSolver::setSat_p(const double &p, TwoPhaseMediumProperties *const properties){
+void TestSolver::setSat_p(double &p, TwoPhaseMediumProperties *const properties){
 	properties->p = p;
 	properties->Ts = 372.0 + (393.0-373.0)*(p - 1.0e5)/1.0e5;
 }
 
-void TestSolver::setSat_T(const double &T, TwoPhaseMediumProperties *const properties){
+void TestSolver::setSat_T(double &T, TwoPhaseMediumProperties *const properties){
 	properties->T = T;
 	properties->p = 1e5;
 }
 
-void TestSolver::setState_ph(const double &p, const double &h, const int &phase, TwoPhaseMediumProperties *const properties){
+void TestSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMediumProperties *const properties){
 	properties->p = p;
 	properties->h = h;
 	properties->T = h/4200.0 + 273.15;
@@ -51,7 +51,7 @@ void TestSolver::setState_ph(const double &p, const double &h, const int &phase,
 	properties->d_hv_dp = (2.71e6 - 2.67e6)/1.0e5;
 }
 
-void TestSolver::setState_pT(const double &p, const double &T, TwoPhaseMediumProperties *const properties){
+void TestSolver::setState_pT(double &p, double &T, TwoPhaseMediumProperties *const properties){
 	properties->p = p;
 	properties->T = T;
 	properties->h = (T - 273.15)*4200.0;
@@ -71,7 +71,7 @@ void TestSolver::setState_pT(const double &p, const double &T, TwoPhaseMediumPro
 	properties->d_hv_dp = (2.71e6 - 2.67e6)/1.0e5;
 }
 
-void TestSolver::setState_dT(const double &d, const double &T, const int &phase, TwoPhaseMediumProperties *const properties){
+void TestSolver::setState_dT(double &d, double &T, int &phase, TwoPhaseMediumProperties *const properties){
 	properties->d = d;
 	properties->T = T;
 	properties->h = (T - 273.15)*4200;
@@ -81,7 +81,7 @@ void TestSolver::setState_dT(const double &d, const double &T, const int &phase,
 	properties->s = 4200.0 * log(properties->T/273.15);
 }
 
-void TestSolver::setState_ps(const double &p, const double &s, const int &phase, TwoPhaseMediumProperties *const properties){
+void TestSolver::setState_ps(double &p, double &s, int &phase, TwoPhaseMediumProperties *const properties){
 	properties->p = p;
 	properties->s = s;
 	properties->T = 273.15*exp(s/4200);

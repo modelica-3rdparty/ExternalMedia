@@ -73,13 +73,13 @@ void FluidPropSolver::setMediumConstants(TwoPhaseMediumProperties *const propert
 	}
 }
 
-void FluidPropSolver::setSat_p(const double &p, TwoPhaseMediumProperties *const properties){
+void FluidPropSolver::setSat_p(double &p, TwoPhaseMediumProperties *const properties){
 }
 
-void FluidPropSolver::setSat_T(const double &T, TwoPhaseMediumProperties *const properties){
+void FluidPropSolver::setSat_T(double &T, TwoPhaseMediumProperties *const properties){
 }
 
-void FluidPropSolver::setState_ph(const double &p, const double &h, const int &phase, TwoPhaseMediumProperties *const properties){
+void FluidPropSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMediumProperties *const properties){
 	// FluidProp variables (with their default units)
 	string ErrorMsg;
     double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
@@ -138,15 +138,15 @@ void FluidPropSolver::setState_ph(const double &p, const double &h, const int &p
 	properties->sigma = 0;			// surface tension
 }
 
-void FluidPropSolver::setState_pT(const double &p, const double &T, TwoPhaseMediumProperties *const properties){
+void FluidPropSolver::setState_pT(double &p, double &T, TwoPhaseMediumProperties *const properties){
    /// XXX to be completed
 }
 
-void FluidPropSolver::setState_dT(const double &d, const double &T, const int &phase, TwoPhaseMediumProperties *const properties){
+void FluidPropSolver::setState_dT(double &d, double &T, int &phase, TwoPhaseMediumProperties *const properties){
    /// XXX to be completed
 }
 
-void FluidPropSolver::setState_ps(const double &p, const double &s, const int &phase, TwoPhaseMediumProperties *const properties){
+void FluidPropSolver::setState_ps(double &p, double &s, int &phase, TwoPhaseMediumProperties *const properties){
    /// XXX to be completed
 }
 

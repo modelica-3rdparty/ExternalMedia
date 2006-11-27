@@ -69,13 +69,13 @@ public:
 	double Pr() const;
 	double sigma() const;
 
-	virtual void setSat_p(const double &p);
-	virtual void setSat_T(const double &T);
+	virtual void setSat_p(double &p);
+	virtual void setSat_T(double &T);
 
-	virtual void setState_dT(const double &d, const double &T, const int &phase);
-	virtual void setState_ph(const double &p, const double &h, const int &phase);
-	virtual void setState_ps(const double &p, const double &s, const int &phase);
-	virtual void setState_pT(const double &p, const double &T);
+	virtual void setState_dT(double &d, double &T, int &phase);
+	virtual void setState_ph(double &p, double &h, int &phase);
+	virtual void setState_ps(double &p, double &s, int &phase);
+	virtual void setState_pT(double &p, double &T);
 
 protected:	
 	// Pointer to medium property record

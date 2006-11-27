@@ -18,20 +18,20 @@ BaseSolver::~BaseSolver(){
 void BaseSolver::setMediumConstants(TwoPhaseMediumProperties *const properties){
 }
 
-void BaseSolver::setSat_p(const double &p, TwoPhaseMediumProperties *const properties){
+void BaseSolver::setSat_p(double &p, TwoPhaseMediumProperties *const properties){
 }
 
-void BaseSolver::setSat_T(const double &T, TwoPhaseMediumProperties *const properties){
+void BaseSolver::setSat_T(double &T, TwoPhaseMediumProperties *const properties){
 }
 
-void BaseSolver::setState_dT(const double &d, const double &T, const int &phase, TwoPhaseMediumProperties *const properties){
+void BaseSolver::setState_dT(double &d, double &T, int &phase, TwoPhaseMediumProperties *const properties){
 }
 
-void BaseSolver::setState_ph(const double &p, const double &h, const int &phase, TwoPhaseMediumProperties *const properties){
+void BaseSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMediumProperties *const properties){
 }
 
-void BaseSolver::setState_ps(const double &p, const double &s, const int &phase, TwoPhaseMediumProperties *const properties){
+void BaseSolver::setState_ps(double &p, double &s, int &phase, TwoPhaseMediumProperties *const properties){
 }
 
-void BaseSolver::setState_pT(const double &p, const double &T, TwoPhaseMediumProperties *const properties){
+void BaseSolver::setState_pT(double &p, double &T, TwoPhaseMediumProperties *const properties){
 }
