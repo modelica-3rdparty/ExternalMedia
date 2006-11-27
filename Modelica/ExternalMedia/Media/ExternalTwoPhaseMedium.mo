@@ -198,7 +198,19 @@ package ExternalTwoPhaseMedium
   redeclare replaceable function extends getMolarMass 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" MM=  molarMass_(uniqueID);
+  external "C" MM=  getMolarMass_(mediumName, libraryName, substanceName);
   end getMolarMass;
+  
+  redeclare replaceable function extends getCriticalTemperature 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" Tc=  getCriticalTemperature_(mediumName, libraryName, substanceName);
+  end getCriticalTemperature;
+  
+  redeclare replaceable function extends getCriticalPressure 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" pc=  getCriticalPressure_(mediumName, libraryName, substanceName);
+  end getCriticalPressure;
   
 end ExternalTwoPhaseMedium;

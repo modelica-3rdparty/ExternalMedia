@@ -3,13 +3,30 @@ partial package PartialExternalTwoPhaseMedium
   extends Modelica.Media.Interfaces.PartialTwoPhaseMedium(
     mediumName = "ExternalMedium",
     singleState = false,
-    onePhase = false);
+    onePhase = false,
+    fluidConstants = {externalFluidConstants});
   import IC = ExternalMedia.Common.InputChoices;
   
   constant String libraryName = "UnusableExternalMedium" 
     "Name of the external fluid property computation library";
   final constant String substanceName = substanceNames[1] 
     "Only one substance can be specified";
+  
+  constant FluidConstants externalFluidConstants = FluidConstants(
+    iupacName=  "unknown",
+    casRegistryNumber=  "unknown",
+    chemicalFormula=  "unknown",
+    structureFormula=  "unknown",
+    molarMass=  getMolarMass(),
+    criticalTemperature=  getCriticalTemperature(),
+    criticalPressure=  getCriticalPressure(),
+    criticalMolarVolume=  1,
+    acentricFactor=  0,
+    triplePointTemperature=  273.16,
+    triplePointPressure=  611.7,
+    meltingPoint=  273.15,
+    normalBoilingPoint=  373.124,
+    dipoleMoment=  1.8);
   
   constant IC.InputChoice inputChoice=IC.ph 
     "Default choice of input variables for property computations";
@@ -50,7 +67,8 @@ partial package PartialExternalTwoPhaseMedium
     when (initial()) then
       uniqueID := createMedium(uniqueID);
       assert(uniqueID>0, "Error in external medium library");
-      MM := getMolarMass(uniqueID);
+      //      MM := fluidConstants[1].molarMass;
+      MM := 0.0004;
       R := Modelica.Constants.R/MM;
     end when;
   equation 
@@ -176,7 +194,7 @@ partial package PartialExternalTwoPhaseMedium
   
   redeclare function extends molarMass 
   algorithm 
-    MM := getMolarMass(state.uniqueID);
+    MM := fluidConstants[1].molarMass;
   end molarMass;
   
   replaceable partial function createMedium 
@@ -185,9 +203,16 @@ partial package PartialExternalTwoPhaseMedium
   end createMedium;
   
   replaceable partial function getMolarMass 
-    input Integer uniqueID "unique ID number";
     output MolarMass MM "molar mass";
   end getMolarMass;
+  
+  replaceable partial function getCriticalTemperature 
+    output Temperature Tc "Critical temperature";
+  end getCriticalTemperature;
+  
+  replaceable partial function getCriticalPressure 
+    output AbsolutePressure pc "Critical temperature";
+  end getCriticalPressure;
   
   redeclare function extends setState_phX 
     input Integer uniqueID "Unique ID";
