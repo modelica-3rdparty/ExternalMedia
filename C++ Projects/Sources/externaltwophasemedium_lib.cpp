@@ -22,6 +22,39 @@ int createMedium_(const char *mediumName, const char *libraryName,
 	}
 }
 
+double getMolarMass_(const char *mediumName, const char *libraryName,  
+					 const char *substanceName){
+    BaseSolver *solver;
+
+    // return pointer to the solver (and allocate it if necessary)
+    solver = SolverMap::addSolver(mediumName, libraryName, substanceName);
+    
+	// return molar mass
+	return solver->getMolarMass();
+}
+
+double getCriticalTemperature_(const char *mediumName, const char *libraryName,  
+				         	   const char *substanceName){
+    BaseSolver *solver;
+
+    // return pointer to the solver (and allocate it if necessary)
+    solver = SolverMap::addSolver(mediumName, libraryName, substanceName);
+    
+	// return critical temperature
+	return solver->getCriticalTemperature();
+}
+
+double getCriticalPressure_(const char *mediumName, const char *libraryName,  
+				            const char *substanceName){
+    BaseSolver *solver;
+
+    // return pointer to the solver (and allocate it if necessary)
+    solver = SolverMap::addSolver(mediumName, libraryName, substanceName);
+    
+	// return critical pressure
+	return solver->getCriticalPressure();
+}
+
 void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 				  const char *mediumName, const char *libraryName, const char *substanceName){
 	MediumMap::medium(uniqueID)->setState_dT(d, T, phase);
@@ -196,10 +229,6 @@ double prandtlNumber_(int uniqueID){
 
 double surfaceTension_(double psat, double Tsat, int uniqueID){
 	return MediumMap::medium(uniqueID)->sigma();
-}
-
-double molarMass_(int uniqueID){
-	return MediumMap::medium(uniqueID)->MM();
 }
 
 double saturationPressure_(double T, const char *mediumName,

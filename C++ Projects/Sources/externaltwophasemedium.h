@@ -12,9 +12,16 @@
 #define EXTERNALTWOPHASEMEDIUM_H_
 
 extern int createMedium_(const char *mediumName, const char *libraryName, 
-							 const char *substanceName, int oldUniqueID);
+						 const char *substanceName, int oldUniqueID);
 
-extern double molarMass_(int uniqueID);
+extern double getMolarMass_(const char *mediumName, const char *libraryName,  
+ 			                const char *substanceName);
+
+extern double getCriticalTemperature_(const char *mediumName, const char *libraryName,  
+			                	      const char *substanceName);
+
+extern double getCriticalPressure_(const char *mediumName, const char *libraryName,  
+			                	   const char *substanceName);
 
 extern void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
 			   const char *mediumName, const char *libraryName, const char *substanceName);

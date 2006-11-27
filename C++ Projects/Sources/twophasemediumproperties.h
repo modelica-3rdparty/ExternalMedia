@@ -44,10 +44,6 @@ struct TwoPhaseMediumProperties{
 	double sl;		// bubble specific entropy
 	double sv;		// dew specific entropy
 
-	double dc;		// critical density
-	double pc;		// critical pressure
-	double Tc;		// critical temperature
-
 	double MM;		// molar mass
 
 	double eta;		// dynamic viscosity

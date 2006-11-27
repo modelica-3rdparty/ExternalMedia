@@ -14,10 +14,23 @@ BaseSolver::BaseSolver(const string &mediumName, const string &libraryName, cons
 
 BaseSolver::~BaseSolver(){
 }
-
-void BaseSolver::setMediumConstants(TwoPhaseMediumProperties *const properties){
+   
+double BaseSolver::getMolarMass(){
+	return fluidConstants.MM;
 }
 
+double BaseSolver::getCriticalTemperature(){
+	return fluidConstants.Tc;
+}
+
+double BaseSolver::getCriticalPressure(){
+	return fluidConstants.pc;
+}
+
+void BaseSolver::setFluidConstants(){
+}
+
+void BaseSolver::setSat_p(const double &p, TwoPhaseMediumProperties *const properties){
 void BaseSolver::setSat_p(double &p, TwoPhaseMediumProperties *const properties){
 }
 

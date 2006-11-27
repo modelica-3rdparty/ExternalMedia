@@ -26,7 +26,7 @@ class TestSolver : public BaseSolver{
 public:
 	TestSolver(const string &mediumName, const string &libraryName, const string &substanceName);
 	~TestSolver();
-	virtual void setMediumConstants(TwoPhaseMediumProperties *const properties);
+	virtual void setFluidConstants();
 
 	virtual void setSat_p(double &p, TwoPhaseMediumProperties *const properties);
 	virtual void setSat_T(double &T, TwoPhaseMediumProperties *const properties);

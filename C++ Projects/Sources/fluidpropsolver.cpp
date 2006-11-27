@@ -37,15 +37,18 @@ FluidPropSolver::FluidPropSolver(const string &mediumName,
 		sprintf(error, "FluidProp error: %s\n", ErrorMsg);
 		ERROR_MSG(error);
 	}
+
+	// Set fluid constants
+	setFluidConstants();
 }
 
 FluidPropSolver::~FluidPropSolver(){
 }
 
-void FluidPropSolver::setMediumConstants(TwoPhaseMediumProperties *const properties){
+void FluidPropSolver::setFluidConstants(){
   string ErrorMsg;
 
-  properties->MM = FluidProp.Mmol(&ErrorMsg);
+  fluidConstants.MM = FluidProp.Mmol(&ErrorMsg);
   if (ErrorMsg != "No errors")  // An error occurred
 	{
 	// Build error message and pass it to the Modelica environment
@@ -54,7 +57,7 @@ void FluidPropSolver::setMediumConstants(TwoPhaseMediumProperties *const propert
 	ERROR_MSG(error);
 	}
 
-  properties->Tc = FluidProp.Tcrit(&ErrorMsg);
+  fluidConstants.Tc = FluidProp.Tcrit(&ErrorMsg);
   if (ErrorMsg != "No errors")  // An error occurred
 	{
 	// Build error message and pass it to the Modelica environment
@@ -63,7 +66,7 @@ void FluidPropSolver::setMediumConstants(TwoPhaseMediumProperties *const propert
 	ERROR_MSG(error);
 	}
 
-  properties->pc = FluidProp.Pcrit(&ErrorMsg);
+  fluidConstants.pc = FluidProp.Pcrit(&ErrorMsg);
   if (ErrorMsg != "No errors")  // An error occurred
 	{
 	// Build error message and pass it to the Modelica environment

@@ -11,15 +11,19 @@
 #define BASESOLVER_H_
 
 #include "include.h"
+#include "fluidconstants.h"
+
 
 struct TwoPhaseMediumProperties;
+struct FluidConstants;
 
 class BaseSolver{
 public:
 	BaseSolver(const string &mediumName, const string &libraryName, const string &substanceName);
 	virtual ~BaseSolver();
 
-	virtual void setMediumConstants(TwoPhaseMediumProperties *const properties);
+	// Sets the solver's fluid constants
+    virtual void setFluidConstants();
 
 	virtual void setSat_p(double &p, TwoPhaseMediumProperties *const properties);
 	virtual void setSat_T(double &T, TwoPhaseMediumProperties *const properties);
@@ -29,10 +33,19 @@ public:
 	virtual void setState_ps(double &p, double &s, int &phase, TwoPhaseMediumProperties *const properties);
 	virtual void setState_pT(double &p, double &T, TwoPhaseMediumProperties *const properties);
 
+    double getMolarMass();
+	double getCriticalTemperature();
+	double getCriticalPressure();
+
 	// Solver properties
 	string mediumName;		// medium name
 	string libraryName;		// library name
 	string substanceName;	// substance name
+
+
+protected:
+	// Fluid constants
+	FluidConstants fluidConstants;  // fluid constants
 };
 
 #endif /*BASESOLVER_H_*/

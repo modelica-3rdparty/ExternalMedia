@@ -26,8 +26,6 @@ TwoPhaseMedium::TwoPhaseMedium(const string &mediumName, const string &libraryNa
 	_properties->libraryName = libraryName;
 	_properties->substanceName = substanceName;
 	_properties->uniqueID = uniqueID;
-	// Set medium constants
-	_solver->setMediumConstants(_properties);
 }
 
 TwoPhaseMedium::~TwoPhaseMedium(){

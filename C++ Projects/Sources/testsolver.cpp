@@ -10,15 +10,16 @@
 
 TestSolver::TestSolver(const string &mediumName, const string &libraryName, const string &substanceName)
 	: BaseSolver(mediumName, libraryName, substanceName){
+  setFluidConstants();
 }
 
 TestSolver::~TestSolver(){
 }
 
-void TestSolver::setMediumConstants(TwoPhaseMediumProperties *const properties){
-  properties->MM = 0.18;
-  properties->pc = 220.6e5;
-  properties->Tc = 647.1;
+void TestSolver::setFluidConstants(){
+  fluidConstants.pc = 220.0e3;
+  fluidConstants.Tc = 650.0;
+  fluidConstants.MM = 0.18;
 }
 
 void TestSolver::setSat_p(double &p, TwoPhaseMediumProperties *const properties){
