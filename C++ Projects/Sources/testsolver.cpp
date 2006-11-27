@@ -19,7 +19,7 @@ TestSolver::~TestSolver(){
 void TestSolver::setFluidConstants(){
   fluidConstants.pc = 220.0e5;
   fluidConstants.Tc = 650.0;
-  fluidConstants.MM = 0.18;
+  fluidConstants.MM = 0.018;
 }
 
 void TestSolver::setSat_p(double &p, TwoPhaseMediumProperties *const properties){
