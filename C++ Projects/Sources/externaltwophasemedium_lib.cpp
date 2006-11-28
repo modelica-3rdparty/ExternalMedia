@@ -116,14 +116,10 @@ void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *
 	
 	if (sat_uniqueID != NULL)
 		*sat_uniqueID = uniqueID;
-	if (sat_psat != NULL)
-		*sat_Tsat = T;
-	// XXX This doesn' work currently
-	/*
 	if (sat_Tsat != NULL)
+		*sat_Tsat = T;
+	if (sat_psat != NULL)
 		*sat_psat = MediumMap::medium(uniqueID)->ps();
-	*/
-
 }
 
 double density_(int uniqueID){
@@ -152,7 +148,7 @@ double temperature_(int uniqueID){
 }
 
 double saturationPressure_sat_(int uniqueID){
-	return MediumMap::medium(uniqueID)->p();
+	return MediumMap::medium(uniqueID)->ps();
 }
 
 double saturationTemperature_sat_(int uniqueID){
@@ -239,7 +235,7 @@ double saturationPressure_(double T, const char *mediumName,
 	BaseTwoPhaseMedium *medium = MediumMap::solverMedium(SolverMap::solverKey(libraryName, substanceName));
 	// Compute saturation pressure
 	medium->setSat_T(T);
-	return medium->p();
+	return medium->ps();
 }
 
 double saturationTemperature_(double p, const char *mediumName,

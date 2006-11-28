@@ -35,13 +35,11 @@ struct TwoPhaseMediumProperties{
 
     // Saturation properties at the fluid pressure
 
-	// Attention: The saturation pressure is not actually returned when calling
-	//			  the function saturation pressure! The real pressure p is returned
-	//			  instead. This variable ps can be used by advanced users to implement
-	//			  an "equal input"-check in order to avoid unnecessary fluid property
-	//			  computations.
+	// Attention: The saturation pressure should be per definition equal to the
+	//			  pressure of the medium. An extra variable is provided to allow
+	//			  the advanced user to check for equal function arguments before
+	//			  computing the fluid properties.
 	double ps;		// saturation pressure
-	
 	double Ts;		// saturation temperature
 
 	double dl;		// bubble density

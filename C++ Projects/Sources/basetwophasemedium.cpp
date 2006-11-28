@@ -96,6 +96,10 @@ double BaseTwoPhaseMedium::T() const{
 	return _properties->T;
 }
 
+double BaseTwoPhaseMedium::ps() const{
+	return _properties->ps;
+}
+
 double BaseTwoPhaseMedium::Ts() const{
 	return _properties->Ts;
 }
