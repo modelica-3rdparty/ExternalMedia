@@ -26,20 +26,27 @@ public:
 	
 	// Add the default medium object for the solver to the default solver media map
 	static void addSolverMedium(const string &solverKey, BaseSolver *const baseSolver);
+
+	// Change a medium
 	static void changeMedium(const string &mediumName, const string &libraryName, const string &substanceName, const int &uniqueID);
+
+	// Delete a medium from the map
 	static void deleteMedium(const int &uniqueID);
 	
 	// Return a pointer to the medium object identified by the uniqueID
 	static BaseTwoPhaseMedium *medium(const int &uniqueID);
 
 	// Return a pointer to the default medium for the solver
-	static BaseTwoPhaseMedium *solverMedium(const string &solverKey);
+	static BaseTwoPhaseMedium *solverMedium(BaseSolver *const solver);
+	static BaseTwoPhaseMedium *solverMedium(const string &mediumName, const string &libraryName, const string &substanceName);
 
 protected:
+	// Static integer for the unique ID number
 	static int _uniqueID;
 
 	// Map for mediums with unique ID as identifier
 	static map<int, BaseTwoPhaseMedium*> _mediums;
+
 	// Map for mediums that are used for function calls without specified unique ID
 	// such as saturationTemperature_() and saturationPressure_()
 	static map<string, BaseTwoPhaseMedium*> _solverMediums;

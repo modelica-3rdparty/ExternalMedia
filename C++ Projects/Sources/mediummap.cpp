@@ -13,7 +13,7 @@ int MediumMap::addMedium(const std::string &mediumName, const std::string &libra
 	++_uniqueID;
 	// Get a pointer to the solver (and create it if it doesn't exist)
 	// based on the libraryName, substanceName and possibly mediumName strings
-	BaseSolver *baseSolver = SolverMap::addSolver(mediumName, libraryName, substanceName);
+	BaseSolver *baseSolver = SolverMap::getSolver(mediumName, libraryName, substanceName);
 
 	// Create new medium
 
@@ -34,7 +34,7 @@ void MediumMap::addSolverMedium(const string &solverKey, BaseSolver *const baseS
 
 void MediumMap::changeMedium(const string &mediumName, const string &libraryName, const string &substanceName, const int &uniqueID){
 	// This function changes an existing medium
-	BaseSolver *baseSolver = SolverMap::addSolver(mediumName, libraryName, substanceName);
+	BaseSolver *baseSolver = SolverMap::getSolver(mediumName, libraryName, substanceName);
 
 	_mediums[uniqueID]->setSolver(baseSolver);
 }
@@ -46,15 +46,25 @@ void MediumMap::deleteMedium(const int &uniqueID){
 
 BaseTwoPhaseMedium *MediumMap::medium(const int &uniqueID){
 	// Check whether unique ID number is valid
-	// This check is not complete and will basically make a couple of functions
-	// fail is a 0 is returned. There is some room for improvements.
-	if (uniqueID > _uniqueID)
-		return 0;
+	// There is some room for improvement
+	if (uniqueID > _uniqueID){
+		char error[100];
+		sprintf(error, "Error: a medium with the specific unique ID %i does not exist!", uniqueID);
+		errorMessage(error);
+	}
 	return _mediums[uniqueID];
 }
 
-BaseTwoPhaseMedium *MediumMap::solverMedium(const string &solverKey){
-	return _solverMediums[solverKey];
+BaseTwoPhaseMedium *MediumMap::solverMedium(BaseSolver *const solver){
+	// Return solver medium for specified solver
+	return _solverMediums[SolverMap::solverKey(solver->libraryName, solver->substanceName)];
+}
+
+BaseTwoPhaseMedium *MediumMap::solverMedium(const string &mediumName, const string &libraryName, const string &substanceName){
+	// Make sure, that solver currently exists
+	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
+	// Return pointer to current solver medium
+	return solverMedium(solver);
 }
 
 map<int, BaseTwoPhaseMedium*> MediumMap::_mediums;

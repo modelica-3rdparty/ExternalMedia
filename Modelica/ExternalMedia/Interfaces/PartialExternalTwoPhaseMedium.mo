@@ -151,7 +151,7 @@ partial package PartialExternalTwoPhaseMedium
     "Return saturation properties from p" 
     extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
-    input Integer uniqueID "unique ID number";
+    input Integer uniqueID=0 "unique ID number";
     output SaturationProperties sat "saturation property record";
   end setSat_p;
   
@@ -159,7 +159,7 @@ partial package PartialExternalTwoPhaseMedium
     "Return saturation properties from p" 
     extends Modelica.Icons.Function;
     input Temperature T "temperature";
-    input Integer uniqueID "unique ID number";
+    input Integer uniqueID=0 "unique ID number";
     output SaturationProperties sat "saturation property record";
   end setSat_T;
   

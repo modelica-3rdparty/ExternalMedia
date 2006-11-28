@@ -45,10 +45,9 @@ public:
 	string libraryName;		// library name
 	string substanceName;	// substance name
 
-
 protected:
 	// Fluid constants
-	FluidConstants fluidConstants;  // fluid constants
+	FluidConstants _fluidConstants;  // fluid constants
 };
 
 #endif /*BASESOLVER_H_*/

@@ -48,7 +48,7 @@ FluidPropSolver::~FluidPropSolver(){
 void FluidPropSolver::setFluidConstants(){
   string ErrorMsg;
 
-  fluidConstants.MM = FluidProp.Mmol(&ErrorMsg);
+  _fluidConstants.MM = FluidProp.Mmol(&ErrorMsg);
   if (ErrorMsg != "No errors")  // An error occurred
 	{
 	// Build error message and pass it to the Modelica environment
@@ -57,7 +57,7 @@ void FluidPropSolver::setFluidConstants(){
 	errorMessage(error);
 	}
 
-  fluidConstants.Tc = FluidProp.Tcrit(&ErrorMsg);
+  _fluidConstants.Tc = FluidProp.Tcrit(&ErrorMsg);
   if (ErrorMsg != "No errors")  // An error occurred
 	{
 	// Build error message and pass it to the Modelica environment
@@ -66,7 +66,7 @@ void FluidPropSolver::setFluidConstants(){
 	errorMessage(error);
 	}
 
-  fluidConstants.pc = FluidProp.Pcrit(&ErrorMsg);
+  _fluidConstants.pc = FluidProp.Pcrit(&ErrorMsg);
   if (ErrorMsg != "No errors")  // An error occurred
 	{
 	// Build error message and pass it to the Modelica environment

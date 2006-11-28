@@ -16,6 +16,9 @@ struct FluidConstants{
 	double MM;		// molar mass
 	double pc;		// critical pressure
 	double Tc;		// critical temperature
+	// The following three properties are not accessible from the Modelica
+	// layer right now. If required they can be easily added to the Modelica
+	// layer similar to the available function getMolarMass_(), ...
 	double dc;		// critical density
 	double hc;		// critical specific enthalpy
 	double sc;		// critical specific entropy

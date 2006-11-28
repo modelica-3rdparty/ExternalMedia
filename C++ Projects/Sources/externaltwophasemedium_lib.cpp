@@ -24,41 +24,27 @@ int createMedium_(const char *mediumName, const char *libraryName,
 
 double getMolarMass_(const char *mediumName, const char *libraryName,  
 					 const char *substanceName){
-    BaseSolver *solver;
-
-    // return pointer to the solver (and allocate it if necessary)
-    solver = SolverMap::addSolver(mediumName, libraryName, substanceName);
-    
-	// return molar mass
-	return solver->molarMass();
+	// Return molar mass
+	return SolverMap::getSolver(mediumName, libraryName, substanceName)->molarMass();
 }
 
 double getCriticalTemperature_(const char *mediumName, const char *libraryName,  
 				         	   const char *substanceName){
-    BaseSolver *solver;
-
-    // return pointer to the solver (and allocate it if necessary)
-    solver = SolverMap::addSolver(mediumName, libraryName, substanceName);
-    
-	// return critical temperature
-	return solver->criticalTemperature();
+	// Return critical temperature
+	return SolverMap::getSolver(mediumName, libraryName, substanceName)->criticalTemperature();
 }
 
 double getCriticalPressure_(const char *mediumName, const char *libraryName,  
 				            const char *substanceName){
-    BaseSolver *solver;
-
-    // return pointer to the solver (and allocate it if necessary)
-    solver = SolverMap::addSolver(mediumName, libraryName, substanceName);
-    
-	// return critical pressure
-	return solver->criticalPressure();
+	// Return critical pressure
+	return SolverMap::getSolver(mediumName, libraryName, substanceName)->criticalPressure();
 }
 
 void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 				  const char *mediumName, const char *libraryName, const char *substanceName){
+	// Call set state function
 	MediumMap::medium(uniqueID)->setState_dT(d, T, phase);
-
+	// Return values
 	if (state_uniqueID != NULL)
 		*state_uniqueID = uniqueID;
 	if (state_phase != NULL)
@@ -67,11 +53,9 @@ void setState_dT_(double d, double T, int phase, int uniqueID, int *state_unique
 
 void setState_ph_(double p, double h, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 				  const char *mediumName, const char *libraryName, const char *substanceName){
-	if (uniqueID == 0)
-      printf("Error! setState_ph called with uniqueID = %d, (p = %f, h = %f)\n", uniqueID, p, h);
-
+	// Call set state function
 	MediumMap::medium(uniqueID)->setState_ph(p, h, phase);
-
+	// Return values
 	if (state_uniqueID != NULL)
 		*state_uniqueID = uniqueID;
 	if (state_phase != NULL)
@@ -80,8 +64,9 @@ void setState_ph_(double p, double h, int phase, int uniqueID, int *state_unique
 
 void setState_ps_(double p, double s, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 				  const char *mediumName, const char *libraryName, const char *substanceName){
+	// Call set state function
 	MediumMap::medium(uniqueID)->setState_ps(p, s, phase);
-
+	// Return values
 	if (state_uniqueID != NULL)
 		*state_uniqueID = uniqueID;
 	if (state_phase != NULL)
@@ -90,8 +75,9 @@ void setState_ps_(double p, double s, int phase, int uniqueID, int *state_unique
 
 void setState_pT_(double p, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 				  const char *mediumName, const char *libraryName, const char *substanceName){
+	// Call set state function
 	MediumMap::medium(uniqueID)->setState_pT(p, T);
-
+	// Return values
 	if (state_uniqueID != NULL)
 		*state_uniqueID = uniqueID;
 	if (state_phase != NULL)
@@ -100,26 +86,42 @@ void setState_pT_(double p, double T, int phase, int uniqueID, int *state_unique
 
 void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
 			   const char *mediumName, const char *libraryName, const char *substanceName){
-	MediumMap::medium(uniqueID)->setSat_p(p);
-
+	// Create pointer to medium
+	BaseTwoPhaseMedium *medium;
+	// Check whether a unique ID is supplied
+	if (uniqueID == 0)
+		medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+	else
+		medium = MediumMap::medium(uniqueID);
+	// Call set sat function
+	medium->setSat_p(p);
+	// Return values
 	if (sat_uniqueID != NULL)
 		*sat_uniqueID = uniqueID;
 	if (sat_psat != NULL)
-		*sat_psat = p;
+		*sat_psat = medium->ps();
 	if (sat_Tsat != NULL)
-		*sat_Tsat = MediumMap::medium(uniqueID)->Ts();
+		*sat_Tsat = medium->Ts();
 }
 
 void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
 			   const char *mediumName, const char *libraryName, const char *substanceName){
-	MediumMap::medium(uniqueID)->setSat_T(T);
-	
+	// Create pointer to medium
+	BaseTwoPhaseMedium *medium;
+	// Check whether a unique ID is supplied
+	if (uniqueID == 0)
+		medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+	else
+		medium = MediumMap::medium(uniqueID);
+	// Call set sat function
+	medium->setSat_T(T);
+	// Return values
 	if (sat_uniqueID != NULL)
 		*sat_uniqueID = uniqueID;
 	if (sat_Tsat != NULL)
-		*sat_Tsat = T;
+		*sat_Tsat = medium->Ts();
 	if (sat_psat != NULL)
-		*sat_psat = MediumMap::medium(uniqueID)->ps();
+		*sat_psat = medium->ps();
 }
 
 double density_(int uniqueID){
@@ -229,21 +231,18 @@ double surfaceTension_(double psat, double Tsat, int uniqueID){
 
 double saturationPressure_(double T, const char *mediumName,
 						   const char *libraryName, const char *substanceName){
-	// Ensure, that solver and default medium object already exist
-	SolverMap::addSolver(mediumName, libraryName, substanceName);
 	// Get medium object
-	BaseTwoPhaseMedium *medium = MediumMap::solverMedium(SolverMap::solverKey(libraryName, substanceName));
+	BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
 	// Compute saturation pressure
 	medium->setSat_T(T);
+	// Return saturation pressure
 	return medium->ps();
 }
 
 double saturationTemperature_(double p, const char *mediumName,
 							  const char *libraryName, const char *substanceName){
-	// Ensure, that solver and default medium object already exist
-	SolverMap::addSolver(mediumName, libraryName, substanceName);
 	// Get medium object
-	BaseTwoPhaseMedium *medium = MediumMap::solverMedium(SolverMap::solverKey(libraryName, substanceName));
+	BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
 	// Compute saturation pressure
 	medium->setSat_p(p);
 	return medium->Ts();

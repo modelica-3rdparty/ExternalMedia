@@ -9,6 +9,15 @@
 
 #include "include.h"
 
+// Define export
+#if defined BUILD_DLL
+#define EXPORT __declspec(dllexport)
+#elif defined BUILD_LIB
+#define EXPORT __declspec(dllexport)
+#else
+#define EXPORT __declspec(dllimport)
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
@@ -19,14 +28,14 @@ extern "C" {
 	EXPORT double getMolarMass_(const char *mediumName, const char *libraryName,  
 							    const char *substanceName);
 	EXPORT double getCriticalTemperature_(const char *mediumName, const char *libraryName,  
-	                	         	  const char *substanceName);
+	                	         		  const char *substanceName);
 	EXPORT double getCriticalPressure_(const char *mediumName, const char *libraryName,  
-	                	           const char *substanceName);
+									   const char *substanceName);
 
 	EXPORT void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
-					  const char *mediumName, const char *libraryName, const char *substanceName);
+						  const char *mediumName, const char *libraryName, const char *substanceName);
 	EXPORT void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
-					  const char *mediumName, const char *libraryName, const char *substanceName);
+						  const char *mediumName, const char *libraryName, const char *substanceName);
 
 	EXPORT double saturationPressure_(double T, const char *mediumName, const char *libraryName, const char *substanceName);
 	EXPORT double saturationTemperature_(double p, const char *mediumName, const char *libraryName, const char *substanceName);

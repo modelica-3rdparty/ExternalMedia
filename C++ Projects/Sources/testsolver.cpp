@@ -17,19 +17,19 @@ TestSolver::~TestSolver(){
 }
 
 void TestSolver::setFluidConstants(){
-  fluidConstants.pc = 220.0e5;
-  fluidConstants.Tc = 650.0;
-  fluidConstants.MM = 0.018;
+  _fluidConstants.pc = 220.0e5;
+  _fluidConstants.Tc = 650.0;
+  _fluidConstants.MM = 0.018;
 }
 
 void TestSolver::setSat_p(double &p, TwoPhaseMediumProperties *const properties){
-	properties->p = p;
+	properties->ps = p;
 	properties->Ts = 372.0 + (393.0-373.0)*(p - 1.0e5)/1.0e5;
 }
 
 void TestSolver::setSat_T(double &T, TwoPhaseMediumProperties *const properties){
-	properties->T = T;
-	properties->p = 1e5;
+	properties->Ts = T;
+	properties->ps = 1e5;
 }
 
 void TestSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMediumProperties *const properties){
@@ -40,6 +40,7 @@ void TestSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMediumPro
 	properties->dd_dp_h = (1000.0 - h/4200.0)/21000e5;
 	properties->dd_dh_p = -(1.0 + p/21000e5)/4200.0;
 	properties->s = 4200.0 * log(properties->T/273.15);
+	properties->ps = p;
 	properties->Ts = 372.0 + (393.0-373.0)*(p - 1.0e5)/1.0e5;
 	properties->dl = 958.0 + (940.0 - 958.0)*(p - 1.0e5)/1.0e5;
 	properties->dv = 0.59 + (1.13 - 0.59)*(p - 1.0e5)/1.0e5;
@@ -60,6 +61,7 @@ void TestSolver::setState_pT(double &p, double &T, TwoPhaseMediumProperties *con
 	properties->dd_dp_h = (1000.0 - properties->h/4200.0)/21000e5;
 	properties->dd_dh_p = -(1.0 + p/21000e5)/4200.0;
 	properties->s = 4200.0 * log(properties->T/273.15);
+	properties->ps = p;
 	properties->Ts = 372.0 + (393.0-373.0)*(p - 1.0e5)/1.0e5;
 	properties->dl = 958.0 + (940.0 - 958.0)*(p - 1.0e5)/1.0e5;
 	properties->dv = 0.59 + (1.13 - 0.59)*(p - 1.0e5)/1.0e5;
@@ -90,6 +92,7 @@ void TestSolver::setState_ps(double &p, double &s, int &phase, TwoPhaseMediumPro
 	properties->d = (1000.0 - properties->h/4200.0)*(1.0 + p/21000e5);
 	properties->dd_dp_h = (1000.0 - properties->h/4200.0)/21000e5;
 	properties->dd_dh_p = -(1.0+p/21000e5)/4200.0;
+	properties->ps = p;
 	properties->Ts = 372.0 + (393.0-373.0)*(p - 1.0e5)/1.0e5;
 	properties->dl = 958.0 + (940.0 - 958.0)*(p - 1.0e5)/1.0e5;
 	properties->dv = 0.59 + (1.13 - 0.59)*(p - 1.0e5)/1.0e5;

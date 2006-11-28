@@ -148,10 +148,6 @@ double BaseTwoPhaseMedium::d_hv_dp() const{
 	return _properties->d_hv_dp;
 }
 
-double BaseTwoPhaseMedium::MM() const{
-	return _properties->MM;
-}
-
 double BaseTwoPhaseMedium::eta() const{
 	return _properties->eta;
 }

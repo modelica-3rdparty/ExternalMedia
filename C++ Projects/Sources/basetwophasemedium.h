@@ -27,7 +27,9 @@ public:
 	string mediumName() const;
 	string libraryName() const;
 	string substanceName() const;
+
 	TwoPhaseMediumProperties *properties() const;
+
 	BaseSolver *solver() const;
 	virtual void setSolver(BaseSolver *const solver);
 
@@ -58,8 +60,6 @@ public:
 	double d_dv_dp() const;
 	double d_hl_dp() const;
 	double d_hv_dp() const;
-
-	double MM() const;
 
 	double eta() const;
 	double lambda() const;

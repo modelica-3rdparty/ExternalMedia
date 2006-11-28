@@ -34,11 +34,6 @@ struct TwoPhaseMediumProperties{
 	double T;		// temperature
 
     // Saturation properties at the fluid pressure
-
-	// Attention: The saturation pressure should be per definition equal to the
-	//			  pressure of the medium. An extra variable is provided to allow
-	//			  the advanced user to check for equal function arguments before
-	//			  computing the fluid properties.
 	double ps;		// saturation pressure
 	double Ts;		// saturation temperature
 
@@ -48,8 +43,6 @@ struct TwoPhaseMediumProperties{
 	double hv;		// dew specific enthalpy
 	double sl;		// bubble specific entropy
 	double sv;		// dew specific entropy
-
-	double MM;		// molar mass
 
 	double eta;		// dynamic viscosity
 	double lambda;	// thermal conductivity

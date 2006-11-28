@@ -20,7 +20,7 @@ class SolverMap{
 public:
 	// Returns a pointer to the solver corresponding to mediumName, libraryName, substanceName
 	// Creates the solver if it doesn't exist yet in the solver map
-	static BaseSolver *addSolver(const string &mediumName, const string &libraryName, const string &substanceName);
+	static BaseSolver *getSolver(const string &mediumName, const string &libraryName, const string &substanceName);
 
 	// Compute a unique map key from the libraryName and substanceName
 	static string solverKey(const string &libraryName, const string &substanceName);
