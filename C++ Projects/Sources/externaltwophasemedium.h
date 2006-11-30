@@ -36,7 +36,8 @@ double saturationPressure_sat_(int uniqueID);
 double saturationTemperature_sat_(int uniqueID);
 
 extern double bubbleDensity_(int uniqueID);
-extern double dewDensity_(int uniqueID);
+extern double dewDensity_(double psat, double Tsat, int uniqueID,
+						  const char *mediumName, const char *libraryName, const char *substanceName);
 extern double bubbleEnthalpy_(int uniqueID);
 extern double dewEnthalpy_(int uniqueID);
 extern double bubbleEntropy_(int uniqueID);

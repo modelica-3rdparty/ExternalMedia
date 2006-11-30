@@ -138,7 +138,7 @@ package ExternalTwoPhaseMedium
   redeclare replaceable function extends dewDensity 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" dv=  dewDensity_(sat.uniqueID);
+  external "C" dv=  dewDensity_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName);
   end dewDensity;
   
   redeclare replaceable function extends bubbleEnthalpy 

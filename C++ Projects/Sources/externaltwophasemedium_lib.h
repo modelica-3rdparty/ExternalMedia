@@ -45,7 +45,8 @@ extern "C" {
 	EXPORT double saturationTemperature_sat_(int uniqueID);
 
 	EXPORT double bubbleDensity_(int uniqueID);
-	EXPORT double dewDensity_(int uniqueID);
+	EXPORT double dewDensity_(double psat, double Tsat, int uniqueID,
+							  const char *mediumName, const char *libraryName, const char *substanceName);
 	EXPORT double bubbleEnthalpy_(int uniqueID);
 	EXPORT double dewEnthalpy_(int uniqueID);
 	EXPORT double bubbleEntropy_(int uniqueID);

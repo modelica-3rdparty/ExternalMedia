@@ -183,8 +183,16 @@ double bubbleDensity_(int uniqueID){
 	return MediumMap::medium(uniqueID)->dl();
 }
 
-double dewDensity_(int uniqueID){
-	return MediumMap::medium(uniqueID)->dv();
+double dewDensity_(double psat, double Tsat, int uniqueID,
+				   const char *mediumName, const char *libraryName, const char *substanceName){
+	// Create pointer to medium
+	BaseTwoPhaseMedium *medium;
+	// Check whether a unique ID is supplied
+	if (uniqueID == 0)
+		medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+	else
+		medium = MediumMap::medium(uniqueID);
+	return medium->dv();
 }
 
 double bubbleEnthalpy_(int uniqueID){
