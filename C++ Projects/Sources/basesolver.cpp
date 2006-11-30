@@ -48,6 +48,9 @@ void BaseSolver::setSat_p(double &p, TwoPhaseMediumProperties *const properties)
 void BaseSolver::setSat_T(double &T, TwoPhaseMediumProperties *const properties){
 }
 
+void BaseSolver::setSat_p_state(TwoPhaseMediumProperties *const properties){
+};
+
 void BaseSolver::setState_dT(double &d, double &T, int &phase, TwoPhaseMediumProperties *const properties){
 }
 

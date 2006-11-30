@@ -124,6 +124,28 @@ void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *
 		*sat_psat = medium->ps();
 }
 
+void setSat_p_state_(int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID){
+	// Check for the validity of the uniqueID
+	if (uniqueID == 0)
+		errorMessage("setSat_p_state called without a valid uniqueID)");
+
+	// Set the output value of sat_uniqueID
+	*sat_uniqueID = uniqueID;
+
+	// Set a pointer to the medium
+	BaseTwoPhaseMedium *medium;
+	medium = MediumMap::medium(uniqueID);
+
+	// Call the medium object setSat_p_state() function, which will
+	// set the saturation properties corresponding to the medium pressure
+	medium->setSat_p_state();
+
+	// Set the output values of Tsat and psat
+	*sat_Tsat = medium->Ts();
+	*sat_psat = medium->ps();
+}
+
+
 double density_(int uniqueID){
 	return MediumMap::medium(uniqueID)->d();
 }

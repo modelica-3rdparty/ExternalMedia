@@ -4,6 +4,8 @@ model TestSaturationProperties
       ExternalMedia.Media.TestMedium;
   
   Medium.SaturationProperties sat "saturation property record";
+  
 equation 
-  sat = Medium.setSat_T(300.0);
+  sat = Medium.setSat_T(380.0);
+  
 end TestSaturationProperties;

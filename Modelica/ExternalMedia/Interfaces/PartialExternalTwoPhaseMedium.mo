@@ -103,7 +103,7 @@ partial package PartialExternalTwoPhaseMedium
     // Compute the internal energy
     u = h - p/d;
     // Compute the saturation properties record
-    sat = setSat_p(p, uniqueID);
+    sat = setSat_p_state(state);
     
   end BaseProperties;
   
@@ -162,6 +162,13 @@ partial package PartialExternalTwoPhaseMedium
     input Integer uniqueID=0 "unique ID number";
     output SaturationProperties sat "saturation property record";
   end setSat_T;
+  
+  replaceable partial function setSat_p_state 
+    "Return saturation properties from the state" 
+    extends Modelica.Icons.Function;
+    input ThermodynamicState state;
+    output SaturationProperties sat "saturation property record";
+  end setSat_p_state;
   
   redeclare replaceable partial function saturationPressure 
     "Returns saturation pressure" 

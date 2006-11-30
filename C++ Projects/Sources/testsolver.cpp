@@ -25,23 +25,6 @@ void TestSolver::setFluidConstants(){
 void TestSolver::setSat_p(double &p, TwoPhaseMediumProperties *const properties){
 	properties->ps = p;
 	properties->Ts = 372.0 + (393.0-373.0)*(p - 1.0e5)/1.0e5;
-}
-
-void TestSolver::setSat_T(double &T, TwoPhaseMediumProperties *const properties){
-	properties->Ts = T;
-	properties->ps = 1e5;
-}
-
-void TestSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMediumProperties *const properties){
-	properties->p = p;
-	properties->h = h;
-	properties->T = h/4200.0 + 273.15;
-	properties->d = (1000.0 - h/4200.0)*(1.0 + p/21000e5);
-	properties->dd_dp_h = (1000.0 - h/4200.0)/21000e5;
-	properties->dd_dh_p = -(1.0 + p/21000e5)/4200.0;
-	properties->s = 4200.0 * log(properties->T/273.15);
-	properties->ps = p;
-	properties->Ts = 372.0 + (393.0-373.0)*(p - 1.0e5)/1.0e5;
 	properties->dl = 958.0 + (940.0 - 958.0)*(p - 1.0e5)/1.0e5;
 	properties->dv = 0.59 + (1.13 - 0.59)*(p - 1.0e5)/1.0e5;
 	properties->hl = 417.5e3 + (504.7e3 - 417.5e3)*(p - 1.0e5)/1.0e5;
@@ -51,6 +34,35 @@ void TestSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMediumPro
 	properties->d_dv_dp = (1.13 - 0.59)/1.0e5;
 	properties->d_hl_dp = (504.7e3 - 417.5e3)/1.0e5;
 	properties->d_hv_dp = (2.71e6 - 2.67e6)/1.0e5;
+}
+
+void TestSolver::setSat_T(double &T, TwoPhaseMediumProperties *const properties){
+	properties->Ts = T;
+	double p = 1e5 + 1e5*(T-372)/(393-373);
+	properties->ps = p;
+	properties->dl = 958.0 + (940.0 - 958.0)*(p - 1.0e5)/1.0e5;
+	properties->dv = 0.59 + (1.13 - 0.59)*(p - 1.0e5)/1.0e5;
+	properties->hl = 417.5e3 + (504.7e3 - 417.5e3)*(p - 1.0e5)/1.0e5;
+	properties->hv = 2.67e6 + (2.71e6 - 2.67e6)*(p - 1.0e5)/1.0e5;
+    properties->d_Ts_dp = (393.0-373.0)/1.0e5;
+	properties->d_dl_dp = (940.0 - 958.0)/1.0e5;
+	properties->d_dv_dp = (1.13 - 0.59)/1.0e5;
+	properties->d_hl_dp = (504.7e3 - 417.5e3)/1.0e5;
+	properties->d_hv_dp = (2.71e6 - 2.67e6)/1.0e5;
+}
+
+void TestSolver::setSat_p_state(TwoPhaseMediumProperties *const properties){
+  setSat_p(properties->p, properties);
+};
+
+void TestSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMediumProperties *const properties){
+	properties->p = p;
+	properties->h = h;
+	properties->T = h/4200.0 + 273.15;
+	properties->d = (1000.0 - h/4200.0)*(1.0 + p/21000e5);
+	properties->dd_dp_h = (1000.0 - h/4200.0)/21000e5;
+	properties->dd_dh_p = -(1.0 + p/21000e5)/4200.0;
+	properties->s = 4200.0 * log(properties->T/273.15);
 }
 
 void TestSolver::setState_pT(double &p, double &T, TwoPhaseMediumProperties *const properties){

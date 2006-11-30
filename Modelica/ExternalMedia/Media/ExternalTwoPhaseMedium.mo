@@ -43,6 +43,12 @@ package ExternalTwoPhaseMedium
                             mediumName, libraryName, substanceName);
   end setSat_T;
   
+  redeclare replaceable function extends setSat_p_state 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" setSat_p_state_(state.uniqueID, sat.psat, sat.Tsat, sat.uniqueID);
+  end setSat_p_state;
+  
   redeclare replaceable function extends saturationPressure 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");

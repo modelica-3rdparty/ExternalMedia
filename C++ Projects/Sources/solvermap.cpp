@@ -25,7 +25,7 @@ BaseSolver *SolverMap::getSolver(const string &mediumName, const string &library
 	if (libraryName.compare("TestMedium") == 0)
 	  _solvers[solverKey] = new TestSolver(mediumName, libraryName, substanceName);
 #ifdef FLUIDPROP
-	else if (libraryName.compare("FluidProp") == 0)
+	else if (libraryName.find("FluidProp") == 0)
 	  _solvers[solverKey] = new FluidPropSolver(mediumName, libraryName, substanceName);
 #endif // FLUIDPROP
 	else {

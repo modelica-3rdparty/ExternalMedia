@@ -27,6 +27,7 @@ extern void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat
 			   const char *mediumName, const char *libraryName, const char *substanceName);
 extern void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
 			   const char *mediumName, const char *libraryName, const char *substanceName);
+extern void setSat_p_state_(int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID);
 
 extern double saturationPressure_(double T, const char *mediumName, const char *libraryName, const char *substanceName);
 extern double saturationTemperature_(double p, const char *mediumName, const char *libraryName, const char *substanceName);

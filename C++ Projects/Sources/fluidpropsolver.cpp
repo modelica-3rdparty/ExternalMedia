@@ -82,6 +82,11 @@ void FluidPropSolver::setSat_p(double &p, TwoPhaseMediumProperties *const proper
 void FluidPropSolver::setSat_T(double &T, TwoPhaseMediumProperties *const properties){
 }
 
+void FluidPropSolver::setSat_p_state(TwoPhaseMediumProperties *const properties){
+  // Do nothing: the saturation properties have already been computed by
+  // setState and stored in the properties struct
+};
+
 void FluidPropSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMediumProperties *const properties){
 	// FluidProp variables (with their default units)
 	string ErrorMsg;

@@ -172,6 +172,10 @@ void BaseTwoPhaseMedium::setSat_T(double &T){
 	_solver->setSat_T(T, _properties);
 }
 
+void BaseTwoPhaseMedium::setSat_p_state(){
+	_solver->setSat_p_state(_properties);
+}
+
 void BaseTwoPhaseMedium::setState_dT(double &d, double &T, int &phase){
 	_solver->setState_dT(d, T, phase, _properties);
 }

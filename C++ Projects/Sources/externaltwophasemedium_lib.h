@@ -36,6 +36,7 @@ extern "C" {
 						  const char *mediumName, const char *libraryName, const char *substanceName);
 	EXPORT void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
 						  const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT void setSat_p_state_(int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID);
 
 	EXPORT double saturationPressure_(double T, const char *mediumName, const char *libraryName, const char *substanceName);
 	EXPORT double saturationTemperature_(double p, const char *mediumName, const char *libraryName, const char *substanceName);

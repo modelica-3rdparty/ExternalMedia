@@ -68,6 +68,7 @@ public:
 
 	virtual void setSat_p(double &p);
 	virtual void setSat_T(double &T);
+	virtual void setSat_p_state();
 
 	virtual void setState_dT(double &d, double &T, int &phase);
 	virtual void setState_ph(double &p, double &h, int &phase);
