@@ -19,6 +19,7 @@ package Test
     Real d_hv_dp = Medium.dDewEnthalpy_dPressure(baseProperties.sat);
   end CompleteProperties;
 
+
   model TestMediumExplicit "Test case using TestMedium and explicit equations" 
     replaceable package Medium = Media.TestMedium;
     CompleteProperties medium1(redeclare package Medium = Medium) 
@@ -31,6 +32,7 @@ package Test
     medium2.baseProperties.p = 1e5;
     medium2.baseProperties.h = 1e5 + 2e5*time;
   end TestMediumExplicit;
+
 
   model TestMediumImplicit "Test case using TestMedium and implicit equations" 
     replaceable package Medium = Media.TestMedium;
@@ -46,6 +48,7 @@ package Test
     medium2.baseProperties.p = 1e5+1e5*time;
     medium2.baseProperties.T = 300;
   end TestMediumImplicit;
+
 
 model TestMediumDynamic "Test case using TestMedium and dynamic equations" 
   import SI = Modelica.SIunits;
@@ -101,6 +104,7 @@ initial equation
         equdistant=false));
 end TestMediumDynamic;
 
+
 model FluidPropIF95Explicit 
   "Test case using FluidProp - RefProp IF95 medium and explicit equations" 
   extends TestMediumExplicit(redeclare package Medium = 
@@ -108,11 +112,13 @@ model FluidPropIF95Explicit
   annotation (experiment(NumberOfIntervals=50), experimentSetupOutput);
 end FluidPropIF95Explicit;
 
+
 model FluidPropIF95Implicit 
   "Test case using FluidProp - RefProp IF95 medium and implicit equations" 
   extends TestMediumImplicit(redeclare package Medium = 
         Media.FluidPropMedia.WaterIF95);
 end FluidPropIF95Implicit;
+
 
 model FluidPropIF95Dynamic "Test case using TestMedium and dynamic equations" 
   extends TestMediumDynamic(redeclare package Medium = 
@@ -121,11 +127,13 @@ model FluidPropIF95Dynamic "Test case using TestMedium and dynamic equations"
         experimentSetupOutput(equdistant=false));
 end FluidPropIF95Dynamic;
 
+
 model WrongMedium 
   "Test the error reporting messages for unsupported external media" 
   extends TestMediumExplicit(redeclare package Medium = 
         Media.ExternalTwoPhaseMedium);
 end WrongMedium;
+
 
 model TestWaterExplicit "Test case using TestMedium and explicit equations" 
   replaceable package Medium = Modelica.Media.Water.StandardWater;
