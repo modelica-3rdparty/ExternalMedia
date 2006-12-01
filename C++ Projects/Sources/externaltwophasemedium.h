@@ -1,12 +1,15 @@
-/* *****************************************************************
- * Header file to include in the Dymola/Source directory 
- *
- * Provides function prototypes for all the external functions needed
- * by medium model extending from PartialExternalTwoPhaseMedium
- *
- * Francesco Casella, Christoph Richter Sep 2006
- ********************************************************************/
+/*! 
+  \file externaltwophasemedium.h
+  
+  This is the header file to be included in the Dymola/Source directory.
+  It proived function prototypes for all the external functions needed
+  by medium models extending from PartialExternalTwoPhaseMedium.
 
+  Please be aware that other Modelica tools might require a slightly
+  different header files depending on the compiler.
+
+  Francesco Casella, Christoph Richter Sep 2006
+*/
 
 #ifndef EXTERNALTWOPHASEMEDIUM_H_
 #define EXTERNALTWOPHASEMEDIUM_H_

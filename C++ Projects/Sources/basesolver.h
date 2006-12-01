@@ -21,6 +21,9 @@ public:
 	/*!
 	  The constructor is copying the medium name, library name and substance name
 	  to the locally defined variables.
+	  @param mediumName Arbitrary medium name
+	  @param libraryName Name of the external fluid property library
+	  @param substanceName Substance name
 	*/
 	BaseSolver(const string &mediumName, const string &libraryName, const string &substanceName);
 	//! Destructor
@@ -41,12 +44,16 @@ public:
 	/*!
 	  This function sets the saturation properties for the given pressure p.
 	  The computed values are written to the two phase medium propery struct.
+	  @param p pressure
+	  @param properties two phase medium property record
 	*/
 	virtual void setSat_p(double &p, TwoPhaseMediumProperties *const properties);
 	//! Set saturation property function
 	/*!
 	  This function sets the saturation properties for the given temperature T.
 	  The computed values are written to the two phase medium propery struct.
+	  @param T temperature
+	  @param properties two phase medium property record
 	*/
 	virtual void setSat_T(double &T, TwoPhaseMediumProperties *const properties);
 	//! Set saturation property function
@@ -55,6 +62,7 @@ public:
 	  and is desined to be used from within the BaseProperties model in
 	  Modelica. The computed values are written to the two phase medium propery 
 	  struct.
+	  @param properties two phase medium property record
 	*/
 	virtual void setSat_p_state(TwoPhaseMediumProperties *const properties);
 
