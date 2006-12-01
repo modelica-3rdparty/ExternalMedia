@@ -1,27 +1,24 @@
-/* *****************************************************************
- * Interface of class TestSolver
- *
- * This class defines a dummy solver object, computing properties of
- * a fluid roughly resembling warm water at low pressure, without
- * the need of any further external code. This is useful for debugging
- * purposes, to test if the C compiler and Modelica tools are set correctly, 
- * before tackling problems with the actual external code
- *
- * To instatiate a specific FluidProp fluid, it is necessary to set 
- * the libraryName package constants as follows:
- *
- * libraryName = "TestMedium";
- *
- * See also the solvermap.cpp code
- *
- * Francesco Casella, Christoph Richter, Oct 2006
- ********************************************************************/
-
 #ifndef TESTSOLVER_H_
 #define TESTSOLVER_H_
 
 #include "basesolver.h"
 
+//! Test solver class
+/*!
+  This class defines a dummy solver object, computing properties of
+  a fluid roughly resembling warm water at low pressure, without
+  the need of any further external code. The class is useful for debugging
+  purposes, to test whether the C compiler and the Modelica tools are set
+  up correctly before tackling problems with the actual - usually ways more
+  complex - external code.
+
+  To instantiate this solver, it is necessary to set the library name package
+  constant in Modelica as follows:
+
+  libraryName = "TestMedium";
+
+  Francesco Casella, Christoph Richter, Oct 2006
+*/
 class TestSolver : public BaseSolver{
 public:
 	TestSolver(const string &mediumName, const string &libraryName, const string &substanceName);

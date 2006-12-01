@@ -1,64 +1,108 @@
-/* *****************************************************************
- * Definition of the TwoPhaseMediumProperties struct
- *
- * The TwoPhaseMediumProperties struct defines all the properties that are
- * computed by external Modelica medium models
- * extending from PartialExternalTwoPhaseMedium.
- * 
- * Francesco Casella, Christoph Richter Sep 2006
- ********************************************************************/
-
 #ifndef TWOPHASEMEDIUMPROPERTIES_H_
 #define TWOPHASEMEDIUMPROPERTIES_H_
 
 #include "include.h"
 
+//! Two phase medium property struct
+/*!
+  The two phase medium propery struct defines all the properties that
+  are computed by external Modelica medium models extending from
+  PartialExternalTwoPhaseMedium. It also contains the saturation properties
+  for the dew and the bubble line which makes it a real two phase medium
+  property struct.
+
+  Francesco Casella, Christoph Richter Sep 2006
+*/
 struct TwoPhaseMediumProperties{
-	string mediumName;			// medium name
-	string libraryName;			// external library name
-	string substanceName;		// substance name
-	int uniqueID;	// unique ID number
+	//! Medium name
+	string mediumName;
+	//! Name of the external library
+	string libraryName;
+	//! Substance name
+	string substanceName;
+	// ! Unique ID number
+	/*!
+	  The unique ID number is included in the two phase medium property
+	  record for error reporting reasons.
+	*/
+	int uniqueID;
 
-	int phase;		// 2 for two-phase, 1 for one-phase, 0 if not known
+	//! Phase input
+	/*!
+	  This phase flag is defined according to the phase flag in Modelica.Media:
+	  2 for two-phase, 1 for one-phase, 0 if not known.
+	*/
+	int phase;
 
-	double beta;	// isothermal expansion coefficient
-	double cp;		// specific heat capacity cp
-	double cv;		// specific heat capacity cv
-	double d;		// density
-	double dd_dp_h; // derivative of density by pressure at constant enthalpy
-	double dd_dh_p; // derivative of density by enthalpy at constant pressure
-	double h;		// specific enthalpy
-	double kappa;	// compressibility
-	double p;		// pressure
-	double s;		// specific entropy
-	double T;		// temperature
+	//! Isothermal expansion coefficient
+	double beta;
+	//! Specific heat capacity cp
+	double cp;
+	//! Specific heat capacity cv
+	double cv;
+	//! Density
+	double d;
+	//! Derivative of density wrt pressure at constant enthalpy
+	double dd_dp_h;
+	//! Derivative of density wrt enthalpy at constant pressure
+	double dd_dh_p;
+	//! Specific enthalpy
+	double h;
+	//! Compressibility
+	double kappa;
+	//! Pressure
+	double p;
+	//! Specific entropy
+	double s;
+	//! Temperature
+	double T;
 
-    // Saturation properties at the fluid pressure
-	double ps;		// saturation pressure
-	double Ts;		// saturation temperature
+	//! Saturation pressure
+	double ps;
+	//! Saturation temperature
+	double Ts;
 
-	double dl;		// bubble density
-	double dv;		// dew density
-	double hl;		// bubble specific enthalpy
-	double hv;		// dew specific enthalpy
-	double sl;		// bubble specific entropy
-	double sv;		// dew specific entropy
+	//! Density at bubble line (for pressure ps)
+	double dl;
+	//! Density at dew line (for pressure ps)
+	double dv;
+	//! Specific enthalpy at bubble line (for pressure ps)
+	double hl;
+	//! Specific enthalpy at dew line (for pressure ps)
+	double hv;
+	//! Specific entropy at bubble line (for pressure ps)
+	double sl;
+	//! Specific entropy at dew line (for pressure ps)
+	double sv;
 
-	double eta;		// dynamic viscosity
-	double lambda;	// thermal conductivity
-	double Pr;		// Prandtl number
-	double sigma;	// surface tension
+	//! Dynamic viscosity
+	double eta;
+	//! Thermal conductivity
+	double lambda;
+	//! Prandtl number
+	double Pr;
+	//! Surface tension
+	double sigma;
 
-    double d_Ts_dp;  // derivative of Ts by pressure
-	double d_dl_dp; // derivative of dls by pressure
-	double d_dv_dp; // derivative of dvs by pressure
-    double d_hl_dp; // derivative of hls by pressure
-	double d_hv_dp; // derivative of hvs by pressure
+	//! Derivative of Ts wrt pressure
+    double d_Ts_dp;
+	//! Derivative of dls wrt pressure
+	double d_dl_dp;
+	//! Derivative of dvs wrt pressure
+	double d_dv_dp;
+	//! Derivative of hls wrt pressure
+    double d_hl_dp;
+	//! Derivative of hvs wrt pressure
+	double d_hv_dp;
 
-	double d_dl_dP_hL; // derivative of density by pressure at constant enthalpy, bubble point, liquid side
-	double d_dl_dP_h2; // derivative of density by pressure at constant enthalpy, bubble point, 2-phase side
-	double d_dv_dP_hV; // derivative of density by pressure at constant enthalpy, bubble point, vapour side
-	double d_dv_dP_h2; // derivative of density by pressure at constant enthalpy, bubble point, 2-phase side
+	//! Derivative of density wrt pressure at constant enthalpy, bubble point, liquid side
+	double d_dl_dP_hL;
+	//! Derivative of density wrt pressure at constant enthalpy, bubble point, 2-phase side
+	double d_dl_dP_h2;
+	//! Derivative of density wrt pressure at constant enthalpy, bubble point, vapour side
+	double d_dv_dP_hV;
+	//! Derivative of density wrt pressure at constant enthalpy, bubble point, 2-phase side
+	double d_dv_dP_h2;
 };
 
 #endif /*TWOPHASEMEDIUMPROPERTIES_H_*/
