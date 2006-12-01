@@ -259,8 +259,8 @@ partial package PartialExternalTwoPhaseMedium
     input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
     input Integer uniqueID "Unique ID";
     output Density d "Density";
-    annotation(derivative(noDerivative = phase, noDerivative = uniqueID) = density_ph_der);
-    annotation(Inline = false);
+    annotation(derivative(noDerivative = phase, noDerivative = uniqueID) = density_ph_der,
+               Inline = false);
   algorithm 
     d := density(setState_ph(p, h, phase, uniqueID));
   end density_ph;
@@ -283,7 +283,8 @@ partial package PartialExternalTwoPhaseMedium
     input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
     input Integer uniqueID "Unique ID";
     output Density d "Density";
-    annotation(derivative = density_pT_der);
+    annotation(derivative(noDerivative = phase, noDerivative = uniqueID) = density_pT_der,
+               Inline = false);
   algorithm 
     d := density(setState_pT(p, T, phase, uniqueID));
   end density_pT;
@@ -306,6 +307,8 @@ partial package PartialExternalTwoPhaseMedium
     input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
     input Integer uniqueID "Unique ID";
     output Density d "Density";
+    annotation(derivative(noDerivative = phase, noDerivative = uniqueID) = density_ps_der,
+               Inline = false);
   algorithm 
     d := density(setState_ps(p, s, phase, uniqueID));
   end density_ps;
