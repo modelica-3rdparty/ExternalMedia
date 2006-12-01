@@ -65,14 +65,14 @@ package ExternalTwoPhaseMedium
   redeclare replaceable function extends saturationPressure_sat 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" p=  saturationPressure_sat_(sat.uniqueID);
+  external "C" p=  saturationPressure_sat_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName);
   end saturationPressure_sat;
   
   redeclare replaceable function extends saturationTemperature_sat 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
   external "C" T = 
-                  saturationTemperature_sat_(sat.uniqueID);
+                  saturationTemperature_sat_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName);
   end saturationTemperature_sat;
   
   redeclare replaceable function extends density 
@@ -132,7 +132,7 @@ package ExternalTwoPhaseMedium
   redeclare replaceable function extends bubbleDensity 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" dl=  bubbleDensity_(sat.uniqueID);
+  external "C" dl=  bubbleDensity_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName);
   end bubbleDensity;
   
   redeclare replaceable function extends dewDensity 
@@ -144,49 +144,49 @@ package ExternalTwoPhaseMedium
   redeclare replaceable function extends bubbleEnthalpy 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" hl=  bubbleEnthalpy_(sat.uniqueID);
+  external "C" hl=  bubbleEnthalpy_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName);
   end bubbleEnthalpy;
   
   redeclare replaceable function extends dewEnthalpy 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" hv=  dewEnthalpy_(sat.uniqueID);
+  external "C" hv=  dewEnthalpy_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName);
   end dewEnthalpy;
   
   redeclare replaceable function extends bubbleEntropy 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" sl=  bubbleEntropy_(sat.uniqueID);
+  external "C" sl=  bubbleEntropy_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName);
   end bubbleEntropy;
   
   redeclare replaceable function extends dewEntropy 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" sv=  dewDensity_(sat.uniqueID);
+  external "C" sv=  dewDensity_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName);
   end dewEntropy;
   
   redeclare replaceable function extends dBubbleDensity_dPressure 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" ddldp=  dBubbleDensity_dPressure_(sat.uniqueID);
+  external "C" ddldp=  dBubbleDensity_dPressure_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName);
   end dBubbleDensity_dPressure;
   
   redeclare replaceable function extends dDewDensity_dPressure 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" ddvdp=  dDewDensity_dPressure_(sat.uniqueID);
+  external "C" ddvdp=  dDewDensity_dPressure_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName);
   end dDewDensity_dPressure;
   
   redeclare replaceable function extends dBubbleEnthalpy_dPressure 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" dhldp=  dBubbleEnthalpy_dPressure_(sat.uniqueID);
+  external "C" dhldp=  dBubbleEnthalpy_dPressure_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName);
   end dBubbleEnthalpy_dPressure;
   
   redeclare replaceable function extends dDewEnthalpy_dPressure 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" dhvdp=  dDewEnthalpy_dPressure_(sat.uniqueID);
+  external "C" dhvdp=  dDewEnthalpy_dPressure_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName);
   end dDewEnthalpy_dPressure;
   
   redeclare replaceable function extends density_ph_der 

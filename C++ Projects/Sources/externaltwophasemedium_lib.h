@@ -41,20 +41,31 @@ extern "C" {
 	EXPORT double saturationPressure_(double T, const char *mediumName, const char *libraryName, const char *substanceName);
 	EXPORT double saturationTemperature_(double p, const char *mediumName, const char *libraryName, const char *substanceName);
 
-	EXPORT double saturationPressure_sat_(int uniqueID);
-	EXPORT double saturationTemperature_sat_(int uniqueID);
+	EXPORT double saturationPressure_sat_(double psat, double Tsat, int uniqueID,
+										  const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double saturationTemperature_sat_(double psat, double Tsat, int uniqueID,
+											 const char *mediumName, const char *libraryName, const char *substanceName);
 
-	EXPORT double bubbleDensity_(int uniqueID);
+	EXPORT double bubbleDensity_(double psat, double Tsat, int uniqueID,
+								 const char *mediumName, const char *libraryName, const char *substanceName);
 	EXPORT double dewDensity_(double psat, double Tsat, int uniqueID,
 							  const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double bubbleEnthalpy_(int uniqueID);
-	EXPORT double dewEnthalpy_(int uniqueID);
-	EXPORT double bubbleEntropy_(int uniqueID);
-	EXPORT double dewEntropy_(int uniqueID);
-	EXPORT double dBubbleDensity_dPressure_(int uniqueID);
-	EXPORT double dDewDensity_dPressure_(int uniqueID);
-	EXPORT double dBubbleEnthalpy_dPressure_(int uniqueID);
-	EXPORT double dDewEnthalpy_dPressure_(int uniqueID);
+	EXPORT double bubbleEnthalpy_(double psat, double Tsat, int uniqueID,
+								  const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double dewEnthalpy_(double psat, double Tsat, int uniqueID,
+							   const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double bubbleEntropy_(double psat, double Tsat, int uniqueID,
+								 const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double dewEntropy_(double psat, double Tsat, int uniqueID,
+							  const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double dBubbleDensity_dPressure_(double psat, double Tsat, int uniqueID,
+											const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double dDewDensity_dPressure_(double psat, double Tsat, int uniqueID,
+										 const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double dBubbleEnthalpy_dPressure_(double psat, double Tsat, int uniqueID,
+											 const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double dDewEnthalpy_dPressure_(double psat, double Tsat, int uniqueID,
+										  const char *mediumName, const char *libraryName, const char *substanceName);
 
 	EXPORT void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 							 const char *mediumName, const char *libraryName, const char *substanceName);

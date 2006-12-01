@@ -31,20 +31,31 @@ extern void setSat_p_state_(int uniqueID, double *sat_psat, double *sat_Tsat, in
 extern double saturationPressure_(double T, const char *mediumName, const char *libraryName, const char *substanceName);
 extern double saturationTemperature_(double p, const char *mediumName, const char *libraryName, const char *substanceName);
 
-double saturationPressure_sat_(int uniqueID);
-double saturationTemperature_sat_(int uniqueID);
+double saturationPressure_sat_(double psat, double Tsat, int uniqueID,
+							   const char *mediumName, const char *libraryName, const char *substanceName);
+double saturationTemperature_sat_(double psat, double Tsat, int uniqueID,
+								  const char *mediumName, const char *libraryName, const char *substanceName);
 
-extern double bubbleDensity_(int uniqueID);
+extern double bubbleDensity_(double psat, double Tsat, int uniqueID,
+							 const char *mediumName, const char *libraryName, const char *substanceName);
 extern double dewDensity_(double psat, double Tsat, int uniqueID,
 						  const char *mediumName, const char *libraryName, const char *substanceName);
-extern double bubbleEnthalpy_(int uniqueID);
-extern double dewEnthalpy_(int uniqueID);
-extern double bubbleEntropy_(int uniqueID);
-extern double dewEntropy_(int uniqueID);
-extern double dBubbleDensity_dPressure_(int uniqueID);
-extern double dDewDensity_dPressure_(int uniqueID);
-extern double dBubbleEnthalpy_dPressure_(int uniqueID);
-extern double dDewEnthalpy_dPressure_(int uniqueID);
+extern double bubbleEnthalpy_(double psat, double Tsat, int uniqueID,
+							  const char *mediumName, const char *libraryName, const char *substanceName);
+extern double dewEnthalpy_(double psat, double Tsat, int uniqueID,
+						   const char *mediumName, const char *libraryName, const char *substanceName);
+extern double bubbleEntropy_(double psat, double Tsat, int uniqueID,
+							 const char *mediumName, const char *libraryName, const char *substanceName);
+extern double dewEntropy_(double psat, double Tsat, int uniqueID,
+						  const char *mediumName, const char *libraryName, const char *substanceName);
+extern double dBubbleDensity_dPressure_(double psat, double Tsat, int uniqueID,
+										const char *mediumName, const char *libraryName, const char *substanceName);
+extern double dDewDensity_dPressure_(double psat, double Tsat, int uniqueID,
+									 const char *mediumName, const char *libraryName, const char *substanceName);
+extern double dBubbleEnthalpy_dPressure_(double psat, double Tsat, int uniqueID,
+										 const char *mediumName, const char *libraryName, const char *substanceName);
+extern double dDewEnthalpy_dPressure_(double psat, double Tsat, int uniqueID,
+									  const char *mediumName, const char *libraryName, const char *substanceName);
 
 extern void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 			   	         const char *mediumName, const char *libraryName, const char *substanceName);

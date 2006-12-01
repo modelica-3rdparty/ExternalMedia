@@ -236,60 +236,112 @@ double temperature_(int uniqueID){
 	return MediumMap::medium(uniqueID)->T();
 }
 
-double saturationPressure_sat_(int uniqueID){
-	return MediumMap::medium(uniqueID)->ps();
+double saturationPressure_sat_(double psat, double Tsat, int uniqueID,
+							   const char *mediumName, const char *libraryName, const char *substanceName){
+	// Use solver medium object if no unique ID is supplied
+	if (uniqueID == 0)
+		return MediumMap::solverMedium(mediumName, libraryName, substanceName)->ps();
+	else
+		return MediumMap::medium(uniqueID)->ps();
 }
 
-double saturationTemperature_sat_(int uniqueID){
-	return MediumMap::medium(uniqueID)->Ts();
+double saturationTemperature_sat_(double psat, double Tsat, int uniqueID,
+								  const char *mediumName, const char *libraryName, const char *substanceName){
+	// Use solver medium object if no unique ID is supplied
+	if (uniqueID == 0)
+		return MediumMap::solverMedium(mediumName, libraryName, substanceName)->Ts();
+	else
+		return MediumMap::medium(uniqueID)->Ts();
 }
 
-double bubbleDensity_(int uniqueID){
-	return MediumMap::medium(uniqueID)->dl();
+double bubbleDensity_(double psat, double Tsat, int uniqueID,
+					  const char *mediumName, const char *libraryName, const char *substanceName){
+	// Use solver medium object if no unique ID is supplied
+	if (uniqueID == 0)
+		return MediumMap::solverMedium(mediumName, libraryName, substanceName)->dl();
+	else
+		return MediumMap::medium(uniqueID)->dl();
 }
 
 double dewDensity_(double psat, double Tsat, int uniqueID,
 				   const char *mediumName, const char *libraryName, const char *substanceName){
-	// Create pointer to medium
-	BaseTwoPhaseMedium *medium;
-	// Check whether a unique ID is supplied
+	// Use solver medium object if no unique ID is supplied
 	if (uniqueID == 0)
-		medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+		return MediumMap::solverMedium(mediumName, libraryName, substanceName)->dv();
 	else
-		medium = MediumMap::medium(uniqueID);
-	return medium->dv();
+		return MediumMap::medium(uniqueID)->dv();
 }
 
-double bubbleEnthalpy_(int uniqueID){
-	return MediumMap::medium(uniqueID)->hl();
+double bubbleEnthalpy_(double psat, double Tsat, int uniqueID,
+					   const char *mediumName, const char *libraryName, const char *substanceName){
+	// Use solver medium object if no unique ID is supplied
+	if (uniqueID == 0)
+		return MediumMap::solverMedium(mediumName, libraryName, substanceName)->hl();
+	else
+		return MediumMap::medium(uniqueID)->hl();
 }
 
-double dewEnthalpy_(int uniqueID){
-	return MediumMap::medium(uniqueID)->hv();
+double dewEnthalpy_(double psat, double Tsat, int uniqueID,
+					const char *mediumName, const char *libraryName, const char *substanceName){
+	// Use solver medium object if no unique ID is supplied
+	if (uniqueID == 0)
+		return MediumMap::solverMedium(mediumName, libraryName, substanceName)->hv();
+	else
+		return MediumMap::medium(uniqueID)->hv();
 }
 
-double bubbleEntropy_(int uniqueID){
-	return MediumMap::medium(uniqueID)->sl();
+double bubbleEntropy_(double psat, double Tsat, int uniqueID,
+					  const char *mediumName, const char *libraryName, const char *substanceName){
+	// Use solver medium object if no unique ID is supplied
+	if (uniqueID == 0)
+		return MediumMap::solverMedium(mediumName, libraryName, substanceName)->sl();
+	else
+		return MediumMap::medium(uniqueID)->sl();
 }
 
-double dewEntropy_(int uniqueID){
-	return MediumMap::medium(uniqueID)->sv();
+double dewEntropy_(double psat, double Tsat, int uniqueID,
+				   const char *mediumName, const char *libraryName, const char *substanceName){
+	// Use solver medium object if no unique ID is supplied
+	if (uniqueID == 0)
+		return MediumMap::solverMedium(mediumName, libraryName, substanceName)->sv();
+	else
+		return MediumMap::medium(uniqueID)->sv();
 }
 
-double dBubbleDensity_dPressure_(int uniqueID){
-	return MediumMap::medium(uniqueID)->d_dl_dp();
+double dBubbleDensity_dPressure_(double psat, double Tsat, int uniqueID,
+								 const char *mediumName, const char *libraryName, const char *substanceName){
+	// Use solver medium object if no unique ID is supplied
+	if (uniqueID == 0)
+		return MediumMap::solverMedium(mediumName, libraryName, substanceName)->d_dl_dp();
+	else
+		return MediumMap::medium(uniqueID)->d_dl_dp();
 }
 
-double dDewDensity_dPressure_(int uniqueID){
-	return MediumMap::medium(uniqueID)->d_dv_dp();
+double dDewDensity_dPressure_(double psat, double Tsat, int uniqueID,
+							  const char *mediumName, const char *libraryName, const char *substanceName){
+	// Use solver medium object if no unique ID is supplied
+	if (uniqueID == 0)
+		return MediumMap::solverMedium(mediumName, libraryName, substanceName)->d_dv_dp();
+	else
+		return MediumMap::medium(uniqueID)->d_dv_dp();
 }
 
-double dBubbleEnthalpy_dPressure_(int uniqueID){
-	return MediumMap::medium(uniqueID)->d_hl_dp();
+double dBubbleEnthalpy_dPressure_(double psat, double Tsat, int uniqueID,
+								  const char *mediumName, const char *libraryName, const char *substanceName){
+	// Use solver medium object if no unique ID is supplied
+	if (uniqueID == 0)
+		return MediumMap::solverMedium(mediumName, libraryName, substanceName)->d_hl_dp();
+	else
+		return MediumMap::medium(uniqueID)->d_hl_dp();
 }
 
-double dDewEnthalpy_dPressure_(int uniqueID){
-	return MediumMap::medium(uniqueID)->d_hv_dp();
+double dDewEnthalpy_dPressure_(double psat, double Tsat, int uniqueID,
+							   const char *mediumName, const char *libraryName, const char *substanceName){
+	// Use solver medium object if no unique ID is supplied
+	if (uniqueID == 0)
+		return MediumMap::solverMedium(mediumName, libraryName, substanceName)->d_hv_dp();
+	else
+		return MediumMap::medium(uniqueID)->d_hv_dp();
 }
 
 double isobaricExpansionCoefficient_(int uniqueID){
