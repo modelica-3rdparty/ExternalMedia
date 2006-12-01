@@ -13,7 +13,6 @@
 
 extern int createMedium_(const char *mediumName, const char *libraryName, 
 						 const char *substanceName, int oldUniqueID);
-
 extern double getMolarMass_(const char *mediumName, const char *libraryName,  
  			                const char *substanceName);
 

@@ -24,6 +24,12 @@
 #define BUILD_DLL
 // #define BUILD_LIB
 
+// Maximum number of non-overlapping transient medium objects
+// Increase this number if you ran a large model with more than 
+// a thousand instances of  ThermodynamicState and SaturationState 
+// outside BaseProperties records, and without explicit uniqueID handling
+#define MAX_TRANSIENT_MEDIUM 1000
+
 /********************************************************************
  *                 End of user option selection
  *            Do not change anything below this line                                    

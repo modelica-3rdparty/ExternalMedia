@@ -27,6 +27,32 @@ int MediumMap::addMedium(const std::string &mediumName, const std::string &libra
 	return _uniqueID;
 }
 
+int MediumMap::addTransientMedium(const std::string &mediumName,
+      const std::string &libraryName, const std::string &substanceName){
+  // Get a new transient unique ID number
+  ++_transientUniqueID;
+  // Get a pointer to the solver (and create it if it doesn't exist)
+  // based on the libraryName, substanceName and possibly mediumName
+  // strings
+  BaseSolver *baseSolver = SolverMap::getSolver(
+                           mediumName, libraryName, substanceName);
+  // Create new medium
+
+    /* ***************************************************/
+    /* This is the place where one could specify a more  */
+    /* advanced medium extending from BaseTwoPhaseMedium */
+    /* ***************************************************/
+   
+   // Only create a new object for the first MAX_TRANSIENT_MEDIUM calls
+   // and assign it to a negative entry in the medium map
+   if (_transientUniqueID <= MAX_TRANSIENT_MEDIUM)
+     _mediums[-(_transientUniqueID)] = new TwoPhaseMedium(mediumName,
+                 libraryName, substanceName, baseSolver, _uniqueID);
+   // Return the unique ID number of the new object (for the first 
+   // MAX_TRANSIENT_MEDIUM instances), or of an old object using a 
+   // the map as a circular buffer (for the subsequent ones)
+   return -(((_transientUniqueID - 1) % MAX_TRANSIENT_MEDIUM) + 1);
+}
 void MediumMap::addSolverMedium(const string &solverKey, BaseSolver *const baseSolver){
 	// Create new medium
 	_solverMediums[solverKey] = new TwoPhaseMedium(baseSolver->mediumName, baseSolver->libraryName, baseSolver->substanceName, baseSolver, -1);
@@ -72,3 +98,4 @@ map<int, BaseTwoPhaseMedium*> MediumMap::_mediums;
 map<string, BaseTwoPhaseMedium*> MediumMap::_solverMediums;
 
 int MediumMap::_uniqueID(0);
+int MediumMap::_transientUniqueID(0);

@@ -21,8 +21,11 @@ class BaseTwoPhaseMedium;
 
 class MediumMap{
 public:
-	// Add a new medium object to the medium map, and return its uniqueID
+	// Add a new medium object to the medium map, and return its (positive) uniqueID
 	static int addMedium(const string &mediumName, const string &libraryName, const string &substanceName);
+	
+	// Add a new transient medium object to the medium map, and return its (negative) uniqueID
+	static int addTransientMedium(const string &mediumName, const string &libraryName, const string &substanceName);
 	
 	// Add the default medium object for the solver to the default solver media map
 	static void addSolverMedium(const string &solverKey, BaseSolver *const baseSolver);
@@ -41,8 +44,13 @@ public:
 	static BaseTwoPhaseMedium *solverMedium(const string &mediumName, const string &libraryName, const string &substanceName);
 
 protected:
-	// Static integer for the unique ID number
+	// Static integer for the positive unique ID number used by permanent
+	// medium objects
 	static int _uniqueID;
+
+	// Static integer for the negative unique ID number used by transient
+	// medium objects
+	static int _transientUniqueID;
 
 	// Map for mediums with unique ID as identifier
 	static map<int, BaseTwoPhaseMedium*> _mediums;
