@@ -8,7 +8,7 @@
 
 #include "twophasemedium.h"
 
-int MediumMap::addMedium(const std::string &mediumName, const std::string &libraryName, const std::string &substanceName){
+int MediumMap::addMedium(const string &mediumName, const string &libraryName, const string &substanceName){
 	// Increase unique ID number
 	++_uniqueID;
 	// Get a pointer to the solver (and create it if it doesn't exist)
@@ -27,8 +27,7 @@ int MediumMap::addMedium(const std::string &mediumName, const std::string &libra
 	return _uniqueID;
 }
 
-int MediumMap::addTransientMedium(const std::string &mediumName,
-      const std::string &libraryName, const std::string &substanceName){
+int MediumMap::addTransientMedium(const string &mediumName, const string &libraryName, const string &substanceName){
   // Get a new transient unique ID number
   ++_transientUniqueID;
   // Get a pointer to the solver (and create it if it doesn't exist)

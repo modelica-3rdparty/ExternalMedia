@@ -172,7 +172,7 @@ void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *
 	  // create a new transient medium object and get a transientUniqueID
 	  int transientUniqueID = 
         MediumMap::addTransientMedium(mediumName, libraryName, substanceName);
-      // run setSat_p with the transientUniqueID
+      // run setSat_T with the transientUniqueID
 	  setSat_T_(T, transientUniqueID, sat_psat, sat_Tsat, sat_uniqueID,
 		        mediumName, libraryName, substanceName);
 	}
