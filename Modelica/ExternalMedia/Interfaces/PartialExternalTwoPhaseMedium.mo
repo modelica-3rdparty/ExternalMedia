@@ -20,7 +20,7 @@ partial package PartialExternalTwoPhaseMedium
     molarMass=  getMolarMass(),
     criticalTemperature=  getCriticalTemperature(),
     criticalPressure=  getCriticalPressure(),
-    criticalMolarVolume=  1,
+    criticalMolarVolume=  getCriticalMolarVolume(),
     acentricFactor=  0,
     triplePointTemperature=  280.0,
     triplePointPressure=  500.0,
@@ -223,6 +223,10 @@ partial package PartialExternalTwoPhaseMedium
   replaceable partial function getCriticalPressure 
     output AbsolutePressure pc "Critical temperature";
   end getCriticalPressure;
+  
+  replaceable partial function getCriticalMolarVolume 
+    output MolarVolume vc "Critical molar volume";
+  end getCriticalMolarVolume;
   
   redeclare function extends setState_phX 
     input Integer uniqueID "Unique ID";

@@ -219,4 +219,10 @@ package ExternalTwoPhaseMedium
   external "C" pc=  getCriticalPressure_(mediumName, libraryName, substanceName);
   end getCriticalPressure;
   
+  redeclare replaceable function extends getCriticalMolarVolume 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" vc=  getCriticalMolarVolume_(mediumName, libraryName, substanceName);
+  end getCriticalMolarVolume;
+  
 end ExternalTwoPhaseMedium;
