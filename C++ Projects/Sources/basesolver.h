@@ -115,6 +115,18 @@ public:
 	*/
 	virtual void setState_pT(double &p, double &T, TwoPhaseMediumProperties *const properties);
 
+	//! Compute derivatives
+	/*!
+	  This function computes the derivatives according to the Bridgman's table.
+	  The computed values are written to the two phase medium property struct.
+	  This function can be called from within the setState_XXX routines 
+	  when implementing a new solver. Please be aware that cp, beta and
+	  kappa have to be provided to allow the computation of the derivatives. It
+	  returns false if the computation failed.
+	  @param properties Two phase medium property record
+	*/
+	virtual bool computeDerivatives(TwoPhaseMediumProperties *const properties);
+
 	//! Return molar mass
     double molarMass() const;
 	//! Return temperature at critical point
@@ -141,18 +153,6 @@ public:
 protected:
 	//! Fluid constants
 	FluidConstants _fluidConstants; 
-
-	//! Compute derivatives
-	/*!
-	  This function computes the derivatives according to the Bridgman's table.
-	  The computed values are written to the two phase medium property struct.
-	  This function can be called from within the setState_XXX routines 
-	  when implementing a new solver. Please be aware that cp, beta and
-	  kappa have to be provided to allow the computation of the derivatives. It
-	  returns false if the computation failed.
-	  @param properties Two phase medium property record
-	*/
-	bool computeDerivatives(TwoPhaseMediumProperties *const properties);
 };
 
 #endif /*BASESOLVER_H_*/

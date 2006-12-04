@@ -382,6 +382,14 @@ double surfaceTension_(double psat, double Tsat, int uniqueID){
 	return MediumMap::medium(uniqueID)->sigma();
 }
 
+double dDensity_dPressure_h_(int uniqueID){
+	return MediumMap::medium(uniqueID)->dd_dp_h();
+}
+
+double dDensity_dEnthalpy_p_(int uniqueID){
+	return MediumMap::medium(uniqueID)->dd_dh_p();
+}
+
 double saturationPressure_(double T, const char *mediumName,
 						   const char *libraryName, const char *substanceName){
 	// Get medium object

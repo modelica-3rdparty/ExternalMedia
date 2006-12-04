@@ -88,4 +88,7 @@ extern double thermalConductivity_(int uniqueID);
 extern double prandtlNumber_(int uniqueID);
 extern double surfaceTension_(double psat, double Tsat, int uniqueID);
 
+extern double dDensity_dPressure_h_(int uniqueID);
+extern double dDensity_dEnthalpy_p_(int uniqueID);
+
 #endif /*EXTERNALTWOPHASEMEDIUM_H_*/

@@ -259,6 +259,9 @@ extern "C" {
 	EXPORT double prandtlNumber_(int uniqueID);
 	EXPORT double surfaceTension_(double psat, double Tsat, int uniqueID);
 
+	EXPORT double dDensity_dPressure_h_(int uniqueID);
+	EXPORT double dDensity_dEnthalpy_p_(int uniqueID);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

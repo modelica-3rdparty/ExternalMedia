@@ -39,8 +39,7 @@ int MediumMap::addTransientMedium(const string &mediumName, const string &librar
 	// Only create a new object for the first MAX_TRANSIENT_MEDIUM calls
 	// and assign it to a negative entry in the medium map
 	if (_transientUniqueID <= MAX_TRANSIENT_MEDIUM)
-	 _mediums[-(_transientUniqueID)] = new TwoPhaseMedium(mediumName,
-				 libraryName, substanceName, solver, _uniqueID);
+	 _mediums[-(_transientUniqueID)] = new TwoPhaseMedium(mediumName, libraryName, substanceName, solver, _uniqueID);
 	// Return the unique ID number of the new object (for the first 
 	// MAX_TRANSIENT_MEDIUM instances), or of an old object using a 
 	// the map as a circular buffer (for the subsequent ones)
@@ -48,7 +47,7 @@ int MediumMap::addTransientMedium(const string &mediumName, const string &librar
 }
 void MediumMap::addSolverMedium(const string &solverKey, BaseSolver *const solver){
 	// Create new medium
-	_solverMediums[solverKey] = new TwoPhaseMedium(solver->mediumName, solver->libraryName, solver->substanceName, solver, -1);
+	_solverMediums[solverKey] = new TwoPhaseMedium(solver->mediumName, solver->libraryName, solver->substanceName, solver, 0);
 }
 
 void MediumMap::changeMedium(const string &mediumName, const string &libraryName, const string &substanceName, const int &uniqueID){
