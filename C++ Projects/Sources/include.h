@@ -1,11 +1,15 @@
-/* *****************************************************************
- * Generic include file for the whole ExternalMediaPackage project
- *
- * Uncomment the #define directives as appropriate
- *
- * Christoph Richter, Francesco Casella, Oct 2006
- ********************************************************************/
+/*!
+  \file include.h
+  \brief generic include file
 
+  This is a generic include for for the entire ExternalMediaPackage
+  project. It defines some important preprocessor variables that might
+  have to be changed by the user.
+
+  Uncomment the define directives as appropriate
+
+  Christoph Richter, Francesco Casella, Oct 2006
+*/
 #ifndef INCLUDE_H_
 #define INCLUDE_H_
 
@@ -13,21 +17,54 @@
  *                Start of user option selection
  ********************************************************************/
 
-// Selection of Modelica compiler 
-#define DYMOLA
-// #define OPEN_MODELICA
+// Selection of Modelica compiler
+//! Modelica compiler is Dymola
+/*!
+  Set this preprocessor variable to 1 if Dymola is the Modelica
+  compiler that is going to be used with the compiled library.
+  \sa OPEN_MODELICA
+*/
+#define DYMOLA 1
+//! Modelica compiler is OpenModelica
+/*!
+  Set this preprocessor variable to 1 if OpanModelica is the Modelica
+  compiler that is going to be used with the compiled library.
+  \sa DYMOLA
+*/
+#define OPEN_MODELICA 0
 
-// Selection of used external fluid property computation packages
-#define FLUIDPROP
+// Selection of used external fluid property computation packages.
+//! FluidProp solver	
+/*!
+  Set this preprocessor variable to 1 to include the interface to the
+  FluidProp solver developed and maintained by Francesco Casella.
+*/
+#define FLUIDPROP 0
 
-// Select the build type of this project
-#define BUILD_DLL
-// #define BUILD_LIB
+// Selection of build type for this project
+//! Build project into a DLL
+/*!
+  Set this preprocessor variable to 1 if the project is built into a 
+  dynamic link library. This setting influences the error reporting
+  mechanism as well as the export statement.
+  \sa BUILD_LIB
+*/
+#define BUILD_DLL 1
+//! Build project into a LIB
+/*!
+  Set this preprocessor variable to 1 if the project is built into a 
+  static library. This setting influences the error reporting
+  mechanism as well as the export statement.
+  \sa BUILD_DLL
+*/
+#define BUILD_LIB 0
 
-// Maximum number of non-overlapping transient medium objects
-// Increase this number if you ran a large model with more than 
-// a thousand instances of  ThermodynamicState and SaturationState 
-// outside BaseProperties records, and without explicit uniqueID handling
+//! Maximum number of non-overlapping transient medium objects
+/*!
+  Increase this number if you ran a large model with more than 
+  a thousand instances of  ThermodynamicState and SaturationState 
+  outside BaseProperties records, and without explicit uniqueID handling
+*/
 #define MAX_TRANSIENT_MEDIUM 1000
 
 /********************************************************************

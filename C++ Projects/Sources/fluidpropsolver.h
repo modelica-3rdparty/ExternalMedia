@@ -34,7 +34,7 @@
 
 #include "basesolver.h"
 
-#ifdef FLUIDPROP
+#if (FLUIDPROP == 1)
 
 #include "FluidProp_IF.h"
 
@@ -57,6 +57,6 @@ protected:
     TFluidProp FluidProp;  // Instance of FluidProp wrapper object
 };
 
-#endif // FLUIDPROP
+#endif // FLUIDPROP == 1
 
 #endif /*FLUIDPROPSOLVER_H_*/

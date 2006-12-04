@@ -1,27 +1,31 @@
-/* *****************************************************************
- * Definition of the FluidConstants struct
- *
- * The FluidConstants struct contains all the constant fluid properties
- * that are returned by the external solver
- * 
- * Francesco Casella, Christoph Richter Nov 2006
- ********************************************************************/
-
 #ifndef FLUIDCONSTANTS_H_
 #define FLUIDCONSTANTS_H_
 
 #include "include.h"
 
+//! Fluid constants struct
+/*!
+  The fluid constants struct contains all the constant fluid properties
+  that are returned by the external solver.
+
+  Francesco Casella, Christoph Richter Nov 2006
+*/
 struct FluidConstants{
-	double MM;		// molar mass
-	double pc;		// critical pressure
-	double Tc;		// critical temperature
-	// The following three properties are not accessible from the Modelica
-	// layer right now. If required they can be easily added to the Modelica
-	// layer similar to the available function getMolarMass_(), ...
-	double dc;		// critical density
-	double hc;		// critical specific enthalpy
-	double sc;		// critical specific entropy
+	//! Molar mass
+	double MM;
+	//! Pressure at critical point
+	double pc;
+	//! Temperature at critical point
+	double Tc;
+	//! Density at critical point
+	double dc;
+	// The following two functions are currently only available internally
+	// but do not have the required interface functions to be accessible from
+	// Modelica.
+	//! Specific enthalpy at critical point
+	double hc;
+	//! Specific entropy at critical point
+	double sc;
 };
 
 #endif /*FLUIDCONSTANTS_H_*/

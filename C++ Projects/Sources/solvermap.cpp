@@ -10,9 +10,9 @@
 #include "mediummap.h"
 #include "testsolver.h"
 
-#ifdef FLUIDPROP
+#if (FLUIDPROP == 1)
 #include "fluidpropsolver.h"
-#endif // FLUIDPROP
+#endif // FLUIDPROP == 1
 
 BaseSolver *SolverMap::getSolver(const string &mediumName, const string &libraryName, const string &substanceName){
 	// Get solver key from library and substance name
@@ -24,10 +24,10 @@ BaseSolver *SolverMap::getSolver(const string &mediumName, const string &library
 	// CompilerTest solver
 	if (libraryName.compare("TestMedium") == 0)
 	  _solvers[solverKey] = new TestSolver(mediumName, libraryName, substanceName);
-#ifdef FLUIDPROP
+#if (FLUIDPROP == 1)
 	else if (libraryName.find("FluidProp") == 0)
 	  _solvers[solverKey] = new FluidPropSolver(mediumName, libraryName, substanceName);
-#endif // FLUIDPROP
+#endif // FLUIDPROP == 1
 	else {
 	  // Generate error message
 	  char error[100];

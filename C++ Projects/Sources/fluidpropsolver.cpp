@@ -7,7 +7,7 @@
 #include "fluidpropsolver.h"
 #include "twophasemediumproperties.h"
 
-#ifdef FLUIDPROP
+#if (FLUIDPROP == 1)
 #define _AFXDLL
 FluidPropSolver::FluidPropSolver(const string &mediumName,
 								 const string &libraryName,
@@ -154,4 +154,4 @@ void FluidPropSolver::setState_ps(double &p, double &s, int &phase, TwoPhaseMedi
    /// XXX to be completed
 }
 
-#endif // FLUIDPROP
+#endif // FLUIDPROP == 1

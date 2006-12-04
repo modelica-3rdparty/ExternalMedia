@@ -40,6 +40,12 @@ double getCriticalPressure_(const char *mediumName, const char *libraryName,
 	return SolverMap::getSolver(mediumName, libraryName, substanceName)->criticalPressure();
 }
 
+double getCriticalMolarVolume_(const char *mediumName, const char *libraryName,
+							   const char *substanceName){
+	// Return critical molar volume
+	return SolverMap::getSolver(mediumName, libraryName, substanceName)->criticalMolarVolume();
+}
+
 void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 				  const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0){

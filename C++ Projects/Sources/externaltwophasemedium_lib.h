@@ -173,9 +173,9 @@
 #include "include.h"
 
 // Define export
-#if defined BUILD_DLL
+#if (BUILD_DLL == 1)
 #define EXPORT __declspec(dllexport)
-#elif defined BUILD_LIB
+#elif (BUILD_LIB == 1)
 #define EXPORT __declspec(dllexport)
 #else
 #define EXPORT __declspec(dllimport)
@@ -194,6 +194,8 @@ extern "C" {
 	                	         		  const char *substanceName);
 	EXPORT double getCriticalPressure_(const char *mediumName, const char *libraryName,  
 									   const char *substanceName);
+	EXPORT double getCriticalMolarVolume_(const char *mediumName, const char *libraryName,
+										  const char *substanceName);
 
 	EXPORT void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
 						  const char *mediumName, const char *libraryName, const char *substanceName);

@@ -1,5 +1,6 @@
 /*! 
   \file externaltwophasemedium.h
+  \brief Header file to be included in Dymola
   
   This is the header file to be included in the Dymola/Source directory.
   It proived function prototypes for all the external functions needed
@@ -16,14 +17,15 @@
 
 extern int createMedium_(const char *mediumName, const char *libraryName, 
 						 const char *substanceName, int oldUniqueID);
+
 extern double getMolarMass_(const char *mediumName, const char *libraryName,  
  			                const char *substanceName);
-
 extern double getCriticalTemperature_(const char *mediumName, const char *libraryName,  
 			                	      const char *substanceName);
-
 extern double getCriticalPressure_(const char *mediumName, const char *libraryName,  
 			                	   const char *substanceName);
+extern double getCriticalMolarVolume_(const char *mediumName, const char *libraryName,
+									  const char *substanceName);
 
 extern void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
 			   const char *mediumName, const char *libraryName, const char *substanceName);

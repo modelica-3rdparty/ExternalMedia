@@ -6,6 +6,7 @@
 
 #include "basesolver.h"
 
+#include <math.h>
 #include "twophasemediumproperties.h"
 
 BaseSolver::BaseSolver(const string &mediumName, const string &libraryName, const string &substanceName)
@@ -29,6 +30,10 @@ double BaseSolver::criticalPressure() const{
 
 double BaseSolver::criticalDensity() const{
 	return _fluidConstants.dc;
+}
+
+double BaseSolver::criticalMolarVolume() const{
+	return _fluidConstants.MM/_fluidConstants.dc;
 }
 
 double BaseSolver::criticalEnthalpy() const{
@@ -61,4 +66,21 @@ void BaseSolver::setState_ps(double &p, double &s, int &phase, TwoPhaseMediumPro
 }
 
 void BaseSolver::setState_pT(double &p, double &T, TwoPhaseMediumProperties *const properties){
+}
+
+bool BaseSolver::computeDerivatives(TwoPhaseMediumProperties *const properties){
+	// Check whether cp is equal to zero
+	if (properties->cp == 0.0)
+		return false;
+	// Check whether density is equal to zero
+	if (properties->d == 0.0)
+		return false;
+	// Compute dd_dp_h
+	properties->dd_dp_h = -(properties->T*properties->beta*properties->beta -
+						  properties->beta -
+						  properties->kappa*properties->d*properties->cp)/
+						  properties->cp;
+	// Compute dd_dh_p
+	properties->dd_dh_p = -properties->beta*properties->d/properties->cp;
+	return true;
 }

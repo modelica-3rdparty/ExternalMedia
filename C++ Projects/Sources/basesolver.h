@@ -32,7 +32,7 @@ public:
 	*/
 	virtual ~BaseSolver();
 
-	//! Member function
+	//! Set fluid constants
 	/*!
 	  This function sets the fluid constants which are defined in the
 	  FluidConstants record in Modelica. It should be called when a new
@@ -40,52 +40,119 @@ public:
 	*/
     virtual void setFluidConstants();
 
-	//! Set saturation property function
+	//! Set saturation properties
 	/*!
 	  This function sets the saturation properties for the given pressure p.
 	  The computed values are written to the two phase medium propery struct.
-	  @param p pressure
-	  @param properties two phase medium property record
+	  @param p Pressure
+	  @param properties Two phase medium property record
 	*/
 	virtual void setSat_p(double &p, TwoPhaseMediumProperties *const properties);
-	//! Set saturation property function
+
+	//! Set saturation properties
 	/*!
 	  This function sets the saturation properties for the given temperature T.
 	  The computed values are written to the two phase medium propery struct.
-	  @param T temperature
-	  @param properties two phase medium property record
+	  @param T Temperature
+	  @param properties Two phase medium property record
 	*/
 	virtual void setSat_T(double &T, TwoPhaseMediumProperties *const properties);
-	//! Set saturation property function
+
+	//! Set saturation properties
 	/*!
 	  This function sets the saturation properties for the given pressure p
 	  and is desined to be used from within the BaseProperties model in
 	  Modelica. The computed values are written to the two phase medium propery 
 	  struct.
-	  @param properties two phase medium property record
+	  @param properties Two phase medium property record
 	*/
 	virtual void setSat_p_state(TwoPhaseMediumProperties *const properties);
 
+	//! Set state
+	/*!
+	  This function sets the thermodynamic state record for the given density
+	  d, the temperature T and the specified phase. The computed values are
+	  written to the two phase medium property struct.
+	  @param d Density
+	  @param T Temperature
+	  @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
+	  @param properties Two phase medium property record
+	*/
 	virtual void setState_dT(double &d, double &T, int &phase, TwoPhaseMediumProperties *const properties);
+
+	//! Set state
+	/*!
+	  This function sets the thermodynamic state record for the given pressure
+	  p, the specific enthalpy h and the specified phase. The computed values are
+	  written to the two phase medium property struct.
+	  @param p Pressure
+	  @param h Specific enthalpy
+	  @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
+	  @param properties Two phase medium property record
+	*/
 	virtual void setState_ph(double &p, double &h, int &phase, TwoPhaseMediumProperties *const properties);
+
+	//! Set state
+	/*!
+	  This function sets the thermodynamic state record for the given pressure
+	  p, the specific entropy s and the specified phase. The computed values are
+	  written to the two phase medium property struct.
+	  @param p Pressure
+	  @param s Specific entropy
+	  @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
+	  @param properties Two phase medium property record
+	*/
 	virtual void setState_ps(double &p, double &s, int &phase, TwoPhaseMediumProperties *const properties);
+
+	//! Set state
+	/*!
+	  This function sets the thermodynamic state record for the given pressure
+	  p and the temperature T. The computed values are
+	  written to the two phase medium property struct.
+	  @param p Pressure
+	  @param T Temperature
+	  @param properties Two phase medium property record
+	*/
 	virtual void setState_pT(double &p, double &T, TwoPhaseMediumProperties *const properties);
 
+	//! Return molar mass
     double molarMass() const;
+	//! Return temperature at critical point
 	double criticalTemperature() const;
+	//! Return pressure at critical point
 	double criticalPressure() const;
+	//! Return density at critical point
 	double criticalDensity() const;
+	//! Return molar volume at critical point
+	double criticalMolarVolume() const;
+	//! Return specific enthalpy at critical point
 	double criticalEnthalpy() const;
+	//! Return specific entropy at critical point
 	double criticalEntropy() const;
 
 	// Solver properties
-	string mediumName;		// medium name
-	string libraryName;		// library name
-	string substanceName;	// substance name
+	//! Medium name
+	string mediumName;
+	//! Library name
+	string libraryName;
+	//! Substance name
+	string substanceName;
 
 protected:
-	// Fluid constants
-	FluidConstants _fluidConstants;  // fluid constants
+	//! Fluid constants
+	FluidConstants _fluidConstants; 
+
+	//! Compute derivatives
+	/*!
+	  This function computes the derivatives according to the Bridgman's table.
+	  The computed values are written to the two phase medium property struct.
+	  This function can be called from within the setState_XXX routines 
+	  when implementing a new solver. Please be aware that cp, beta and
+	  kappa have to be provided to allow the computation of the derivatives. It
+	  returns false if the computation failed.
+	  @param properties Two phase medium property record
+	*/
+	bool computeDerivatives(TwoPhaseMediumProperties *const properties);
 };
 
 #endif /*BASESOLVER_H_*/
