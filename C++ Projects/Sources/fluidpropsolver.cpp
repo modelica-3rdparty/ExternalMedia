@@ -131,11 +131,6 @@ void FluidPropSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMedi
     properties->d_hl_dp = dh_liq_dP_; // derivative of hls by pressure
 	properties->d_hv_dp = dh_vap_dP_; // derivative of hvs by pressure
 
-	properties->d_dl_dP_hL = dd_liq_dP_hL_; // derivative of density by pressure at constant enthalpy, bubble point, liquid side
-	properties->d_dl_dP_h2 = dd_liq_dP_h2_; // derivative of density by pressure at constant enthalpy, bubble point, 2-phase side
-	properties->d_dv_dP_hV = dd_vap_dP_hV_; // derivative of density by pressure at constant enthalpy, bubble point, vapour side
-	properties->d_dv_dP_h2 = dd_vap_dP_h2_; // derivative of density by pressure at constant enthalpy, bubble point, 2-phase side
-
 	properties->eta = eta_;	    // dynamic viscosity
 	properties->lambda = lambda_;	// thermal conductivity
 	properties->Pr = 0;			// Prandtl number

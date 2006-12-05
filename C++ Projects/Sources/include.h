@@ -39,7 +39,7 @@
   Set this preprocessor variable to 1 to include the interface to the
   FluidProp solver developed and maintained by Francesco Casella.
 */
-#define FLUIDPROP 0
+#define FLUIDPROP 1
 
 // Selection of build type for this project
 //! Build project into a DLL

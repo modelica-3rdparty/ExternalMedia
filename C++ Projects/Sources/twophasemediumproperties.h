@@ -94,15 +94,6 @@ struct TwoPhaseMediumProperties{
     double d_hl_dp;
 	//! Derivative of hvs wrt pressure
 	double d_hv_dp;
-
-	//! Derivative of density wrt pressure at constant enthalpy, bubble point, liquid side
-	double d_dl_dP_hL;
-	//! Derivative of density wrt pressure at constant enthalpy, bubble point, 2-phase side
-	double d_dl_dP_h2;
-	//! Derivative of density wrt pressure at constant enthalpy, bubble point, vapour side
-	double d_dv_dP_hV;
-	//! Derivative of density wrt pressure at constant enthalpy, bubble point, 2-phase side
-	double d_dv_dP_h2;
 };
 
 #endif /*TWOPHASEMEDIUMPROPERTIES_H_*/
