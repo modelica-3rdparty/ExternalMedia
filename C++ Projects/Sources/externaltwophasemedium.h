@@ -73,6 +73,8 @@ extern void setState_pT_(double p, double T, int phase, int uniqueID, int *state
 
 extern double density_(int uniqueID);
 extern double density_ph_der_(int uniqueID, double p_der, double h_der);
+extern double density_derp_h_(int uniqueID);
+extern double density_derh_p_(int uniqueID);
 extern double pressure_(int uniqueID);
 extern double specificEnthalpy_(int uniqueID);
 extern double specificEntropy_(int uniqueID);

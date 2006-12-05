@@ -242,6 +242,9 @@ extern "C" {
 							 const char *mediumName, const char *libraryName, const char *substanceName);
 
 	EXPORT double density_(int uniqueID);
+	EXPORT double density_derp_h_(int uniqueID);
+    EXPORT double density_derh_p_(int uniqueID);
+
 	EXPORT double density_ph_der_(int uniqueID, double p_der, double h_der);
 
 	EXPORT double pressure_(int uniqueID);

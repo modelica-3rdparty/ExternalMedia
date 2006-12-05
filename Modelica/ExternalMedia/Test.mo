@@ -8,7 +8,7 @@ package Test
     Medium.AbsolutePressure pc = Medium.fluidConstants[1].criticalPressure;
     Medium.MolarMass MM = Medium.fluidConstants[1].molarMass;
   end CompleteFluidConstants;
-
+  
   model CompleteBaseProperties 
     "Compute all available two-phase medium properties from a BaseProperties model" 
     import SI = Modelica.SIunits;
@@ -49,8 +49,8 @@ package Test
     SI.IsothermalCompressibility kappa =       Medium.isothermalCompressibility(state);
     Medium.SpecificHeatCapacity cp =           Medium.specificHeatCapacityCp(state);
     Medium.SpecificHeatCapacity cv =           Medium.specificHeatCapacityCv(state);
-    // Medium.DerDensityByPressure d_d_dp_h =     Medium.density_derp_h(state);
-    // Medium.DerDensityByEnthalpy d_d_dh_p =     Medium.density_derh_p(state);
+    Medium.DerDensityByPressure d_d_dp_h =     Medium.density_derp_h(state);
+    Medium.DerDensityByEnthalpy d_d_dh_p =     Medium.density_derh_p(state);
     Medium.MolarMass MM =                      Medium.molarMass(state);
     
   end CompleteThermodynamicState;
@@ -75,7 +75,7 @@ package Test
     Real d_hl_dp =               Medium.dBubbleEnthalpy_dPressure(sat);
     Real d_hv_dp =               Medium.dDewEnthalpy_dPressure(sat);
   end CompleteSaturationProperties;
-
+  
 model TestWrongMedium 
     "Test the error reporting messages for unsupported external media" 
   package Medium = Media.ExternalTwoPhaseMedium;
@@ -84,7 +84,7 @@ equation
   medium.p = 1e5;
   medium.h = 1e5;
 end TestWrongMedium;
-
+  
   model TestBasePropertiesExplicit_TestMedium 
     "Test case using TestMedium and explicit equations" 
     replaceable package Medium = Media.TestMedium;
@@ -173,7 +173,7 @@ initial equation
   annotation (experiment(StopTime=80, Tolerance=1e-007),experimentSetupOutput(
         equdistant=false));
 end TestBasePropertiesDynamic_TestMedium;
-
+  
 model TestAll_TestMedium "Test case using TestMedium and dynamic equations" 
   import SI = Modelica.SIunits;
   replaceable package Medium = Media.TestMedium;
@@ -201,7 +201,7 @@ end TestAll_TestMedium;
     medium2.baseProperties.p = 1e5;
     medium2.baseProperties.h = 1e5 + 2e5*time;
   end TestBasePropertiesExplicit_FluidPropIF95;
-
+  
   model TestBasePropertiesImplicit_FluidPropIF95 
     "Test case using TestMedium and implicit equations" 
     replaceable package Medium = Media.FluidPropMedia.WaterIF95;
@@ -219,7 +219,7 @@ end TestAll_TestMedium;
     medium2.baseProperties.p = 1e5+1e5*time;
     medium2.baseProperties.T = 300;
   end TestBasePropertiesImplicit_FluidPropIF95;
-
+  
 model TestBasePropertiesDynamic_FluidPropIF95 
     "Test case using TestMedium and dynamic equations" 
   import SI = Modelica.SIunits;
@@ -274,11 +274,5 @@ initial equation
   annotation (experiment(StopTime=80, Tolerance=1e-007),experimentSetupOutput(
         equdistant=false));
 end TestBasePropertiesDynamic_FluidPropIF95;
-  
-  
-  
-  
-  
-  
   
 end Test;

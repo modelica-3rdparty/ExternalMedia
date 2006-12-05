@@ -221,6 +221,14 @@ double density_(int uniqueID){
 	return MediumMap::medium(uniqueID)->d();
 }
 
+double density_derp_h_(int uniqueID){
+	return MediumMap::medium(uniqueID)->dd_dp_h();
+}
+
+double density_derh_p_(int uniqueID){
+	return MediumMap::medium(uniqueID)->dd_dh_p();
+}
+
 double density_ph_der_(int uniqueID, double p_der, double h_der){
 	return MediumMap::medium(uniqueID)->dd_dp_h()*p_der +
 		   MediumMap::medium(uniqueID)->dd_dh_p()*h_der;

@@ -129,6 +129,18 @@ package ExternalTwoPhaseMedium
   external "C" cv=  specificHeatCapacityCv_(state.uniqueID);
   end specificHeatCapacityCv;
   
+  redeclare replaceable function extends density_derp_h 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+    external "C" ddph=  density_derp_h_(state.uniqueID);
+  end density_derp_h;
+  
+  redeclare replaceable function extends density_derh_p 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+    external "C" ddhp=  density_derh_p_(state.uniqueID);
+  end density_derh_p;
+  
   redeclare replaceable function extends bubbleDensity 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
