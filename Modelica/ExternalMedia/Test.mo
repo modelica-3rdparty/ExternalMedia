@@ -35,24 +35,19 @@ package Test
     // ThermodynamicState record
     Medium.ThermodynamicState state;
     
-    // Critical properties
-    Medium.Temperature Tc = Medium.fluidConstants[1].criticalTemperature;
-    Medium.AbsolutePressure pc = Medium.fluidConstants[1].criticalPressure;
-    
     // Medium properties
-    Medium.Density d =                         Medium.density(state);
     Medium.AbsolutePressure p =                Medium.pressure(state);
     Medium.SpecificEnthalpy h =                Medium.specificEnthalpy(state);
-    Medium.SpecificEntropy s =                 Medium.specificEntropy(state);
     Medium.Temperature T =                     Medium.temperature(state);
-    Medium.IsobaricExpansionCoefficient beta = Medium.isobaricExpansionCoefficient(state);
-    SI.IsothermalCompressibility kappa =       Medium.isothermalCompressibility(state);
+    Medium.Density d =                         Medium.density(state);
+    Medium.SpecificEntropy s =                 Medium.specificEntropy(state);
     Medium.SpecificHeatCapacity cp =           Medium.specificHeatCapacityCp(state);
     Medium.SpecificHeatCapacity cv =           Medium.specificHeatCapacityCv(state);
+    Medium.IsobaricExpansionCoefficient beta = Medium.isobaricExpansionCoefficient(state);
+    SI.IsothermalCompressibility kappa =       Medium.isothermalCompressibility(state);
     Medium.DerDensityByPressure d_d_dp_h =     Medium.density_derp_h(state);
     Medium.DerDensityByEnthalpy d_d_dh_p =     Medium.density_derh_p(state);
     Medium.MolarMass MM =                      Medium.molarMass(state);
-    
   end CompleteThermodynamicState;
   
   model CompleteSaturationProperties 
@@ -174,17 +169,6 @@ initial equation
         equdistant=false));
 end TestBasePropertiesDynamic_TestMedium;
   
-model TestAll_TestMedium "Test case using TestMedium and dynamic equations" 
-  import SI = Modelica.SIunits;
-  replaceable package Medium = Media.TestMedium;
-  TestBasePropertiesExplicit_TestMedium testBasePropertiesExplicit(redeclare 
-        package Medium =                                                                      Medium);
-  TestBasePropertiesImplicit_TestMedium testBasePropertiesImplicit(redeclare 
-        package Medium =                                                                      Medium);
-  TestBasePropertiesDynamic_TestMedium testBasePropertiesDynamic(redeclare 
-        package Medium =                                                                    Medium);
-    
-end TestAll_TestMedium;
   
   model TestBasePropertiesExplicit_FluidPropIF95 
     "Test case using TestMedium and explicit equations" 
@@ -275,4 +259,9 @@ initial equation
         equdistant=false));
 end TestBasePropertiesDynamic_FluidPropIF95;
   
+  model TestBasePropertiesExplicit_ModelicaIF97 
+    "Test case using TestMedium and explicit equations" 
+    extends TestBasePropertiesExplicit_FluidPropIF95(
+      redeclare package Medium = Modelica.Media.Water.StandardWater);
+  end TestBasePropertiesExplicit_ModelicaIF97;
 end Test;
