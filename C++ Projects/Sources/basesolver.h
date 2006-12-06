@@ -115,6 +115,28 @@ public:
 	*/
 	virtual void setState_pT(double &p, double &T, TwoPhaseMediumProperties *const properties);
 
+    //! Set bubble state
+	/*!
+	  This function sets the bubble state record bubbleProperties corresponding to the 
+	  saturation data contained in the properties record
+	  @param phase Phase (1: one-phase, 2: two-phase)
+	  @param properties Two phase medium property record with saturation properties data
+	  @param bubbleProperties Two phase medium property record where to write the bubble point properties
+	*/
+	virtual void setBubbleState(int phase, TwoPhaseMediumProperties *const properties,
+		                                   TwoPhaseMediumProperties *const bubbleProperties);
+    
+    //! Set dew state
+	/*!
+	  This function sets the dew state record dewProperties corresponding to the 
+	  saturation data contained in the properties record
+	  @param phase Phase (1: one-phase, 2: two-phase)
+	  @param properties Two phase medium property record with saturation properties data
+	  @param dewProperties Two phase medium property record where to write the dew point properties
+	*/
+	virtual void setDewState(int phase, TwoPhaseMediumProperties *const properties,
+		                                TwoPhaseMediumProperties *const bubbleProperties);
+
 	//! Compute derivatives
 	/*!
 	  This function computes the derivatives according to the Bridgman's table.

@@ -198,7 +198,8 @@ void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *
 }
 
 void setSat_p_state_(int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID){
-	// Check for the validity of the uniqueID
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
 	if (uniqueID == 0)
 		errorMessage("setSat_p_state called without a valid uniqueID)");
 	// Set a pointer to the medium
@@ -214,6 +215,55 @@ void setSat_p_state_(int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_
 		  *sat_psat = medium->ps();
 	  if (sat_Tsat != NULL)
 		  *sat_Tsat = medium->Ts();
+}
+
+void setDewState_(int uniqueID, int phase, int *state_uniqueID, int *state_phase,
+  				  const char *mediumName, const char *libraryName, const char *substanceName){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID or phase inputs
+	if (uniqueID == 0)
+		errorMessage("setDewState_ called without a valid uniqueID");
+	if (phase < 1 || phase > 2)
+		errorMessage("setDewState_ called with invalid phase");
+
+	// Get the unique ID of the the dewState object, and allocate a new medium
+	// object and set the dewState uniqueID if necessary
+	int dewUniqueID = MediumMap::medium(uniqueID)->getDewUniqueID(phase);
+
+	// Call the original medium object's setDewState function
+	// which will compute the properties of the dew state and store them
+	// in the medium with the dew state unique ID
+    MediumMap::medium(uniqueID)->setDewState(phase);
+
+    // Return values
+	if (state_uniqueID != NULL)
+  	  *state_uniqueID = dewUniqueID;
+	if (state_phase != NULL)
+	  *state_phase = phase;
+}
+
+void setBubbleState_(int uniqueID, int phase, int *state_uniqueID, int *state_phase,
+  				     const char *mediumName, const char *libraryName, const char *substanceName){
+	// Check for the validity of the inputs - this function should never be 
+	// called with a zero unique ID or phase inputs
+	if (uniqueID == 0)
+		errorMessage("setBubbleState_ called without a valid uniqueID");
+	if (phase < 1 || phase > 2)
+		errorMessage("setBubbleState_ called with invalid phase");
+	// Get the unique ID of the the dewState object, and allocate a new medium
+	// object and set the dewState uniqueID if necessary
+	int bubbleUniqueID = MediumMap::medium(uniqueID)->getBubbleUniqueID(phase);
+
+	// Call the original medium object's setBubbleState function
+	// which will compute the properties of the dew state and store them
+	// in the medium with the dew state unique ID
+    MediumMap::medium(uniqueID)->setBubbleState(phase);
+
+    // Return values
+	if (state_uniqueID != NULL)
+  	  *state_uniqueID = bubbleUniqueID;
+	if (state_phase != NULL)
+	  *state_phase = phase;
 }
 
 double density_(int uniqueID){

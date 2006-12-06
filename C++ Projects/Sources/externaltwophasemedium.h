@@ -73,6 +73,11 @@ extern "C" {
 							 const char *mediumName, const char *libraryName, const char *substanceName);
 	EXPORT void setState_pT_(double p, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 							 const char *mediumName, const char *libraryName, const char *substanceName);
+    EXPORT void setDewState_(int uniqueID, int phase, int *state_uniqueID, int *state_phase,
+  				             const char *mediumName, const char *libraryName, const char *substanceName);
+    EXPORT void setBubbleState_(int uniqueID, int phase, int *state_uniqueID, int *state_phase,
+  				                const char *mediumName, const char *libraryName, const char *substanceName);
+
 
 	EXPORT double density_(int uniqueID);
 	EXPORT double density_derp_h_(int uniqueID);

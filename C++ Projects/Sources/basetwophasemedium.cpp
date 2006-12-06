@@ -14,6 +14,7 @@
 #include "basetwophasemedium.h"
 
 #include <math.h>
+#include "mediummap.h"
 
 BaseTwoPhaseMedium::BaseTwoPhaseMedium(const string &mediumName, const string &libraryName, 
 									   const string &substanceName, BaseSolver *const solver, 
@@ -190,4 +191,110 @@ void BaseTwoPhaseMedium::setState_ps(double &p, double &s, int &phase){
 
 void BaseTwoPhaseMedium::setState_pT(double &p, double &T){
 	_solver->setState_pT(p, T, _properties);
+}
+
+int BaseTwoPhaseMedium::getDewUniqueID(int phase){
+	if (phase == 1){
+        // Dew state on the one-phase side
+		if (_properties->dewUniqueIDOnePhase == 0){
+			if (_properties->uniqueID > 0)
+				// allocate a permanent medium object for the dew state
+				_properties->dewUniqueIDOnePhase = 
+					MediumMap::addMedium(_properties->mediumName, 
+						                 _properties->libraryName,
+										 _properties->substanceName);
+			else 
+				// allocate a transient medium object for the dew state
+				_properties->dewUniqueIDOnePhase =
+					MediumMap::addTransientMedium(_properties->mediumName, 
+												  _properties->libraryName,
+												  _properties->substanceName);
+		}
+		// return the dew state unique ID
+		return _properties->dewUniqueIDOnePhase;
+	}
+	else {
+		// Dew state on the two-phase side
+		if (_properties->dewUniqueIDTwoPhase == 0){
+			if (_properties->uniqueID > 0)
+				// allocate a permanent medium object for the dew state
+				_properties->dewUniqueIDTwoPhase = 
+					MediumMap::addMedium(_properties->mediumName, 
+						                 _properties->libraryName,
+										 _properties->substanceName);
+			else 
+				// allocate a transient medium object for the dew state
+				_properties->dewUniqueIDTwoPhase =
+					MediumMap::addTransientMedium(_properties->mediumName, 
+												  _properties->libraryName,
+												  _properties->substanceName);
+		}
+		// return the dew state unique ID
+		return _properties->dewUniqueIDTwoPhase;
+	}
+}
+
+int BaseTwoPhaseMedium::getBubbleUniqueID(int phase){
+	if (phase == 1){
+        // Bubble state on the one-phase side
+		if (_properties->bubbleUniqueIDOnePhase == 0){
+			if (_properties->uniqueID > 0)
+				// allocate a permanent medium object for the bubble state
+				_properties->bubbleUniqueIDOnePhase = 
+					MediumMap::addMedium(_properties->mediumName, 
+						                 _properties->libraryName,
+										 _properties->substanceName);
+			else 
+				// allocate a transient medium object for the bubble state
+				_properties->bubbleUniqueIDOnePhase =
+					MediumMap::addTransientMedium(_properties->mediumName, 
+												  _properties->libraryName,
+												  _properties->substanceName);
+		}
+		// return the bubble state unique ID
+		return _properties->bubbleUniqueIDOnePhase;
+	}
+	else {
+		// Bubble state on the two-phase side
+		if (_properties->bubbleUniqueIDTwoPhase == 0){
+			if (_properties->uniqueID > 0)
+				// allocate a permanent medium object for the bubble state
+				_properties->bubbleUniqueIDTwoPhase = 
+					MediumMap::addMedium(_properties->mediumName, 
+						                 _properties->libraryName,
+										 _properties->substanceName);
+			else 
+				// allocate a transient medium object for the bubble state
+				_properties->bubbleUniqueIDTwoPhase =
+					MediumMap::addTransientMedium(_properties->mediumName, 
+												  _properties->libraryName,
+												  _properties->substanceName);
+		}
+		// return the bubble state unique ID
+		return _properties->bubbleUniqueIDTwoPhase;
+	}
+}
+
+void BaseTwoPhaseMedium::setBubbleState(int phase){
+	// Get a pointer to the bubble state medium object
+	BaseTwoPhaseMedium *bubbleMedium;
+	if (phase == 1)
+		bubbleMedium = MediumMap::medium(_properties->bubbleUniqueIDOnePhase);
+	else
+		bubbleMedium = MediumMap::medium(_properties->bubbleUniqueIDTwoPhase);
+
+	// Call the solver to set the bubble state medium properties
+	_solver->setBubbleState(phase, _properties, bubbleMedium->_properties);
+}
+
+void BaseTwoPhaseMedium::setDewState(int phase){
+	// Get a pointer to the dew state medium object
+	BaseTwoPhaseMedium *dewMedium;
+	if (phase == 1)
+		dewMedium = MediumMap::medium(_properties->dewUniqueIDOnePhase);
+	else
+		dewMedium = MediumMap::medium(_properties->dewUniqueIDTwoPhase);
+
+	// Call the solver to set the dew state medium properties
+	_solver->setDewState(phase, _properties, dewMedium->_properties);
 }

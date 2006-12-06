@@ -49,6 +49,20 @@ package ExternalTwoPhaseMedium
   external "C" setSat_p_state_(state.uniqueID, sat.psat, sat.Tsat, sat.uniqueID);
   end setSat_p_state;
   
+  redeclare replaceable function extends setDewState 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" setDewState_(sat.uniqueID, phase, state.uniqueID, state.phase,
+                            mediumName, libraryName, substanceName);
+  end setDewState;
+  
+  redeclare replaceable function extends setBubbleState 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" setBubbleState_(sat.uniqueID, phase, state.uniqueID, state.phase,
+                               mediumName, libraryName, substanceName);
+  end setBubbleState;
+  
   redeclare replaceable function extends saturationPressure 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");

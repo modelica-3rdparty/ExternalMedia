@@ -8,6 +8,7 @@
 
 #include <math.h>
 #include "twophasemediumproperties.h"
+#include "mediummap.h"
 
 BaseSolver::BaseSolver(const string &mediumName, const string &libraryName, const string &substanceName)
 	: mediumName(mediumName), libraryName(libraryName), substanceName(substanceName){
@@ -66,6 +67,26 @@ void BaseSolver::setState_ps(double &p, double &s, int &phase, TwoPhaseMediumPro
 }
 
 void BaseSolver::setState_pT(double &p, double &T, TwoPhaseMediumProperties *const properties){
+}
+
+// Default implementation of the setBubbleState function, relying on the correct 
+// behaviour of setState_ph with respect to the state input. Can be overridden 
+// in the specific solver code to get more efficient handling of this situation
+void BaseSolver::setBubbleState(int phase, TwoPhaseMediumProperties *const properties,
+		                                   TwoPhaseMediumProperties *const bubbleProperties){
+	// Set the bubble state property record based on the original medium 
+	// saturation state
+	setState_ph(properties->p, properties->hl, phase, bubbleProperties);
+}
+
+// Default implementation of the setDewState function, relying on the correct 
+// behaviour of setState_ph with respect to the state input. Can be overridden 
+// in the specific solver code to get more efficient handling of this situation
+void BaseSolver::setDewState(int phase, TwoPhaseMediumProperties *const properties,
+		                                TwoPhaseMediumProperties *const dewProperties){
+	// Set the dew state property record based on the original medium 
+	// saturation state
+	setState_ph(properties->p, properties->hv, phase, dewProperties);
 }
 
 bool BaseSolver::computeDerivatives(TwoPhaseMediumProperties *const properties){

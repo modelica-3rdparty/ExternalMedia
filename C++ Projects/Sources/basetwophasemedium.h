@@ -75,6 +75,16 @@ public:
 	virtual void setState_ps(double &p, double &s, int &phase);
 	virtual void setState_pT(double &p, double &T);
 
+	// get the unique ID of the bubble point medium object corresponding to psat, Tsat
+	// and the phase input, possibly allocating a medium object on the medium map if needed
+	virtual int  getBubbleUniqueID(int phase);
+	// get the unique ID of the bubble point medium object corresponding to psat, Tsat
+	// and the phase input, possibly allocating a medium object on the medium map if needed
+	virtual int  getDewUniqueID(int phase);
+
+    virtual void setDewState(int phase);
+    virtual void setBubbleState(int phase);
+
 protected:	
 	// Pointer to medium property record
 	TwoPhaseMediumProperties *_properties;

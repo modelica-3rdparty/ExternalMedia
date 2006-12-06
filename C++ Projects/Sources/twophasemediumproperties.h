@@ -34,6 +34,18 @@ struct TwoPhaseMediumProperties{
 	*/
 	int phase;
 
+	// ! Unique ID of corresponding 1-phase dew state medium object, set by setDewState
+	int dewUniqueIDOnePhase;
+
+	// ! Unique ID of corresponding 2-phase dew state medium object, set by setDewState
+	int dewUniqueIDTwoPhase;
+
+	// ! Unique ID of corresponding 1-phase bubble state medium object, set by setBubbleState
+	int bubbleUniqueIDOnePhase;
+
+	// ! Unique ID of corresponding 2-phase bubble state medium object, set by setBubbleState
+	int bubbleUniqueIDTwoPhase;
+
 	//! Isothermal expansion coefficient
 	double beta;
 	//! Specific heat capacity cp

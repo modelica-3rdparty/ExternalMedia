@@ -151,6 +151,24 @@ partial package PartialExternalTwoPhaseMedium
     output ThermodynamicState state;
   end setState_ps;
   
+  redeclare replaceable partial function setDewState 
+    "set the thermodynamic state on the dew line" 
+    extends Modelica.Icons.Function;
+    input SaturationProperties sat "saturation point";
+    input FixedPhase phase =  1 "phase: default is one phase";
+    input Integer uniqueID = 0 "unique ID number";
+    output ThermodynamicState state "complete thermodynamic state info";
+  end setDewState;
+  
+  redeclare replaceable partial function setBubbleState 
+    "set the thermodynamic state on the bubble line" 
+    extends Modelica.Icons.Function;
+    input SaturationProperties sat "saturation point";
+    input FixedPhase phase =  1 "phase: default is one phase";
+    input Integer uniqueID = 0 "unique ID number";
+    output ThermodynamicState state "complete thermodynamic state info";
+  end setBubbleState;
+  
   redeclare replaceable partial function setSat_p 
     "Return saturation properties from p" 
     extends Modelica.Icons.Function;
@@ -202,7 +220,9 @@ partial package PartialExternalTwoPhaseMedium
     output Temperature T "saturation temperature";
   end saturationTemperature_sat;
   
-  redeclare function extends molarMass 
+  redeclare function molarMass "Return the molar mass of the medium" 
+      input ThermodynamicState state;
+      output MolarMass MM "Mixture molar mass";
   algorithm 
     MM := fluidConstants[1].molarMass;
   end molarMass;
