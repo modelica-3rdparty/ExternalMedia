@@ -5,8 +5,7 @@
  * Francesco Casella, Christoph Richter, Sep 2006
  ********************************************************************/
 
-
-#include "externaltwophasemedium_lib.h"
+#include "externaltwophasemedium.h"
 
 #include "mediummap.h"
 #include "twophasemedium.h"

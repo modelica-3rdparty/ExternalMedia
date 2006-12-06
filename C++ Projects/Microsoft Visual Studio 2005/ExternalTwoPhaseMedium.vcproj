@@ -206,10 +206,6 @@
 			Name="Dymola"
 			>
 			<File
-				RelativePath="..\Sources\externaltwophasemedium.h"
-				>
-			</File>
-			<File
 				RelativePath="..\Sources\ModelicaUtilities.h"
 				>
 			</File>
@@ -242,11 +238,11 @@
 			Name="Interface layer"
 			>
 			<File
-				RelativePath="..\Sources\externaltwophasemedium_lib.cpp"
+				RelativePath="..\Sources\externaltwophasemedium.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Sources\externaltwophasemedium_lib.h"
+				RelativePath="..\Sources\externaltwophasemedium.h"
 				>
 			</File>
 		</Filter>
@@ -310,6 +306,10 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath="..\Sources\documentation.txt"
+			>
+		</File>
 		<File
 			RelativePath="..\Sources\include.h"
 			>
