@@ -169,10 +169,10 @@ initial equation
         equdistant=false));
 end TestBasePropertiesDynamic_TestMedium;
   
-  
   model TestBasePropertiesExplicit_FluidPropIF95 
     "Test case using TestMedium and explicit equations" 
-    replaceable package Medium = Media.FluidPropMedia.WaterIF95;
+    replaceable package Medium = Media.FluidPropMedia.WaterIF95 
+      extends Modelica.Media.Interfaces.PartialTwoPhaseMedium;
     ExternalMedia.Test.CompleteBaseProperties medium1(
                                redeclare package Medium = Medium) 
       "Constant pressure, varying enthalpy";
@@ -188,7 +188,8 @@ end TestBasePropertiesDynamic_TestMedium;
   
   model TestBasePropertiesImplicit_FluidPropIF95 
     "Test case using TestMedium and implicit equations" 
-    replaceable package Medium = Media.FluidPropMedia.WaterIF95;
+    replaceable package Medium = Media.FluidPropMedia.WaterIF95 
+      extends Modelica.Media.Interfaces.PartialTwoPhaseMedium;
     ExternalMedia.Test.CompleteBaseProperties medium1(
                                redeclare package Medium = Medium,
                                baseProperties(h(start=1e5))) 
@@ -207,7 +208,8 @@ end TestBasePropertiesDynamic_TestMedium;
 model TestBasePropertiesDynamic_FluidPropIF95 
     "Test case using TestMedium and dynamic equations" 
   import SI = Modelica.SIunits;
-  replaceable package Medium = Media.FluidPropMedia.WaterIF95;
+  replaceable package Medium = Media.FluidPropMedia.WaterIF95 
+    extends Modelica.Media.Interfaces.PartialTwoPhaseMedium;
   parameter SI.Volume V = 1 "Storage Volume";
   parameter Real p_atm = 101325 "Atmospheric pressure";
   parameter SI.Temperature Tstart = 300;
