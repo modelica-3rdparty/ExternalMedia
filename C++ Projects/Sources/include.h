@@ -39,7 +39,7 @@
   Set this preprocessor variable to 1 to include the interface to the
   FluidProp solver developed and maintained by Francesco Casella.
 */
-#define FLUIDPROP 1
+#define FLUIDPROP 0
 
 // Selection of build type for this project
 //! Build project into a DLL
@@ -66,6 +66,13 @@
   outside BaseProperties records, and without explicit uniqueID handling
 */
 #define MAX_TRANSIENT_MEDIUM 1000
+
+//! Not a number
+/*!
+  This value is used as not a number value. It can be changed by
+  the user if there is a more appropriate value.
+*/
+#define NAN 0xffffffff
 
 /********************************************************************
  *                 End of user option selection

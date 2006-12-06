@@ -16,6 +16,53 @@ BaseSolver::BaseSolver(const string &mediumName, const string &libraryName, cons
 
 BaseSolver::~BaseSolver(){
 }
+
+void BaseSolver::clearTwoPhaseMediumProperties(TwoPhaseMediumProperties *const properties){
+	properties->mediumName = "";
+	properties->libraryName = "";
+	properties->substanceName = "";
+	properties->uniqueID = 0;
+
+	properties->phase = 0;
+
+	properties->dewUniqueIDOnePhase = 0;
+	properties->dewUniqueIDTwoPhase = 0;
+	properties->bubbleUniqueIDOnePhase = 0;
+	properties->bubbleUniqueIDTwoPhase = 0;
+
+	properties->beta = 0.0;
+	properties->cp = 0.0;
+	properties->cv = 0.0;
+	properties->d = 0.0;
+	properties->dd_dp_h = 0.0;
+	properties->dd_dh_p = 0.0;
+	properties->h = 0.0;
+	properties->kappa = 0.0;
+	properties->p = 0.0;
+	properties->s = 0.0;
+	properties->T = 0.0;
+
+	properties->ps = 0.0;
+	properties->Ts = 0.0;
+
+	properties->dl = 0.0;
+	properties->dv = 0.0;
+	properties->hl = 0.0;
+	properties->hv = 0.0;
+	properties->sl = 0.0;
+	properties->sv = 0.0;
+
+	properties->eta = 0.0;
+	properties->lambda = 0.0;
+	properties->Pr = 0.0;
+	properties->sigma = 0.0;
+
+    properties->d_Ts_dp = 0.0;
+	properties->d_dl_dp = 0.0;
+	properties->d_dv_dp = 0.0;
+    properties->d_hl_dp = 0.0;
+	properties->d_hv_dp = 0.0;
+}
    
 double BaseSolver::molarMass() const{
 	return _fluidConstants.MM;

@@ -172,6 +172,13 @@ public:
 	//! Substance name
 	string substanceName;
 
+	//! Clear property struct
+	/*!
+	  This function sets all values in the property struct to
+	  appropriate default values.
+	*/
+	void clearTwoPhaseMediumProperties(TwoPhaseMediumProperties *const properties);
+
 protected:
 	//! Fluid constants
 	FluidConstants _fluidConstants; 
