@@ -26,7 +26,6 @@ BaseTwoPhaseMedium::BaseTwoPhaseMedium(const string &mediumName, const string &l
 	  _dewUniqueIDTwoPhase(0),
 	  _bubbleUniqueIDOnePhase(0),
 	  _bubbleUniqueIDTwoPhase(0) {
-	  printf("BaseTwoPhaseMedium Constructor: uID = %d\n", _uniqueID); // XXX
 }
 
 BaseTwoPhaseMedium::~BaseTwoPhaseMedium(){
@@ -342,7 +341,6 @@ int BaseTwoPhaseMedium::getBubbleUniqueID(int phase){
 												  _substanceName);
 		}
 		// return the bubble state unique ID
-  	    printf("getBubbleUniqueID called: phase = %d, UID = %d, bubbleUID = %d\n", phase, _uniqueID, _bubbleUniqueIDOnePhase); // XXX
 		return _bubbleUniqueIDOnePhase;
 	}
 	else {
@@ -368,18 +366,13 @@ int BaseTwoPhaseMedium::getBubbleUniqueID(int phase){
 
 void BaseTwoPhaseMedium::setBubbleState(int phase){
 	// Get a pointer to the bubble state medium object
-	printf("BaseTwoPhaseMedium::setBubbleState called\n"); // XXX
 	BaseTwoPhaseMedium *bubbleMedium;
 	if (phase == 1)
 		bubbleMedium = MediumMap::medium(_bubbleUniqueIDOnePhase);
 	else
 		bubbleMedium = MediumMap::medium(_bubbleUniqueIDTwoPhase);
-	printf("BaseTwoPhaseMedium::setBubbleState: got bubble medium with uID = %d\n", _bubbleUniqueIDOnePhase); // XXX
-	printf("BaseTwoPhaseMedium::setBubbleState: _properties-ps = %lf", _properties->ps); // XXX
 	// Call the solver to set the bubble state medium properties
 	_solver->setBubbleState(phase, _properties, bubbleMedium->_properties);
-	printf("BaseTwoPhaseMedium::setBubbleState finished\n"); // XXX
-
 }
 
 void BaseTwoPhaseMedium::setDewState(int phase){

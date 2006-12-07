@@ -141,7 +141,7 @@ public:
 	/*!
 	  This function computes the derivatives according to the Bridgman's table.
 	  The computed values are written to the two phase medium property struct.
-	  This function can be called from within the setState_XXX routines 
+	  This function can be called from within the setState_XX routines 
 	  when implementing a new solver. Please be aware that cp, beta and
 	  kappa have to be provided to allow the computation of the derivatives. It
 	  returns false if the computation failed.

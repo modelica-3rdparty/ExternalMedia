@@ -43,7 +43,6 @@ int MediumMap::addTransientMedium(const string &mediumName, const string &librar
 	/* This is the place where one could specify a more  */
 	/* advanced medium extending from BaseTwoPhaseMedium */
 	/* ***************************************************/
-	printf("MediumMap:: addTransientMedium called; creating medium with uID = %d\n", transientUniqueIDWrapped); // XXX
 	if (_transientUniqueID <= MAX_TRANSIENT_MEDIUM)
   	  // For the first MAX_TRANSIENT_MEDIUM calls, create a new object
 	  // and assign it to a negative entry in the medium map

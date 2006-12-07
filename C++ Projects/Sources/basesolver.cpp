@@ -76,9 +76,7 @@ void BaseSolver::setBubbleState(int phase, TwoPhaseMediumProperties *const prope
 		                                   TwoPhaseMediumProperties *const bubbleProperties){
 	// Set the bubble state property record based on the original medium 
 	// saturation state
-	printf("BaseSolver::setBubbleState called\n"); // XXX
 	setState_ph(properties->ps, properties->hl, phase, bubbleProperties);
-	printf("BaseSolver::setBubbleState finished\n"); // XXX
 }
 
 // Default implementation of the setDewState function, relying on the correct 
