@@ -21,6 +21,7 @@ void TestSolver::setFluidConstants(){
   _fluidConstants.pc = 220.0e5;
   _fluidConstants.Tc = 650.0;
   _fluidConstants.MM = 0.018;
+  _fluidConstants.dc = 322;
 }
 
 void TestSolver::setSat_p(double &p, TwoPhaseMediumProperties *const properties){
@@ -68,6 +69,8 @@ void TestSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMediumPro
 	properties->kappa = 4.5e-10;
 	properties->dd_dp_h = (1000.0 - h/4200.0)/21000e5;
 	properties->dd_dh_p = -(1.0 + p/21000e5)/4200.0;
+	properties->dT_dp_h = 0;
+	properties->dT_dh_p = 1.0/4200.0;
 }
 
 void TestSolver::setState_pT(double &p, double &T, TwoPhaseMediumProperties *const properties){
@@ -82,6 +85,8 @@ void TestSolver::setState_pT(double &p, double &T, TwoPhaseMediumProperties *con
 	properties->kappa = 4.5e-10;
 	properties->dd_dp_h = (1000.0 - properties->h/4200.0)/21000e5;
 	properties->dd_dh_p = -(1.0 + p/21000e5)/4200.0;
+	properties->dT_dp_h = 0;
+	properties->dT_dh_p = 1.0/4200.0;
 }
 
 void TestSolver::setState_dT(double &d, double &T, int &phase, TwoPhaseMediumProperties *const properties){
@@ -96,7 +101,8 @@ void TestSolver::setState_dT(double &d, double &T, int &phase, TwoPhaseMediumPro
 	properties->kappa = 4.5e-10;
 	properties->dd_dp_h = (1000.0 - properties->h/4200.0)/21000e5;
 	properties->dd_dh_p = -(1.0 + properties->p/21000e5)/4200.0;
-
+	properties->dT_dp_h = 0;
+	properties->dT_dh_p = 1.0/4200.0;
 }
 
 void TestSolver::setState_ps(double &p, double &s, int &phase, TwoPhaseMediumProperties *const properties){
@@ -111,5 +117,7 @@ void TestSolver::setState_ps(double &p, double &s, int &phase, TwoPhaseMediumPro
 	properties->kappa = 4.5e-10;
 	properties->dd_dp_h = (1000.0 - properties->h/4200.0)/21000e5;
 	properties->dd_dh_p = -(1.0+p/21000e5)/4200.0;
+	properties->dT_dp_h = 0;
+	properties->dT_dh_p = 1.0/4200.0;
 }
 
