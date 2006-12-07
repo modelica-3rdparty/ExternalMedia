@@ -356,9 +356,23 @@ partial package PartialExternalTwoPhaseMedium
     input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
     input Integer uniqueID "Unique ID";
     output Temperature T "Temperature";
+    annotation(derivative(noDerivative = phase, noDerivative = uniqueID) = temperature_ph_der,
+               Inline = false);
   algorithm 
     T := temperature(setState_ph(p, h, phase, uniqueID));
   end temperature_ph;
+  
+  replaceable partial function temperature_ph_der 
+    "Total derivative of density_ph" 
+    extends Modelica.Icons.Function;
+    input AbsolutePressure p "Pressure";
+    input SpecificEnthalpy h "Specific enthalpy";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Integer uniqueID "Unique ID";
+    input Real p_der;
+    input Real h_der;
+    output Real d_der;
+  end temperature_ph_der;
   
   redeclare replaceable function temperature_ps 
     "Return temperature from p and s" 

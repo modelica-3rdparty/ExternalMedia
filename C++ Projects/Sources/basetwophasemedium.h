@@ -44,6 +44,8 @@ public:
 	double p() const;
 	double s() const;
 	double T() const;
+	double dT_dp_h() const;
+	double dT_dh_p() const;
 
 	double ps() const;
 	double Ts() const;

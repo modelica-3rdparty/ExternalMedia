@@ -13,7 +13,10 @@
 
   Francesco Casella, Christoph Richter Sep 2006
 */
-struct TwoPhaseMediumProperties{
+class TwoPhaseMediumProperties{
+public:
+	TwoPhaseMediumProperties();
+
 	//! Medium name
 	string mediumName;
 	//! Name of the external library
@@ -68,6 +71,10 @@ struct TwoPhaseMediumProperties{
 	double s;
 	//! Temperature
 	double T;
+	//! Derivative of temperature wrt pressure at constant enthalpy
+	double dT_dp_h;
+	//! Derivative of temperature wrt enthalpy at constant pressure
+	double dT_dh_p;
 
 	//! Saturation pressure
 	double ps;

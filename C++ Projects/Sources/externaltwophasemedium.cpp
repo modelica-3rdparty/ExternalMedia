@@ -299,6 +299,11 @@ double temperature_(int uniqueID){
 	return MediumMap::medium(uniqueID)->T();
 }
 
+double temperature_ph_der_(int uniqueID, double p_der, double h_der){
+	return MediumMap::medium(uniqueID)->dT_dp_h()*p_der +
+		   MediumMap::medium(uniqueID)->dT_dh_p()*h_der;
+}
+
 double saturationPressure_sat_(double psat, double Tsat, int uniqueID,
 							   const char *mediumName, const char *libraryName, const char *substanceName){
 	// Use solver medium object if no unique ID is supplied

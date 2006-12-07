@@ -5,7 +5,7 @@
 #include "fluidconstants.h"
 
 
-struct TwoPhaseMediumProperties;
+class TwoPhaseMediumProperties;
 struct FluidConstants;
 
 //! Base solver class.
@@ -171,13 +171,6 @@ public:
 	string libraryName;
 	//! Substance name
 	string substanceName;
-
-	//! Clear property struct
-	/*!
-	  This function sets all values in the property struct to
-	  appropriate default values.
-	*/
-	void clearTwoPhaseMediumProperties(TwoPhaseMediumProperties *const properties);
 
 protected:
 	//! Fluid constants

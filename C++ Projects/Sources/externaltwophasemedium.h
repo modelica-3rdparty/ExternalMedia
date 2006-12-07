@@ -84,6 +84,7 @@ extern "C" {
     EXPORT double density_derh_p_(int uniqueID);
 
 	EXPORT double density_ph_der_(int uniqueID, double p_der, double h_der);
+	EXPORT double temperature_ph_der_(int uniqueID, double p_der, double h_der);
 
 	EXPORT double pressure_(int uniqueID);
 	EXPORT double specificEnthalpy_(int uniqueID);
