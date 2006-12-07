@@ -371,7 +371,7 @@ partial package PartialExternalTwoPhaseMedium
     input Integer uniqueID "Unique ID";
     input Real p_der;
     input Real h_der;
-    output Real d_der;
+    output Real T_der;
   end temperature_ph_der;
   
   redeclare replaceable function temperature_ps 
