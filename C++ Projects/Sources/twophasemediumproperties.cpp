@@ -14,38 +14,38 @@ TwoPhaseMediumProperties::TwoPhaseMediumProperties(){
 	bubbleUniqueIDOnePhase = 0;
 	bubbleUniqueIDTwoPhase = 0;
 
-	beta = 0.0;
-	cp = 0.0;
-	cv = 0.0;
-	d = 0.0;
-	dd_dp_h = 0.0;
-	dd_dh_p = 0.0;
-	h = 0.0;
-	kappa = 0.0;
-	p = 0.0;
-	s = 0.0;
-	T = 0.0;
-	dT_dh_p = 0.0;
-	dT_dp_h = 0.0;
+	beta = NAN;
+	cp = NAN;
+	cv = NAN;
+	d = NAN;
+	dd_dp_h = NAN;
+	dd_dh_p = NAN;
+	h = NAN;
+	kappa = NAN;
+	p = NAN;
+	s = NAN;
+	T = NAN;
+	dT_dh_p = NAN;
+	dT_dp_h = NAN;
 
-	ps = 0.0;
-	Ts = 0.0;
+	ps = NAN;
+	Ts = NAN;
 
-	dl = 0.0;
-	dv = 0.0;
-	hl = 0.0;
-	hv = 0.0;
-	sl = 0.0;
-	sv = 0.0;
+	dl = NAN;
+	dv = NAN;
+	hl = NAN;
+	hv = NAN;
+	sl = NAN;
+	sv = NAN;
 
-	eta = 0.0;
-	lambda = 0.0;
-	Pr = 0.0;
-	sigma = 0.0;
+	eta = NAN;
+	lambda = NAN;
+	Pr = NAN;
+	sigma = NAN;
 
-    d_Ts_dp = 0.0;
-	d_dl_dp = 0.0;
-	d_dv_dp = 0.0;
-    d_hl_dp = 0.0;
-	d_hv_dp = 0.0;
+    d_Ts_dp = NAN;
+	d_dl_dp = NAN;
+	d_dv_dp = NAN;
+    d_hl_dp = NAN;
+	d_hv_dp = NAN;
 }

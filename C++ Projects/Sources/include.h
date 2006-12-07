@@ -73,6 +73,7 @@
   the user if there is a more appropriate value.
 */
 #define NAN 0xffffffff
+#define ISNAN(x) (x == NAN)
 
 /********************************************************************
  *                 End of user option selection
