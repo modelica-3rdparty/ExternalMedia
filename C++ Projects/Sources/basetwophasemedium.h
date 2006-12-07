@@ -23,6 +23,12 @@ public:
 					   const int &uniqueID);
 	virtual ~BaseTwoPhaseMedium();
 
+	// Reset the medium constants to the inputs, and the properties to their
+	// default values
+	void reinitMedium(const string &mediumName, const string &libraryName, 
+					  const string &substanceName, BaseSolver *const solver, 
+					  const int &uniqueID);
+
 	int uniqueID() const;
 	string mediumName() const;
 	string libraryName() const;
@@ -93,6 +99,28 @@ protected:
 
 	// Pointer to solver
 	BaseSolver *_solver;
+
+	// Unique ID 
+	int _uniqueID;
+
+	// Medium identification strings
+	string _mediumName;
+	string _libraryName;
+	string _substanceName;
+
+	// ! Unique ID of corresponding 1-phase dew state medium object, set by setDewState
+	int _dewUniqueIDOnePhase;
+
+	// ! Unique ID of corresponding 2-phase dew state medium object, set by setDewState
+	int _dewUniqueIDTwoPhase;
+
+	// ! Unique ID of corresponding 1-phase bubble state medium object, set by setBubbleState
+	int _bubbleUniqueIDOnePhase;
+
+	// ! Unique ID of corresponding 2-phase bubble state medium object, set by setBubbleState
+	int _bubbleUniqueIDTwoPhase;
+
+
 };
 
 #endif /*BASETWOPHASEMEDIUM_H_*/

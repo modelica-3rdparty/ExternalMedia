@@ -15,39 +15,17 @@
 */
 class TwoPhaseMediumProperties{
 public:
+	// ! Constructor
 	TwoPhaseMediumProperties();
+    // ! Initialize all fields to the default/NAN values
+	void initializeFields();
 
-	//! Medium name
-	string mediumName;
-	//! Name of the external library
-	string libraryName;
-	//! Substance name
-	string substanceName;
-	// ! Unique ID number
-	/*!
-	  The unique ID number is included in the two phase medium property
-	  record for error reporting reasons.
-	*/
-	int uniqueID;
-
-	//! Phase input
+	//! Phase 
 	/*!
 	  This phase flag is defined according to the phase flag in Modelica.Media:
-	  2 for two-phase, 1 for one-phase, 0 if not known.
+	  2 for two-phase, 1 for one-phase.
 	*/
 	int phase;
-
-	// ! Unique ID of corresponding 1-phase dew state medium object, set by setDewState
-	int dewUniqueIDOnePhase;
-
-	// ! Unique ID of corresponding 2-phase dew state medium object, set by setDewState
-	int dewUniqueIDTwoPhase;
-
-	// ! Unique ID of corresponding 1-phase bubble state medium object, set by setBubbleState
-	int bubbleUniqueIDOnePhase;
-
-	// ! Unique ID of corresponding 2-phase bubble state medium object, set by setBubbleState
-	int bubbleUniqueIDTwoPhase;
 
 	//! Isothermal expansion coefficient
 	double beta;

@@ -20,6 +20,7 @@ public:
 				   const string &substanceName, BaseSolver *const solver,
 				   const int &uniqueID);
 	~TwoPhaseMedium();
+
 };
 
 #endif /*TWOPHASEMEDIUM_H_*/

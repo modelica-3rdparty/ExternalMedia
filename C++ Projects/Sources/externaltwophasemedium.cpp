@@ -142,11 +142,14 @@ void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *
 	// Pointer to the medium object
 	BaseTwoPhaseMedium *medium;
 
+	printf("setSat_p_ called\n"); // XXX
+
 	if (uniqueID == 0){
 	  // setSat_p was called with uniqueID == 0
 	  // create a new transient medium object and get a transientUniqueID
 	  int transientUniqueID = 
         MediumMap::addTransientMedium(mediumName, libraryName, substanceName);
+	  printf("setSat_p_: Added medium; got transientUniqueID = %d\n", transientUniqueID); // XXX
       // run setSat_p with the transientUniqueID
 	  setSat_p_(p, transientUniqueID, sat_psat, sat_Tsat, sat_uniqueID,
 		        mediumName, libraryName, substanceName);
@@ -246,6 +249,7 @@ void setBubbleState_(int uniqueID, int phase, int *state_uniqueID, int *state_ph
   				     const char *mediumName, const char *libraryName, const char *substanceName){
 	// Check for the validity of the inputs - this function should never be 
 	// called with a zero unique ID or phase inputs
+    printf("setBubbleState_ called with uniqueID = %d\n", uniqueID); // XXX
 	if (uniqueID == 0)
 		errorMessage("setBubbleState_ called without a valid uniqueID");
 	if (phase < 1 || phase > 2)
@@ -253,11 +257,13 @@ void setBubbleState_(int uniqueID, int phase, int *state_uniqueID, int *state_ph
 	// Get the unique ID of the the dewState object, and allocate a new medium
 	// object and set the dewState uniqueID if necessary
 	int bubbleUniqueID = MediumMap::medium(uniqueID)->getBubbleUniqueID(phase);
+	printf("setBubbleState_: Check 2\n"); // XXX
 
 	// Call the original medium object's setBubbleState function
 	// which will compute the properties of the dew state and store them
 	// in the medium with the dew state unique ID
     MediumMap::medium(uniqueID)->setBubbleState(phase);
+	printf("setBubbleState_: finished\n"); // XXX
 
     // Return values
 	if (state_uniqueID != NULL)

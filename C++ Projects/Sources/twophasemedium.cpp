@@ -22,11 +22,6 @@ TwoPhaseMedium::TwoPhaseMedium(const string &mediumName, const string &libraryNa
 	: BaseTwoPhaseMedium(mediumName, libraryName, substanceName, solver, uniqueID){
 	// Create new medium property struct
 	_properties = new TwoPhaseMediumProperties();
-	// Set information
-	_properties->mediumName = mediumName;
-	_properties->libraryName = libraryName;
-	_properties->substanceName = substanceName;
-	_properties->uniqueID = uniqueID;
 }
 
 TwoPhaseMedium::~TwoPhaseMedium(){

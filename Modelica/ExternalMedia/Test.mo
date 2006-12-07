@@ -10,23 +10,6 @@ package Test
     Medium.MolarMass MM = Medium.fluidConstants[1].molarMass;
   end CompleteFluidConstants;
   
-  model CompleteBaseProperties 
-    "Compute all available two-phase medium properties from a BaseProperties model" 
-    import SI = Modelica.SIunits;
-    replaceable package Medium = 
-        Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-    
-    // BaseProperties object
-    Medium.BaseProperties baseProperties;
-    
-    // All the complete properties
-    CompleteThermodynamicState completeState(redeclare package Medium = Medium,
-                                             state = baseProperties.state);
-    CompleteSaturationProperties completeSat(redeclare package Medium = Medium,
-                                             sat = baseProperties.sat);
-    CompleteFluidConstants completeConstants(redeclare package Medium = Medium);
-  end CompleteBaseProperties;
-  
   model CompleteThermodynamicState 
     "Compute all available two-phase medium properties from a ThermodynamicState model" 
     import SI = Modelica.SIunits;
@@ -72,6 +55,44 @@ package Test
     Real d_hv_dp =               Medium.dDewEnthalpy_dPressure(sat);
   end CompleteSaturationProperties;
   
+  model CompleteBubbleDewStates 
+    "Compute all available properties for dewpoint and bubble point states corresponding to a sat record" 
+    import SI = Modelica.SIunits;
+    replaceable package Medium = 
+        Modelica.Media.Interfaces.PartialTwoPhaseMedium;
+    
+    // SaturationProperties record
+    Medium.SaturationProperties sat;
+    
+    CompleteThermodynamicState dewStateOnePhase(state = Medium.setDewState(sat,1),
+                                                redeclare package Medium = Medium);
+    CompleteThermodynamicState dewStateTwoPhase(state = Medium.setDewState(sat,2),
+                                                redeclare package Medium = Medium);
+    CompleteThermodynamicState bubbleStateOnePhase(state = Medium.setBubbleState(sat,1),
+                                                   redeclare package Medium = Medium);
+    CompleteThermodynamicState bubbleStateTwoPhase(state = Medium.setBubbleState(sat,2),
+                                                   redeclare package Medium = Medium);
+  end CompleteBubbleDewStates;
+  
+  model CompleteBaseProperties 
+    "Compute all available two-phase medium properties from a BaseProperties model" 
+    import SI = Modelica.SIunits;
+    replaceable package Medium = 
+        Modelica.Media.Interfaces.PartialTwoPhaseMedium;
+    
+    // BaseProperties object
+    Medium.BaseProperties baseProperties;
+    
+    // All the complete properties
+    CompleteThermodynamicState completeState(redeclare package Medium = Medium,
+                                             state = baseProperties.state);
+    CompleteSaturationProperties completeSat(redeclare package Medium = Medium,
+                                             sat = baseProperties.sat);
+    CompleteFluidConstants completeConstants(redeclare package Medium = Medium);
+    CompleteBubbleDewStates completeBubbleDewStates(redeclare package Medium = Medium,
+                                                    sat = baseProperties.sat);
+  end CompleteBaseProperties;
+  
 model TestWrongMedium 
     "Test the error reporting messages for unsupported external media" 
   package Medium = Media.ExternalTwoPhaseMedium;
@@ -81,8 +102,51 @@ equation
   medium.h = 1e5;
 end TestWrongMedium;
   
+  model TestStatesSat_TestMedium 
+    "Test case using TestMedium, with baseProperties and state + sat records without explicit uniqueID handling" 
+    replaceable package Medium = Media.TestMedium;
+    Medium.BaseProperties baseProperties1;
+    Medium.BaseProperties baseProperties2;
+    Medium.ThermodynamicState state1;
+    Medium.ThermodynamicState state2;
+    Medium.SaturationProperties sat1;
+    Medium.SaturationProperties sat2;
+    
+    Medium.Temperature Ts;
+    Medium.AbsolutePressure ps;
+    
+    CompleteThermodynamicState completeState1(redeclare package Medium = Medium,
+                                              state = state1);
+    CompleteThermodynamicState completeState2(redeclare package Medium = Medium,
+                                              state = state2);
+    CompleteSaturationProperties completeSat1(redeclare package Medium = Medium,
+                                              sat = sat1);
+    CompleteSaturationProperties completeSat2(redeclare package Medium = Medium,
+                                              sat = sat2);
+    CompleteBubbleDewStates completeBubbleDewStates1(redeclare package Medium 
+        =                                                                       Medium,
+                                                     sat = sat1);
+    CompleteBubbleDewStates completeBubbleDewStates2(redeclare package Medium 
+        =                                                                       Medium,
+                                                     sat = sat1);
+  equation 
+    baseProperties1.p = 1e5+1e5*time;
+    baseProperties1.h = 1e5;
+    baseProperties2.p = 1e5;
+    baseProperties2.h = 1e5 + 2e5*time;
+    
+    state1 = Medium.setState_ph(1e5 + 1e5*time, 1e5);
+    state2 = Medium.setState_pT(1e5, 300+ 50*time);
+    
+    sat1 = Medium.setSat_p(1e5 + 1e5*time);
+    sat2 = Medium.setSat_T(300 + 50 * time);
+    
+    Ts = Medium.saturationTemperature(1e5+1e5*time);
+    ps = Medium.saturationPressure(300 + 50*time);
+  end TestStatesSat_TestMedium;
+
   model TestBasePropertiesExplicit_TestMedium 
-    "Test case using TestMedium and explicit equations" 
+    "Test case using TestMedium and BaseProperties with explicit equations" 
     replaceable package Medium = Media.TestMedium;
     ExternalMedia.Test.CompleteBaseProperties medium1(
                                redeclare package Medium = Medium) 
@@ -98,7 +162,7 @@ end TestWrongMedium;
   end TestBasePropertiesExplicit_TestMedium;
   
   model TestBasePropertiesImplicit_TestMedium 
-    "Test case using TestMedium and implicit equations" 
+    "Test case using TestMedium and BaseProperties with implicit equations" 
     replaceable package Medium = Media.TestMedium;
     ExternalMedia.Test.CompleteBaseProperties medium1(
                                redeclare package Medium = Medium,
@@ -267,4 +331,84 @@ end TestBasePropertiesDynamic_FluidPropIF95;
     extends TestBasePropertiesExplicit_FluidPropIF95(
       redeclare package Medium = Modelica.Media.Water.StandardWater);
   end TestBasePropertiesExplicit_ModelicaIF97;
+  
+  model TestStatesSat_TestMedium2 
+    "Test case using TestMedium, with baseProperties and state + sat records without explicit uniqueID handling" 
+    replaceable package Medium = Media.TestMedium;
+  //  Medium.BaseProperties baseProperties1;
+  //  Medium.BaseProperties baseProperties2;
+  //  Medium.ThermodynamicState state1;
+  //  Medium.ThermodynamicState state2;
+    
+    Medium.SaturationProperties sat1;
+  //  Medium.SaturationProperties sat2;
+    
+  /*
+  Medium.Temperature Ts;
+  Medium.AbsolutePressure ps;
+*/
+    
+  /*
+  CompleteThermodynamicState completeState1(redeclare package Medium = Medium,
+                                            state = state1);
+  CompleteThermodynamicState completeState2(redeclare package Medium = Medium,
+                                            state = state2);
+*/
+    
+    CompleteSaturationProperties completeSat1(redeclare package Medium = Medium,
+                                              sat = sat1);
+  /*
+  CompleteSaturationProperties completeSat2(redeclare package Medium = Medium,
+                                            sat = sat2);
+*/
+    CompleteBubbleDewStates2 completeBubbleDewStates1(redeclare package Medium 
+        =                                                                        Medium,
+                                                     sat = sat1);
+  /*
+  CompleteBubbleDewStates completeBubbleDewStates2(redeclare package Medium = Medium,
+                                                   sat = sat2);
+*/
+  equation 
+  /*  baseProperties1.p = 1e5+1e5*time;
+  baseProperties1.h = 1e5;
+  baseProperties2.p = 1e5;
+  baseProperties2.h = 1e5 + 2e5*time;
+ 
+  state1 = Medium.setState_ph(1e5 + 1e5*time, 1e5);
+  state2 = Medium.setState_pT(1e5, 300+ 50*time);
+  */
+    
+    sat1 = Medium.setSat_p(1e5 + 1e5*time);
+  //  sat2 = Medium.setSat_T(300 + 50 * time);
+    
+  /*
+  Ts = Medium.saturationTemperature(1e5+1e5*time);
+  ps = Medium.saturationPressure(300 + 50*time);
+*/
+    annotation (experiment(NumberOfIntervals=1000), experimentSetupOutput);
+  end TestStatesSat_TestMedium2;
+
+  model CompleteBubbleDewStates2 
+    "Compute all available properties for dewpoint and bubble point states corresponding to a sat record" 
+    import SI = Modelica.SIunits;
+    replaceable package Medium = 
+        Modelica.Media.Interfaces.PartialTwoPhaseMedium;
+    
+    // SaturationProperties record
+    Medium.SaturationProperties sat;
+    
+  /*
+  CompleteThermodynamicState dewStateOnePhase(state = Medium.setDewState(sat,1),
+                                              redeclare package Medium = Medium);
+
+  CompleteThermodynamicState dewStateTwoPhase(state = Medium.setDewState(sat,2),
+                                              redeclare package Medium = Medium);
+*/
+    CompleteThermodynamicState bubbleStateOnePhase(state = Medium.setBubbleState(sat,1),
+                                                   redeclare package Medium = Medium);
+   /* 
+ CompleteThermodynamicState bubbleStateTwoPhase(state = Medium.setBubbleState(sat,2),
+                                                 redeclare package Medium = Medium);
+*/
+  end CompleteBubbleDewStates2;
 end Test;

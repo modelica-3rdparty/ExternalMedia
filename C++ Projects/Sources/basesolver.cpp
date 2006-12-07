@@ -76,7 +76,9 @@ void BaseSolver::setBubbleState(int phase, TwoPhaseMediumProperties *const prope
 		                                   TwoPhaseMediumProperties *const bubbleProperties){
 	// Set the bubble state property record based on the original medium 
 	// saturation state
-	setState_ph(properties->p, properties->hl, phase, bubbleProperties);
+	printf("BaseSolver::setBubbleState called\n"); // XXX
+	setState_ph(properties->ps, properties->hl, phase, bubbleProperties);
+	printf("BaseSolver::setBubbleState finished\n"); // XXX
 }
 
 // Default implementation of the setDewState function, relying on the correct 
@@ -86,7 +88,7 @@ void BaseSolver::setDewState(int phase, TwoPhaseMediumProperties *const properti
 		                                TwoPhaseMediumProperties *const dewProperties){
 	// Set the dew state property record based on the original medium 
 	// saturation state
-	setState_ph(properties->p, properties->hv, phase, dewProperties);
+	setState_ph(properties->ps, properties->hv, phase, dewProperties);
 }
 
 bool BaseSolver::computeDerivatives(TwoPhaseMediumProperties *const properties){

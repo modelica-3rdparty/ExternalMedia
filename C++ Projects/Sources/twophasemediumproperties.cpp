@@ -1,18 +1,13 @@
 #include "twophasemediumproperties.h"
 
+
 TwoPhaseMediumProperties::TwoPhaseMediumProperties(){
-	// Initialize entire class
-	mediumName = "";
-	libraryName = "";
-	substanceName = "";
-	uniqueID = 0;
+    // Initialize entire class
+	initializeFields();
+}
 
+void TwoPhaseMediumProperties::initializeFields(){
 	phase = 0;
-
-	dewUniqueIDOnePhase = 0;
-	dewUniqueIDTwoPhase = 0;
-	bubbleUniqueIDOnePhase = 0;
-	bubbleUniqueIDTwoPhase = 0;
 
 	beta = NAN;
 	cp = NAN;

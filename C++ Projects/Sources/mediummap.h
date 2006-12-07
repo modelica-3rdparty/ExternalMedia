@@ -103,10 +103,10 @@ public:
 	static BaseTwoPhaseMedium *solverMedium(const string &mediumName, const string &libraryName, const string &substanceName);
 
 protected:
-	//! Static integer for the positive unique ID number used by permanent medium objects
+	//! Static counter for the positive unique ID number used by permanent medium objects
 	static int _uniqueID;
 
-	//! Static integer for the negative unique ID number used by transient medium objects
+	//! Static counter for the negative unique ID number used by transient medium objects
 	static int _transientUniqueID;
 
 	//! Map for mediums with unique ID as identifier
