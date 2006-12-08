@@ -4,6 +4,7 @@ partial package PartialExternalTwoPhaseMedium
     mediumName = "ExternalMedium",
     singleState = false,
     onePhase = false,
+    smoothModel = false,
     fluidConstants = {externalFluidConstants});
   import IC = ExternalMedia.Common.InputChoices;
   
@@ -54,9 +55,10 @@ partial package PartialExternalTwoPhaseMedium
     import IC = ExternalMedia.Common.InputChoices;
     parameter IC.InputChoice basePropertiesInputChoice=inputChoice 
       "Choice of input variables for property computations";
-    parameter FixedPhase phase=0 
-      "2 for two-phase, 1 for one-phase, 0 if not known";
-    
+    FixedPhase phaseInput 
+      "Phase input for property computation functions, 2 for two-phase, 1 for one-phase, 0 if not known";
+    Integer phaseOutput 
+      "Phase output for medium, 2 for two-phase, 1 for one-phase";
     Integer uniqueID(final start=0) "Unique ID of BaseProperty object";
     SpecificEntropy s(
       stateSelect = if basePropertiesInputChoice == IC.ps then 
@@ -71,9 +73,14 @@ partial package PartialExternalTwoPhaseMedium
       R := Modelica.Constants.R/MM;
     end when;
   equation 
+    if (onePhase or (basePropertiesInputChoice == IC.pT)) then
+      phaseInput = 1 "Force one-phase property computation";
+    else
+      phaseInput = 0 "Unknown phase";
+    end if;
     if (basePropertiesInputChoice == IC.ph) then
       // Compute the state record (including the unique ID)
-      state = setState_ph(p, h, phase, uniqueID);
+      state = setState_ph(p, h, phaseInput, uniqueID);
       // Compute the remaining variables.
       // It is not possible to use the standard functions like
       // d = density(state), because differentiation for index
@@ -81,21 +88,21 @@ partial package PartialExternalTwoPhaseMedium
       // density_ph(), which has an appropriate derivative annotation,
       // is used instead. The implementation of density_ph() uses 
       // setState with the same inputs, so there's no actual overhead
-      d = density_ph(p, h, phase, uniqueID);
-      s = specificEntropy_ph(p, h, phase, uniqueID);
-      T = temperature_ph(p, h, phase, uniqueID);
+      d = density_ph(p, h, phaseInput, uniqueID);
+      s = specificEntropy_ph(p, h, phaseInput, uniqueID);
+      T = temperature_ph(p, h, phaseInput, uniqueID);
     elseif (basePropertiesInputChoice == IC.dT) then
-      state = setState_dT(d, T, phase, uniqueID);
+      state = setState_dT(d, T, phaseInput, uniqueID);
       h = specificEnthalpy(state);
       p = pressure(state);
       s = specificEntropy(state);
     elseif (basePropertiesInputChoice == IC.pT) then
-      state = setState_pT(p, T, phase, uniqueID);
+      state = setState_pT(p, T, phaseInput, uniqueID);
       d = density(state);
       h = specificEnthalpy(state);
       s = specificEntropy(state);
     elseif (basePropertiesInputChoice == IC.ps) then
-      state = setState_ps(p, s, phase, uniqueID);
+      state = setState_ps(p, s, phaseInput, uniqueID);
       d = density(state);
       h = specificEnthalpy(state);
       T = temperature(state);
@@ -104,7 +111,26 @@ partial package PartialExternalTwoPhaseMedium
     u = h - p/d;
     // Compute the saturation properties record
     sat = setSat_p_state(state);
-    
+    // Event generation for phase boundary crossing
+    if smoothModel then
+      // No event generation
+      phaseOutput = state.phase;
+    else
+      // Event generation at phase boundary crossing
+      if basePropertiesInputChoice == IC.ph then
+        phaseOutput = if ((h < bubbleEnthalpy(sat) or h > dewEnthalpy(sat)) or 
+                           p > fluidConstants[1].criticalPressure) then 1 else 2;
+      elseif basePropertiesInputChoice == IC.dT then
+        phaseOutput = if not ((d < bubbleDensity(sat) and d > dewDensity(sat)) and 
+                               T < fluidConstants[1].criticalTemperature) then 1 else 2;
+      elseif basePropertiesInputChoice == IC.ps then
+        phaseOutput = if ((s < bubbleEntropy(sat) or s > dewEntropy(sat)) or 
+                           p > fluidConstants[1].criticalPressure) then 1 else 2;
+      else
+        // basePropertiesInputChoice == pT
+        phaseOutput = 1;
+      end if;
+    end if;
   end BaseProperties;
   
   redeclare replaceable partial function setState_ph 

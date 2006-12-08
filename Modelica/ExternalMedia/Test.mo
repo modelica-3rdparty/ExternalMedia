@@ -264,7 +264,7 @@ end TestBasePropertiesDynamic_TestMedium;
                                baseProperties(h(start=1e5))) 
       "Varying pressure, constant enthalpy";
   equation 
-    medium1.baseProperties.p = 1e5*time;
+    medium1.baseProperties.p = 1e5+1e5*time;
     medium1.baseProperties.T = 300 + 25*time;
     medium2.baseProperties.p = 1e5+1e5*time;
     medium2.baseProperties.T = 300;
@@ -279,7 +279,8 @@ model TestBasePropertiesDynamic_FluidPropIF95
   parameter Real p_atm = 101325 "Atmospheric pressure";
   parameter SI.Temperature Tstart = 300;
   parameter Real Kv0 = 1.00801e-2 "Valve flow coefficient";
-  Medium.BaseProperties medium(preferredMediumStates = true);
+  Medium.BaseProperties medium(preferredMediumStates = true,
+                               h(start=1e5));
   SI.Mass M;
   SI.Energy U;
   SI.MassFlowRate win(start = 100);
@@ -332,4 +333,46 @@ end TestBasePropertiesDynamic_FluidPropIF95;
       redeclare package Medium = Modelica.Media.Water.StandardWater);
   end TestBasePropertiesExplicit_ModelicaIF97;
   
+  model TestBasePropertiesImplicit_FluidPropIF952 
+    "Test case using TestMedium and implicit equations" 
+    replaceable package Medium = Media.FluidPropMedia.WaterIF95 
+      extends Modelica.Media.Interfaces.PartialTwoPhaseMedium;
+    ExternalMedia.Test.CompleteBaseProperties2 medium1(
+                               redeclare package Medium = Medium,
+                               baseProperties(h(start=1e5))) 
+      "Constant pressure, varying enthalpy";
+  equation 
+    medium1.baseProperties.p = 1e5+1e5*time;
+    medium1.baseProperties.T = 300 + 25*time;
+  end TestBasePropertiesImplicit_FluidPropIF952;
+
+  model TestBasePropertiesImplicit_FluidPropIF953 
+    "Test case using TestMedium and implicit equations" 
+    replaceable package Medium = Media.FluidPropMedia.WaterIF95 
+      extends Modelica.Media.Interfaces.PartialTwoPhaseMedium;
+    Medium.BaseProperties baseProperties(h(start=1e5)) 
+      "Constant pressure, varying enthalpy";
+  equation 
+    baseProperties.p = 1e5*time;
+    baseProperties.T = 300 + 25*time;
+  end TestBasePropertiesImplicit_FluidPropIF953;
+
+  model CompleteBaseProperties2 
+    "Compute all available two-phase medium properties from a BaseProperties model" 
+    import SI = Modelica.SIunits;
+    replaceable package Medium = 
+        Modelica.Media.Interfaces.PartialTwoPhaseMedium;
+    
+    // BaseProperties object
+    Medium.BaseProperties baseProperties;
+    
+    // All the complete properties
+    //CompleteThermodynamicState completeState(redeclare package Medium = Medium,
+    //                                         state = baseProperties.state);
+    //CompleteSaturationProperties completeSat(redeclare package Medium = Medium,
+    //                                         sat = baseProperties.sat);
+    //CompleteFluidConstants completeConstants(redeclare package Medium = Medium);
+    //CompleteBubbleDewStates completeBubbleDewStates(redeclare package Medium = Medium,
+    //                                                sat = baseProperties.sat);
+  end CompleteBaseProperties2;
 end Test;
