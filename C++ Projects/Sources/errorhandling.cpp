@@ -22,7 +22,9 @@ void warningMessage(char *warningMessage){
 #else
 // The Dymola specific implementation does currently not work for dynmic link libraries
 void errorMessage(char *errorMessage){
-	printf("\a%s\nPress return to end the simulation!\n", errorMessage);
+	printf("\a%s\nPress the Stop button in Dymola to end the simulation!\n", errorMessage);
+	getchar();
+	printf("\aPress the Stop button in Dymola to end the simulation!\n", errorMessage);
 	getchar();
 	exit(1);
 }

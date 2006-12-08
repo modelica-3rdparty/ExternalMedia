@@ -76,181 +76,181 @@ void BaseTwoPhaseMedium::setSolver(BaseSolver *const solver){
 
 double BaseTwoPhaseMedium::beta() const{
 	if (ISNAN(_properties->beta))
-		errorMessage("Internal error: setState did not set the beta field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->beta field was not set");
 	return _properties->beta;
 }
 
 double BaseTwoPhaseMedium::cp() const{
 	if (ISNAN(_properties->cp))
-		errorMessage("Internal error: setState did not set the cp field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->cp field was not set");
 	return _properties->cp;
 }
 
 double BaseTwoPhaseMedium::cv() const{
 	if (ISNAN(_properties->cv))
-		errorMessage("Internal error: setState did not set the cv field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->cv field was not set");
 	return _properties->cv;
 }
 
 double BaseTwoPhaseMedium::d() const{
 	if (ISNAN(_properties->d))
-		errorMessage("Internal error: setState did not set the d field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->d field was not set");
 	return _properties->d;
 }
 
 double BaseTwoPhaseMedium::dd_dp_h() const{
 	if (ISNAN(_properties->dd_dp_h))
-		errorMessage("Internal error: setState did not set the dd_dp_h field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->dd_dp_h field was not set");
 	return _properties->dd_dp_h;
 }
 
 double BaseTwoPhaseMedium::dd_dh_p() const{
 	if (ISNAN(_properties->dd_dh_p))
-		errorMessage("Internal error: setState did not set the dd_dh_p field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->dd_dh_p field was not set");
 	return _properties->dd_dh_p;
 }
 
 double BaseTwoPhaseMedium::h() const{
 	if (ISNAN(_properties->h))
-		errorMessage("Internal error: setState did not set the h field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->h field was not set");
 	return _properties->h;
 }
 
 double BaseTwoPhaseMedium::kappa() const{
 	if (ISNAN(_properties->kappa))
-		errorMessage("Internal error: setState did not set the kappa field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->kappa field was not set");
 	return _properties->kappa;
 }
 
 double BaseTwoPhaseMedium::p() const{
 	if (ISNAN(_properties->p))
-		errorMessage("Internal error: setState did not set the p field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->p field was not set");
 	return _properties->p;
 }
 
 double BaseTwoPhaseMedium::s() const{
 	if (ISNAN(_properties->s))
-		errorMessage("Internal error: setState did not set the s field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->s field was not set");
 	return _properties->s;
 }
 
 double BaseTwoPhaseMedium::T() const{
 	if (ISNAN(_properties->T))
-		errorMessage("Internal error: setState did not set the T field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->T field was not set");
 	return _properties->T;
 }
 
 double BaseTwoPhaseMedium::dT_dp_h() const{
 	if (ISNAN(_properties->dT_dp_h))
-		errorMessage("Internal error: setState did not set the dT_dp_h field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->dT_dp_h field was not set");
 	return _properties->dT_dp_h;
 }
 
 double BaseTwoPhaseMedium::dT_dh_p() const{
 	if (ISNAN(_properties->dT_dh_p))
-		errorMessage("Internal error: setState did not set the dT_dh_p field");
+		errorMessage("Internal error in TwoPhaseMedium object:\ndT_dh_p field was not set");
 	return _properties->dT_dh_p;
 }
 
 double BaseTwoPhaseMedium::ps() const{
 	if (ISNAN(_properties->ps))
-		errorMessage("Internal error: setState did not set the ps field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->ps field was not set");
 	return _properties->ps;
 }
 
 double BaseTwoPhaseMedium::Ts() const{
 	if (ISNAN(_properties->Ts))
-		errorMessage("Internal error: setState did not set the Ts field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->Ts field was not set");
 	return _properties->Ts;
 }
 
 double BaseTwoPhaseMedium::dl() const{
 	if (ISNAN(_properties->dl))
-		errorMessage("Internal error: setState did not set the dl field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->dl field was not set");
 	return _properties->dl;
 }
 
 double BaseTwoPhaseMedium::dv() const{
 	if (ISNAN(_properties->dv))
-		errorMessage("Internal error: setState did not set the dv field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->dv field was not set");
 	return _properties->dv;
 }
 
 double BaseTwoPhaseMedium::hl() const{
 	if (ISNAN(_properties->hl))
-		errorMessage("Internal error: setState did not set the hl field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->hl field was not set");
 	return _properties->hl;
 }
 
 double BaseTwoPhaseMedium::hv() const{
 	if (ISNAN(_properties->hv))
-		errorMessage("Internal error: setState did not set the hv field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->hv field was not set");
 	return _properties->hv;
 }
 
 double BaseTwoPhaseMedium::sl() const{
 	if (ISNAN(_properties->sl))
-		errorMessage("Internal error: setState did not set the sl field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->sl field was not set");
 	return _properties->sl;
 }
 
 double BaseTwoPhaseMedium::sv() const{
 	if (ISNAN(_properties->sv))
-		errorMessage("Internal error: setState did not set the sv field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->sv field was not set");
 	return _properties->sv;
 }
 
 double BaseTwoPhaseMedium::d_Ts_dp() const{
 	if (ISNAN(_properties->d_Ts_dp))
-		errorMessage("Internal error: setState did not set the d_Ts_dp field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->d_Ts_dp field was not set");
 	return _properties->d_Ts_dp;
 }
 
 double BaseTwoPhaseMedium::d_dl_dp() const{
 	if (ISNAN(_properties->d_dl_dp))
-		errorMessage("Internal error: setState did not set the d_dl_dp field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->d_dl_dp field was not set");
 	return _properties->d_dl_dp;
 }
 
 double BaseTwoPhaseMedium::d_dv_dp() const{
 	if (ISNAN(_properties->d_dv_dp))
-		errorMessage("Internal error: setState did not set the d_dv_dp field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->d_dv_dp field was not set");
 	return _properties->d_dv_dp;
 }
 
 double BaseTwoPhaseMedium::d_hl_dp() const{
 	if (ISNAN(_properties->d_hl_dp))
-		errorMessage("Internal error: setState did not set the d_hl_dp field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->d_hl_dp field was not set");
 	return _properties->d_hl_dp;
 }
 
 double BaseTwoPhaseMedium::d_hv_dp() const{
 	if (ISNAN(_properties->d_hv_dp))
-		errorMessage("Internal error: setState did not set the d_hv_dp field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->d_hv_dp field was not set");
 	return _properties->d_hv_dp;
 }
 
 double BaseTwoPhaseMedium::eta() const{
 	if (ISNAN(_properties->eta))
-		errorMessage("Internal error: setState did not set the eta field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->eta field was not set");
 	return _properties->eta;
 }
 
 double BaseTwoPhaseMedium::lambda() const{
 	if (ISNAN(_properties->lambda))
-		errorMessage("Internal error: setState did not set the lambda field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->lambda field was not set");
 	return _properties->lambda;
 }
 
 double BaseTwoPhaseMedium::Pr() const{
 	if (ISNAN(_properties->Pr))
-		errorMessage("Internal error: setState did not set the Pr field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->Pr field was not set");
 	return _properties->Pr;
 }
 
 double BaseTwoPhaseMedium::sigma() const{
 	if (ISNAN(_properties->sigma))
-		errorMessage("Internal error: setState did not set the sigma field");
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->sigma field was not set");
 	return _properties->sigma;
 }
 

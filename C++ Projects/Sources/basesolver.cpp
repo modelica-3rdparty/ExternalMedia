@@ -49,24 +49,38 @@ void BaseSolver::setFluidConstants(){
 }
 
 void BaseSolver::setSat_p(double &p, TwoPhaseMediumProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: setSat_p() not implemented in the Solver object");
 }
 
 void BaseSolver::setSat_T(double &T, TwoPhaseMediumProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: setSat_T() not implemented in the Solver object");
 }
 
 void BaseSolver::setSat_p_state(TwoPhaseMediumProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: setSat_p_state() not implemented in the Solver object");
 };
 
 void BaseSolver::setState_dT(double &d, double &T, int &phase, TwoPhaseMediumProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: setState_dT() not implemented in the Solver object");
 }
 
 void BaseSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMediumProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: setState_ph() not implemented in the Solver object");
 }
 
 void BaseSolver::setState_ps(double &p, double &s, int &phase, TwoPhaseMediumProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: setState_ps() not implemented in the Solver object");
 }
 
 void BaseSolver::setState_pT(double &p, double &T, TwoPhaseMediumProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: setState_pT() not implemented in the Solver object");
 }
 
 // Default implementation of the setBubbleState function, relying on the correct 

@@ -37,6 +37,7 @@ public:
 	  This function sets the fluid constants which are defined in the
 	  FluidConstants record in Modelica. It should be called when a new
 	  solver is created.
+	  Must be re-implemented in the specific solver
 	*/
     virtual void setFluidConstants();
 
@@ -44,6 +45,7 @@ public:
 	/*!
 	  This function sets the saturation properties for the given pressure p.
 	  The computed values are written to the two phase medium propery struct.
+	  Must be re-implemented in the specific solver
 	  @param p Pressure
 	  @param properties Two phase medium property record
 	*/
@@ -53,6 +55,7 @@ public:
 	/*!
 	  This function sets the saturation properties for the given temperature T.
 	  The computed values are written to the two phase medium propery struct.
+	  Must be re-implemented in the specific solver
 	  @param T Temperature
 	  @param properties Two phase medium property record
 	*/
@@ -64,6 +67,7 @@ public:
 	  and is desined to be used from within the BaseProperties model in
 	  Modelica. The computed values are written to the two phase medium propery 
 	  struct.
+	  Must be re-implemented in the specific solver
 	  @param properties Two phase medium property record
 	*/
 	virtual void setSat_p_state(TwoPhaseMediumProperties *const properties);
@@ -73,6 +77,7 @@ public:
 	  This function sets the thermodynamic state record for the given density
 	  d, the temperature T and the specified phase. The computed values are
 	  written to the two phase medium property struct.
+	  Must be re-implemented in the specific solver
 	  @param d Density
 	  @param T Temperature
 	  @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
@@ -85,6 +90,7 @@ public:
 	  This function sets the thermodynamic state record for the given pressure
 	  p, the specific enthalpy h and the specified phase. The computed values are
 	  written to the two phase medium property struct.
+	  Must be re-implemented in the specific solver
 	  @param p Pressure
 	  @param h Specific enthalpy
 	  @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
@@ -97,6 +103,7 @@ public:
 	  This function sets the thermodynamic state record for the given pressure
 	  p, the specific entropy s and the specified phase. The computed values are
 	  written to the two phase medium property struct.
+	  Must be re-implemented in the specific solver
 	  @param p Pressure
 	  @param s Specific entropy
 	  @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
@@ -109,6 +116,7 @@ public:
 	  This function sets the thermodynamic state record for the given pressure
 	  p and the temperature T. The computed values are
 	  written to the two phase medium property struct.
+	  Must be re-implemented in the specific solver
 	  @param p Pressure
 	  @param T Temperature
 	  @param properties Two phase medium property record
@@ -119,6 +127,7 @@ public:
 	/*!
 	  This function sets the bubble state record bubbleProperties corresponding to the 
 	  saturation data contained in the properties record
+      Default implementation provided; can be redeclared for improved performance
 	  @param phase Phase (1: one-phase, 2: two-phase)
 	  @param properties Two phase medium property record with saturation properties data
 	  @param bubbleProperties Two phase medium property record where to write the bubble point properties
@@ -130,6 +139,7 @@ public:
 	/*!
 	  This function sets the dew state record dewProperties corresponding to the 
 	  saturation data contained in the properties record
+      Default implementation provided; can be redeclared for improved performance
 	  @param phase Phase (1: one-phase, 2: two-phase)
 	  @param properties Two phase medium property record with saturation properties data
 	  @param dewProperties Two phase medium property record where to write the dew point properties
@@ -145,23 +155,24 @@ public:
 	  when implementing a new solver. Please be aware that cp, beta and
 	  kappa have to be provided to allow the computation of the derivatives. It
 	  returns false if the computation failed.
+      Default implementation provided
 	  @param properties Two phase medium property record
 	*/
 	virtual bool computeDerivatives(TwoPhaseMediumProperties *const properties);
 
-	//! Return molar mass
+	//! Return molar mass. Default implementation provided
     double molarMass() const;
-	//! Return temperature at critical point
+	//! Return temperature at critical point. Default implementation provided
 	double criticalTemperature() const;
-	//! Return pressure at critical point
+	//! Return pressure at critical point. Default implementation provided
 	double criticalPressure() const;
-	//! Return density at critical point
+	//! Return density at critical point. Default implementation provided
 	double criticalDensity() const;
-	//! Return molar volume at critical point
+	//! Return molar volume at critical point. Default implementation provided
 	double criticalMolarVolume() const;
-	//! Return specific enthalpy at critical point
+	//! Return specific enthalpy at critical point. Default implementation provided
 	double criticalEnthalpy() const;
-	//! Return specific entropy at critical point
+	//! Return specific entropy at critical point. Default implementation provided
 	double criticalEntropy() const;
 
 	// Solver properties
