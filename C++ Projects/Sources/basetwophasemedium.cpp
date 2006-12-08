@@ -74,6 +74,12 @@ void BaseTwoPhaseMedium::setSolver(BaseSolver *const solver){
 	_solver = solver;
 }
 
+int BaseTwoPhaseMedium::phase() const{
+	if (_properties->phase == 0)
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->phase field was not set");
+	return _properties->phase;
+}
+
 double BaseTwoPhaseMedium::beta() const{
 	if (ISNAN(_properties->beta))
 		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->beta field was not set");

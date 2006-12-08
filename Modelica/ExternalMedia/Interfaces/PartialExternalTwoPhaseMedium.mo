@@ -118,14 +118,14 @@ partial package PartialExternalTwoPhaseMedium
     else
       // Event generation at phase boundary crossing
       if basePropertiesInputChoice == IC.ph then
-        phaseOutput = if ((h < bubbleEnthalpy(sat) or h > dewEnthalpy(sat)) or 
-                           p > fluidConstants[1].criticalPressure) then 1 else 2;
+        phaseOutput = if ((h > bubbleEnthalpy(sat) and h < dewEnthalpy(sat)) and 
+                           p < fluidConstants[1].criticalPressure) then 2 else 1;
       elseif basePropertiesInputChoice == IC.dT then
-        phaseOutput = if not ((d < bubbleDensity(sat) and d > dewDensity(sat)) and 
-                               T < fluidConstants[1].criticalTemperature) then 1 else 2;
+        phaseOutput = if  ((d < bubbleDensity(sat) and d > dewDensity(sat)) and 
+                            T < fluidConstants[1].criticalTemperature) then 2 else 1;
       elseif basePropertiesInputChoice == IC.ps then
-        phaseOutput = if ((s < bubbleEntropy(sat) or s > dewEntropy(sat)) or 
-                           p > fluidConstants[1].criticalPressure) then 1 else 2;
+        phaseOutput = if ((s > bubbleEntropy(sat) and s < dewEntropy(sat)) and 
+                           p < fluidConstants[1].criticalPressure) then 2 else 1;
       else
         // basePropertiesInputChoice == pT
         phaseOutput = 1;

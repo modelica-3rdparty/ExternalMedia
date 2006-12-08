@@ -39,6 +39,7 @@ public:
 	BaseSolver *solver() const;
 	virtual void setSolver(BaseSolver *const solver);
 
+    int phase() const;
 	double beta() const;
 	double cp() const;
 	double cv() const;

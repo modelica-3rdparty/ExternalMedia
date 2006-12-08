@@ -64,7 +64,7 @@ void setState_dT_(double d, double T, int phase, int uniqueID, int *state_unique
 	  if (state_uniqueID != NULL)
   		  *state_uniqueID = uniqueID;
 	  if (state_phase != NULL)
-	 	  *state_phase = phase;
+	 	  *state_phase = MediumMap::medium(uniqueID)->phase();
     }
 }
 
@@ -87,7 +87,7 @@ void setState_ph_(double p, double h, int phase, int uniqueID, int *state_unique
 	  if (state_uniqueID != NULL)
   		  *state_uniqueID = uniqueID;
 	  if (state_phase != NULL)
-	 	  *state_phase = phase;
+	 	  *state_phase = MediumMap::medium(uniqueID)->phase();
     }
 }
 
@@ -110,7 +110,7 @@ void setState_ps_(double p, double s, int phase, int uniqueID, int *state_unique
 	  if (state_uniqueID != NULL)
   		  *state_uniqueID = uniqueID;
 	  if (state_phase != NULL)
-	 	  *state_phase = phase;
+	 	  *state_phase = MediumMap::medium(uniqueID)->phase();
     }
 }
 
@@ -133,7 +133,7 @@ void setState_pT_(double p, double T, int phase, int uniqueID, int *state_unique
 	  if (state_uniqueID != NULL)
   		  *state_uniqueID = uniqueID;
 	  if (state_phase != NULL)
-	 	  *state_phase = phase;
+	 	  *state_phase = 1;
     }
 }
 

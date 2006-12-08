@@ -223,6 +223,14 @@ void FluidPropSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMedi
 
 	properties->eta = eta_;	    // dynamic viscosity
 	properties->lambda = lambda_;	// thermal conductivity
+
+    // set the phase output
+	if (phase == 0) {
+		properties->phase = (properties->h > properties->hl && 
+			                 properties->h < properties->hv &&
+							 properties->p < _fluidConstants.pc)  ?  2 : 1;
+	} else
+		properties->phase = phase;
 }
 
 // Computes the properties of the state vector *and* the saturation properties at the medium pressure
@@ -281,6 +289,8 @@ void FluidPropSolver::setState_pT(double &p, double &T, TwoPhaseMediumProperties
 
 	properties->eta = eta_;	    // dynamic viscosity
 	properties->lambda = lambda_;	// thermal conductivity
+
+	properties->phase = 1;  // Always one-phase with pT inputs
 }
 
 // Computes the properties of the state vector *and* the saturation properties at the medium pressure
@@ -337,6 +347,14 @@ void FluidPropSolver::setState_dT(double &d, double &T, int &phase, TwoPhaseMedi
 
 	properties->eta = eta_;	    // dynamic viscosity
 	properties->lambda = lambda_;	// thermal conductivity
+
+    // set the phase output
+	if (phase == 0) {
+		properties->phase = (properties->d < properties->dl && 
+			                 properties->d > properties->dv &&
+							 properties->T < _fluidConstants.Tc)  ?  2 : 1;
+	} else
+		properties->phase = phase;
 }
 
 // Computes the properties of the state vector *and* the saturation properties at the medium pressure
@@ -393,6 +411,14 @@ void FluidPropSolver::setState_ps(double &p, double &s, int &phase, TwoPhaseMedi
 
 	properties->eta = eta_;	    // dynamic viscosity
 	properties->lambda = lambda_;	// thermal conductivity
+
+    // set the phase output
+	if (phase == 0) {
+		properties->phase = (properties->h > properties->hl && 
+			                 properties->h < properties->hv &&
+							 properties->p < _fluidConstants.pc)  ?  2 : 1;
+	} else
+		properties->phase = phase;
 }
 
 void FluidPropSolver::setBubbleState(int phase, TwoPhaseMediumProperties *const properties,
