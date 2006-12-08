@@ -53,7 +53,7 @@ void FluidPropSolver::setFluidConstants(){
 	{
 	// Build error message and pass it to the Modelica environment
 	char error[100];
-	sprintf(error, "FluidProp error: %s\n", ErrorMsg);
+	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute molar mass\n %s\n", ErrorMsg);
 	errorMessage(error);
 	}
 
@@ -62,7 +62,7 @@ void FluidPropSolver::setFluidConstants(){
 	{
 	// Build error message and pass it to the Modelica environment
 	char error[100];
-	sprintf(error, "FluidProp error: %s\n", ErrorMsg);
+	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute critical temperature\n %s\n", ErrorMsg);
 	errorMessage(error);
 	}
 
@@ -71,15 +71,97 @@ void FluidPropSolver::setFluidConstants(){
 	{
 	// Build error message and pass it to the Modelica environment
 	char error[100];
-	sprintf(error, "FluidProp error: %s\n", ErrorMsg);
+	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute critical pressure\n %s\n", ErrorMsg);
+	errorMessage(error);
+	}
+  _fluidConstants.dc = FluidProp.Density("PT", _fluidConstants.pc, _fluidConstants.Tc, &ErrorMsg);
+  if (ErrorMsg != "No errors")  // An error occurred
+	{
+	// Build error message and pass it to the Modelica environment
+	char error[100];
+	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute critical density\n %s\n", ErrorMsg);
 	errorMessage(error);
 	}
 }
 
 void FluidPropSolver::setSat_p(double &p, TwoPhaseMediumProperties *const properties){
+	string ErrorMsg;
+	// FluidProp variables (in SI units)
+    double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
+		   cv_, cp_, c_, alpha_, beta_, chi_, fi_, ksi_,
+		   psi_, zeta_ , gamma_, eta_, lambda_,
+		   d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
+		   dh_vap_dP_, dT_sat_dP_, dd_liq_dP_hL_, dd_liq_dP_h2_, dd_vap_dP_h2_, dd_vap_dP_hV_;
+
+	// Compute all FluidProp variables at pressure p and steam quality 0
+	FluidProp.AllPropsSat("Pq", p , 0.0, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
+		                  alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, gamma_, eta_, lambda_,  
+	    			      d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
+						  dh_vap_dP_, dT_sat_dP_, dd_liq_dP_hL_, dd_liq_dP_h2_, dd_vap_dP_h2_, dd_vap_dP_hV_, 
+						  &ErrorMsg);
+	if (ErrorMsg != "No errors") {  // An error occurred
+		// Build error message and pass it to the Modelica environment
+		char error[100];
+		sprintf(error, "FluidProp error in FluidPropSolver::setSat_p\n %s\n", ErrorMsg);
+		errorMessage(error);
+	}
+
+    // Fill in the TwoPhaseMedium variables (in SI units)
+    properties->ps = p;             // saturation pressure
+	properties->Ts = T_sat_;		// saturation temperature
+
+	properties->dl = d_liq_;	// bubble density
+	properties->dv = d_vap_;	// dew density
+	properties->hl = h_liq_;	// bubble specific enthalpy
+	properties->hv = h_vap_;	// dew specific enthalpy
+	properties->sl = 0;		// bubble specific entropy
+	properties->sv = 0;		// dew specific entropy
+
+	properties->d_Ts_dp = dT_sat_dP_;  // derivative of Ts by pressure
+	properties->d_dl_dp = dd_liq_dP_; // derivative of dls by pressure
+	properties->d_dv_dp = dd_vap_dP_; // derivative of dvs by pressure
+    properties->d_hl_dp = dh_liq_dP_; // derivative of hls by pressure
+	properties->d_hv_dp = dh_vap_dP_; // derivative of hvs by pressure
 }
 
 void FluidPropSolver::setSat_T(double &T, TwoPhaseMediumProperties *const properties){
+	string ErrorMsg;
+	// FluidProp variables (in SI units)
+    double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
+		   cv_, cp_, c_, alpha_, beta_, chi_, fi_, ksi_,
+		   psi_, zeta_ , gamma_, eta_, lambda_,
+		   d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
+		   dh_vap_dP_, dT_sat_dP_, dd_liq_dP_hL_, dd_liq_dP_h2_, dd_vap_dP_h2_, dd_vap_dP_hV_;
+
+	// Compute all FluidProp variables at temperature T and steam quality 0
+	FluidProp.AllPropsSat("Tq", T , 0.0, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
+		                  alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, gamma_, eta_, lambda_,  
+	    			      d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
+						  dh_vap_dP_, dT_sat_dP_, dd_liq_dP_hL_, dd_liq_dP_h2_, dd_vap_dP_h2_, dd_vap_dP_hV_, 
+						  &ErrorMsg);
+	if (ErrorMsg != "No errors") {  // An error occurred
+		// Build error message and pass it to the Modelica environment
+		char error[100];
+		sprintf(error, "FluidProp error in FluidPropSolver::setSat_T\n %s\n", ErrorMsg);
+		errorMessage(error);
+	}
+
+    // Fill in the TwoPhaseMedium variables (in SI units)
+    properties->ps = P_;        // saturation pressure
+	properties->Ts = T;			// saturation temperature
+
+	properties->dl = d_liq_;	// bubble density
+	properties->dv = d_vap_;	// dew density
+	properties->hl = h_liq_;	// bubble specific enthalpy
+	properties->hv = h_vap_;	// dew specific enthalpy
+	properties->sl = 0;		// bubble specific entropy
+	properties->sv = 0;		// dew specific entropy
+
+	properties->d_Ts_dp = dT_sat_dP_;  // derivative of Ts by pressure
+	properties->d_dl_dp = dd_liq_dP_; // derivative of dls by pressure
+	properties->d_dv_dp = dd_vap_dP_; // derivative of dvs by pressure
+    properties->d_hl_dp = dh_liq_dP_; // derivative of hls by pressure
+	properties->d_hv_dp = dh_vap_dP_; // derivative of hvs by pressure
 }
 
 void FluidPropSolver::setSat_p_state(TwoPhaseMediumProperties *const properties){
@@ -87,9 +169,12 @@ void FluidPropSolver::setSat_p_state(TwoPhaseMediumProperties *const properties)
   // setState and stored in the properties struct
 };
 
+// Computes the properties of the state vector *and* the saturation properties at the medium pressure
+// for later use by setState_p_state
+// Note: the phase input is currently not supported
 void FluidPropSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMediumProperties *const properties){
-	// FluidProp variables (with their default units)
 	string ErrorMsg;
+	// FluidProp variables (in SI units)
     double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
 		   cv_, cp_, c_, alpha_, beta_, chi_, fi_, ksi_,
 		   psi_, zeta_ , gamma_, eta_, lambda_,
@@ -102,6 +187,12 @@ void FluidPropSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMedi
 	    			      d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
 						  dh_vap_dP_, dT_sat_dP_, dd_liq_dP_hL_, dd_liq_dP_h2_, dd_vap_dP_h2_, dd_vap_dP_hV_, 
 						  &ErrorMsg);
+	if (ErrorMsg != "No errors") {  // An error occurred
+		// Build error message and pass it to the Modelica environment
+		char error[100];
+		sprintf(error, "FluidProp error in FluidPropSolver::setState_ph\n %s\n", ErrorMsg);
+		errorMessage(error);
+	}
 
     // Fill in the TwoPhaseMedium variables (in SI units)
 	properties->beta = 0;				// isothermal expansion coefficient
@@ -116,6 +207,7 @@ void FluidPropSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMedi
 	properties->s = s_;     		    // specific entropy
 	properties->T = T_;         		// temperature
 
+	properties->ps = p;				// saturation pressure
 	properties->Ts = T_sat_;		// saturation temperature
 
 	properties->dl = d_liq_;	// bubble density
@@ -137,16 +229,62 @@ void FluidPropSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMedi
 	properties->sigma = 0;			// surface tension
 }
 
+// Computes the properties of the state vector *and* the saturation properties at the medium pressure
+// for later use by setState_p_state
+// Note: the phase input is currently not supported
 void FluidPropSolver::setState_pT(double &p, double &T, TwoPhaseMediumProperties *const properties){
-   /// XXX to be completed
+	/// XXX to be completed
+	errorMessage("Internal error: FluidPropSolver.setState_pT not yet implemented\n");
 }
 
+// Computes the properties of the state vector *and* the saturation properties at the medium pressure
+// for later use by setState_p_state
+// Note: the phase input is currently not supported
 void FluidPropSolver::setState_dT(double &d, double &T, int &phase, TwoPhaseMediumProperties *const properties){
    /// XXX to be completed
+	errorMessage("Internal error: FluidPropSolver.setState_dT not yet implemented\n");
 }
 
+// Computes the properties of the state vector *and* the saturation properties at the medium pressure
+// for later use by setState_p_state
+// Note: the phase input is currently not supported
 void FluidPropSolver::setState_ps(double &p, double &s, int &phase, TwoPhaseMediumProperties *const properties){
    /// XXX to be completed
+	errorMessage("Internal error: FluidPropSolver.setState_ps not yet implemented\n");
+}
+
+void FluidPropSolver::setBubbleState(int phase, TwoPhaseMediumProperties *const properties,
+		                             TwoPhaseMediumProperties *const bubbleProperties){
+	// Set the bubble state property record based on the original medium 
+	// saturation state
+    // Change hl a little to guarantee the correct phase, since the phase
+    // input is currently not supported
+    double hl;
+	if (phase == 1)
+		// liquid
+		hl = properties->hl*(1-1e-6);
+	else
+		// two-phase
+		hl = properties->hl*(1+1e-6);
+    // Call setState function
+	setState_ph(properties->ps, hl, phase, bubbleProperties);
+}
+
+void FluidPropSolver::setDewState(int phase, TwoPhaseMediumProperties *const properties,
+		                          TwoPhaseMediumProperties *const dewProperties){
+	// Set the dew state property record based on the original medium 
+	// saturation state
+    // Change hv a little to guarantee the correct phase, since the phase
+    // input is currently not supported
+    double hv;
+	if (phase == 1)
+		// vapour
+		hv = properties->hv*(1+1e-6);
+	else
+		// two-phase
+		hv = properties->hv*(1-1e-6);
+    // Call setState function
+	setState_ph(properties->ps, hv, phase, dewProperties);
 }
 
 #endif // FLUIDPROP == 1

@@ -85,7 +85,7 @@ void BaseSolver::setState_pT(double &p, double &T, TwoPhaseMediumProperties *con
 
 // Default implementation of the setBubbleState function, relying on the correct 
 // behaviour of setState_ph with respect to the state input. Can be overridden 
-// in the specific solver code to get more efficient handling of this situation
+// in the specific solver code to get more efficient or correct handling of this situation
 void BaseSolver::setBubbleState(int phase, TwoPhaseMediumProperties *const properties,
 		                                   TwoPhaseMediumProperties *const bubbleProperties){
 	// Set the bubble state property record based on the original medium 
@@ -95,7 +95,7 @@ void BaseSolver::setBubbleState(int phase, TwoPhaseMediumProperties *const prope
 
 // Default implementation of the setDewState function, relying on the correct 
 // behaviour of setState_ph with respect to the state input. Can be overridden 
-// in the specific solver code to get more efficient handling of this situation
+// in the specific solver code to get more efficient or correct handling of this situation
 void BaseSolver::setDewState(int phase, TwoPhaseMediumProperties *const properties,
 		                                TwoPhaseMediumProperties *const dewProperties){
 	// Set the dew state property record based on the original medium 

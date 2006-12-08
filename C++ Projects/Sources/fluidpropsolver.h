@@ -52,6 +52,10 @@ public:
 	virtual void setState_ph(double &p, double &h, int &phase, TwoPhaseMediumProperties *const properties);
 	virtual void setState_ps(double &p, double &s, int &phase, TwoPhaseMediumProperties *const properties);
 	virtual void setState_pT(double &p, double &T, TwoPhaseMediumProperties *const properties);
+	virtual void setBubbleState(int phase, TwoPhaseMediumProperties *const properties,
+		                        TwoPhaseMediumProperties *const bubbleProperties);
+	virtual void setDewState(int phase, TwoPhaseMediumProperties *const properties,
+		                     TwoPhaseMediumProperties *const bubbleProperties);
 
 protected:
     TFluidProp FluidProp;  // Instance of FluidProp wrapper object
