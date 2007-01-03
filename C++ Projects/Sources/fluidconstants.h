@@ -28,4 +28,4 @@ struct FluidConstants{
 	double sc;
 };
 
-#endif /*FLUIDCONSTANTS_H_*/
+#endif // FLUIDCONSTANTS_H_

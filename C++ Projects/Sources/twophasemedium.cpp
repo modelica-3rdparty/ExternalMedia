@@ -1,21 +1,17 @@
-/* *****************************************************************
- * Implementation of class TwoPhaseMedium
- *
- * TwoPhaseMedium is the default object embedding the fluid property
- * computations at a given point of the plant. 
- * 
- * TwoPhaseMedium extends BaseTwoPhaseMedium.
- *
- * See the header file for further documentation
- *
- * Christoph Richter, Francesco Casella, Sep 2006
- ********************************************************************/
-
 #include "twophasemedium.h"
 
-// General purpose includes
 #include <math.h>
 
+//! Constructor
+/*!
+  This constructor is passing the argument to the constructor of the base class
+  and is creating a the property container.
+  @param mediumName Medium name
+  @param libraryName Library name
+  @param substanceName Substance name
+  @param solver Solver
+  @param uniqueID Unique ID number
+*/
 TwoPhaseMedium::TwoPhaseMedium(const string &mediumName, const string &libraryName, 
 							   const string &substanceName, BaseSolver *const solver,
 							   const int &uniqueID)
@@ -24,6 +20,10 @@ TwoPhaseMedium::TwoPhaseMedium(const string &mediumName, const string &libraryNa
 	_properties = new TwoPhaseMediumProperties();
 }
 
+//! Destructor
+/*!
+  The destructor is deleting the property container.
+*/
 TwoPhaseMedium::~TwoPhaseMedium(){
 	// Delete medium property struct
 	delete _properties; _properties = 0;

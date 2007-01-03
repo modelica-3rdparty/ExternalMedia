@@ -1,11 +1,4 @@
-/* *****************************************************************
- * Implementation of the SolverMap class
- *
- * Christoph Richter, Francesco Casella, Sep 2006
- ********************************************************************/
-
 #include "solvermap.h"
-
 #include "basesolver.h"
 #include "mediummap.h"
 #include "testsolver.h"
@@ -14,6 +7,17 @@
 #include "fluidpropsolver.h"
 #endif // FLUIDPROP == 1
 
+//! Get a specific solver
+/*!
+  This function returns the solver for the specified library name, substance name
+  and possibly medium name. It creates a new solver if the solver does not already
+  exist. When implementing new solvers, one has to add the newly created solvers to
+  this function. An error message is generated if the specific library is not supported
+  by the interface library.
+  @param mediumName Medium name
+  @param libraryName Library name
+  @param substanceName Substance name
+*/
 BaseSolver *SolverMap::getSolver(const string &mediumName, const string &libraryName, const string &substanceName){
 	// Get solver key from library and substance name
 	string solverKey(solverKey(libraryName, substanceName));
@@ -40,6 +44,11 @@ BaseSolver *SolverMap::getSolver(const string &mediumName, const string &library
 	return _solvers[solverKey];  
 };
 
+//! Generate a unique solver key
+/*!
+  This function generates a unique solver key based on the library name and 
+  substance name.
+*/
 string SolverMap::solverKey(const string &libraryName, const string &substanceName){
 	// This function returns the solver key and may be changed by advanced users
 	return libraryName + "." + substanceName;

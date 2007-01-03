@@ -1,9 +1,3 @@
-/* *****************************************************************
- * Implementation of class TestSolver
- *
- * Francesco Casella, Christoph Richter, Oct 2006
- ********************************************************************/
-
 #include "testsolver.h"
 #include "twophasemediumproperties.h"
 #include "mediummap.h"

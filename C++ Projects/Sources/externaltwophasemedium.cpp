@@ -1,15 +1,27 @@
-/* *****************************************************************
- * C/C++ layer for external medium models extending from 
- * PartialExternalTwoPhaseMedium.
- *
- * Francesco Casella, Christoph Richter, Sep 2006
- ********************************************************************/
+/*!
+  \file externaltwophasemedium.cpp
+  \brief Interface layer
+
+  C/C++ layer for external medium models extending from 
+  PartialExternalTwoPhaseMedium.
+
+  Francesco Casella, Christoph Richter, Sep 2006
+*/
 
 #include "externaltwophasemedium.h"
-
 #include "mediummap.h"
 #include "twophasemedium.h"
 
+//! Create medium
+/*!
+  This function creates a new medium with the specified medium name, library name,
+  and substance name. The old unique ID is required to check whether a medium
+  has already been created.
+  @param mediumName Medium name
+  @param libraryName Library name
+  @param substanceName Substance name
+  @param oldUniqueID Old unique ID number
+*/
 int createMedium_(const char *mediumName, const char *libraryName, 
 				  const char *substanceName, int oldUniqueID){
 	// Allocate a new object and return a unique ID if oldUniqueID == 0
@@ -21,42 +33,82 @@ int createMedium_(const char *mediumName, const char *libraryName,
 	}
 }
 
+//! Get molar mass
+/*!
+  This function returns the molar mass of the specified medium.
+  @param mediumName Medium name
+  @param libraryName Library name
+  @param substanceName Substance name
+*/
 double getMolarMass_(const char *mediumName, const char *libraryName,  
 					 const char *substanceName){
 	// Return molar mass
 	return SolverMap::getSolver(mediumName, libraryName, substanceName)->molarMass();
 }
 
+//! Get critical temperature
+/*!
+  This function returns the critical temperature of the specified medium.
+  @param mediumName Medium name
+  @param libraryName Library name
+  @param substanceName Substance name
+*/
 double getCriticalTemperature_(const char *mediumName, const char *libraryName,  
 				         	   const char *substanceName){
 	// Return critical temperature
 	return SolverMap::getSolver(mediumName, libraryName, substanceName)->criticalTemperature();
 }
 
+//! Get critical pressure
+/*!
+  This function returns the critical pressure of the specified medium.
+  @param mediumName Medium name
+  @param libraryName Library name
+  @param substanceName Substance name
+*/
 double getCriticalPressure_(const char *mediumName, const char *libraryName,  
 				            const char *substanceName){
 	// Return critical pressure
 	return SolverMap::getSolver(mediumName, libraryName, substanceName)->criticalPressure();
 }
 
+//! Get critical molar volume
+/*!
+  This function returns the critical molar volume of the specified medium.
+  @param mediumName Medium name
+  @param libraryName Library name
+  @param substanceName Substance name
+*/
 double getCriticalMolarVolume_(const char *mediumName, const char *libraryName,
 							   const char *substanceName){
 	// Return critical molar volume
 	return SolverMap::getSolver(mediumName, libraryName, substanceName)->criticalMolarVolume();
 }
 
+//! Compute properties from d, T, and phase
+/*!
+  This function computes the properties for the specified inputs. If the function
+  is called with uniqueID == 0 a new transient unique ID is assigned and the function
+  is called again with this new transient unique ID number.
+  @param d Density
+  @param T Temperature
+  @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
+  @param uniqueID Unique ID number
+  @param state_uniqueID Pointer to return unique ID number for state record
+  @param state_phase Pointer to return phase for state record
+  @param mediumName Medium name
+  @param libraryName Library name
+  @param substanceName Substance name
+*/
 void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 				  const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0){
 	  // setState_dT was called with uniqueID == 0
 	  // create a new transient medium object and get a transientUniqueID
-	  int transientUniqueID = 
-        MediumMap::addTransientMedium(mediumName, libraryName, substanceName);
+	  int transientUniqueID = MediumMap::addTransientMedium(mediumName, libraryName, substanceName);
       // run setState_dT_ with the transientUniqueID
-	  setState_dT_(d, T, phase, transientUniqueID, state_uniqueID, state_phase,
-		           mediumName, libraryName, substanceName);
-	}
-	else {
+	  setState_dT_(d, T, phase, transientUniqueID, state_uniqueID, state_phase, mediumName, libraryName, substanceName);
+	} else {
       // setState_dT was called with the uniqueID of an existing medium object
  	  // Call the medium object's setState_dT function
 	  MediumMap::medium(uniqueID)->setState_dT(d, T, phase);
@@ -68,18 +120,30 @@ void setState_dT_(double d, double T, int phase, int uniqueID, int *state_unique
     }
 }
 
+//! Compute properties from p, h, and phase
+/*!
+  This function computes the properties for the specified inputs. If the function
+  is called with uniqueID == 0 a new transient unique ID is assigned and the function
+  is called again with this new transient unique ID number.
+  @param p Pressure
+  @param h Specific enthalpy
+  @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
+  @param uniqueID Unique ID number
+  @param state_uniqueID Pointer to return unique ID number for state record
+  @param state_phase Pointer to return phase for state record
+  @param mediumName Medium name
+  @param libraryName Library name
+  @param substanceName Substance name
+*/
 void setState_ph_(double p, double h, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 				  const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0){
 	  // setState_ph was called with uniqueID == 0
 	  // create a new transient medium object and get a transientUniqueID
-	  int transientUniqueID = 
-        MediumMap::addTransientMedium(mediumName, libraryName, substanceName);
+	  int transientUniqueID = MediumMap::addTransientMedium(mediumName, libraryName, substanceName);
       // run setState_ph_ with the transientUniqueID
-	  setState_ph_(p, h, phase, transientUniqueID, state_uniqueID, state_phase,
-		           mediumName, libraryName, substanceName);
-	}
-	else {
+	  setState_ph_(p, h, phase, transientUniqueID, state_uniqueID, state_phase, mediumName, libraryName, substanceName);
+	} else {
       // setState_ph was called with the uniqueID of an existing medium object
  	  // Call the medium object's setState_ph function
 	  MediumMap::medium(uniqueID)->setState_ph(p, h, phase);
@@ -91,18 +155,30 @@ void setState_ph_(double p, double h, int phase, int uniqueID, int *state_unique
     }
 }
 
+//! Compute properties from p, s, and phase
+/*!
+  This function computes the properties for the specified inputs. If the function
+  is called with uniqueID == 0 a new transient unique ID is assigned and the function
+  is called again with this new transient unique ID number.
+  @param p Pressure
+  @param s Specific entropy
+  @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
+  @param uniqueID Unique ID number
+  @param state_uniqueID Pointer to return unique ID number for state record
+  @param state_phase Pointer to return phase for state record
+  @param mediumName Medium name
+  @param libraryName Library name
+  @param substanceName Substance name
+*/
 void setState_ps_(double p, double s, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 				  const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0){
 	  // setState_ps was called with uniqueID == 0
 	  // create a new transient medium object and get a transientUniqueID
-	  int transientUniqueID = 
-        MediumMap::addTransientMedium(mediumName, libraryName, substanceName);
+	  int transientUniqueID = MediumMap::addTransientMedium(mediumName, libraryName, substanceName);
       // run setState_ps_ with the transientUniqueID
-	  setState_ps_(p, s, phase, transientUniqueID, state_uniqueID, state_phase,
-		           mediumName, libraryName, substanceName);
-	}
-	else {
+	  setState_ps_(p, s, phase, transientUniqueID, state_uniqueID, state_phase, mediumName, libraryName, substanceName);
+	} else {
       // setState_ps was called with the uniqueID of an existing medium object
  	  // Call the medium object's setState_ps function
 	  MediumMap::medium(uniqueID)->setState_ps(p, s, phase);
@@ -114,18 +190,32 @@ void setState_ps_(double p, double s, int phase, int uniqueID, int *state_unique
     }
 }
 
+//! Compute properties from p, T, and phase
+/*!
+  This function computes the properties for the specified inputs. If the function
+  is called with uniqueID == 0 a new transient unique ID is assigned and the function
+  is called again with this new transient unique ID number.
+
+  Attention: The phase input is ignored for this function!
+  @param p Pressure
+  @param T Temperature
+  @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
+  @param uniqueID Unique ID number
+  @param state_uniqueID Pointer to return unique ID number for state record
+  @param state_phase Pointer to return phase for state record
+  @param mediumName Medium name
+  @param libraryName Library name
+  @param substanceName Substance name
+*/
 void setState_pT_(double p, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
 				  const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0){
 	  // setState_pT was called with uniqueID == 0
 	  // create a new transient medium object and get a transientUniqueID
-	  int transientUniqueID = 
-        MediumMap::addTransientMedium(mediumName, libraryName, substanceName);
+	  int transientUniqueID = MediumMap::addTransientMedium(mediumName, libraryName, substanceName);
       // run setState_pT_ with the transientUniqueID
-	  setState_pT_(p, T, phase, transientUniqueID, state_uniqueID, state_phase,
-		           mediumName, libraryName, substanceName);
-	}
-	else {
+	  setState_pT_(p, T, phase, transientUniqueID, state_uniqueID, state_phase, mediumName, libraryName, substanceName);
+	} else {
       // setState_pT was called with the uniqueID of an existing medium object
  	  // Call the medium object's setState_pT function
 	  MediumMap::medium(uniqueID)->setState_pT(p, T);
@@ -137,21 +227,31 @@ void setState_pT_(double p, double T, int phase, int uniqueID, int *state_unique
     }
 }
 
+//! Compute saturation properties from p
+/*!
+  This function computes the saturation properties for the specified inputs. If the function
+  is called with uniqueID == 0 a new transient unique ID is assigned and the function
+  is called again with this new transient unique ID number.
+  @param p Pressure
+  @param uniqueID Unique ID number
+  @param sat_psat Pointer to return pressure for saturation record
+  @param sat_Tsat Pointer to return temperature for saturation record
+  @param sat_uniqueID Pointer to return unique ID number for saturation record
+  @param mediumName Medium name
+  @param libraryName Library name
+  @param substanceName Substance name
+*/
 void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
 			   const char *mediumName, const char *libraryName, const char *substanceName){
 	// Pointer to the medium object
 	BaseTwoPhaseMedium *medium;
-
 	if (uniqueID == 0){
 	  // setSat_p was called with uniqueID == 0
 	  // create a new transient medium object and get a transientUniqueID
-	  int transientUniqueID = 
-        MediumMap::addTransientMedium(mediumName, libraryName, substanceName);
+	  int transientUniqueID = MediumMap::addTransientMedium(mediumName, libraryName, substanceName);
       // run setSat_p with the transientUniqueID
-	  setSat_p_(p, transientUniqueID, sat_psat, sat_Tsat, sat_uniqueID,
-		        mediumName, libraryName, substanceName);
-	}
-	else {
+	  setSat_p_(p, transientUniqueID, sat_psat, sat_Tsat, sat_uniqueID, mediumName, libraryName, substanceName);
+	} else {
       // setSat_p was called with the uniqueID of an existing medium object
  	  // get the pointer to the medium object
  	  medium = MediumMap::medium(uniqueID);
@@ -167,21 +267,31 @@ void setSat_p_(double p, int uniqueID, double *sat_psat, double *sat_Tsat, int *
 	}
 }
 
+//! Compute saturation properties from T
+/*!
+  This function computes the saturation properties for the specified inputs. If the function
+  is called with uniqueID == 0 a new transient unique ID is assigned and the function
+  is called again with this new transient unique ID number.
+  @param T Temperature
+  @param uniqueID Unique ID number
+  @param sat_psat Pointer to return pressure for saturation record
+  @param sat_Tsat Pointer to return temperature for saturation record
+  @param sat_uniqueID Pointer to return unique ID number for saturation record
+  @param mediumName Medium name
+  @param libraryName Library name
+  @param substanceName Substance name
+*/
 void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID,
 			   const char *mediumName, const char *libraryName, const char *substanceName){
 	// Pointer to the medium object
 	BaseTwoPhaseMedium *medium;
-
 	if (uniqueID == 0){
 	  // setSat_T was called with uniqueID == 0
 	  // create a new transient medium object and get a transientUniqueID
-	  int transientUniqueID = 
-        MediumMap::addTransientMedium(mediumName, libraryName, substanceName);
+	  int transientUniqueID = MediumMap::addTransientMedium(mediumName, libraryName, substanceName);
       // run setSat_T with the transientUniqueID
-	  setSat_T_(T, transientUniqueID, sat_psat, sat_Tsat, sat_uniqueID,
-		        mediumName, libraryName, substanceName);
-	}
-	else {
+	  setSat_T_(T, transientUniqueID, sat_psat, sat_Tsat, sat_uniqueID, mediumName, libraryName, substanceName);
+	} else {
       // setSat_T was called with the uniqueID of an existing medium object
  	  // get the pointer to the medium object
  	  medium = MediumMap::medium(uniqueID);
@@ -197,6 +307,16 @@ void setSat_T_(double T, int uniqueID, double *sat_psat, double *sat_Tsat, int *
 	}
 }
 
+//! Compute saturation properties from within BaseProperties
+/*!
+  This function computes the saturation properties and is designed to be called
+  from within the BaseProperties model. The saturation properties are set according
+  to the medium pressure
+  @param uniqueID Unique ID number
+  @param sat_psat Pointer to return pressure for saturation record
+  @param sat_Tsat Pointer to return temperature for saturation record
+  @param sat_uniqueID Pointer to return unique ID number for saturation record
+*/
 void setSat_p_state_(int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID){
 	// Check for the validity of the uniqueID - this function should never be 
 	// called with a zero unique ID
@@ -217,6 +337,17 @@ void setSat_p_state_(int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_
 		  *sat_Tsat = medium->Ts();
 }
 
+//! Compute dew state
+/*!
+  This function computes the dew state for the specified medium.
+  @param uniqueID Unique ID number
+  @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
+  @param state_uniqueID Pointer to return unique ID number for state record
+  @param state_phase Pointer to return phase for state record
+  @param mediumName Medium name
+  @param libraryName Library name
+  @param substanceName Substance name
+*/
 void setDewState_(int uniqueID, int phase, int *state_uniqueID, int *state_phase,
   				  const char *mediumName, const char *libraryName, const char *substanceName){
 	// Check for the validity of the uniqueID - this function should never be 
@@ -225,16 +356,13 @@ void setDewState_(int uniqueID, int phase, int *state_uniqueID, int *state_phase
 		errorMessage("setDewState_ called without a valid uniqueID");
 	if (phase < 1 || phase > 2)
 		errorMessage("setDewState_ called with invalid phase");
-
 	// Get the unique ID of the the dewState object, and allocate a new medium
 	// object and set the dewState uniqueID if necessary
 	int dewUniqueID = MediumMap::medium(uniqueID)->getDewUniqueID(phase);
-
 	// Call the original medium object's setDewState function
 	// which will compute the properties of the dew state and store them
 	// in the medium with the dew state unique ID
     MediumMap::medium(uniqueID)->setDewState(phase);
-
     // Return values
 	if (state_uniqueID != NULL)
   	  *state_uniqueID = dewUniqueID;
@@ -242,6 +370,17 @@ void setDewState_(int uniqueID, int phase, int *state_uniqueID, int *state_phase
 	  *state_phase = phase;
 }
 
+//! Compute bubble state
+/*!
+  This function computes the  bubble state for the specified medium.
+  @param uniqueID Unique ID number
+  @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
+  @param state_uniqueID Pointer to return unique ID number for state record
+  @param state_phase Pointer to return phase for state record
+  @param mediumName Medium name
+  @param libraryName Library name
+  @param substanceName Substance name
+*/
 void setBubbleState_(int uniqueID, int phase, int *state_uniqueID, int *state_phase,
   				     const char *mediumName, const char *libraryName, const char *substanceName){
 	// Check for the validity of the inputs - this function should never be 
@@ -253,12 +392,10 @@ void setBubbleState_(int uniqueID, int phase, int *state_uniqueID, int *state_ph
 	// Get the unique ID of the the dewState object, and allocate a new medium
 	// object and set the dewState uniqueID if necessary
 	int bubbleUniqueID = MediumMap::medium(uniqueID)->getBubbleUniqueID(phase);
-
 	// Call the original medium object's setBubbleState function
 	// which will compute the properties of the dew state and store them
 	// in the medium with the dew state unique ID
     MediumMap::medium(uniqueID)->setBubbleState(phase);
-
     // Return values
 	if (state_uniqueID != NULL)
   	  *state_uniqueID = bubbleUniqueID;
@@ -266,44 +403,54 @@ void setBubbleState_(int uniqueID, int phase, int *state_uniqueID, int *state_ph
 	  *state_phase = phase;
 }
 
+//! Return density of specified medium
 double density_(int uniqueID){
 	return MediumMap::medium(uniqueID)->d();
 }
 
+//! Return derivative of density wrt pressure at constant specific enthalpy of specified medium
 double density_derp_h_(int uniqueID){
 	return MediumMap::medium(uniqueID)->dd_dp_h();
 }
 
+//! Return derivative of density wrt specific enthalpy at constant pressure of specified medium
 double density_derh_p_(int uniqueID){
 	return MediumMap::medium(uniqueID)->dd_dh_p();
 }
 
+//! Return derivative of density wrt pressure and specific enthalpy of specified medium
 double density_ph_der_(int uniqueID, double p_der, double h_der){
 	return MediumMap::medium(uniqueID)->dd_dp_h()*p_der +
 		   MediumMap::medium(uniqueID)->dd_dh_p()*h_der;
 }
 
+//! Return pressure of specified medium
 double pressure_(int uniqueID){
 	return MediumMap::medium(uniqueID)->p();
 }
 
+//! Return specific enthalpy of specified medium
 double specificEnthalpy_(int uniqueID){
 	return MediumMap::medium(uniqueID)->h();
 }
 
+//! Return specific entropy of specified medium
 double specificEntropy_(int uniqueID){
 	return MediumMap::medium(uniqueID)->s();
 }
 
+//! Return temperature of specified medium
 double temperature_(int uniqueID){
 	return MediumMap::medium(uniqueID)->T();
 }
 
+//! Return derivative of temperature wrt pressure and specific enthalpy of specified medium
 double temperature_ph_der_(int uniqueID, double p_der, double h_der){
 	return MediumMap::medium(uniqueID)->dT_dp_h()*p_der +
 		   MediumMap::medium(uniqueID)->dT_dh_p()*h_der;
 }
 
+//! Return saturation pressure of specified medium from saturation properties 
 double saturationPressure_sat_(double psat, double Tsat, int uniqueID,
 							   const char *mediumName, const char *libraryName, const char *substanceName){
 	// Use solver medium object if no unique ID is supplied
@@ -313,6 +460,7 @@ double saturationPressure_sat_(double psat, double Tsat, int uniqueID,
 		return MediumMap::medium(uniqueID)->ps();
 }
 
+//! Return saturation temperature of specified medium from saturation properties
 double saturationTemperature_sat_(double psat, double Tsat, int uniqueID,
 								  const char *mediumName, const char *libraryName, const char *substanceName){
 	// Use solver medium object if no unique ID is supplied
@@ -322,6 +470,7 @@ double saturationTemperature_sat_(double psat, double Tsat, int uniqueID,
 		return MediumMap::medium(uniqueID)->Ts();
 }
 
+//! Return bubble density of specified medium from saturation properties
 double bubbleDensity_(double psat, double Tsat, int uniqueID,
 					  const char *mediumName, const char *libraryName, const char *substanceName){
 	// Use solver medium object if no unique ID is supplied
@@ -331,6 +480,7 @@ double bubbleDensity_(double psat, double Tsat, int uniqueID,
 		return MediumMap::medium(uniqueID)->dl();
 }
 
+//! Return dew density of specified medium from saturation properties
 double dewDensity_(double psat, double Tsat, int uniqueID,
 				   const char *mediumName, const char *libraryName, const char *substanceName){
 	// Use solver medium object if no unique ID is supplied
@@ -340,6 +490,7 @@ double dewDensity_(double psat, double Tsat, int uniqueID,
 		return MediumMap::medium(uniqueID)->dv();
 }
 
+//! Return bubble specific enthalpy of specified medium from saturation properties
 double bubbleEnthalpy_(double psat, double Tsat, int uniqueID,
 					   const char *mediumName, const char *libraryName, const char *substanceName){
 	// Use solver medium object if no unique ID is supplied
@@ -349,6 +500,7 @@ double bubbleEnthalpy_(double psat, double Tsat, int uniqueID,
 		return MediumMap::medium(uniqueID)->hl();
 }
 
+//! Return dew specific enthalpy of specified medium from saturation properties
 double dewEnthalpy_(double psat, double Tsat, int uniqueID,
 					const char *mediumName, const char *libraryName, const char *substanceName){
 	// Use solver medium object if no unique ID is supplied
@@ -358,6 +510,7 @@ double dewEnthalpy_(double psat, double Tsat, int uniqueID,
 		return MediumMap::medium(uniqueID)->hv();
 }
 
+//! Return bubble specific entropy of specified medium from saturation properties
 double bubbleEntropy_(double psat, double Tsat, int uniqueID,
 					  const char *mediumName, const char *libraryName, const char *substanceName){
 	// Use solver medium object if no unique ID is supplied
@@ -367,6 +520,7 @@ double bubbleEntropy_(double psat, double Tsat, int uniqueID,
 		return MediumMap::medium(uniqueID)->sl();
 }
 
+//! Return dew specific entropy of specified medium from saturation properties
 double dewEntropy_(double psat, double Tsat, int uniqueID,
 				   const char *mediumName, const char *libraryName, const char *substanceName){
 	// Use solver medium object if no unique ID is supplied
@@ -376,6 +530,7 @@ double dewEntropy_(double psat, double Tsat, int uniqueID,
 		return MediumMap::medium(uniqueID)->sv();
 }
 
+//! Return derivative of bubble density wrt pressure of specified medium from saturation properties
 double dBubbleDensity_dPressure_(double psat, double Tsat, int uniqueID,
 								 const char *mediumName, const char *libraryName, const char *substanceName){
 	// Use solver medium object if no unique ID is supplied
@@ -385,6 +540,7 @@ double dBubbleDensity_dPressure_(double psat, double Tsat, int uniqueID,
 		return MediumMap::medium(uniqueID)->d_dl_dp();
 }
 
+//! Return derivative of dew density wrt pressure of specified medium from saturation properties
 double dDewDensity_dPressure_(double psat, double Tsat, int uniqueID,
 							  const char *mediumName, const char *libraryName, const char *substanceName){
 	// Use solver medium object if no unique ID is supplied
@@ -394,6 +550,7 @@ double dDewDensity_dPressure_(double psat, double Tsat, int uniqueID,
 		return MediumMap::medium(uniqueID)->d_dv_dp();
 }
 
+//! Return derivative of bubble specific enthalpy wrt pressure of specified medium from saturation properties
 double dBubbleEnthalpy_dPressure_(double psat, double Tsat, int uniqueID,
 								  const char *mediumName, const char *libraryName, const char *substanceName){
 	// Use solver medium object if no unique ID is supplied
@@ -403,6 +560,7 @@ double dBubbleEnthalpy_dPressure_(double psat, double Tsat, int uniqueID,
 		return MediumMap::medium(uniqueID)->d_hl_dp();
 }
 
+//! Return derivative of dew specific enthalpy wrt pressure of specified medium from saturation properties
 double dDewEnthalpy_dPressure_(double psat, double Tsat, int uniqueID,
 							   const char *mediumName, const char *libraryName, const char *substanceName){
 	// Use solver medium object if no unique ID is supplied
@@ -412,46 +570,57 @@ double dDewEnthalpy_dPressure_(double psat, double Tsat, int uniqueID,
 		return MediumMap::medium(uniqueID)->d_hv_dp();
 }
 
+//! Return isobaric expansion coefficient of specified medium
 double isobaricExpansionCoefficient_(int uniqueID){
 	return MediumMap::medium(uniqueID)->beta();
 }
 
+//! Return isothermal compressibility of specified medium
 double isothermalCompressibility_(int uniqueID){
 	return MediumMap::medium(uniqueID)->kappa();
 }
 
+//! Return specific heat capacity cp of specified medium
 double specificHeatCapacityCp_(int uniqueID){
 	return MediumMap::medium(uniqueID)->cp();
 }
 
+//! Return specific heat capacity cv of specified medium
 double specificHeatCapacityCv_(int uniqueID){
 	return MediumMap::medium(uniqueID)->cv();
 }
 
+//! Return dynamic viscosity of specified medium
 double dynamicViscosity_(int uniqueID){
 	return MediumMap::medium(uniqueID)->eta();
 }
 
+//! Return thermal conductivity of specified medium
 double thermalConductivity_(int uniqueID){
 	return MediumMap::medium(uniqueID)->lambda();
 }
 
+//! Return Prandtl number of specified medium
 double prandtlNumber_(int uniqueID){
 	return MediumMap::medium(uniqueID)->Pr();
 }
 
+//! Return surface tension of specified medium
 double surfaceTension_(double psat, double Tsat, int uniqueID){
 	return MediumMap::medium(uniqueID)->sigma();
 }
 
+//! Return derivative of density wrt pressure at constant specific enthalpy of specified medium
 double dDensity_dPressure_h_(int uniqueID){
 	return MediumMap::medium(uniqueID)->dd_dp_h();
 }
 
+//! Return derivative of density wrt specific enthalpy at constant pressure of specified medium
 double dDensity_dEnthalpy_p_(int uniqueID){
 	return MediumMap::medium(uniqueID)->dd_dh_p();
 }
 
+//! Compute saturation pressure for specified medium and temperature
 double saturationPressure_(double T, const char *mediumName,
 						   const char *libraryName, const char *substanceName){
 	// Get medium object
@@ -462,6 +631,7 @@ double saturationPressure_(double T, const char *mediumName,
 	return medium->ps();
 }
 
+//! Compute saturation temperature for specified medium and pressure
 double saturationTemperature_(double p, const char *mediumName,
 							  const char *libraryName, const char *substanceName){
 	// Get medium object
@@ -470,4 +640,3 @@ double saturationTemperature_(double p, const char *mediumName,
 	medium->setSat_p(p);
 	return medium->Ts();
 }
-

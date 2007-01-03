@@ -1,5 +1,5 @@
 /* *****************************************************************
- * Header file for externaltwophasemedium_lib.cpp
+ * Header file for externaltwophasemedium.cpp
  *
  * Christoph Richter, Francesco Casella, Sep 2006
  ********************************************************************/

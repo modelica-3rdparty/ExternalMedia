@@ -1,11 +1,20 @@
 #include "twophasemediumproperties.h"
 
 
+// ! Constructor
+/*!
+  The constructor is calling initializeFields.
+*/
 TwoPhaseMediumProperties::TwoPhaseMediumProperties(){
     // Initialize entire class
 	initializeFields();
 }
 
+// ! Initialize all fields to the default/NAN values
+/*!
+  This function initializes all fields of TwoPhaseMediumProperties to the
+  NAN value defined in include.h. The phase is initialized to zero.
+*/
 void TwoPhaseMediumProperties::initializeFields(){
 	phase = 0;
 

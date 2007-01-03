@@ -46,4 +46,4 @@ public:
 	virtual void setState_pT(double &p, double &T, TwoPhaseMediumProperties *const properties);
 };
 
-#endif /*TESTSOLVER_H_*/
+#endif // TESTSOLVER_H_

@@ -3,7 +3,7 @@
 
 #include "include.h"
 
-//! Two phase medium property struct
+//! Two phase medium property class
 /*!
   The two phase medium propery struct defines all the properties that
   are computed by external Modelica medium models extending from
@@ -15,9 +15,7 @@
 */
 class TwoPhaseMediumProperties{
 public:
-	// ! Constructor
 	TwoPhaseMediumProperties();
-    // ! Initialize all fields to the default/NAN values
 	void initializeFields();
 
 	//! Phase 
@@ -93,4 +91,4 @@ public:
 	double d_hv_dp;
 };
 
-#endif /*TWOPHASEMEDIUMPROPERTIES_H_*/
+#endif // TWOPHASEMEDIUMPROPERTIES_H_

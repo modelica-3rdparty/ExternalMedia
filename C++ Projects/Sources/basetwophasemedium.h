@@ -1,21 +1,21 @@
-/* *****************************************************************
- * Interface of the base class BaseTwoPhaseMedium.cpp
- *
- * The BaseTwoPhaseMedium class defines all the variables and member
- * functions which are needed to use external Modelica medium models
- * extending from PartialExternalTwoPhaseMedium.
- * 
- * Francesco Casella, Christoph Richter Sep 2006
- ********************************************************************/
-
 #ifndef BASETWOPHASEMEDIUM_H_
 #define BASETWOPHASEMEDIUM_H_
 
 #include "include.h"
-
 #include "basesolver.h"
 #include "twophasemediumproperties.h"
 
+//! Base two-phase medium class
+/*!
+  This class defines all the variables and member
+  functions which are needed to use external Modelica medium models
+  extending from PartialExternalTwoPhaseMedium.
+
+  The functions defined here are not fluid-specific, thus need not
+  be adapted to your own specific fluid property computation code.
+
+  Francesco Casella, Christoph Richter Sep 2006
+*/
 class BaseTwoPhaseMedium{
 public:
 	BaseTwoPhaseMedium(const string &mediumName, const string &libraryName, 
@@ -23,8 +23,6 @@ public:
 					   const int &uniqueID);
 	virtual ~BaseTwoPhaseMedium();
 
-	// Reset the medium constants to the inputs, and the properties to their
-	// default values
 	void reinitMedium(const string &mediumName, const string &libraryName, 
 					  const string &substanceName, BaseSolver *const solver, 
 					  const int &uniqueID);
@@ -84,44 +82,36 @@ public:
 	virtual void setState_ps(double &p, double &s, int &phase);
 	virtual void setState_pT(double &p, double &T);
 
-	// get the unique ID of the bubble point medium object corresponding to psat, Tsat
-	// and the phase input, possibly allocating a medium object on the medium map if needed
 	virtual int  getBubbleUniqueID(int phase);
-	// get the unique ID of the bubble point medium object corresponding to psat, Tsat
-	// and the phase input, possibly allocating a medium object on the medium map if needed
 	virtual int  getDewUniqueID(int phase);
 
     virtual void setDewState(int phase);
     virtual void setBubbleState(int phase);
 
 protected:	
-	// Pointer to medium property record
+	//! Medium property record
 	TwoPhaseMediumProperties *_properties;
-
-	// Pointer to solver
+	//! Solver
 	BaseSolver *_solver;
 
-	// Unique ID 
+	//! Unique ID 
 	int _uniqueID;
 
-	// Medium identification strings
+	//! Medium name
 	string _mediumName;
+	//! Library name
 	string _libraryName;
+	//! Substance name
 	string _substanceName;
 
-	// ! Unique ID of corresponding 1-phase dew state medium object, set by setDewState
+	//! Unique ID of corresponding 1-phase dew state medium object, set by setDewState
 	int _dewUniqueIDOnePhase;
-
-	// ! Unique ID of corresponding 2-phase dew state medium object, set by setDewState
+	//! Unique ID of corresponding 2-phase dew state medium object, set by setDewState
 	int _dewUniqueIDTwoPhase;
-
-	// ! Unique ID of corresponding 1-phase bubble state medium object, set by setBubbleState
+	//! Unique ID of corresponding 1-phase bubble state medium object, set by setBubbleState
 	int _bubbleUniqueIDOnePhase;
-
-	// ! Unique ID of corresponding 2-phase bubble state medium object, set by setBubbleState
+	//! Unique ID of corresponding 2-phase bubble state medium object, set by setBubbleState
 	int _bubbleUniqueIDTwoPhase;
-
-
 };
 
-#endif /*BASETWOPHASEMEDIUM_H_*/
+#endif // BASETWOPHASEMEDIUM_H_
