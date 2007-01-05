@@ -8,22 +8,26 @@
 
 all:
 	g++ -c -DBUILDING_MEDIA_DLL \
-		..\Sources\externaltwophasemedium_lib.cpp \
+		..\Sources\externaltwophasemedium.cpp \
 		..\Sources\basesolver.cpp \
 		..\Sources\basetwophasemedium.cpp \
+		..\Sources\errorhandling.cpp \
 		..\Sources\mediummap.cpp \
 		..\Sources\solvermap.cpp \
 		..\Sources\testsolver.cpp \
-		..\Sources\twophasemedium.cpp
+		..\Sources\twophasemedium.cpp \
+		..\Sources\twophasemediumproperties.cpp
 
 	g++ -shared -o ExternalTwoPhaseMedium.dll \
-		externaltwophasemedium_lib.o \
+		externaltwophasemedium.o \
 		basesolver.o \
 		basetwophasemedium.o \
+		errorhandling.o \
 		mediummap.o \
 		solvermap.o \
 		testsolver.o \
 		twophasemedium.o \
+		twophasemediumproperties.o \
 		-Wl,--out-implib,ExternalTwoPhaseMedium.a \
 		-Wl,--output-def,ExternalTwoPhaseMedium.def
 		

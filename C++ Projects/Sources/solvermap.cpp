@@ -20,17 +20,17 @@
 */
 BaseSolver *SolverMap::getSolver(const string &mediumName, const string &libraryName, const string &substanceName){
 	// Get solver key from library and substance name
-	string solverKey(solverKey(libraryName, substanceName));
+	string solverKeyString(solverKey(libraryName, substanceName));
 	// Check whether solver already exists
-	if (_solvers.find(solverKey) != _solvers.end())
-		return _solvers[solverKey];
+	if (_solvers.find(solverKeyString) != _solvers.end())
+		return _solvers[solverKeyString];
 	// Create new solver if it doesn't exist
 	// CompilerTest solver
 	if (libraryName.compare("TestMedium") == 0)
-	  _solvers[solverKey] = new TestSolver(mediumName, libraryName, substanceName);
+	  _solvers[solverKeyString] = new TestSolver(mediumName, libraryName, substanceName);
 #if (FLUIDPROP == 1)
 	else if (libraryName.find("FluidProp") == 0)
-	  _solvers[solverKey] = new FluidPropSolver(mediumName, libraryName, substanceName);
+	  _solvers[solverKeyString] = new FluidPropSolver(mediumName, libraryName, substanceName);
 #endif // FLUIDPROP == 1
 	else {
 	  // Generate error message
@@ -39,9 +39,9 @@ BaseSolver *SolverMap::getSolver(const string &mediumName, const string &library
 	  errorMessage(error);
 	}
 	// Create new medium object for function calls without specified unique ID
-	MediumMap::addSolverMedium(solverKey, _solvers[solverKey]);
+	MediumMap::addSolverMedium(solverKeyString, _solvers[solverKeyString]);
 	// Return pointer to solver
-	return _solvers[solverKey];  
+	return _solvers[solverKeyString];  
 };
 
 //! Generate a unique solver key
