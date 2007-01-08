@@ -24,8 +24,6 @@ void warningMessage(char *warningMessage){
 void errorMessage(char *errorMessage){
 	printf("\a%s\nPress the Stop button in Dymola to end the simulation!\n", errorMessage);
 	getchar();
-	printf("\aPress the Stop button in Dymola to end the simulation!\n", errorMessage);
-	getchar();
 	exit(1);
 }
 
