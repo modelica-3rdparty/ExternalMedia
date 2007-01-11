@@ -195,14 +195,14 @@ void FluidPropSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMedi
 	}
 
     // Fill in the TwoPhaseMedium variables (in SI units)
-	properties->beta = 0;				// isothermal expansion coefficient
+	// properties->beta = 0;				// isothermal expansion coefficient
 	properties->cp = cp_; 		        // specific heat capacity cp
 	properties->cv = cv_;		        // specific heat capacity cv
 	properties->d = d_;				    // density
 	properties->dd_dp_h = psi_;         // derivative of density by pressure at constant h
 	properties->dd_dh_p = ksi_;         // derivative of density by enthalpy at constant p
 	properties->h = h;					// specific enthalpy
-	properties->kappa = 0;				// compressibility
+	// properties->kappa = 0;				// compressibility
 	properties->p = p;					// pressure
 	properties->s = s_;     		    // specific entropy
 	properties->T = T_;         		// temperature
@@ -259,14 +259,14 @@ void FluidPropSolver::setState_pT(double &p, double &T, TwoPhaseMediumProperties
 	}
 
     // Fill in the TwoPhaseMedium variables (in SI units)
-	properties->beta = 0;				// isothermal expansion coefficient
+	// properties->beta = 0;				// isothermal expansion coefficient
 	properties->cp = cp_; 		        // specific heat capacity cp
 	properties->cv = cv_;		        // specific heat capacity cv
 	properties->d = d_;				    // density
 	properties->dd_dp_h = psi_;         // derivative of density by pressure at constant h
 	properties->dd_dh_p = ksi_;         // derivative of density by enthalpy at constant p
 	properties->h = h_;					// specific enthalpy
-	properties->kappa = 0;				// compressibility
+	// properties->kappa = 0;				// compressibility
 	properties->p = p;					// pressure
 	properties->s = s_;     		    // specific entropy
 	properties->T = T_;         		// temperature
@@ -319,14 +319,14 @@ void FluidPropSolver::setState_dT(double &d, double &T, int &phase, TwoPhaseMedi
 	}
 
     // Fill in the TwoPhaseMedium variables (in SI units)
-	properties->beta = 0;				// isothermal expansion coefficient
+	// properties->beta = 0;				// isothermal expansion coefficient
 	properties->cp = cp_; 		        // specific heat capacity cp
 	properties->cv = cv_;		        // specific heat capacity cv
 	properties->d = d;				    // density
 	properties->dd_dp_h = psi_;         // derivative of density by pressure at constant h
 	properties->dd_dh_p = ksi_;         // derivative of density by enthalpy at constant p
 	properties->h = h_;					// specific enthalpy
-	properties->kappa = 0;				// compressibility
+	// properties->kappa = 0;				// compressibility
 	properties->p = P_;					// pressure
 	properties->s = s_;     		    // specific entropy
 	properties->T = T;         		// temperature
@@ -383,14 +383,14 @@ void FluidPropSolver::setState_ps(double &p, double &s, int &phase, TwoPhaseMedi
 	}
 
     // Fill in the TwoPhaseMedium variables (in SI units)
-	properties->beta = 0;				// isothermal expansion coefficient
+	// properties->beta = 0;				// isothermal expansion coefficient
 	properties->cp = cp_; 		        // specific heat capacity cp
 	properties->cv = cv_;		        // specific heat capacity cv
 	properties->d = d_;				    // density
 	properties->dd_dp_h = psi_;         // derivative of density by pressure at constant h
 	properties->dd_dh_p = ksi_;         // derivative of density by enthalpy at constant p
 	properties->h = h_;					// specific enthalpy
-	properties->kappa = 0;				// compressibility
+	// properties->kappa = 0;				// compressibility
 	properties->p = p;					// pressure
 	properties->s = s;     		    // specific entropy
 	properties->T = T_;         		// temperature
