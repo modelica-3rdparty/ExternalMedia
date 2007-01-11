@@ -450,24 +450,14 @@ double temperature_ph_der_(int uniqueID, double p_der, double h_der){
 		   MediumMap::medium(uniqueID)->dT_dh_p()*h_der;
 }
 
-//! Return saturation pressure of specified medium from saturation properties 
-double saturationPressure_sat_(double psat, double Tsat, int uniqueID,
-							   const char *mediumName, const char *libraryName, const char *substanceName){
+//! Return derivative of saturation temperature of specified medium from saturation properties
+double saturationTemperature_derp_sat_(double psat, double Tsat, int uniqueID,
+								       const char *mediumName, const char *libraryName, const char *substanceName){
 	// Use solver medium object if no unique ID is supplied
 	if (uniqueID == 0)
-		return MediumMap::solverMedium(mediumName, libraryName, substanceName)->ps();
+		return MediumMap::solverMedium(mediumName, libraryName, substanceName)->d_Ts_dp();
 	else
-		return MediumMap::medium(uniqueID)->ps();
-}
-
-//! Return saturation temperature of specified medium from saturation properties
-double saturationTemperature_sat_(double psat, double Tsat, int uniqueID,
-								  const char *mediumName, const char *libraryName, const char *substanceName){
-	// Use solver medium object if no unique ID is supplied
-	if (uniqueID == 0)
-		return MediumMap::solverMedium(mediumName, libraryName, substanceName)->Ts();
-	else
-		return MediumMap::medium(uniqueID)->Ts();
+		return MediumMap::medium(uniqueID)->d_Ts_dp();
 }
 
 //! Return bubble density of specified medium from saturation properties
@@ -639,4 +629,14 @@ double saturationTemperature_(double p, const char *mediumName,
 	// Compute saturation pressure
 	medium->setSat_p(p);
 	return medium->Ts();
+}
+
+//! Compute derivative of saturation temperature for specified medium and pressure
+double saturationTemperature_derp_(double p, const char *mediumName,
+								   const char *libraryName, const char *substanceName){
+	// Get medium object
+	BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+	// Compute saturation pressure
+	medium->setSat_p(p);
+	return medium->d_Ts_dp();
 }

@@ -76,18 +76,22 @@ package ExternalTwoPhaseMedium
                   saturationTemperature_(p, mediumName, libraryName, substanceName);
   end saturationTemperature;
   
-  redeclare replaceable function extends saturationPressure_sat 
+  redeclare replaceable function extends saturationTemperature_derp 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" p=  saturationPressure_sat_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName);
-  end saturationPressure_sat;
+  external "C" dTp=  saturationTemperature_derp_(p, mediumName, libraryName, substanceName);
+  end saturationTemperature_derp;
   
-  redeclare replaceable function extends saturationTemperature_sat 
-    
+  
+  
+  redeclare replaceable function saturationTemperature_derp_sat 
+    "Returns derivative of saturation temperature w.r.t.. pressure" 
+    extends Modelica.Icons.Function;
+    input SaturationProperties sat "saturation property record";
+    output Real dTp "derivative of saturation temperature w.r.t. pressure";
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" T = 
-                  saturationTemperature_sat_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName);
-  end saturationTemperature_sat;
+  external "C" dTp=  saturationTemperature_derp_sat_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName);
+  end saturationTemperature_derp_sat;
   
   redeclare replaceable function extends density 
     

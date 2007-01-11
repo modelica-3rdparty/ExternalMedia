@@ -38,11 +38,10 @@ extern "C" {
 
 	EXPORT double saturationPressure_(double T, const char *mediumName, const char *libraryName, const char *substanceName);
 	EXPORT double saturationTemperature_(double p, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double saturationTemperature_derp_(double p, const char *mediumName, const char *libraryName, const char *substanceName);
 
-	EXPORT double saturationPressure_sat_(double psat, double Tsat, int uniqueID,
-										  const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double saturationTemperature_sat_(double psat, double Tsat, int uniqueID,
-											 const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double saturationTemperature_derp_sat_(double psat, double Tsat, int uniqueID,
+											      const char *mediumName, const char *libraryName, const char *substanceName);
 
 	EXPORT double bubbleDensity_(double psat, double Tsat, int uniqueID,
 								 const char *mediumName, const char *libraryName, const char *substanceName);

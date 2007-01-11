@@ -218,33 +218,10 @@ partial package PartialExternalTwoPhaseMedium
     output SaturationProperties sat "saturation property record";
   end setSat_p_state;
   
-  redeclare replaceable partial function saturationPressure 
-    "Returns saturation pressure" 
-    extends Modelica.Icons.Function;
-    input Temperature T "temperature";
-    output AbsolutePressure p "saturation pressure";
-  end saturationPressure;
   
-  redeclare replaceable partial function saturationTemperature 
-    "Returns saturation temperature" 
-    extends Modelica.Icons.Function;
-    input AbsolutePressure p "pressure";
-    output Temperature T "saturation temperature";
-  end saturationTemperature;
   
-  redeclare replaceable partial function saturationPressure_sat 
-    "Returns saturation temperature" 
-    extends Modelica.Icons.Function;
-    input SaturationProperties sat "saturation property record";
-    output AbsolutePressure p "saturation pressure";
-  end saturationPressure_sat;
   
-  redeclare replaceable partial function saturationTemperature_sat 
-    "Returns saturation pressure" 
-    extends Modelica.Icons.Function;
-    input SaturationProperties sat "saturation property record";
-    output Temperature T "saturation temperature";
-  end saturationTemperature_sat;
+  
   
   redeclare function molarMass "Return the molar mass of the medium" 
       input ThermodynamicState state;

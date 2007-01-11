@@ -50,7 +50,7 @@ package Test
       Medium.Density dv =          Medium.dewDensity(sat);
       Medium.SpecificEnthalpy hl = Medium.bubbleEnthalpy(sat);
       Medium.SpecificEnthalpy hv = Medium.dewEnthalpy(sat);
-      // Real d_Ts_dp =               Medium.saturationTemperature_derp_sat(sat);
+      Real d_Ts_dp =               Medium.saturationTemperature_derp_sat(sat);
       Real d_dl_dp =               Medium.dBubbleDensity_dPressure(sat);
       Real d_dv_dp =               Medium.dDewDensity_dPressure(sat);
       Real d_hl_dp =               Medium.dBubbleEnthalpy_dPressure(sat);
