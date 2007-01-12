@@ -375,7 +375,7 @@ package Test
         Ts = Medium.saturationTemperature(1e5+1e5*time);
         ps = Medium.saturationPressure(300 + 50*time);
       end TestStatesSat;
-
+      
       model TestBasePropertiesExplicit 
         "Test case using FluidProp IF95 and explicit equations" 
         replaceable package Medium = Media.FluidPropMedia.WaterIF95 
@@ -475,6 +475,54 @@ package Test
           redeclare package Medium = Modelica.Media.Water.StandardWater);
       end TestBasePropertiesExplicit_ModelicaIF97;
       
+      model CompareModelicaFluidProp 
+        "Comparison between Modelica IF97 and FluidProp IF95 models" 
+        BaseModels.CompleteBaseProperties modelicaMedium(
+          redeclare package Medium = Modelica.Media.Water.StandardWater) 
+          "Modelica IF97 model";
+        BaseModels.CompleteBaseProperties fluidPropMedium(
+          redeclare package Medium = Media.FluidPropMedia.WaterIF95) 
+          "FluidProp IF95";
+        parameter Modelica.SIunits.Pressure pmin;
+        parameter Modelica.SIunits.Pressure pmax;
+        parameter Modelica.SIunits.SpecificEnthalpy hmin;
+        parameter Modelica.SIunits.SpecificEnthalpy hmax;
+      equation 
+        modelicaMedium.baseProperties.p = pmin + (pmax-pmin)*time;
+        modelicaMedium.baseProperties.h = hmin + (hmax-hmin)*time;
+        fluidPropMedium.baseProperties.p = pmin + (pmax-pmin)*time;
+        fluidPropMedium.baseProperties.h = hmin + (hmax-hmin)*time;
+      end CompareModelicaFluidProp;
+
+      model CompareModelicaFluidProp_liquid 
+        "Comparison between Modelica IF97 and FluidProp IF95 models - liquid" 
+        extends CompareModelicaFluidProp(
+          pmin = 1e5,
+          pmax = 1e5,
+          hmin = 1e5,
+          hmax = 4e5);
+        
+      end CompareModelicaFluidProp_liquid;
+
+      model CompareModelicaFluidProp_twophase 
+        "Comparison between Modelica IF97 and FluidProp IF95 models - liquid" 
+        extends CompareModelicaFluidProp(
+          pmin = 60e5,
+          pmax = 60e5,
+          hmin = 1000e3,
+          hmax = 2000e3);
+        
+      end CompareModelicaFluidProp_twophase;
+
+      model CompareModelicaFluidProp_vapour 
+        "Comparison between Modelica IF97 and FluidProp IF95 models - liquid" 
+        extends CompareModelicaFluidProp(
+          pmin = 60e5,
+          pmax = 60e5,
+          hmin = 2800e3,
+          hmax = 3200e3);
+        
+      end CompareModelicaFluidProp_vapour;
     end IF95;
   end FluidProp;
   
