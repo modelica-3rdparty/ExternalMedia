@@ -36,7 +36,7 @@ void warningMessage(char *warningMessage){
 // This is the default section
 // Error and warnings are sent to the standard output
 void errorMessage(char *errorMessage){
-	printf("\a%s\nPress return to end the simulation!\n", errorMessage);
+	printf("\a%s\nPress the stop button in Dymola to end the simulation!\n", errorMessage);
 	getchar();
 	exit(1);
 }
