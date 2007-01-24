@@ -6,6 +6,13 @@ package FluidPropMedia
       substanceNames = {"H2O"});
   end WaterIF95;
   
+  package WaterTPSI 
+    extends ExternalTwoPhaseMedium(
+      mediumName = "Water",
+      libraryName = "FluidProp.TPSI",
+      substanceNames = {"H2O"});
+  end WaterTPSI;
+  
   package CarbonDioxide 
     extends ExternalTwoPhaseMedium(
       mediumName = "Carbon Dioxide",
