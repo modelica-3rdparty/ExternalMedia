@@ -57,7 +57,8 @@ void FluidPropSolver::setFluidConstants(){
 	errorMessage(error);
 	}
 
-  _fluidConstants.Tc = FluidProp.Tcrit(&ErrorMsg);
+  // _fluidConstants.Tc = FluidProp.Tcrit(&ErrorMsg);
+  _fluidConstants.Tc = FluidProp.Tcrit(&ErrorMsg) + 273.15; // XXX To be removed
   if (ErrorMsg != "No errors")  // An error occurred
 	{
 	// Build error message and pass it to the Modelica environment
@@ -66,7 +67,8 @@ void FluidPropSolver::setFluidConstants(){
 	errorMessage(error);
 	}
 
-  _fluidConstants.pc = FluidProp.Pcrit(&ErrorMsg);
+  // _fluidConstants.pc = FluidProp.Pcrit(&ErrorMsg);
+  _fluidConstants.pc = FluidProp.Pcrit(&ErrorMsg) * 1.0e5; // XXX To be removed
   if (ErrorMsg != "No errors")  // An error occurred
 	{
 	// Build error message and pass it to the Modelica environment
@@ -74,6 +76,7 @@ void FluidPropSolver::setFluidConstants(){
 	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute critical pressure\n %s\n", ErrorMsg);
 	errorMessage(error);
 	}
+
   _fluidConstants.dc = FluidProp.Density("PT", _fluidConstants.pc, _fluidConstants.Tc, &ErrorMsg);
   if (ErrorMsg != "No errors")  // An error occurred
 	{
@@ -117,11 +120,12 @@ void FluidPropSolver::setSat_p(double &p, TwoPhaseMediumProperties *const proper
 	properties->sl = 0;		// bubble specific entropy
 	properties->sv = 0;		// dew specific entropy
 
-	properties->d_Ts_dp = dT_sat_dP_;  // derivative of Ts by pressure
-	properties->d_dl_dp = dd_liq_dP_; // derivative of dls by pressure
-	properties->d_dv_dp = dd_vap_dP_; // derivative of dvs by pressure
-    properties->d_hl_dp = dh_liq_dP_; // derivative of hls by pressure
-	properties->d_hv_dp = dh_vap_dP_; // derivative of hvs by pressure
+    // XXX 1e5 factors should be removed!
+	properties->d_Ts_dp = dT_sat_dP_*1e5;  // derivative of Ts by pressure
+	properties->d_dl_dp = dd_liq_dP_*1e5; // derivative of dls by pressure
+	properties->d_dv_dp = dd_vap_dP_*1e5; // derivative of dvs by pressure
+    properties->d_hl_dp = dh_liq_dP_*1e2; // derivative of hls by pressure
+	properties->d_hv_dp = dh_vap_dP_*1e2; // derivative of hvs by pressure
 }
 
 void FluidPropSolver::setSat_T(double &T, TwoPhaseMediumProperties *const properties){
@@ -157,11 +161,12 @@ void FluidPropSolver::setSat_T(double &T, TwoPhaseMediumProperties *const proper
 	properties->sl = 0;		// bubble specific entropy
 	properties->sv = 0;		// dew specific entropy
 
-	properties->d_Ts_dp = dT_sat_dP_;  // derivative of Ts by pressure
-	properties->d_dl_dp = dd_liq_dP_; // derivative of dls by pressure
-	properties->d_dv_dp = dd_vap_dP_; // derivative of dvs by pressure
-    properties->d_hl_dp = dh_liq_dP_; // derivative of hls by pressure
-	properties->d_hv_dp = dh_vap_dP_; // derivative of hvs by pressure
+    // XXX 1e5 factors should be removed!
+	properties->d_Ts_dp = dT_sat_dP_*1e5;  // derivative of Ts by pressure
+	properties->d_dl_dp = dd_liq_dP_*1e5; // derivative of dls by pressure
+	properties->d_dv_dp = dd_vap_dP_*1e5; // derivative of dvs by pressure
+    properties->d_hl_dp = dh_liq_dP_*1e2; // derivative of hls by pressure
+	properties->d_hv_dp = dh_vap_dP_*1e2; // derivative of hvs by pressure
 }
 
 void FluidPropSolver::setSat_p_state(TwoPhaseMediumProperties *const properties){
@@ -187,6 +192,7 @@ void FluidPropSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMedi
 	    			      d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
 						  dh_vap_dP_, dT_sat_dP_, dd_liq_dP_hL_, dd_liq_dP_h2_, dd_vap_dP_h2_, dd_vap_dP_hV_, 
 						  &ErrorMsg);
+	printf("P = %lf, h = %lf\n", p, h);
 	if (ErrorMsg != "No errors") {  // An error occurred
 		// Build error message and pass it to the Modelica environment
 		char error[100];
@@ -215,11 +221,12 @@ void FluidPropSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMedi
 	properties->hl = h_liq_;	// bubble specific enthalpy
 	properties->hv = h_vap_;	// dew specific enthalpy
 
-	properties->d_Ts_dp = dT_sat_dP_;  // derivative of Ts by pressure
-	properties->d_dl_dp = dd_liq_dP_; // derivative of dls by pressure
-	properties->d_dv_dp = dd_vap_dP_; // derivative of dvs by pressure
-    properties->d_hl_dp = dh_liq_dP_; // derivative of hls by pressure
-	properties->d_hv_dp = dh_vap_dP_; // derivative of hvs by pressure
+    // XXX 1e5 factors should be removed!
+	properties->d_Ts_dp = dT_sat_dP_*1e5;  // derivative of Ts by pressure
+	properties->d_dl_dp = dd_liq_dP_*1e5; // derivative of dls by pressure
+	properties->d_dv_dp = dd_vap_dP_*1e5; // derivative of dvs by pressure
+    properties->d_hl_dp = dh_liq_dP_*1e2; // derivative of hls by pressure
+	properties->d_hv_dp = dh_vap_dP_*1e2; // derivative of hvs by pressure
 
 	properties->eta = eta_;	    // dynamic viscosity
 	properties->lambda = lambda_;	// thermal conductivity
@@ -281,11 +288,12 @@ void FluidPropSolver::setState_pT(double &p, double &T, TwoPhaseMediumProperties
 	properties->sl = 0;		// bubble specific entropy
 	properties->sv = 0;		// dew specific entropy
 
-	properties->d_Ts_dp = dT_sat_dP_;  // derivative of Ts by pressure
-	properties->d_dl_dp = dd_liq_dP_; // derivative of dls by pressure
-	properties->d_dv_dp = dd_vap_dP_; // derivative of dvs by pressure
-    properties->d_hl_dp = dh_liq_dP_; // derivative of hls by pressure
-	properties->d_hv_dp = dh_vap_dP_; // derivative of hvs by pressure
+    // XXX 1e5 factors should be removed!
+	properties->d_Ts_dp = dT_sat_dP_*1e5;  // derivative of Ts by pressure
+	properties->d_dl_dp = dd_liq_dP_*1e5; // derivative of dls by pressure
+	properties->d_dv_dp = dd_vap_dP_*1e5; // derivative of dvs by pressure
+    properties->d_hl_dp = dh_liq_dP_*1e2; // derivative of hls by pressure
+	properties->d_hv_dp = dh_vap_dP_*1e2; // derivative of hvs by pressure
 
 	properties->eta = eta_;	    // dynamic viscosity
 	properties->lambda = lambda_;	// thermal conductivity
@@ -339,11 +347,12 @@ void FluidPropSolver::setState_dT(double &d, double &T, int &phase, TwoPhaseMedi
 	properties->hl = h_liq_;	// bubble specific enthalpy
 	properties->hv = h_vap_;	// dew specific enthalpy
 
-	properties->d_Ts_dp = dT_sat_dP_;  // derivative of Ts by pressure
-	properties->d_dl_dp = dd_liq_dP_; // derivative of dls by pressure
-	properties->d_dv_dp = dd_vap_dP_; // derivative of dvs by pressure
-    properties->d_hl_dp = dh_liq_dP_; // derivative of hls by pressure
-	properties->d_hv_dp = dh_vap_dP_; // derivative of hvs by pressure
+    // XXX 1e5 factors should be removed!
+	properties->d_Ts_dp = dT_sat_dP_*1e5;  // derivative of Ts by pressure
+	properties->d_dl_dp = dd_liq_dP_*1e5; // derivative of dls by pressure
+	properties->d_dv_dp = dd_vap_dP_*1e5; // derivative of dvs by pressure
+    properties->d_hl_dp = dh_liq_dP_*1e2; // derivative of hls by pressure
+	properties->d_hv_dp = dh_vap_dP_*1e2; // derivative of hvs by pressure
 
 	properties->eta = eta_;	    // dynamic viscosity
 	properties->lambda = lambda_;	// thermal conductivity
@@ -403,11 +412,12 @@ void FluidPropSolver::setState_ps(double &p, double &s, int &phase, TwoPhaseMedi
 	properties->hl = h_liq_;	// bubble specific enthalpy
 	properties->hv = h_vap_;	// dew specific enthalpy
 
-	properties->d_Ts_dp = dT_sat_dP_;  // derivative of Ts by pressure
-	properties->d_dl_dp = dd_liq_dP_; // derivative of dls by pressure
-	properties->d_dv_dp = dd_vap_dP_; // derivative of dvs by pressure
-    properties->d_hl_dp = dh_liq_dP_; // derivative of hls by pressure
-	properties->d_hv_dp = dh_vap_dP_; // derivative of hvs by pressure
+    // XXX 1e5 factors should be removed!
+	properties->d_Ts_dp = dT_sat_dP_*1e5;  // derivative of Ts by pressure
+	properties->d_dl_dp = dd_liq_dP_*1e5; // derivative of dls by pressure
+	properties->d_dv_dp = dd_vap_dP_*1e5; // derivative of dvs by pressure
+    properties->d_hl_dp = dh_liq_dP_*1e2; // derivative of hls by pressure
+	properties->d_hv_dp = dh_vap_dP_*1e2; // derivative of hvs by pressure
 
 	properties->eta = eta_;	    // dynamic viscosity
 	properties->lambda = lambda_;	// thermal conductivity
