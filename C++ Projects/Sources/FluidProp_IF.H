@@ -92,9 +92,7 @@ class TFluidProp
                           double& zeta, double& gamma, double& eta, double& lambda, 
 						  double& d_liq, double& d_vap, double& h_liq, double& h_vap, 
 						  double& T_sat,  double& dd_liq_dP, double& dd_vap_dP, double& dh_liq_dP, 
-						  double& dh_vap_dP, double& dT_sat_dP, double& dd_liq_dP_hL, 
-						  double& dd_liq_dP_h2, double& dd_vap_dP_h2, double& dd_vap_dP_hV, 
-						  string* ErrorMsg);
+						  double& dh_vap_dP, double& dT_sat_dP, string* ErrorMsg);
 
       double Solve       ( string FuncSpec, double FuncVal, string InputSpec, long Target,
                            double FixedVal, double MinVal, double MaxVal, string* ErrorMsg);

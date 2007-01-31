@@ -594,9 +594,7 @@ void TFluidProp::AllPropsSat( string InputSpec, double Input1, double Input2, do
                               double& zeta, double& gamma, double& eta, double& lambda, 
 							  double& d_liq, double& d_vap, double& h_liq, double& h_vap, 
 						      double& T_sat,  double& dd_liq_dP, double& dd_vap_dP, double& dh_liq_dP, 
-						      double& dh_vap_dP, double& dT_sat_dP, double& dd_liq_dP_hL, 
-						      double& dd_liq_dP_h2, double& dd_vap_dP_h2, double& dd_vap_dP_hV, 							  
-							  string* ErrorMsg)
+						      double& dh_vap_dP, double& dT_sat_dP, string* ErrorMsg)
 {
    BSTR BSTR_InputSpec = _com_util::ConvertStringToBSTR( InputSpec.c_str());
    BSTR BSTR_Error;
@@ -614,8 +612,7 @@ void TFluidProp::AllPropsSat( string InputSpec, double Input1, double Input2, do
    FluidProp_COM->AllPropsSat( BSTR_InputSpec, Input1, Input2, &P, &T, &v, &d, &h, &s, &u, &q, &sa_x,
                                &sa_y, &cv, &cp, &c, &alpha, &beta, &chi, &fi, &ksi, &psi, &zeta, 
                                &gamma, &eta, &lambda, &d_liq, &d_vap, &h_liq, &h_vap, &T_sat, &dd_liq_dP, 
-							   &dd_vap_dP, &dh_liq_dP, &dh_vap_dP, &dT_sat_dP, &dd_liq_dP_hL, 
-						       &dd_liq_dP_h2, &dd_vap_dP_h2, &dd_vap_dP_hV, &BSTR_Error);
+							   &dd_vap_dP, &dh_liq_dP, &dh_vap_dP, &dT_sat_dP, &BSTR_Error);
 
    // Retrieve array with liquid and vapor phase compositions from SafeArrays
    for( long i = 0; i < (signed)sa_bounds_x[0].cElements; i++)
