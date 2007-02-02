@@ -247,28 +247,28 @@ partial package PartialExternalTwoPhaseMedium
   end getCriticalMolarVolume;
   
   redeclare function extends setState_phX 
-    input Integer uniqueID "Unique ID";
+    input Integer uniqueID = 0 "Unique ID";
   algorithm 
     // The composition is an empty vector
     state :=setState_ph(p, h, phase, uniqueID);
   end setState_phX;
   
   redeclare function extends setState_pTX 
-    input Integer uniqueID "Unique ID";
+    input Integer uniqueID = 0 "Unique ID";
   algorithm 
     // The composition is an empty vector
     state :=setState_pT(p, T, phase, uniqueID);
   end setState_pTX;
   
   redeclare function extends setState_dTX 
-    input Integer uniqueID "Unique ID";
+    input Integer uniqueID = 0 "Unique ID";
   algorithm 
     // The composition is an empty vector
     state :=setState_dT(d, T, phase, uniqueID);
   end setState_dTX;
   
   redeclare function extends setState_psX 
-    input Integer uniqueID "Unique ID";
+    input Integer uniqueID = 0 "Unique ID";
   algorithm 
     // The composition is an empty vector
     state :=setState_ps(p, s, phase, uniqueID);
