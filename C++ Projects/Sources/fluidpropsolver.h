@@ -26,7 +26,7 @@
  *
  * See also the solvermap.cpp code
  *
- * Francesco Casella, Christoph Richter, Oct 2006
+ * Francesco Casella, Christoph Richter, Oct 2006 - Feb 2007
  ********************************************************************/
 
 #ifndef FLUIDPROPSOLVER_H_

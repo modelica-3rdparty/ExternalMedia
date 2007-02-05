@@ -1,7 +1,7 @@
 /* *****************************************************************
  * Implementation of class FluidProp solver
  *
- * Francesco Casella, Christoph Richter, Oct 2006
+ * Francesco Casella, Christoph Richter, Oct 2006 - Feb 2007
  ********************************************************************/
 
 #include "fluidpropsolver.h"
@@ -185,7 +185,6 @@ void FluidPropSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMedi
 		                  alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, gamma_, eta_, lambda_,  
 	    			      d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
 						  dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
-	printf("P = %lf, h = %lf\n", p, h);
 	if (ErrorMsg != "No errors") {  // An error occurred
 		// Build error message and pass it to the Modelica environment
 		char error[100];
