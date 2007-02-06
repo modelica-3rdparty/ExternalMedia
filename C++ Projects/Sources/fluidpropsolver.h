@@ -59,6 +59,7 @@ public:
 
 protected:
     TFluidProp FluidProp;  // Instance of FluidProp wrapper object
+	bool isError(string ErrorMsg);
 };
 
 #endif // FLUIDPROP == 1
