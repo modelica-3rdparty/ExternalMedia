@@ -20,21 +20,21 @@ FluidPropSolver::FluidPropSolver(const string &mediumName,
     // Build FluidProp object with the libraryName and substanceName info
 	Comp[0] = substanceName.c_str();
     FluidProp.SetFluid(libraryName.substr(libraryName.find(".")+1), 1, Comp, Conc, &ErrorMsg);
-	if (isError(ErrorMsg))  // An error occurred
+	if (ErrorMsg != "No errors")  // An error occurred
 	{
 		// Build error message and pass it to the Modelica environment
 		char error[100];
-		sprintf(error, "FluidProp error: %s\n", ErrorMsg.c_str());
+		sprintf(error, "FluidProp error: %s\n", ErrorMsg);
 		errorMessage(error);
 	}
 
 	// Set SI units 
 	FluidProp.SetUnits("SI", " ", " ", " ", &ErrorMsg);
-	if (isError(ErrorMsg))  // An error occurred
+	if (ErrorMsg != "No errors")  // An error occurred
 	{
 		// Build error message and pass it to the Modelica environment
 		char error[100];
-		sprintf(error, "FluidProp error: %s\n", ErrorMsg.c_str());
+		sprintf(error, "FluidProp error: %s\n", ErrorMsg);
 		errorMessage(error);
 	}
 
@@ -49,38 +49,38 @@ void FluidPropSolver::setFluidConstants(){
   string ErrorMsg;
 
   _fluidConstants.MM = FluidProp.Mmol(&ErrorMsg);
-  if (isError(ErrorMsg))  // An error occurred
+  if (ErrorMsg != "No errors")  // An error occurred
 	{
 	// Build error message and pass it to the Modelica environment
 	char error[100];
-	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute molar mass\n %s\n", ErrorMsg.c_str());
+	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute molar mass\n %s\n", ErrorMsg);
 	errorMessage(error);
 	}
 
   _fluidConstants.Tc = FluidProp.Tcrit(&ErrorMsg);
-  if (isError(ErrorMsg))  // An error occurred
+  if (ErrorMsg != "No errors")  // An error occurred
 	{
 	// Build error message and pass it to the Modelica environment
 	char error[100];
-	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute critical temperature\n %s\n", ErrorMsg.c_str());
+	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute critical temperature\n %s\n", ErrorMsg);
 	errorMessage(error);
 	}
 
   _fluidConstants.pc = FluidProp.Pcrit(&ErrorMsg);
-  if (isError(ErrorMsg))  // An error occurred
+  if (ErrorMsg != "No errors")  // An error occurred
 	{
 	// Build error message and pass it to the Modelica environment
 	char error[100];
-	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute critical pressure\n %s\n", ErrorMsg.c_str());
+	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute critical pressure\n %s\n", ErrorMsg);
 	errorMessage(error);
 	}
 
   _fluidConstants.dc = FluidProp.Density("PT", _fluidConstants.pc, _fluidConstants.Tc, &ErrorMsg);
-  if (isError(ErrorMsg))  // An error occurred
+  if (ErrorMsg != "No errors")  // An error occurred
 	{
 	// Build error message and pass it to the Modelica environment
 	char error[100];
-	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute critical density\n %s\n", ErrorMsg.c_str());
+	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute critical density\n %s\n", ErrorMsg);
 	errorMessage(error);
 	}
 }
@@ -94,19 +94,15 @@ void FluidPropSolver::setSat_p(double &p, TwoPhaseMediumProperties *const proper
 		   d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
 		   dh_vap_dP_, dT_sat_dP_;
 
-	// If the pressure is greater than the critical pressure, just return
-	if (p > _fluidConstants.pc)
-		return;
-
 	// Compute all FluidProp variables at pressure p and steam quality 0
 	FluidProp.AllPropsSat("Pq", p , 0.0, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
 		                  alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, gamma_, eta_, lambda_,  
 	    			      d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
 						  dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
-	if (isError(ErrorMsg)) {  // An error occurred
+	if (ErrorMsg != "No errors") {  // An error occurred
 		// Build error message and pass it to the Modelica environment
 		char error[100];
-		sprintf(error, "FluidProp error in FluidPropSolver::setSat_p(%f)\n %s\n", p, ErrorMsg.c_str());
+		sprintf(error, "FluidProp error in FluidPropSolver::setSat_p\n %s\n", ErrorMsg);
 		errorMessage(error);
 	}
 
@@ -137,19 +133,15 @@ void FluidPropSolver::setSat_T(double &T, TwoPhaseMediumProperties *const proper
 		   d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
 		   dh_vap_dP_, dT_sat_dP_;
 
-	// If the temperature is greater than the critical pressure, just return
-	if (T > _fluidConstants.Tc)
-		return;
-
 	// Compute all FluidProp variables at temperature T and steam quality 0
 	FluidProp.AllPropsSat("Tq", T , 0.0, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
 		                  alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, gamma_, eta_, lambda_,  
 	    			      d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
 						  dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
-	if (isError(ErrorMsg)) {  // An error occurred
+	if (ErrorMsg != "No errors") {  // An error occurred
 		// Build error message and pass it to the Modelica environment
 		char error[100];
-		sprintf(error, "FluidProp error in FluidPropSolver::setSat_T(%f)\n %s\n", T, ErrorMsg.c_str());
+		sprintf(error, "FluidProp error in FluidPropSolver::setSat_T\n %s\n", ErrorMsg);
 		errorMessage(error);
 	}
 
@@ -188,23 +180,15 @@ void FluidPropSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMedi
 		   d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
 		   dh_vap_dP_, dT_sat_dP_;
 
-	// If the pressure is greater than the critical pressure, just return
-		return;
-
 	// Compute all FluidProp variables
-	if (p > _fluidConstants.pc)
- 	  FluidProp.AllProps("Ph", p , h, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
-	  	                 alpha_, beta_, chi_, fi_, ksi_, psi_, gamma_, eta_, lambda_, &ErrorMsg);
-	else
-	  FluidProp.AllPropsSat("Ph", p , h, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
-	  	                    alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, gamma_, eta_, lambda_,  
-	    			        d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
-						    dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
-
-	if (isError(ErrorMsg)) {  // An error occurred
+	FluidProp.AllPropsSat("Ph", p , h, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
+		                  alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, gamma_, eta_, lambda_,  
+	    			      d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
+						  dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
+	if (ErrorMsg != "No errors") {  // An error occurred
 		// Build error message and pass it to the Modelica environment
 		char error[100];
-		sprintf(error, "FluidProp error in FluidPropSolver::setState_ph(%f, %f)\n %s\n", p, h, ErrorMsg.c_str());
+		sprintf(error, "FluidProp error in FluidPropSolver::setState_ph\n %s\n", ErrorMsg);
 		errorMessage(error);
 	}
 
@@ -258,20 +242,16 @@ void FluidPropSolver::setState_pT(double &p, double &T, TwoPhaseMediumProperties
 		   psi_, zeta_ , gamma_, eta_, lambda_,
 		   d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
 		   dh_vap_dP_, dT_sat_dP_;
-	// Compute all FluidProp variables
-	if (p > _fluidConstants.pc)
- 	  FluidProp.AllProps("PT", p , T, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
-	  	                 alpha_, beta_, chi_, fi_, ksi_, psi_, gamma_, eta_, lambda_, &ErrorMsg);
-	else
- 	  FluidProp.AllPropsSat("PT", p , T, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
-		                    alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, gamma_, eta_, lambda_,  
-	    			        d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
-						    dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
 
-	if (isError(ErrorMsg)) {  // An error occurred
+	// Compute all FluidProp variables
+	FluidProp.AllPropsSat("PT", p , T, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
+		                  alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, gamma_, eta_, lambda_,  
+	    			      d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
+						  dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
+	if (ErrorMsg != "No errors") {  // An error occurred
 		// Build error message and pass it to the Modelica environment
 		char error[100];
-		sprintf(error, "FluidProp error in FluidPropSolver::setState_pT(%f, %f)\n %s\n", p, T, ErrorMsg.c_str());
+		sprintf(error, "FluidProp error in FluidPropSolver::setState_pT\n %s\n", ErrorMsg);
 		errorMessage(error);
 	}
 
@@ -323,20 +303,14 @@ void FluidPropSolver::setState_dT(double &d, double &T, int &phase, TwoPhaseMedi
 		   dh_vap_dP_, dT_sat_dP_;
 
 	// Compute all FluidProp variables
-	if (T > _fluidConstants.Tc)
- 	  FluidProp.AllProps("dT", d , T, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
-	  	                 alpha_, beta_, chi_, fi_, ksi_, psi_, gamma_, eta_, lambda_, &ErrorMsg);
-	else
-
-	  FluidProp.AllPropsSat("dT", d , T, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
+	FluidProp.AllPropsSat("dT", d , T, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
 		                  alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, gamma_, eta_, lambda_,  
 	    			      d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
 						  dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
-
-	if (isError(ErrorMsg)) {  // An error occurred
+	if (ErrorMsg != "No errors") {  // An error occurred
 		// Build error message and pass it to the Modelica environment
 		char error[100];
-		sprintf(error, "FluidProp error in FluidPropSolver::setState_dT(%f, %f)\n %s\n", d, T, ErrorMsg.c_str());
+		sprintf(error, "FluidProp error in FluidPropSolver::setState_pT\n %s\n", ErrorMsg);
 		errorMessage(error);
 	}
 
@@ -392,19 +366,15 @@ void FluidPropSolver::setState_ps(double &p, double &s, int &phase, TwoPhaseMedi
 		   dh_vap_dP_, dT_sat_dP_;
 
 	// Compute all FluidProp variables
-	if (p > _fluidConstants.pc)
- 	  FluidProp.AllProps("Ps", p , s, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
-	  	                 alpha_, beta_, chi_, fi_, ksi_, psi_, gamma_, eta_, lambda_, &ErrorMsg);
-	else
-	  FluidProp.AllPropsSat("Ps", p , s, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
+	FluidProp.AllPropsSat("Ps", p , s, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
 		                  alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, gamma_, eta_, lambda_,  
 	    			      d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
 						  dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
-	if (isError(ErrorMsg)) {  
+	if (ErrorMsg != "No errors") {  
 		// An error occurred
 		// Build error message and pass it to the Modelica environment
 		char error[100];
-		sprintf(error, "FluidProp error in FluidPropSolver::setState_ps(%f, %f)\n %s\n", p, s, ErrorMsg.c_str());
+		sprintf(error, "FluidProp error in FluidPropSolver::setState_pT\n %s\n", ErrorMsg);
 		errorMessage(error);
 	}
 
@@ -479,14 +449,6 @@ void FluidPropSolver::setDewState(int phase, TwoPhaseMediumProperties *const pro
 		hv = properties->hv*(1-1e-6);
     // Call setState function
 	setState_ph(properties->ps, hv, phase, dewProperties);
-}
-
-bool FluidPropSolver::isError(string ErrorMsg)
-{
-  if(ErrorMsg == "No errors")
-	  return false;
-  else
-      return true;
 }
 
 #endif // FLUIDPROP == 1
