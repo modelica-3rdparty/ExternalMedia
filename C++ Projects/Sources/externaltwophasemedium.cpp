@@ -321,7 +321,7 @@ void setSat_p_state_(int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_
 	// Check for the validity of the uniqueID - this function should never be 
 	// called with a zero unique ID
 	if (uniqueID == 0)
-		errorMessage("setSat_p_state called without a valid uniqueID)");
+		errorMessage("setSat_p_state called without a valid uniqueID");
 	// Set a pointer to the medium
 	BaseTwoPhaseMedium *medium;
 	medium = MediumMap::medium(uniqueID);
@@ -405,47 +405,83 @@ void setBubbleState_(int uniqueID, int phase, int *state_uniqueID, int *state_ph
 
 //! Return density of specified medium
 double density_(int uniqueID){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
+	if (uniqueID == 0)
+		errorMessage("Function density_ called without a valid uniqueID");
 	return MediumMap::medium(uniqueID)->d();
 }
 
 //! Return derivative of density wrt pressure at constant specific enthalpy of specified medium
 double density_derp_h_(int uniqueID){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
+	if (uniqueID == 0)
+		errorMessage("Function density_derp_h_ called without a valid uniqueID");
 	return MediumMap::medium(uniqueID)->dd_dp_h();
 }
 
 //! Return derivative of density wrt specific enthalpy at constant pressure of specified medium
 double density_derh_p_(int uniqueID){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
+	if (uniqueID == 0)
+		errorMessage("Function density_derh_p_ called without a valid uniqueID");
 	return MediumMap::medium(uniqueID)->dd_dh_p();
 }
 
 //! Return derivative of density wrt pressure and specific enthalpy of specified medium
 double density_ph_der_(int uniqueID, double p_der, double h_der){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
+	if (uniqueID == 0)
+		errorMessage("Function density_ph_der_ called without a valid uniqueID");
 	return MediumMap::medium(uniqueID)->dd_dp_h()*p_der +
 		   MediumMap::medium(uniqueID)->dd_dh_p()*h_der;
 }
 
 //! Return pressure of specified medium
 double pressure_(int uniqueID){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
+	if (uniqueID == 0)
+		errorMessage("Function pressure_ called without a valid uniqueID");
 	return MediumMap::medium(uniqueID)->p();
 }
 
 //! Return specific enthalpy of specified medium
 double specificEnthalpy_(int uniqueID){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
+	if (uniqueID == 0)
+		errorMessage("Function specificEnthalpy_ called without a valid uniqueID");
 	return MediumMap::medium(uniqueID)->h();
 }
 
 //! Return specific entropy of specified medium
 double specificEntropy_(int uniqueID){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
+	if (uniqueID == 0)
+		errorMessage("Function specificEntropy_ called without a valid uniqueID");
 	return MediumMap::medium(uniqueID)->s();
 }
 
 //! Return temperature of specified medium
 double temperature_(int uniqueID){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
+	if (uniqueID == 0)
+		errorMessage("Function temperature_ called without a valid uniqueID");
 	return MediumMap::medium(uniqueID)->T();
 }
 
 //! Return derivative of temperature wrt pressure and specific enthalpy of specified medium
 double temperature_ph_der_(int uniqueID, double p_der, double h_der){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
+	if (uniqueID == 0)
+		errorMessage("Function temperature_ph_der_ called without a valid uniqueID");
 	return MediumMap::medium(uniqueID)->dT_dp_h()*p_der +
 		   MediumMap::medium(uniqueID)->dT_dh_p()*h_der;
 }
@@ -611,46 +647,82 @@ double isobaricExpansionCoefficient_(int uniqueID){
 
 //! Return isothermal compressibility of specified medium
 double isothermalCompressibility_(int uniqueID){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
+	if (uniqueID == 0)
+		errorMessage("Function isothermalCompressibility_ called without a valid uniqueID");
 	return MediumMap::medium(uniqueID)->kappa();
 }
 
 //! Return specific heat capacity cp of specified medium
 double specificHeatCapacityCp_(int uniqueID){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
+	if (uniqueID == 0)
+		errorMessage("Function specificHeatCapacityCp_ called without a valid uniqueID");
 	return MediumMap::medium(uniqueID)->cp();
 }
 
 //! Return specific heat capacity cv of specified medium
 double specificHeatCapacityCv_(int uniqueID){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
+	if (uniqueID == 0)
+		errorMessage("Function specificHeatCapacityCv_ called without a valid uniqueID");
 	return MediumMap::medium(uniqueID)->cv();
 }
 
 //! Return dynamic viscosity of specified medium
 double dynamicViscosity_(int uniqueID){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
+	if (uniqueID == 0)
+		errorMessage("Function dynamicViscosity_ called without a valid uniqueID");
 	return MediumMap::medium(uniqueID)->eta();
 }
 
 //! Return thermal conductivity of specified medium
 double thermalConductivity_(int uniqueID){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
+	if (uniqueID == 0)
+		errorMessage("Function thermalConductivity_ called without a valid uniqueID");
 	return MediumMap::medium(uniqueID)->lambda();
 }
 
 //! Return Prandtl number of specified medium
 double prandtlNumber_(int uniqueID){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
+	if (uniqueID == 0)
+		errorMessage("Function prandtlNumber_ called without a valid uniqueID");
 	return MediumMap::medium(uniqueID)->Pr();
 }
 
 //! Return surface tension of specified medium
 double surfaceTension_(double psat, double Tsat, int uniqueID){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
+	if (uniqueID == 0)
+		errorMessage("Function surfaceTension_ called without a valid uniqueID");
 	return MediumMap::medium(uniqueID)->sigma();
 }
 
 //! Return derivative of density wrt pressure at constant specific enthalpy of specified medium
 double dDensity_dPressure_h_(int uniqueID){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
+	if (uniqueID == 0)
+		errorMessage("Function dDensity_dPressure_h_ called without a valid uniqueID");
 	return MediumMap::medium(uniqueID)->dd_dp_h();
 }
 
 //! Return derivative of density wrt specific enthalpy at constant pressure of specified medium
 double dDensity_dEnthalpy_p_(int uniqueID){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
+	if (uniqueID == 0)
+		errorMessage("Function dDensity_dEnthalpy_p_ called without a valid uniqueID");
 	return MediumMap::medium(uniqueID)->dd_dh_p();
 }
 
