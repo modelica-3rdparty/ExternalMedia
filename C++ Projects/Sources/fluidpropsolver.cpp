@@ -23,7 +23,7 @@ FluidPropSolver::FluidPropSolver(const string &mediumName,
 	if (isError(ErrorMsg))  // An error occurred
 	{
 		// Build error message and pass it to the Modelica environment
-		char error[100];
+		char error[300];
 		sprintf(error, "FluidProp error: %s\n", ErrorMsg);
 		errorMessage(error);
 	}
@@ -33,7 +33,7 @@ FluidPropSolver::FluidPropSolver(const string &mediumName,
 	if (isError(ErrorMsg))  // An error occurred
 	{
 		// Build error message and pass it to the Modelica environment
-		char error[100];
+		char error[300];
 		sprintf(error, "FluidProp error: %s\n", ErrorMsg);
 		errorMessage(error);
 	}
@@ -52,7 +52,7 @@ void FluidPropSolver::setFluidConstants(){
   if (isError(ErrorMsg))  // An error occurred
 	{
 	// Build error message and pass it to the Modelica environment
-	char error[100];
+	char error[300];
 	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute molar mass\n %s\n", ErrorMsg);
 	errorMessage(error);
 	}
@@ -61,7 +61,7 @@ void FluidPropSolver::setFluidConstants(){
   if (isError(ErrorMsg))  // An error occurred
 	{
 	// Build error message and pass it to the Modelica environment
-	char error[100];
+	char error[300];
 	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute critical temperature\n %s\n", ErrorMsg);
 	errorMessage(error);
 	}
@@ -70,7 +70,7 @@ void FluidPropSolver::setFluidConstants(){
   if (isError(ErrorMsg))  // An error occurred
 	{
 	// Build error message and pass it to the Modelica environment
-	char error[100];
+	char error[300];
 	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute critical pressure\n %s\n", ErrorMsg);
 	errorMessage(error);
 	}
@@ -79,7 +79,7 @@ void FluidPropSolver::setFluidConstants(){
   if (isError(ErrorMsg))  // An error occurred
 	{
 	// Build error message and pass it to the Modelica environment
-	char error[100];
+	char error[300];
 	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute critical density\n %s\n", ErrorMsg);
 	errorMessage(error);
 	}
@@ -101,7 +101,7 @@ void FluidPropSolver::setSat_p(double &p, TwoPhaseMediumProperties *const proper
 						  dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
 	if (isError(ErrorMsg)) {  // An error occurred
 		// Build error message and pass it to the Modelica environment
-		char error[100];
+		char error[300];
 		sprintf(error, "FluidProp error in FluidPropSolver::setSat_p\n %s\n", ErrorMsg);
 		errorMessage(error);
 	}
@@ -140,7 +140,7 @@ void FluidPropSolver::setSat_T(double &T, TwoPhaseMediumProperties *const proper
 						  dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
 	if (isError(ErrorMsg)) {  // An error occurred
 		// Build error message and pass it to the Modelica environment
-		char error[100];
+		char error[300];
 		sprintf(error, "FluidProp error in FluidPropSolver::setSat_T\n %s\n", ErrorMsg);
 		errorMessage(error);
 	}
@@ -187,7 +187,7 @@ void FluidPropSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMedi
 						  dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
 	if (isError(ErrorMsg)) {  // An error occurred
 		// Build error message and pass it to the Modelica environment
-		char error[100];
+		char error[300];
 		sprintf(error, "FluidProp error in FluidPropSolver::setState_ph\n %s\n", ErrorMsg);
 		errorMessage(error);
 	}
@@ -250,7 +250,7 @@ void FluidPropSolver::setState_pT(double &p, double &T, TwoPhaseMediumProperties
 						  dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
 	if (isError(ErrorMsg)) {  // An error occurred
 		// Build error message and pass it to the Modelica environment
-		char error[100];
+		char error[300];
 		sprintf(error, "FluidProp error in FluidPropSolver::setState_pT\n %s\n", ErrorMsg);
 		errorMessage(error);
 	}
@@ -309,7 +309,7 @@ void FluidPropSolver::setState_dT(double &d, double &T, int &phase, TwoPhaseMedi
 						  dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
 	if (isError(ErrorMsg)) {  // An error occurred
 		// Build error message and pass it to the Modelica environment
-		char error[100];
+		char error[300];
 		sprintf(error, "FluidProp error in FluidPropSolver::setState_pT\n %s\n", ErrorMsg);
 		errorMessage(error);
 	}
@@ -373,7 +373,7 @@ void FluidPropSolver::setState_ps(double &p, double &s, int &phase, TwoPhaseMedi
 	if (isError(ErrorMsg)) {  
 		// An error occurred
 		// Build error message and pass it to the Modelica environment
-		char error[100];
+		char error[300];
 		sprintf(error, "FluidProp error in FluidPropSolver::setState_pT\n %s\n", ErrorMsg);
 		errorMessage(error);
 	}
