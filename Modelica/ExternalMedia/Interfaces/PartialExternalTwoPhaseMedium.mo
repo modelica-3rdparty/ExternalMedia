@@ -41,16 +41,20 @@ partial package PartialExternalTwoPhaseMedium
   end SaturationProperties;
   
   redeclare model extends BaseProperties(
-    p(stateSelect = if basePropertiesInputChoice == IC.ph or 
-                       basePropertiesInputChoice == IC.pT or 
-                       basePropertiesInputChoice == IC.ps then 
+    p(stateSelect = if preferredMediumStates and 
+                       (basePropertiesInputChoice == IC.ph or 
+                        basePropertiesInputChoice == IC.pT or 
+                        basePropertiesInputChoice == IC.ps) then 
                             StateSelect.prefer else StateSelect.default),
-    T(stateSelect = if basePropertiesInputChoice == IC.pT or 
+    T(stateSelect = if preferredMediumStates and 
+                       (basePropertiesInputChoice == IC.pT or 
+                       basePropertiesInputChoice == IC.dT) then 
+                         StateSelect.prefer else StateSelect.default),
+    h(stateSelect = if preferredMediumStates and 
+                       basePropertiesInputChoice == IC.ph then 
+                         StateSelect.prefer else StateSelect.default),
+    d(stateSelect = if preferredMediumStates and 
                        basePropertiesInputChoice == IC.dT then 
-                         StateSelect.prefer else StateSelect.default),
-    h(stateSelect = if basePropertiesInputChoice == IC.ph then 
-                         StateSelect.prefer else StateSelect.default),
-    d(stateSelect = if basePropertiesInputChoice == IC.dT then 
                          StateSelect.prefer else StateSelect.default)) 
     import IC = ExternalMedia.Common.InputChoices;
     parameter IC.InputChoice basePropertiesInputChoice=inputChoice 
