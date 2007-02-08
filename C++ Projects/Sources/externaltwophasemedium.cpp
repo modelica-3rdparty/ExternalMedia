@@ -491,7 +491,6 @@ void isentropicEnthalpy_(double p, int uniqueID, double *h_is)
 {
 	// Check for the validity of the uniqueID - this function should never be 
 	// called with a zero unique ID
-	printf("isentropicEnthalpy_(%f, %d)\n", p, uniqueID); // XXX
 	if (uniqueID == 0)
 		errorMessage("Function isentropicEnthalpy_ called without a valid uniqueID");
 	*h_is = MediumMap::medium(uniqueID)->h_iso(p);
