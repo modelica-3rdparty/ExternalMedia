@@ -56,6 +56,7 @@ public:
 		                        TwoPhaseMediumProperties *const bubbleProperties);
 	virtual void setDewState(int phase, TwoPhaseMediumProperties *const properties,
 		                     TwoPhaseMediumProperties *const bubbleProperties);
+	virtual double isentropicEnthalpy(double &p, TwoPhaseMediumProperties *const properties);
 
 protected:
     TFluidProp FluidProp;  // Instance of FluidProp wrapper object
