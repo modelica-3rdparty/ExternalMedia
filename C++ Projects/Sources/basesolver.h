@@ -36,6 +36,7 @@ public:
 
 	virtual bool computeDerivatives(TwoPhaseMediumProperties *const properties);
 
+	virtual double isentropicEnthalpy(double &p, TwoPhaseMediumProperties *const properties);
     double molarMass() const;
 	double criticalTemperature() const;
 	double criticalPressure() const;

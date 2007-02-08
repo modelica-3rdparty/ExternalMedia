@@ -189,6 +189,11 @@ double BaseTwoPhaseMedium::T() const{
 	return _properties->T;
 }
 
+//! Return the enthalpy at pressure p after an isentropic transformation form the specified medium state
+double BaseTwoPhaseMedium::h_iso(double &p) const{
+	return _solver->isentropicEnthalpy(p, _properties);
+}
+
 //! Return derivative of temperature wrt pressure at constant specific enthalpy (error handling included)
 double BaseTwoPhaseMedium::dT_dp_h() const{
 	if (ISNAN(_properties->dT_dp_h))

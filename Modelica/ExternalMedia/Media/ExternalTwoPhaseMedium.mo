@@ -82,8 +82,6 @@ package ExternalTwoPhaseMedium
   external "C" dTp=  saturationTemperature_derp_(p, mediumName, libraryName, substanceName);
   end saturationTemperature_derp;
   
-  
-  
   redeclare replaceable function saturationTemperature_derp_sat 
     "Returns derivative of saturation temperature w.r.t.. pressure" 
     extends Modelica.Icons.Function;
@@ -122,6 +120,12 @@ package ExternalTwoPhaseMedium
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
   external "C" T=  temperature_(state.uniqueID);
   end temperature;
+  
+  redeclare replaceable function extends isentropicEnthalpy 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" isentropicEnthalpy_(p_downstream, refState.uniqueID, h_is);
+  end isentropicEnthalpy;
   
   redeclare replaceable function extends isobaricExpansionCoefficient 
     

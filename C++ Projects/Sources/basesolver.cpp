@@ -242,3 +242,18 @@ bool BaseSolver::computeDerivatives(TwoPhaseMediumProperties *const properties){
 	properties->dd_dh_p = -properties->beta*properties->d/properties->cp;
 	return true;
 }
+
+//! Compute isentropic enthalpy
+/*!
+  This function returns the enthalpy at pressure p after an isentropic
+  transformation from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param p New pressure
+  @param properties Two phase medium property record corresponding to current state
+*/
+double BaseSolver::isentropicEnthalpy(double &p, TwoPhaseMediumProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: isentropicEnthalpy() not implemented in the Solver object");
+	return 0;
+}
