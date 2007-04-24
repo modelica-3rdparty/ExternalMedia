@@ -82,6 +82,7 @@ extern "C" {
 	
 	EXPORT double dDensity_dPressure_h_(int uniqueID);
 	EXPORT double dDensity_dEnthalpy_p_(int uniqueID);
+	EXPORT double temperature_ph_der_(int uniqueID, double p_der, double h_der);
 
 #ifdef __cplusplus
 }

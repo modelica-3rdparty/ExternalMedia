@@ -24,7 +24,7 @@
   compiler that is going to be used with the compiled library.
   \sa OPEN_MODELICA
 */
-#define DYMOLA 0
+#define DYMOLA 1
 //! Modelica compiler is OpenModelica
 /*!
   Set this preprocessor variable to 1 if OpanModelica is the Modelica
@@ -49,7 +49,7 @@
   mechanism as well as the export statement.
   \sa BUILD_LIB
 */
-#define BUILD_DLL 1
+#define BUILD_DLL 0
 //! Build project into a LIB
 /*!
   Set this preprocessor variable to 1 if the project is built into a 
@@ -57,7 +57,7 @@
   mechanism as well as the export statement.
   \sa BUILD_DLL
 */
-#define BUILD_LIB 0
+#define BUILD_LIB 1
 
 //! Maximum number of non-overlapping transient medium objects
 /*!
