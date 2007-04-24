@@ -14,7 +14,6 @@ package Test
     
     model CompleteThermodynamicState 
       "Compute all available two-phase medium properties from a ThermodynamicState model" 
-      import SI = Modelica.SIunits;
       replaceable package Medium = 
           Modelica.Media.Interfaces.PartialTwoPhaseMedium;
       
@@ -59,8 +58,6 @@ package Test
     
     model CompleteBubbleDewStates 
       "Compute all available properties for dewpoint and bubble point states corresponding to a sat record" 
-      import SI = Modelica.SIunits;
-      import ExternalMedia;
       replaceable package Medium = 
           Modelica.Media.Interfaces.PartialTwoPhaseMedium;
       
@@ -79,8 +76,6 @@ package Test
     
     model CompleteBaseProperties 
       "Compute all available two-phase medium properties from a BaseProperties model" 
-      import SI = Modelica.SIunits;
-      import ExternalMedia;
       replaceable package Medium = 
           Modelica.Media.Interfaces.PartialTwoPhaseMedium;
       
@@ -175,7 +170,6 @@ package Test
     
     model TestBasePropertiesDynamic 
       "Test case using TestMedium and dynamic equations" 
-      import SI = Modelica.SIunits;
       replaceable package Medium = Media.TestMedium;
       parameter SI.Volume V = 1 "Storage Volume";
       parameter Real p_atm = 101325 "Atmospheric pressure";
@@ -241,7 +235,6 @@ package Test
       
       model CompleteThermodynamicState 
         "Compute all available two-phase medium properties from a ThermodynamicState model" 
-        import SI = Modelica.SIunits;
         replaceable package Medium = 
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
         
@@ -287,8 +280,6 @@ package Test
       
       model CompleteBubbleDewStates 
         "Compute all available properties for dewpoint and bubble point states corresponding to a sat record" 
-        import SI = Modelica.SIunits;
-        import ExternalMedia;
         replaceable package Medium = 
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
         
@@ -307,8 +298,6 @@ package Test
       
       model CompleteBaseProperties 
         "Compute all available two-phase medium properties from a BaseProperties model" 
-        import SI = Modelica.SIunits;
-        import ExternalMedia;
         replaceable package Medium = 
               Modelica.Media.Interfaces.PartialTwoPhaseMedium;
         
@@ -414,7 +403,6 @@ package Test
       
     model TestBasePropertiesDynamic 
         "Test case using FluidProp IF95 and dynamic equations" 
-      import SI = Modelica.SIunits;
       replaceable package Medium = Media.FluidPropMedia.WaterIF95 
         extends Modelica.Media.Interfaces.PartialTwoPhaseMedium;
       parameter SI.Volume V = 1 "Storage Volume";
@@ -493,7 +481,7 @@ package Test
         fluidPropMedium.baseProperties.p = pmin + (pmax-pmin)*time;
         fluidPropMedium.baseProperties.h = hmin + (hmax-hmin)*time;
       end CompareModelicaFluidProp;
-
+      
       model CompareModelicaFluidProp_liquid 
         "Comparison between Modelica IF97 and FluidProp IF95 models - liquid" 
         extends CompareModelicaFluidProp(
@@ -503,7 +491,7 @@ package Test
           hmax = 4e5);
         
       end CompareModelicaFluidProp_liquid;
-
+      
       model CompareModelicaFluidProp_twophase 
         "Comparison between Modelica IF97 and FluidProp IF95 models - liquid" 
         extends CompareModelicaFluidProp(
@@ -513,7 +501,7 @@ package Test
           hmax = 2000e3);
         
       end CompareModelicaFluidProp_twophase;
-
+      
       model CompareModelicaFluidProp_vapour 
         "Comparison between Modelica IF97 and FluidProp IF95 models - liquid" 
         extends CompareModelicaFluidProp(
