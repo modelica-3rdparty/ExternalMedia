@@ -34,6 +34,11 @@ partial package PartialExternalTwoPhaseMedium
   
   redeclare replaceable record extends ThermodynamicState 
     Integer uniqueID "unique ID number";
+    Density d "density";
+    SpecificEnthalpy h "specific enthalpy";
+    AbsolutePressure p "pressure";
+    SpecificEntropy s "specific entropy";
+    Temperature T "temperature";
   end ThermodynamicState;
   
   redeclare record extends SaturationProperties 
@@ -73,10 +78,10 @@ partial package PartialExternalTwoPhaseMedium
     when (initial()) then
       uniqueID := createMedium(uniqueID);
       assert(uniqueID>0, "Error in external medium library");
+      MM := externalFluidConstants.molarMass;
+      R := Modelica.Constants.R/MM;
     end when;
   equation 
-    MM = externalFluidConstants.molarMass;
-    R = Modelica.Constant.R/MM;
     if (onePhase or (basePropertiesInputChoice == IC.pT)) then
       phaseInput = 1 "Force one-phase property computation";
     else

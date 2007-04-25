@@ -4,28 +4,28 @@ package ExternalTwoPhaseMedium
   redeclare replaceable function extends setState_ph 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" setState_ph_(p, h, phase, uniqueID, state.uniqueID, state.phase,
+  external "C" setState_ph_(p, h, phase, uniqueID, state.uniqueID, state.phase, state.d, state.h, state.p, state.s, state.T,
                             mediumName, libraryName, substanceName);
   end setState_ph;
   
   redeclare replaceable function extends setState_pT 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" setState_pT_(p, T, phase, uniqueID, state.uniqueID, state.phase,
+  external "C" setState_pT_(p, T, phase, uniqueID, state.uniqueID, state.phase, state.d, state.h, state.p, state.s, state.T,
                             mediumName, libraryName, substanceName);
   end setState_pT;
   
   redeclare replaceable function extends setState_dT 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" setState_dT_(d, T, phase, uniqueID, state.uniqueID, state.phase,
+  external "C" setState_dT_(d, T, phase, uniqueID, state.uniqueID, state.phase, state.d, state.h, state.p, state.s, state.T,
                             mediumName, libraryName, substanceName);
   end setState_dT;
   
   redeclare replaceable function extends setState_ps 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" setState_ps_(p, s, phase, uniqueID, state.uniqueID, state.phase,
+  external "C" setState_ps_(p, s, phase, uniqueID, state.uniqueID, state.phase, state.d, state.h, state.p, state.s, state.T,
                             mediumName, libraryName, substanceName);
   end setState_ps;
   

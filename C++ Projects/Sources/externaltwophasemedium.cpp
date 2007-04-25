@@ -96,27 +96,43 @@ double getCriticalMolarVolume_(const char *mediumName, const char *libraryName,
   @param uniqueID Unique ID number
   @param state_uniqueID Pointer to return unique ID number for state record
   @param state_phase Pointer to return phase for state record
+  @param state_d Pointer to return density for state record
+  @param state_h Pointer to return specific enthalpy for state record
+  @param state_p Pointer to return pressure for state record
+  @param state_s Pointer to return specific entropy for state record
+  @param state_T Pointer to return temperature for state record
   @param mediumName Medium name
   @param libraryName Library name
   @param substanceName Substance name
 */
-void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
+void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase, double *state_d, double *state_h, double *state_p, double *state_s, double *state_T,
 				  const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0){
 	  // setState_dT was called with uniqueID == 0
 	  // create a new transient medium object and get a transientUniqueID
 	  int transientUniqueID = MediumMap::addTransientMedium(mediumName, libraryName, substanceName);
       // run setState_dT_ with the transientUniqueID
-	  setState_dT_(d, T, phase, transientUniqueID, state_uniqueID, state_phase, mediumName, libraryName, substanceName);
+	  setState_dT_(d, T, phase, transientUniqueID, state_uniqueID, state_phase, state_d, state_h, state_p, state_s, state_T, mediumName, libraryName, substanceName);
 	} else {
       // setState_dT was called with the uniqueID of an existing medium object
  	  // Call the medium object's setState_dT function
-	  MediumMap::medium(uniqueID)->setState_dT(d, T, phase);
+	  BaseTwoPhaseMedium *medium = MediumMap::medium(uniqueID);
+	  medium->setState_dT(d, T, phase);
 	  // Return values
 	  if (state_uniqueID != NULL)
   		  *state_uniqueID = uniqueID;
 	  if (state_phase != NULL)
 	 	  *state_phase = MediumMap::medium(uniqueID)->phase();
+	  if (state_d != NULL)
+		  *state_d = medium->d();
+	  if (state_h != NULL)
+		  *state_h = medium->h();
+	  if (state_p != NULL)
+		  *state_p = medium->p();
+	  if (state_s != NULL)
+		  *state_s = medium->s();
+	  if (state_T != NULL)
+		  *state_T = medium->T();
     }
 }
 
@@ -131,27 +147,43 @@ void setState_dT_(double d, double T, int phase, int uniqueID, int *state_unique
   @param uniqueID Unique ID number
   @param state_uniqueID Pointer to return unique ID number for state record
   @param state_phase Pointer to return phase for state record
+  @param state_d Pointer to return density for state record
+  @param state_h Pointer to return specific enthalpy for state record
+  @param state_p Pointer to return pressure for state record
+  @param state_s Pointer to return specific entropy for state record
+  @param state_T Pointer to return temperature for state record
   @param mediumName Medium name
   @param libraryName Library name
   @param substanceName Substance name
 */
-void setState_ph_(double p, double h, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
+void setState_ph_(double p, double h, int phase, int uniqueID, int *state_uniqueID, int *state_phase, double *state_d, double *state_h, double *state_p, double *state_s, double *state_T,
 				  const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0){
 	  // setState_ph was called with uniqueID == 0
 	  // create a new transient medium object and get a transientUniqueID
 	  int transientUniqueID = MediumMap::addTransientMedium(mediumName, libraryName, substanceName);
       // run setState_ph_ with the transientUniqueID
-	  setState_ph_(p, h, phase, transientUniqueID, state_uniqueID, state_phase, mediumName, libraryName, substanceName);
+	  setState_ph_(p, h, phase, transientUniqueID, state_uniqueID, state_phase, state_d, state_h, state_p, state_s, state_T, mediumName, libraryName, substanceName);
 	} else {
       // setState_ph was called with the uniqueID of an existing medium object
  	  // Call the medium object's setState_ph function
-	  MediumMap::medium(uniqueID)->setState_ph(p, h, phase);
+	  BaseTwoPhaseMedium *medium = MediumMap::medium(uniqueID);
+	  medium->setState_ph(p, h, phase);
 	  // Return values
 	  if (state_uniqueID != NULL)
   		  *state_uniqueID = uniqueID;
 	  if (state_phase != NULL)
 	 	  *state_phase = MediumMap::medium(uniqueID)->phase();
+	  if (state_d != NULL)
+		  *state_d = medium->d();
+	  if (state_h != NULL)
+		  *state_h = medium->h();
+	  if (state_p != NULL)
+		  *state_p = medium->p();
+	  if (state_s != NULL)
+		  *state_s = medium->s();
+	  if (state_T != NULL)
+		  *state_T = medium->T();
     }
 }
 
@@ -166,27 +198,43 @@ void setState_ph_(double p, double h, int phase, int uniqueID, int *state_unique
   @param uniqueID Unique ID number
   @param state_uniqueID Pointer to return unique ID number for state record
   @param state_phase Pointer to return phase for state record
+  @param state_d Pointer to return density for state record
+  @param state_h Pointer to return specific enthalpy for state record
+  @param state_p Pointer to return pressure for state record
+  @param state_s Pointer to return specific entropy for state record
+  @param state_T Pointer to return temperature for state record
   @param mediumName Medium name
   @param libraryName Library name
   @param substanceName Substance name
 */
-void setState_ps_(double p, double s, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
+void setState_ps_(double p, double s, int phase, int uniqueID, int *state_uniqueID, int *state_phase, double *state_d, double *state_h, double *state_p, double *state_s, double *state_T,
 				  const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0){
 	  // setState_ps was called with uniqueID == 0
 	  // create a new transient medium object and get a transientUniqueID
 	  int transientUniqueID = MediumMap::addTransientMedium(mediumName, libraryName, substanceName);
       // run setState_ps_ with the transientUniqueID
-	  setState_ps_(p, s, phase, transientUniqueID, state_uniqueID, state_phase, mediumName, libraryName, substanceName);
+	  setState_ps_(p, s, phase, transientUniqueID, state_uniqueID, state_phase, state_d, state_h, state_p, state_s, state_T, mediumName, libraryName, substanceName);
 	} else {
       // setState_ps was called with the uniqueID of an existing medium object
  	  // Call the medium object's setState_ps function
-	  MediumMap::medium(uniqueID)->setState_ps(p, s, phase);
+	  BaseTwoPhaseMedium *medium = MediumMap::medium(uniqueID);
+	  medium->setState_ps(p, s, phase);
 	  // Return values
 	  if (state_uniqueID != NULL)
   		  *state_uniqueID = uniqueID;
 	  if (state_phase != NULL)
 	 	  *state_phase = MediumMap::medium(uniqueID)->phase();
+	  if (state_d != NULL)
+		  *state_d = medium->d();
+	  if (state_h != NULL)
+		  *state_h = medium->h();
+	  if (state_p != NULL)
+		  *state_p = medium->p();
+	  if (state_s != NULL)
+		  *state_s = medium->s();
+	  if (state_T != NULL)
+		  *state_T = medium->T();
     }
 }
 
@@ -203,27 +251,43 @@ void setState_ps_(double p, double s, int phase, int uniqueID, int *state_unique
   @param uniqueID Unique ID number
   @param state_uniqueID Pointer to return unique ID number for state record
   @param state_phase Pointer to return phase for state record
+  @param state_d Pointer to return density for state record
+  @param state_h Pointer to return specific enthalpy for state record
+  @param state_p Pointer to return pressure for state record
+  @param state_s Pointer to return specific entropy for state record
+  @param state_T Pointer to return temperature for state record
   @param mediumName Medium name
   @param libraryName Library name
   @param substanceName Substance name
 */
-void setState_pT_(double p, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase,
+void setState_pT_(double p, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase, double *state_d, double *state_h, double *state_p, double *state_s, double *state_T,
 				  const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0){
 	  // setState_pT was called with uniqueID == 0
 	  // create a new transient medium object and get a transientUniqueID
 	  int transientUniqueID = MediumMap::addTransientMedium(mediumName, libraryName, substanceName);
       // run setState_pT_ with the transientUniqueID
-	  setState_pT_(p, T, phase, transientUniqueID, state_uniqueID, state_phase, mediumName, libraryName, substanceName);
+	  setState_pT_(p, T, phase, transientUniqueID, state_uniqueID, state_phase, state_d, state_h, state_p, state_s, state_T, mediumName, libraryName, substanceName);
 	} else {
       // setState_pT was called with the uniqueID of an existing medium object
  	  // Call the medium object's setState_pT function
-	  MediumMap::medium(uniqueID)->setState_pT(p, T);
+	  BaseTwoPhaseMedium *medium = MediumMap::medium(uniqueID);
+	  medium->setState_pT(p, T);
 	  // Return values
 	  if (state_uniqueID != NULL)
   		  *state_uniqueID = uniqueID;
 	  if (state_phase != NULL)
 	 	  *state_phase = 1;
+	  if (state_d != NULL)
+		  *state_d = medium->d();
+	  if (state_h != NULL)
+		  *state_h = medium->h();
+	  if (state_p != NULL)
+		  *state_p = medium->p();
+	  if (state_s != NULL)
+		  *state_s = medium->s();
+	  if (state_T != NULL)
+		  *state_T = medium->T();
     }
 }
 

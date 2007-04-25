@@ -56,10 +56,10 @@ extern "C" {
 	EXPORT double dBubbleEnthalpy_dPressure_(double psat, double Tsat, int uniqueID, const char *mediumName, const char *libraryName, const char *substanceName);
 	EXPORT double dDewEnthalpy_dPressure_(double psat, double Tsat, int uniqueID, const char *mediumName, const char *libraryName, const char *substanceName);
 	
-	EXPORT void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT void setState_ph_(double p, double h, int phase, int uniqueID, int *state_uniqueID, int *state_phase, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT void setState_ps_(double p, double s, int phase, int uniqueID, int *state_uniqueID, int *state_phase, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT void setState_pT_(double p, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT void setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase, double *state_d, double *state_h, double *state_p, double *state_s, double *state_T, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT void setState_ph_(double p, double h, int phase, int uniqueID, int *state_uniqueID, int *state_phase, double *state_d, double *state_h, double *state_p, double *state_s, double *state_T, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT void setState_ps_(double p, double s, int phase, int uniqueID, int *state_uniqueID, int *state_phase, double *state_d, double *state_h, double *state_p, double *state_s, double *state_T, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT void setState_pT_(double p, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase, double *state_d, double *state_h, double *state_p, double *state_s, double *state_T, const char *mediumName, const char *libraryName, const char *substanceName);
 	
 	EXPORT double density_(int uniqueID);
 	EXPORT double density_ph_der_(int uniqueID, double p_der, double h_der);
