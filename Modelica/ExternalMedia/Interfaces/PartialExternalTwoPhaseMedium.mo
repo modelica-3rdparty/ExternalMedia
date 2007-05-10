@@ -78,10 +78,10 @@ partial package PartialExternalTwoPhaseMedium
     when (initial()) then
       uniqueID := createMedium(uniqueID);
       assert(uniqueID>0, "Error in external medium library");
-      MM := externalFluidConstants.molarMass;
-      R := Modelica.Constants.R/MM;
     end when;
   equation 
+    MM = externalFluidConstants.molarMass;
+    R = Modelica.Constants.R/MM;
     if (onePhase or (basePropertiesInputChoice == IC.pT)) then
       phaseInput = 1 "Force one-phase property computation";
     else
