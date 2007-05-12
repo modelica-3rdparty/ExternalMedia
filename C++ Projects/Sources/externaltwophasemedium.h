@@ -74,6 +74,8 @@ extern "C" {
 	EXPORT double isothermalCompressibility_(int uniqueID);
 	EXPORT double specificHeatCapacityCp_(int uniqueID);
 	EXPORT double specificHeatCapacityCv_(int uniqueID);
+
+	EXPORT double isentropicEnthalpy_(double p, int uniqueID);
 	
 	EXPORT double dynamicViscosity_(int uniqueID);
 	EXPORT double thermalConductivity_(int uniqueID);

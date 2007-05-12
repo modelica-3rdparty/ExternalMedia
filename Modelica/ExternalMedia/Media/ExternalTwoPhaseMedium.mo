@@ -124,7 +124,7 @@ package ExternalTwoPhaseMedium
   redeclare replaceable function extends isentropicEnthalpy 
     
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  external "C" isentropicEnthalpy_(p_downstream, refState.uniqueID, h_is);
+  external "C" h_is=  isentropicEnthalpy_(p_downstream, refState.uniqueID);
   end isentropicEnthalpy;
   
   redeclare replaceable function extends isobaricExpansionCoefficient 
