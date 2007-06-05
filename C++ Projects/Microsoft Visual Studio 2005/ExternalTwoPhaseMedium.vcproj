@@ -311,10 +311,6 @@
 			</File>
 		</Filter>
 		<File
-			RelativePath="..\Sources\documentation.txt"
-			>
-		</File>
-		<File
 			RelativePath="..\Sources\include.h"
 			>
 		</File>

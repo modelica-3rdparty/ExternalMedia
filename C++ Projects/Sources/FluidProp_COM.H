@@ -1,9 +1,9 @@
 //============================================================================================//
 //                                                                                            //
-//                               Microsoft Visual C++ 6.0 Client                              //
-//                               -------------------------------                              //
+//                              Microsoft Visual C++ 2005 Client                              //
+//                              --------------------------------                              //
 //                                                                                            //
-//  This is an example of a client application in Microsoft Visual C++ 6.0 for FluidProp,     //
+//  This is an example of a client application in Microsoft Visual C++ 2005 for FluidProp,    //
 //  a COM server module for the calculation of fluid properties. FluidProp is a common        //
 //  interface to GasMix, IF97, Refprop, StanMix, TPSI and is developed by Piero Colonna       //
 //  and Teus van der Stelt.                                                                   //
@@ -17,6 +17,7 @@
 //                                                                                            //
 //  July, 2004, for FluidProp 1                                                               //
 //  January, 2006, for FluidProp 2                                                            //
+//  April, 2007, for FluidProp 2.3                                                            //
 //                                                                                            //
 //============================================================================================//
 
@@ -26,7 +27,7 @@
 
 #ifndef   comutil_h
 #include <comutil.h>
-#endif 
+#endif
 
 
 // An IFluidProp interface
@@ -73,9 +74,15 @@ interface IFluidProp_COM : public IDispatch
                                             double* Output, BSTR* ErrorMsg) = 0;
      virtual void __stdcall VaporQual     ( BSTR InputSpec, double Input1, double Input2,
                                             double* Output, BSTR* ErrorMsg) = 0;
-     virtual void __stdcall LiquidCmp     ( BSTR InputSpec, double Input1, double Input2,
+    
+	 virtual void __stdcall LiquidCmp     ( BSTR InputSpec, double Input1, double Input2,
                                             SAFEARRAY** Output, BSTR* ErrorMsg) = 0;
-     virtual void __stdcall VaporCmp      ( BSTR InputSpec, double Input1, double Input2,
+     virtual void __stdcall LiquidCmp_M   ( BSTR InputSpec, double Input1, double Input2,
+                                            SAFEARRAY** Output, BSTR* ErrorMsg) = 0;
+    
+	 virtual void __stdcall VaporCmp      ( BSTR InputSpec, double Input1, double Input2,
+                                            SAFEARRAY** Output, BSTR* ErrorMsg) = 0;
+     virtual void __stdcall VaporCmp_M    ( BSTR InputSpec, double Input1, double Input2,
                                             SAFEARRAY** Output, BSTR* ErrorMsg) = 0;
 
      virtual void __stdcall HeatCapV      ( BSTR InputSpec, double Input1, double Input2,
@@ -96,6 +103,12 @@ interface IFluidProp_COM : public IDispatch
                                             double* Output, BSTR* ErrorMsg) = 0;
      virtual void __stdcall Psi           ( BSTR InputSpec, double Input1, double Input2,
                                             double* Output, BSTR* ErrorMsg) = 0;
+     virtual void __stdcall Zeta          ( BSTR InputSpec, double Input1, double Input2,
+                                            double* Output, BSTR* ErrorMsg) = 0;
+     virtual void __stdcall Theta         ( BSTR InputSpec, double Input1, double Input2,
+                                            double* Output, BSTR* ErrorMsg) = 0;
+     virtual void __stdcall Kappa         ( BSTR InputSpec, double Input1, double Input2,
+                                            double* Output, BSTR* ErrorMsg) = 0;
      virtual void __stdcall Gamma         ( BSTR InputSpec, double Input1, double Input2,
                                             double* Output, BSTR* ErrorMsg) = 0;
 
@@ -109,9 +122,44 @@ interface IFluidProp_COM : public IDispatch
                                             double* h, double* s, double* u, double* q,
                                             SAFEARRAY** x, SAFEARRAY** y, double* cv, double* cp,
                                             double* c, double* alpha, double* beta, double* chi,
-                                            double* fi, double* ksi, double* psi, double* gamma,
+                                            double* fi, double* ksi, double* psi, double* zeta, 
+											double* theta, double* kappa, double* gamma,
                                             double* eta, double* lambda, BSTR* ErrorMsg) = 0;
-     virtual void __stdcall Solve         ( BSTR FuncSpec, double FuncVal, BSTR InputSpec,
+	 virtual void __stdcall AllProps_M    ( BSTR InputSpec, double Input1, double Input2,
+                                            double* P, double* T, double* v, double* d,
+                                            double* h, double* s, double* u, double* q,
+                                            SAFEARRAY** x, SAFEARRAY** y, double* cv, double* cp,
+                                            double* c, double* alpha, double* beta, double* chi,
+                                            double* fi, double* ksi, double* psi, double* zeta, 
+											double* theta, double* kappa, double* gamma,
+                                            double* eta, double* lambda, BSTR* ErrorMsg) = 0;
+
+     virtual void __stdcall AllPropsSat   ( BSTR InputSpec, double Input1, double Input2,
+                                            double* P, double* T, double* v, double* d,
+                                            double* h, double* s, double* u, double* q,
+                                            SAFEARRAY** x, SAFEARRAY** y, double* cv, double* cp,
+                                            double* c, double* alpha, double* beta, double* chi,
+                                            double* fi, double* ksi, double* psi, double* zeta,
+                                            double* theta, double* kappa, double* gamma, 
+											double* eta, double* lambda, double* d_liq, 
+											double* d_vap, double* h_liq, double* h_vap, 
+											double* T_sat,  double* dd_liq_dP, double* dd_vap_dP, 
+											double* dh_liq_dP, double* dh_vap_dP, 
+											double* dT_sat_dP, BSTR* ErrorMsg) = 0;
+     virtual void __stdcall AllPropsSat_M ( BSTR InputSpec, double Input1, double Input2,
+                                            double* P, double* T, double* v, double* d,
+                                            double* h, double* s, double* u, double* q,
+                                            SAFEARRAY** x, SAFEARRAY** y, double* cv, double* cp,
+                                            double* c, double* alpha, double* beta, double* chi,
+                                            double* fi, double* ksi, double* psi, double* zeta,
+                                            double* theta, double* kappa, double* gamma, 
+											double* eta, double* lambda, double* d_liq, 
+											double* d_vap, double* h_liq, double* h_vap, 
+											double* T_sat,  double* dd_liq_dP, double* dd_vap_dP, 
+											double* dh_liq_dP, double* dh_vap_dP, 
+											double* dT_sat_dP, BSTR* ErrorMsg) = 0;
+
+	 virtual void __stdcall Solve         ( BSTR FuncSpec, double FuncVal, BSTR InputSpec,
                                             long Target, double FixedVal, double MinVal,
                                             double MaxVal, double* Output, BSTR* ErrorMsg) = 0;
 
@@ -127,36 +175,6 @@ interface IFluidProp_COM : public IDispatch
                                             BSTR Units, BSTR* ErrorMsg) = 0;
      virtual void __stdcall SetRefState   ( double T_ref, double P_ref, BSTR* ErrorMsg) = 0;
 
-     virtual void __stdcall StanMix_Psat_k1( double k1, double T, double* Psat, BSTR* ErrorMsg) = 0;
-
-	 virtual void __stdcall zFlow_vu      ( double* P, double* T, double v, double* h, 
-                                            double* s, double u, double* alpha, double* beta, 
-                                            double* chi, double* fi, double* gamma,
-                                            BSTR* ErrorMsg) = 0;
-
-     virtual void __stdcall LiquidCmp_M   ( BSTR InputSpec, double Input1, double Input2,
-                                            SAFEARRAY** Output, BSTR* ErrorMsg) = 0;
-     virtual void __stdcall VaporCmp_M    ( BSTR InputSpec, double Input1, double Input2,
-                                            SAFEARRAY** Output, BSTR* ErrorMsg) = 0;
-	 virtual void __stdcall AllProps_M    ( BSTR InputSpec, double Input1, double Input2,
-                                            double* P, double* T, double* v, double* d,
-                                            double* h, double* s, double* u, double* q,
-                                            SAFEARRAY** x, SAFEARRAY** y, double* cv, double* cp,
-                                            double* c, double* alpha, double* beta, double* chi,
-                                            double* fi, double* ksi, double* psi, double* gamma,
-                                            double* eta, double* lambda, BSTR* ErrorMsg) = 0;
-
-     virtual void __stdcall AllPropsSat   ( BSTR InputSpec, double Input1, double Input2,
-                                            double* P, double* T, double* v, double* d,
-                                            double* h, double* s, double* u, double* q,
-                                            SAFEARRAY** x, SAFEARRAY** y, double* cv, double* cp,
-                                            double* c, double* alpha, double* beta, double* chi,
-                                            double* fi, double* ksi, double* psi, double* zeta,
-                                            double* gamma, double* eta, double* lambda, 
-											double* d_liq, double* d_vap, double* h_liq, 
-											double* h_vap, double* T_sat,  double* dd_liq_dP, 
-											double* dd_vap_dP, double* dh_liq_dP, double* dh_vap_dP, 
-											double* dT_sat_dP, BSTR* ErrorMsg) = 0;
 };
 
 

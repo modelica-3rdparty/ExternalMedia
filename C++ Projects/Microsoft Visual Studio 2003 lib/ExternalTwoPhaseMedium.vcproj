@@ -113,10 +113,10 @@
 				RelativePath="..\Sources\basetwophasemedium.h">
 			</File>
 			<File
-				RelativePath="..\Sources\twophasemediumproperties.h">
+				RelativePath="..\Sources\fluidconstants.h">
 			</File>
 			<File
-				RelativePath="..\Sources\fluidconstants.h">
+				RelativePath="..\Sources\twophasemediumproperties.h">
 			</File>
 		</Filter>
 		<Filter
@@ -162,10 +162,7 @@
 			Name="Interface layer"
 			Filter="">
 			<File
-				RelativePath="..\Sources\externaltwophasemedium_lib.cpp">
-			</File>
-			<File
-				RelativePath="..\Sources\externaltwophasemedium_lib.h">
+				RelativePath="..\Sources\externaltwophasemedium.cpp">
 			</File>
 		</Filter>
 		<Filter
@@ -208,6 +205,9 @@
 				RelativePath="..\Sources\twophasemedium.h">
 			</File>
 		</Filter>
+		<File
+			RelativePath="..\Sources\documentation.h">
+		</File>
 		<File
 			RelativePath="..\Sources\include.h">
 		</File>

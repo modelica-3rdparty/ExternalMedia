@@ -1,9 +1,9 @@
 //============================================================================================//
 //                                                                                            //
-//                               Microsoft Visual C++ 6.0 Client                              //
-//                               -------------------------------                              //
+//                              Microsoft Visual C++ 2005 Client                              //
+//                              --------------------------------                              //
 //                                                                                            //
-//  This is an example of a client application in Microsoft Visual C++ 6.0 for FluidProp,     //
+//  This is an example of a client application in Microsoft Visual C++ 2005 for FluidProp,    //
 //  a COM server module for the calculation of fluid properties. FluidProp is a common        //
 //  interface to GasMix, IF97, Refprop, StanMix, TPSI and is developed by Piero Colonna       //
 //  and Teus van der Stelt.                                                                   //
@@ -20,13 +20,12 @@
 //                                                                                            //
 //  July, 2004, for FluidProp 1                                                               //
 //  January, 2006, for FluidProp 2                                                            //
+//  April, 2007, for FluidProp 2.3                                                            //
 //                                                                                            //
 //============================================================================================//
 
 
 #include "FluidProp_IF.h"
-
-#pragma comment(lib, "comsupp.lib")
 
 
 // {F30D147D-1F7C-4092-B481-ADE326A2ECD5}
@@ -508,6 +507,48 @@ double TFluidProp::Psi( string InputSpec, double Input1, double Input2, string* 
    return Output;
 }
 
+double TFluidProp::Zeta( string InputSpec, double Input1, double Input2, string* ErrorMsg)
+{
+   double Output;
+
+   BSTR BSTR_InputSpec = _com_util::ConvertStringToBSTR( InputSpec.c_str());
+   BSTR BSTR_Error;
+
+   FluidProp_COM->Zeta( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
+
+   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+
+   return Output;
+}
+
+double TFluidProp::Theta( string InputSpec, double Input1, double Input2, string* ErrorMsg)
+{
+   double Output;
+
+   BSTR BSTR_InputSpec = _com_util::ConvertStringToBSTR( InputSpec.c_str());
+   BSTR BSTR_Error;
+
+   FluidProp_COM->Theta( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
+
+   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+
+   return Output;
+}
+
+double TFluidProp::Kappa( string InputSpec, double Input1, double Input2, string* ErrorMsg)
+{
+   double Output;
+
+   BSTR BSTR_InputSpec = _com_util::ConvertStringToBSTR( InputSpec.c_str());
+   BSTR BSTR_Error;
+
+   FluidProp_COM->Kappa( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
+
+   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+
+   return Output;
+}
+
 double TFluidProp::Gamma( string InputSpec, double Input1, double Input2, string* ErrorMsg)
 {
    double Output;
@@ -554,7 +595,8 @@ void TFluidProp::AllProps( string InputSpec, double Input1, double Input2, doubl
                            double& v, double& d, double& h, double& s, double& u, double& q,
                            double* x, double* y, double& cv, double& cp, double& c, double& alpha,
                            double& beta, double& chi, double& fi, double& ksi, double& psi,
-                           double& gamma, double& eta, double& lambda, string* ErrorMsg)
+                           double& zeta, double& theta, double& kappa, double& gamma, double& eta, 
+						   double& lambda, string* ErrorMsg)
 {
    BSTR BSTR_InputSpec = _com_util::ConvertStringToBSTR(InputSpec.c_str());
    BSTR BSTR_Error;
@@ -570,8 +612,8 @@ void TFluidProp::AllProps( string InputSpec, double Input1, double Input2, doubl
    sa_y = SafeArrayCreate( VT_R8, 1, sa_bounds_y);
 
    FluidProp_COM->AllProps( BSTR_InputSpec, Input1, Input2, &P, &T, &v, &d, &h, &s, &u, &q, &sa_x,
-                            &sa_y, &cv, &cp, &c, &alpha, &beta, &chi, &fi, &ksi, &psi, &gamma, &eta,
-                            &lambda, &BSTR_Error);
+                            &sa_y, &cv, &cp, &c, &alpha, &beta, &chi, &fi, &ksi, &psi, &zeta, 
+							&theta, &kappa, &gamma, &eta, &lambda, &BSTR_Error);
 
    // Retrieve array with liquid and vapor phase compositions from SafeArrays
    for( long i = 0; i < (signed)sa_bounds_x[0].cElements; i++)
@@ -591,8 +633,8 @@ void TFluidProp::AllPropsSat( string InputSpec, double Input1, double Input2, do
                               double& v, double& d, double& h, double& s, double& u, double& q,
                               double* x, double* y, double& cv, double& cp, double& c, double& alpha,
                               double& beta, double& chi, double& fi, double& ksi, double& psi,
-                              double& zeta, double& gamma, double& eta, double& lambda, 
-							  double& d_liq, double& d_vap, double& h_liq, double& h_vap, 
+                              double& zeta, double& theta, double& kappa, double& gamma, double& eta, 
+							  double& lambda, double& d_liq, double& d_vap, double& h_liq, double& h_vap, 
 						      double& T_sat,  double& dd_liq_dP, double& dd_vap_dP, double& dh_liq_dP, 
 						      double& dh_vap_dP, double& dT_sat_dP, string* ErrorMsg)
 {
@@ -611,8 +653,9 @@ void TFluidProp::AllPropsSat( string InputSpec, double Input1, double Input2, do
 
    FluidProp_COM->AllPropsSat( BSTR_InputSpec, Input1, Input2, &P, &T, &v, &d, &h, &s, &u, &q, &sa_x,
                                &sa_y, &cv, &cp, &c, &alpha, &beta, &chi, &fi, &ksi, &psi, &zeta, 
-                               &gamma, &eta, &lambda, &d_liq, &d_vap, &h_liq, &h_vap, &T_sat, &dd_liq_dP, 
-							   &dd_vap_dP, &dh_liq_dP, &dh_vap_dP, &dT_sat_dP, &BSTR_Error);
+                               &theta, &kappa, &gamma, &eta, &lambda, &d_liq, &d_vap, &h_liq, &h_vap, 
+							   &T_sat, &dd_liq_dP, &dd_vap_dP, &dh_liq_dP, &dh_vap_dP, &dT_sat_dP, 
+							   &BSTR_Error);
 
    // Retrieve array with liquid and vapor phase compositions from SafeArrays
    for( long i = 0; i < (signed)sa_bounds_x[0].cElements; i++)

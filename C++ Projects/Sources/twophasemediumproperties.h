@@ -25,7 +25,7 @@ public:
 	*/
 	int phase;
 
-	//! Isothermal expansion coefficient
+	//! Isobaric expansion coefficient
 	double beta;
 	//! Specific heat capacity cp
 	double cp;
