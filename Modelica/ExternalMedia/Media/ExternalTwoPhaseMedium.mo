@@ -265,4 +265,28 @@ package ExternalTwoPhaseMedium
   external "C" vc=  getCriticalMolarVolume_(mediumName, libraryName, substanceName);
   end getCriticalMolarVolume;
   
+  redeclare replaceable function extends thermalConductivity 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" lambda=  thermalConductivity_(state.uniqueID);
+  end thermalConductivity;
+  
+  redeclare replaceable function extends dynamicViscosity 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" eta=  dynamicViscosity_(state.uniqueID);
+  end dynamicViscosity;
+  
+  redeclare replaceable function extends prandtlNumber 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" Pr=  prandtlNumber_(state.uniqueID);
+  end prandtlNumber;
+  
+  redeclare replaceable function extends surfaceTension 
+    
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  external "C" sigma=  surfaceTension_(sat.psat, sat.Tsat, sat.uniqueID);
+  end surfaceTension;
+  
 end ExternalTwoPhaseMedium;
