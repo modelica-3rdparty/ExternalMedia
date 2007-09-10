@@ -47,8 +47,6 @@ void TwoPhaseMediumProperties::initializeFields(){
 	Pr = NAN;
 	sigma = NAN;
 
-	a = NAN;
-
     d_Ts_dp = NAN;
 	d_dl_dp = NAN;
 	d_dv_dp = NAN;

@@ -74,8 +74,6 @@ public:
 	double Pr() const;
 	double sigma() const;
 
-	double a() const;
-
 	virtual void setSat_p(double &p);
 	virtual void setSat_T(double &T);
 	virtual void setSat_p_state();

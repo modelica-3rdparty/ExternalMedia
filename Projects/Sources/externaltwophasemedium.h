@@ -81,8 +81,6 @@ extern "C" {
 	EXPORT double thermalConductivity_(int uniqueID);
 	EXPORT double prandtlNumber_(int uniqueID);
 	EXPORT double surfaceTension_(double psat, double Tsat, int uniqueID);
-
-	EXPORT double velocityOfSound_(int uniqueID);
 	
 	EXPORT double dDensity_dPressure_h_(int uniqueID);
 	EXPORT double dDensity_dEnthalpy_p_(int uniqueID);

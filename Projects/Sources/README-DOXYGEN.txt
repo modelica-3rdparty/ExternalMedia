@@ -7,9 +7,9 @@ Christoph Richter, ch.richter@tu-bs.de, 2007-01-19
    and install it on your system
 
 2. Open a command line shell and go to
-   \path-to-external-media-library\Projects\Sources
+   \path-to-external-media-library\C++ Projects\Sources
 
 3. Type in the following command
    doxygen Doxyfile
    This will create the html documentation in
-   \path-to-external-media-library\Documentation\html
+   \path-to-external-media-library\Doc\html
