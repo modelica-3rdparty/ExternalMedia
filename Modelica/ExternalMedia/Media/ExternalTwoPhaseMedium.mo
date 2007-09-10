@@ -1,4 +1,3 @@
-within ExternalMedia.Media;
 package ExternalTwoPhaseMedium 
   "External two phase medium package - modify libraryName to set the external library" 
   extends ExternalMedia.Interfaces.PartialExternalTwoPhaseMedium;

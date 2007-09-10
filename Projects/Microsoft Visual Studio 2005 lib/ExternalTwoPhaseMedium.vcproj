@@ -284,6 +284,10 @@
 			</File>
 		</Filter>
 		<File
+			RelativePath="..\Sources\documentation.h"
+			>
+		</File>
+		<File
 			RelativePath="..\Sources\include.h"
 			>
 		</File>

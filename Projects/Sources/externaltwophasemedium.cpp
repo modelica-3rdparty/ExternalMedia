@@ -782,6 +782,15 @@ double surfaceTension_(double psat, double Tsat, int uniqueID){
 	return MediumMap::medium(uniqueID)->sigma();
 }
 
+//! Return velocity of sound of specified medium
+double velocityOfSound_(int uniqueID){
+	// Check for the validity of the uniqueID - this function should never be 
+	// called with a zero unique ID
+	if (uniqueID == 0)
+		errorMessage("Function velocityOfSound_ called without a valid uniqueID");
+	return MediumMap::medium(uniqueID)->a();
+}
+
 //! Return derivative of density wrt pressure at constant specific enthalpy of specified medium
 double dDensity_dPressure_h_(int uniqueID){
 	// Check for the validity of the uniqueID - this function should never be 

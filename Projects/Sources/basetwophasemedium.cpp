@@ -327,6 +327,13 @@ double BaseTwoPhaseMedium::sigma() const{
 	return _properties->sigma;
 }
 
+//! Return velocity of sound (error handling included)
+double BaseTwoPhaseMedium::a() const{
+	if (ISNAN(_properties->a))
+		errorMessage("Internal error in TwoPhaseMedium object:\nthe _properties->a field was not set");
+	return _properties->a;
+}
+
 //! Set saturation properties from p
 /*!
   This function calls the setSat_p() function of the solver.
