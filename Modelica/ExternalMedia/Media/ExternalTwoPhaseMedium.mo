@@ -1,3 +1,4 @@
+within ExternalMedia.Media;
 package ExternalTwoPhaseMedium 
   "External two phase medium package - modify libraryName to set the external library" 
   extends ExternalMedia.Interfaces.PartialExternalTwoPhaseMedium;
@@ -233,5 +234,10 @@ package ExternalTwoPhaseMedium
     
   external "C" sigma=  surfaceTension_(sat.psat, sat.Tsat, sat.uniqueID) annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
   end surfaceTension;
+  
+  redeclare replaceable function extends velocityOfSound 
+    
+  external "C" a=  velocityOfSound_(state.uniqueID)                      annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  end velocityOfSound;
   
 end ExternalTwoPhaseMedium;

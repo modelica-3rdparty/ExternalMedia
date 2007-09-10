@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8,00"
 	Name="ExternalTwoPhaseMedium"
-	ProjectGUID="{291130D3-BA77-4AD6-97DC-1530B566E7ED}"
+	ProjectGUID="{E327B299-277F-404B-B855-AA08D76243B5}"
 	RootNamespace="ExternalTwoPhaseMedium"
 	Keyword="Win32Proj"
 	>
@@ -19,7 +19,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="4"
+			ConfigurationType="2"
 			CharacterSet="1"
 			>
 			<Tool
@@ -40,10 +40,10 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
@@ -59,11 +59,17 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
-				IgnoreAllDefaultLibraries="false"
+				Name="VCLinkerTool"
+				LinkIncremental="2"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -75,6 +81,12 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -82,7 +94,7 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="4"
+			ConfigurationType="2"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -103,8 +115,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE"
-				RuntimeLibrary="0"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE"
+				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
@@ -120,11 +132,20 @@
 				Name="VCPreLinkEventTool"
 			/>
 			<Tool
-				Name="VCLibrarianTool"
-				IgnoreAllDefaultLibraries="false"
+				Name="VCLinkerTool"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories=""
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -134,6 +155,12 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -248,18 +275,6 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Test solver"
-			>
-			<File
-				RelativePath="..\Sources\testsolver.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\Sources\testsolver.h"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="Two-phase medium"
 			>
 			<File
@@ -268,6 +283,18 @@
 			</File>
 			<File
 				RelativePath="..\Sources\twophasemedium.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Test solver"
+			>
+			<File
+				RelativePath="..\Sources\testsolver.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\Sources\testsolver.h"
 				>
 			</File>
 		</Filter>
@@ -283,6 +310,10 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath="..\Sources\documentation.h"
+			>
+		</File>
 		<File
 			RelativePath="..\Sources\include.h"
 			>
