@@ -1,6 +1,32 @@
 package ExternalTwoPhaseMedium 
   "External two phase medium package - modify libraryName to set the external library" 
   extends ExternalMedia.Interfaces.PartialExternalTwoPhaseMedium;
+  
+  redeclare replaceable function extends createMedium 
+  external "C" uniqueID=  createMedium_(mediumName, libraryName, substanceName, oldUniqueID) 
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  end createMedium;
+  
+  redeclare replaceable function extends getMolarMass 
+  external "C" MM=  getMolarMass_(mediumName, libraryName, substanceName) 
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  end getMolarMass;
+  
+  redeclare replaceable function extends getCriticalTemperature 
+  external "C" Tc=  getCriticalTemperature_(mediumName, libraryName, substanceName) 
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  end getCriticalTemperature;
+  
+  redeclare replaceable function extends getCriticalPressure 
+  external "C" pc=  getCriticalPressure_(mediumName, libraryName, substanceName) 
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  end getCriticalPressure;
+  
+  redeclare replaceable function extends getCriticalMolarVolume 
+  external "C" vc=  getCriticalMolarVolume_(mediumName, libraryName, substanceName) 
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  end getCriticalMolarVolume;
+  
   redeclare replaceable function extends setState_ph 
   external "C" setState_ph_(p, h, phase, uniqueID, state.uniqueID, state.phase, state.d, state.h, state.p, state.s, state.T,
                             mediumName, libraryName, substanceName) 
@@ -25,22 +51,6 @@ package ExternalTwoPhaseMedium
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
   end setState_ps;
   
-  redeclare replaceable function extends setSat_p 
-  external "C" setSat_p_(p, uniqueID, sat.psat, sat.Tsat, sat.uniqueID,
-                         mediumName, libraryName, substanceName) 
-    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  end setSat_p;
-  
-  redeclare replaceable function extends setSat_T 
-  external "C" setSat_T_(T, uniqueID, sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName) 
-    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  end setSat_T;
-  
-  redeclare replaceable function extends setSat_p_state 
-  external "C" setSat_p_state_(state.uniqueID, sat.psat, sat.Tsat, sat.uniqueID) 
-    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  end setSat_p_state;
-  
   redeclare replaceable function extends setDewState 
   external "C" setDewState_(sat.uniqueID, phase, state.uniqueID, state.phase,
                             mediumName, libraryName, substanceName) 
@@ -51,29 +61,6 @@ package ExternalTwoPhaseMedium
   external "C" setBubbleState_(sat.uniqueID, phase, state.uniqueID, state.phase, mediumName, libraryName, substanceName) 
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
   end setBubbleState;
-  
-  redeclare replaceable function extends saturationPressure 
-  external "C" p=  saturationPressure_(T, mediumName, libraryName, substanceName) 
-    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  end saturationPressure;
-  
-  redeclare replaceable function extends saturationTemperature 
-  external "C" T=  saturationTemperature_(p, mediumName, libraryName, substanceName) 
-    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  end saturationTemperature;
-  
-  redeclare replaceable function extends saturationTemperature_derp 
-  external "C" dTp=  saturationTemperature_derp_(p, mediumName, libraryName, substanceName) 
-    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  end saturationTemperature_derp;
-  
-  redeclare replaceable function saturationTemperature_derp_sat 
-    "Returns derivative of saturation temperature w.r.t.. pressure" 
-    extends Modelica.Icons.Function;
-    input SaturationProperties sat "saturation property record";
-    output Real dTp "derivative of saturation temperature w.r.t. pressure";
-  external "C" dTp=  saturationTemperature_derp_sat_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName) annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  end saturationTemperature_derp_sat;
   
   redeclare replaceable function extends density 
   external "C" d=  density_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
@@ -147,6 +134,81 @@ package ExternalTwoPhaseMedium
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
   end density_derh_p;
   
+  redeclare replaceable function extends thermalConductivity 
+  external "C" lambda=  thermalConductivity_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
+                                             mediumName, libraryName, substanceName) 
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  end thermalConductivity;
+  
+  redeclare replaceable function extends dynamicViscosity 
+  external "C" eta=  dynamicViscosity_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
+                                       mediumName, libraryName, substanceName) 
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  end dynamicViscosity;
+  
+  redeclare replaceable function extends prandtlNumber 
+  external "C" Pr=  prandtlNumber_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
+                                   mediumName, libraryName, substanceName) 
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  end prandtlNumber;
+  
+  redeclare replaceable function extends velocityOfSound 
+  external "C" a=  velocityOfSound_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
+                                    mediumName, libraryName, substanceName) 
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  end velocityOfSound;
+  
+  redeclare replaceable function extends density_ph_der 
+  external "C" d_der=  density_ph_der_(uniqueID, p_der, h_der, p, h, phase,
+                                       mediumName, libraryName, substanceName) 
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  end density_ph_der;
+  
+  redeclare replaceable function extends temperature_ph_der 
+  external "C" T_der=  temperature_ph_der_(uniqueID, p_der, h_der, p, h, phase,
+                                           mediumName, libraryName, substanceName) 
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  end temperature_ph_der;
+  
+  redeclare replaceable function extends setSat_p 
+  external "C" setSat_p_(p, uniqueID, sat.psat, sat.Tsat, sat.uniqueID,
+                         mediumName, libraryName, substanceName) 
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  end setSat_p;
+  
+  redeclare replaceable function extends setSat_T 
+  external "C" setSat_T_(T, uniqueID, sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName) 
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  end setSat_T;
+  
+  redeclare replaceable function extends setSat_p_state 
+  external "C" setSat_p_state_(state.uniqueID, sat.psat, sat.Tsat, sat.uniqueID) 
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  end setSat_p_state;
+  
+  redeclare replaceable function extends saturationPressure 
+  external "C" p=  saturationPressure_(T, mediumName, libraryName, substanceName) 
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  end saturationPressure;
+  
+  redeclare replaceable function extends saturationTemperature 
+  external "C" T=  saturationTemperature_(p, mediumName, libraryName, substanceName) 
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  end saturationTemperature;
+  
+  redeclare replaceable function extends saturationTemperature_derp 
+  external "C" dTp=  saturationTemperature_derp_(p, mediumName, libraryName, substanceName) 
+    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  end saturationTemperature_derp;
+  
+  redeclare replaceable function saturationTemperature_derp_sat 
+    "Returns derivative of saturation temperature w.r.t.. pressure" 
+    extends Modelica.Icons.Function;
+    input SaturationProperties sat "saturation property record";
+    output Real dTp "derivative of saturation temperature w.r.t. pressure";
+  external "C" dTp=  saturationTemperature_derp_sat_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName) annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
+  end saturationTemperature_derp_sat;
+  
   redeclare replaceable function extends bubbleDensity 
   external "C" dl=  bubbleDensity_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName) 
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
@@ -197,70 +259,9 @@ package ExternalTwoPhaseMedium
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
   end dDewEnthalpy_dPressure;
   
-  redeclare replaceable function extends density_ph_der 
-  external "C" d_der=  density_ph_der_(uniqueID, p_der, h_der, p, h, phase,
-                                       mediumName, libraryName, substanceName) 
-    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  end density_ph_der;
-  
-  redeclare replaceable function extends temperature_ph_der 
-  external "C" T_der=  temperature_ph_der_(uniqueID, p_der, h_der, p, h, phase,
-                                           mediumName, libraryName, substanceName) 
-    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  end temperature_ph_der;
-  
-  redeclare replaceable function extends createMedium 
-  external "C" uniqueID=  createMedium_(mediumName, libraryName, substanceName, oldUniqueID) 
-    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  end createMedium;
-  
-  redeclare replaceable function extends getMolarMass 
-  external "C" MM=  getMolarMass_(mediumName, libraryName, substanceName) 
-    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  end getMolarMass;
-  
-  redeclare replaceable function extends getCriticalTemperature 
-  external "C" Tc=  getCriticalTemperature_(mediumName, libraryName, substanceName) 
-    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  end getCriticalTemperature;
-  
-  redeclare replaceable function extends getCriticalPressure 
-  external "C" pc=  getCriticalPressure_(mediumName, libraryName, substanceName) 
-    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  end getCriticalPressure;
-  
-  redeclare replaceable function extends getCriticalMolarVolume 
-  external "C" vc=  getCriticalMolarVolume_(mediumName, libraryName, substanceName) 
-    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  end getCriticalMolarVolume;
-  
-  redeclare replaceable function extends thermalConductivity 
-  external "C" lambda=  thermalConductivity_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
-                                             mediumName, libraryName, substanceName) 
-    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  end thermalConductivity;
-  
-  redeclare replaceable function extends dynamicViscosity 
-  external "C" eta=  dynamicViscosity_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
-                                       mediumName, libraryName, substanceName) 
-    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  end dynamicViscosity;
-  
-  redeclare replaceable function extends prandtlNumber 
-  external "C" Pr=  prandtlNumber_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
-                                   mediumName, libraryName, substanceName) 
-    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  end prandtlNumber;
-  
   redeclare replaceable function extends surfaceTension 
   external "C" sigma=  surfaceTension_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName) 
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
   end surfaceTension;
-  
-  redeclare replaceable function extends velocityOfSound 
-  external "C" a=  velocityOfSound_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
-                                    mediumName, libraryName, substanceName) 
-    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  end velocityOfSound;
   
 end ExternalTwoPhaseMedium;
