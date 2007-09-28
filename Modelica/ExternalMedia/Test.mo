@@ -274,8 +274,8 @@ package Test
         Medium.SpecificHeatCapacity cp =           Medium.specificHeatCapacityCp(state);
         Medium.SpecificHeatCapacity cv =           Medium.specificHeatCapacityCv(state);
       // Not yet implemented in FluidProp
-      //  Medium.IsobaricExpansionCoefficient beta = Medium.isobaricExpansionCoefficient(state);
-      //  SI.IsothermalCompressibility kappa =       Medium.isothermalCompressibility(state);
+        Medium.IsobaricExpansionCoefficient beta = Medium.isobaricExpansionCoefficient(state);
+        SI.IsothermalCompressibility kappa =       Medium.isothermalCompressibility(state);
         Medium.DerDensityByPressure d_d_dp_h =     Medium.density_derp_h(state);
         Medium.DerDensityByEnthalpy d_d_dh_p =     Medium.density_derh_p(state);
         Medium.MolarMass MM =                      Medium.molarMass(state);
