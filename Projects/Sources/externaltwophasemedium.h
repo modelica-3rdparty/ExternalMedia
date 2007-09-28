@@ -15,6 +15,12 @@
 #ifndef EXTERNALTWOPHASEMEDIUM_H_
 #define EXTERNALTWOPHASEMEDIUM_H_
 
+// Constants for input choices (see ExternalMedia.Common.InputChoices)
+#define CHOICE_dT 0
+#define CHOICE_ph 1
+#define CHOICE_ps 2
+#define CHOICE_pT 3
+
 // Define export
 #ifdef __cplusplus
 #define EXPORT __declspec(dllexport)
@@ -61,32 +67,65 @@ extern "C" {
 	EXPORT void setState_ps_(double p, double s, int phase, int uniqueID, int *state_uniqueID, int *state_phase, double *state_d, double *state_h, double *state_p, double *state_s, double *state_T, const char *mediumName, const char *libraryName, const char *substanceName);
 	EXPORT void setState_pT_(double p, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase, double *state_d, double *state_h, double *state_p, double *state_s, double *state_T, const char *mediumName, const char *libraryName, const char *substanceName);
 	
-	EXPORT double density_(int uniqueID);
-	EXPORT double density_ph_der_(int uniqueID, double p_der, double h_der);
-	EXPORT double density_derp_h_(int uniqueID);
-	EXPORT double density_derh_p_(int uniqueID);
-	EXPORT double pressure_(int uniqueID);
-	EXPORT double specificEnthalpy_(int uniqueID);
-	EXPORT double specificEntropy_(int uniqueID);
-	EXPORT double temperature_(int uniqueID);
+	EXPORT double density_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				           const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double density_ph_der_(int uniqueID, double p_der, double h_der, double p, double h, int phase,
+				                  const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double density_derp_h_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				                  const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double density_derh_p_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				                  const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double pressure_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				            const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double specificEnthalpy_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				                    const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double specificEntropy_(int uniqueID,
+		                           int choice, double d, double h, double p, double s, double T, int phase,
+				                   const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double temperature_(int uniqueID,
+		                       int choice, double d, double h, double p, double s, double T, int phase,
+				               const char *mediumName, const char *libraryName, const char *substanceName);
 	
-	EXPORT double isobaricExpansionCoefficient_(int uniqueID);
-	EXPORT double isothermalCompressibility_(int uniqueID);
-	EXPORT double specificHeatCapacityCp_(int uniqueID);
-	EXPORT double specificHeatCapacityCv_(int uniqueID);
+	EXPORT double isobaricExpansionCoefficient_(int uniqueID,
+		                   int choice, double d, double h, double p, double s, double T, int phase,
+				           const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double isothermalCompressibility_(int uniqueID,
+		                   int choice, double d, double h, double p, double s, double T, int phase,
+				           const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double specificHeatCapacityCp_(int uniqueID,
+		                   int choice, double d, double h, double p, double s, double T, int phase,
+				           const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double specificHeatCapacityCv_(int uniqueID,
+		                   int choice, double d, double h, double p, double s, double T, int phase,
+				           const char *mediumName, const char *libraryName, const char *substanceName);
 
-	EXPORT double isentropicEnthalpy_(double p, int uniqueID);
+	EXPORT double isentropicEnthalpy_(double p_iso, int uniqueID,
+		                   int choice, double d, double h, double p, double s, double T, int phase,
+				           const char *mediumName, const char *libraryName, const char *substanceName);
 	
-	EXPORT double dynamicViscosity_(int uniqueID);
-	EXPORT double thermalConductivity_(int uniqueID);
-	EXPORT double prandtlNumber_(int uniqueID);
-	EXPORT double surfaceTension_(double psat, double Tsat, int uniqueID);
+	EXPORT double dynamicViscosity_(int uniqueID,
+		                   int choice, double d, double h, double p, double s, double T, int phase,
+				           const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double thermalConductivity_(int uniqueID,
+		                   int choice, double d, double h, double p, double s, double T, int phase,
+				           const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double prandtlNumber_(int uniqueID,
+		                   int choice, double d, double h, double p, double s, double T, int phase,
+				           const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double surfaceTension_(double psat, double Tsat, int uniqueID, const char *mediumName, const char *libraryName, const char *substanceName);
 
-	EXPORT double velocityOfSound_(int uniqueID);
+	EXPORT double velocityOfSound_(int uniqueID,
+		                   int choice, double d, double h, double p, double s, double T, int phase,
+				           const char *mediumName, const char *libraryName, const char *substanceName);
 	
-	EXPORT double dDensity_dPressure_h_(int uniqueID);
-	EXPORT double dDensity_dEnthalpy_p_(int uniqueID);
-	EXPORT double temperature_ph_der_(int uniqueID, double p_der, double h_der);
+	EXPORT double dDensity_dPressure_h_(int uniqueID,
+		                   int choice, double d, double h, double p, double s, double T, int phase,
+				           const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double dDensity_dEnthalpy_p_(int uniqueID,
+		                   int choice, double d, double h, double p, double s, double T, int phase,
+				           const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double temperature_ph_der_(int uniqueID, double p_der, double h_der, double p, double h, int phase,
+				                      const char *mediumName, const char *libraryName, const char *substanceName);
 
 #ifdef __cplusplus
 }

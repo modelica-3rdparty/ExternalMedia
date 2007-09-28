@@ -12,6 +12,10 @@
 #include "mediummap.h"
 #include "twophasemedium.h"
 
+// Header of private function
+void setStateDefault_(BaseTwoPhaseMedium *medium, int choice, double d, double h, double p, double s, double T, int phase);
+
+
 //! Create medium
 /*!
   This function creates a new medium with the specified medium name, library name,
@@ -468,96 +472,137 @@ void setBubbleState_(int uniqueID, int phase, int *state_uniqueID, int *state_ph
 }
 
 //! Return density of specified medium
-double density_(int uniqueID){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double density_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-		errorMessage("Function density_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->d();
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        setStateDefault_(medium, choice, d, h, p, s, T, phase);
+		return medium->d();
+	}
+	else 
+	  return MediumMap::medium(uniqueID)->d();
 }
 
 //! Return derivative of density wrt pressure at constant specific enthalpy of specified medium
-double density_derp_h_(int uniqueID){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double density_derp_h_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-		errorMessage("Function density_derp_h_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->dd_dp_h();
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        setStateDefault_(medium, choice, d, h, p, s, T, phase);
+		return medium->dd_dp_h();
+	}
+	else 
+	  return MediumMap::medium(uniqueID)->dd_dp_h();
 }
 
 //! Return derivative of density wrt specific enthalpy at constant pressure of specified medium
-double density_derh_p_(int uniqueID){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double density_derh_p_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-		errorMessage("Function density_derh_p_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->dd_dh_p();
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        setStateDefault_(medium, choice, d, h, p, s, T, phase);
+		return medium->dd_dh_p();
+	}
+	else 
+		return MediumMap::medium(uniqueID)->dd_dh_p();
 }
 
 //! Return derivative of density wrt pressure and specific enthalpy of specified medium
-double density_ph_der_(int uniqueID, double p_der, double h_der){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double density_ph_der_(int uniqueID, double p_der, double h_der, double p, double h, int phase,
+				const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-		errorMessage("Function density_ph_der_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->dd_dp_h()*p_der +
-		   MediumMap::medium(uniqueID)->dd_dh_p()*h_der;
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        medium->setState_ph(p, h, phase);
+		return medium->dd_dp_h()*p_der +
+		       medium->dd_dh_p()*h_der;
+	}
+	else 
+		return MediumMap::medium(uniqueID)->dd_dp_h()*p_der +
+			   MediumMap::medium(uniqueID)->dd_dh_p()*h_der;
 }
 
 //! Return pressure of specified medium
-double pressure_(int uniqueID){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double pressure_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-		errorMessage("Function pressure_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->p();
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        setStateDefault_(medium, choice, d, h, p, s, T, phase);
+		return medium->p();
+	}
+	else 
+		return MediumMap::medium(uniqueID)->p();
 }
 
 //! Return specific enthalpy of specified medium
-double specificEnthalpy_(int uniqueID){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double specificEnthalpy_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-		errorMessage("Function specificEnthalpy_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->h();
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        setStateDefault_(medium, choice, d, h, p, s, T, phase);
+		return medium->h();
+	}
+	else 
+		return MediumMap::medium(uniqueID)->h();
 }
 
 //! Return specific entropy of specified medium
-double specificEntropy_(int uniqueID){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double specificEntropy_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				        const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-		errorMessage("Function specificEntropy_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->s();
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        setStateDefault_(medium, choice, d, h, p, s, T, phase);
+		return medium->s();
+	}
+	else 
+		return MediumMap::medium(uniqueID)->s();
 }
 
 //! Return temperature of specified medium
-double temperature_(int uniqueID){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double temperature_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				    const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-		errorMessage("Function temperature_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->T();
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        setStateDefault_(medium, choice, d, h, p, s, T, phase);
+		return medium->T();
+	}
+	else 
+		return MediumMap::medium(uniqueID)->T();
 }
 
 //! Return derivative of temperature wrt pressure and specific enthalpy of specified medium
-double temperature_ph_der_(int uniqueID, double p_der, double h_der){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double temperature_ph_der_(int uniqueID, double p_der, double h_der, double p, double h, int phase,
+				const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-		errorMessage("Function temperature_ph_der_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->dT_dp_h()*p_der +
-		   MediumMap::medium(uniqueID)->dT_dh_p()*h_der;
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        medium->setState_ph(p,h,phase);
+		return medium->dT_dp_h()*p_der +
+			   medium->dT_dh_p()*h_der;
+	}
+	else 
+		return MediumMap::medium(uniqueID)->dT_dp_h()*p_der +
+			   MediumMap::medium(uniqueID)->dT_dh_p()*h_der;
 }
 
 //! Return the enthalpy at pressure p after an isentropic transformation form the specified medium state
-double isentropicEnthalpy_(double p, int uniqueID)
-{
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double isentropicEnthalpy_(double p_iso, int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-		errorMessage("Function isentropicEnthalpy_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->h_iso(p);
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        setStateDefault_(medium, choice, d, h, p, s, T, phase);
+		return medium->h_iso(p_iso);
+	}
+	else 
+		return MediumMap::medium(uniqueID)->h_iso(p_iso);
 }
 
 //! Return derivative of saturation temperature of specified medium from saturation properties
@@ -715,98 +760,147 @@ double dDewEnthalpy_dPressure_(double psat, double Tsat, int uniqueID,
 }
 
 //! Return isobaric expansion coefficient of specified medium
-double isobaricExpansionCoefficient_(int uniqueID){
-	return MediumMap::medium(uniqueID)->beta();
+double isobaricExpansionCoefficient_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				const char *mediumName, const char *libraryName, const char *substanceName){
+	if (uniqueID == 0)
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        setStateDefault_(medium, choice, d, h, p, s, T, phase);
+		return medium->beta();
+	}
+	else 
+		return MediumMap::medium(uniqueID)->beta();
 }
 
 //! Return isothermal compressibility of specified medium
-double isothermalCompressibility_(int uniqueID){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double isothermalCompressibility_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-		errorMessage("Function isothermalCompressibility_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->kappa();
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        setStateDefault_(medium, choice, d, h, p, s, T, phase);
+		return medium->kappa();
+	}
+	else 
+		return MediumMap::medium(uniqueID)->kappa();
 }
 
 //! Return specific heat capacity cp of specified medium
-double specificHeatCapacityCp_(int uniqueID){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double specificHeatCapacityCp_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-		errorMessage("Function specificHeatCapacityCp_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->cp();
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        setStateDefault_(medium, choice, d, h, p, s, T, phase);
+		return medium->cp();
+	}
+	else 
+		return MediumMap::medium(uniqueID)->cp();
 }
 
 //! Return specific heat capacity cv of specified medium
-double specificHeatCapacityCv_(int uniqueID){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double specificHeatCapacityCv_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-		errorMessage("Function specificHeatCapacityCv_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->cv();
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        setStateDefault_(medium, choice, d, h, p, s, T, phase);
+		return medium->cv();
+	}
+	else 
+		return MediumMap::medium(uniqueID)->cv();
 }
 
 //! Return dynamic viscosity of specified medium
-double dynamicViscosity_(int uniqueID){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double dynamicViscosity_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-		errorMessage("Function dynamicViscosity_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->eta();
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        setStateDefault_(medium, choice, d, h, p, s, T, phase);
+		return medium->eta();
+	}
+	else 
+		return MediumMap::medium(uniqueID)->eta();
 }
 
 //! Return thermal conductivity of specified medium
-double thermalConductivity_(int uniqueID){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double thermalConductivity_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-		errorMessage("Function thermalConductivity_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->lambda();
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        setStateDefault_(medium, choice, d, h, p, s, T, phase);
+		return medium->lambda();
+	}
+	else 
+		return MediumMap::medium(uniqueID)->lambda();
 }
 
 //! Return Prandtl number of specified medium
-double prandtlNumber_(int uniqueID){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double prandtlNumber_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-		errorMessage("Function prandtlNumber_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->Pr();
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        setStateDefault_(medium, choice, d, h, p, s, T, phase);
+		return medium->Pr();
+	}
+	else 
+		return MediumMap::medium(uniqueID)->Pr();
 }
 
 //! Return surface tension of specified medium
-double surfaceTension_(double psat, double Tsat, int uniqueID){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double surfaceTension_(double psat, double Tsat, int uniqueID,
+					   const char *mediumName, const char *libraryName, const char *substanceName){
+	// Use solver medium object if no unique ID is supplied
 	if (uniqueID == 0)
-		errorMessage("Function surfaceTension_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->sigma();
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+		medium->setSat_p(psat);
+		return medium->sigma();
+	}
+	else
+		return MediumMap::medium(uniqueID)->sigma();
 }
 
 //! Return velocity of sound of specified medium
-double velocityOfSound_(int uniqueID){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double velocityOfSound_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-		errorMessage("Function velocityOfSound_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->a();
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        setStateDefault_(medium, choice, d, h, p, s, T, phase);
+		return medium->a();
+	}
+	else 
+		return MediumMap::medium(uniqueID)->a();
 }
 
 //! Return derivative of density wrt pressure at constant specific enthalpy of specified medium
-double dDensity_dPressure_h_(int uniqueID){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double dDensity_dPressure_h_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				             const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-		errorMessage("Function dDensity_dPressure_h_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->dd_dp_h();
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        setStateDefault_(medium, choice, d, h, p, s, T, phase);
+		return medium->dd_dp_h();
+	}
+	else 
+		return MediumMap::medium(uniqueID)->dd_dp_h();
 }
 
 //! Return derivative of density wrt specific enthalpy at constant pressure of specified medium
-double dDensity_dEnthalpy_p_(int uniqueID){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID
+double dDensity_dEnthalpy_p_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+				             const char *mediumName, const char *libraryName, const char *substanceName){
 	if (uniqueID == 0)
-		errorMessage("Function dDensity_dEnthalpy_p_ called without a valid uniqueID");
-	return MediumMap::medium(uniqueID)->dd_dh_p();
+	{
+		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+        setStateDefault_(medium, choice, d, h, p, s, T, phase);
+		return medium->dd_dh_p();
+	}
+	else 
+		return MediumMap::medium(uniqueID)->dd_dh_p();
 }
 
 //! Compute saturation pressure for specified medium and temperature
@@ -839,3 +933,30 @@ double saturationTemperature_derp_(double p, const char *mediumName,
 	medium->setSat_p(p);
 	return medium->d_Ts_dp();
 }
+
+//! Call the appropriate setState_xx() function of the medium object
+/*!
+  This function calls the setState_xx() function of the medium object corresponding 
+  to the choice input.
+  @param medium Medium object (class BaseTwoPhaseMedium)
+  @param choice of inputs (dT, ph, ps, pT)
+  @param d Density
+  @param h Specific Enthalpy
+  @param p Pressure
+  @param s Specific entropy
+  @param T Temperature
+  @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
+*/
+void setStateDefault_(BaseTwoPhaseMedium *medium, int choice, double d, double h, double p, double s, double T, int phase){
+	if(choice == CHOICE_dT)
+		medium->setState_dT(d,T,phase);
+	else if(choice == CHOICE_ph)
+		medium->setState_ph(p,h,phase);
+	else if(choice = CHOICE_ps)
+		medium->setState_ps(p,s,phase);
+	else if(choice = CHOICE_pT)
+		medium->setState_pT(p,T);
+	else
+		errorMessage("Wrong choice of inputs in setStateDefault_()\n");
+}
+
