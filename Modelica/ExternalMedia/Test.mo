@@ -131,11 +131,6 @@ package Test
           equdistant=false));
     end TestBasePropertiesDynamic;
     
-    
-    
-    
-    
-    
     package GenericModels 
       "Contains generic models to use for thorough medium model testing" 
       
@@ -150,7 +145,7 @@ package Test
         Medium.MolarVolume vc = Medium.fluidConstants[1].criticalMolarVolume;
         Medium.MolarMass MM = Medium.fluidConstants[1].molarMass;
       end CompleteFluidConstants;
-
+      
       model CompleteThermodynamicState 
         "Compute all available two-phase medium properties from a ThermodynamicState model" 
         replaceable package Medium = 
@@ -173,7 +168,7 @@ package Test
         Medium.DerDensityByEnthalpy d_d_dh_p =     Medium.density_derh_p(state);
         Medium.MolarMass MM =                      Medium.molarMass(state);
       end CompleteThermodynamicState;
-
+      
       model CompleteSaturationProperties 
         "Compute all available saturation properties from a SaturationProperties record" 
         replaceable package Medium = 
@@ -194,7 +189,7 @@ package Test
         Real d_hl_dp =               Medium.dBubbleEnthalpy_dPressure(sat);
         Real d_hv_dp =               Medium.dDewEnthalpy_dPressure(sat);
       end CompleteSaturationProperties;
-
+      
       model CompleteBubbleDewStates 
         "Compute all available properties for dewpoint and bubble point states corresponding to a sat record" 
         replaceable package Medium = 
@@ -216,7 +211,7 @@ package Test
           bubbleStateTwoPhase(                         state=
               Medium.setBubbleState(sat, 2), redeclare package Medium = Medium);
       end CompleteBubbleDewStates;
-
+      
       model CompleteBaseProperties 
         "Compute all available two-phase medium properties from a BaseProperties model" 
         replaceable package Medium = 
@@ -557,4 +552,56 @@ package Test
     medium.h = 1e5;
   end TestWrongMedium;
   end WrongMedium;
+  
+  package SpeedTest 
+    "Test possible speed differences between BaseProperties and setState approaches" 
+    model TestSpeedTestMedium_BaseProperties 
+      replaceable package Medium = ExternalMedia.Media.TestMedium 
+        extends ExternalMedia.Interfaces.PartialExternalTwoPhaseMedium 
+        "Medium package";
+      
+      parameter Integer n=100 "Number of base property instances";
+      
+      Medium.BaseProperties[n] medium(
+        each final basePropertiesInputChoice=ExternalMedia.Common.InputChoices.pT) 
+        "Medium base properties";
+      
+      Medium.AbsolutePressure p "Pressure";
+      Medium.Temperature T "Temperature";
+      
+      annotation (experiment(StopTime=1000));
+    equation 
+      p = 1e5;
+      T = 300.0 + 20.0*sin(time);
+      
+      for i in 1:n loop
+        medium[i].p = p;
+        medium[i].T = T + (i-1)/100.0;
+      end for;
+    end TestSpeedTestMedium_BaseProperties;
+    
+    model TestSpeedTestMedium_setState 
+      replaceable package Medium = ExternalMedia.Media.TestMedium 
+        extends ExternalMedia.Interfaces.PartialExternalTwoPhaseMedium 
+        "Medium package";
+      
+      parameter Integer n=100 "Number of state record instances";
+      
+      Medium.ThermodynamicState[n] state "Thermodynamic state record";
+      Medium.SaturationProperties[n] sat "Saturation property record";
+      
+      Medium.AbsolutePressure p "Pressure";
+      Medium.Temperature T "Temperature";
+      
+      annotation (experiment(StopTime=1000));
+    equation 
+      p = 1e5;
+      T = 300.0 + 20.0*sin(time);
+      
+      for i in 1:n loop
+        state[i] = Medium.setState_pT(p, T + (i-1)/100.0);
+        sat[i] = Medium.setSat_T(state[i].T);
+      end for;
+    end TestSpeedTestMedium_setState;
+  end SpeedTest;
 end Test;
