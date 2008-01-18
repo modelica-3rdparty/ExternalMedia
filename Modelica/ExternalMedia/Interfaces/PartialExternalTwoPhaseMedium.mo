@@ -490,9 +490,4 @@ partial package PartialExternalTwoPhaseMedium
     h := specificEnthalpy(setState_ps(p,s, phase, uniqueID));
   end specificEnthalpy_ps;
   
-  redeclare replaceable function prandtlNumber 
-    extends Modelica.Icons.Function;
-    input ThermodynamicState state;
-    output PrandtlNumber Pr "Prandtl number";
-  end prandtlNumber;
 end PartialExternalTwoPhaseMedium;

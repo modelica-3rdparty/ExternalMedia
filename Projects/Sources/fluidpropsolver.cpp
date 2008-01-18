@@ -214,7 +214,7 @@ void FluidPropSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMedi
 	properties->p = p;					// pressure
 	properties->s = s_;     		    // specific entropy
 	properties->T = T_;         		// temperature
-
+    properties->a = c_;					// speed of sound
     if (properties->phase == 1)
 	{
 		properties->dT_dp_h = v_*(T_*theta_ - 1)/cp_;	// dT/dp|h
@@ -289,6 +289,7 @@ void FluidPropSolver::setState_pT(double &p, double &T, TwoPhaseMediumProperties
 	properties->p = p;					// pressure
 	properties->s = s_;     		    // specific entropy
 	properties->T = T_;         		// temperature
+    properties->a = c_;					// speed of sound
 
 	properties->dT_dp_h = v_*(T_*theta_ - 1)/cp_;	// dT/dp|h
 	properties->dT_dh_p = 1/cp_;					// dT/dh|p
@@ -360,6 +361,7 @@ void FluidPropSolver::setState_dT(double &d, double &T, int &phase, TwoPhaseMedi
 	properties->p = P_;					// pressure
 	properties->s = s_;     		    // specific entropy
 	properties->T = T;         			// temperature
+    properties->a = c_;					// speed of sound
 
     if (properties->phase == 1)
 	{
@@ -440,6 +442,7 @@ void FluidPropSolver::setState_ps(double &p, double &s, int &phase, TwoPhaseMedi
 	properties->p = p;					// pressure
 	properties->s = s;     			    // specific entropy
 	properties->T = T_;         		// temperature
+    properties->a = c_;					// speed of sound
 
     if (properties->phase == 1)
 	{

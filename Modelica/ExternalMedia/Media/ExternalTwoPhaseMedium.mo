@@ -146,11 +146,6 @@ package ExternalTwoPhaseMedium
     annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
   end dynamicViscosity;
   
-  redeclare replaceable function extends prandtlNumber 
-  external "C" Pr=  prandtlNumber_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
-                                   mediumName, libraryName, substanceName) 
-    annotation(Include="#include \"externaltwophasemedium.h\"", Library="ExternalTwoPhaseMedium");
-  end prandtlNumber;
   
   redeclare replaceable function extends velocityOfSound 
   external "C" a=  velocityOfSound_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,

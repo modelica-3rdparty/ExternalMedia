@@ -79,7 +79,7 @@ public:
 	//! Surface tension
 	double sigma;
 
-	//! Velosity of sound
+	//! Velocity of sound
 	double a;
 
 	//! Derivative of Ts wrt pressure
