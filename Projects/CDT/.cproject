@@ -7,8 +7,8 @@
 <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.mingw.so.debug.988258011" moduleId="org.eclipse.cdt.core.settings" name="Debug">
 <externalSettings>
 <externalSetting>
-<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/ExternalTwoPhaseMedium"/>
-<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/ExternalTwoPhaseMedium/Debug"/>
+<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/ExternalMediaLib"/>
+<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/ExternalMediaLib/Debug"/>
 </externalSetting>
 </externalSettings>
 <extensions>
@@ -19,11 +19,11 @@
 </extensions>
 </storageModule>
 <storageModule moduleId="cdtBuildSystem" version="4.0.0">
-<configuration artifactExtension="dll" artifactName="ExternalTwoPhaseMedium" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.mingw.so.debug.988258011" name="Debug" parent="cdt.managedbuild.config.gnu.mingw.so.debug">
+<configuration artifactExtension="dll" artifactName="ExternalMediaLib" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.mingw.so.debug.988258011" name="Debug" parent="cdt.managedbuild.config.gnu.mingw.so.debug">
 <folderInfo id="cdt.managedbuild.config.gnu.mingw.so.debug.988258011." name="/" resourcePath="">
 <toolChain id="cdt.managedbuild.toolchain.gnu.mingw.so.debug.1510567086" name="MinGW GCC" superClass="cdt.managedbuild.toolchain.gnu.mingw.so.debug">
 <targetPlatform id="cdt.managedbuild.target.gnu.platform.mingw.so.debug.836211455" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.mingw.so.debug"/>
-<builder buildPath="${workspace_loc:/ExternalTwoPhaseMedium/Debug}" id="cdt.managedbuild.tool.gnu.builder.mingw.base.954282069" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" superClass="cdt.managedbuild.tool.gnu.builder.mingw.base"/>
+<builder buildPath="${workspace_loc:/ExternalMediaLib/Debug}" id="cdt.managedbuild.tool.gnu.builder.mingw.base.954282069" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" superClass="cdt.managedbuild.tool.gnu.builder.mingw.base"/>
 <tool id="cdt.managedbuild.tool.gnu.assembler.mingw.so.debug.686980181" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.so.debug">
 <inputType id="cdt.managedbuild.tool.gnu.assembler.input.1809870932" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 </tool>
@@ -479,8 +479,8 @@
 <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.mingw.so.release.1086584111" moduleId="org.eclipse.cdt.core.settings" name="Release">
 <externalSettings>
 <externalSetting>
-<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/ExternalTwoPhaseMedium"/>
-<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/ExternalTwoPhaseMedium/Release"/>
+<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/ExternalMediaLib"/>
+<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/ExternalMediaLib/Release"/>
 </externalSetting>
 </externalSettings>
 <extensions>
@@ -491,11 +491,11 @@
 </extensions>
 </storageModule>
 <storageModule moduleId="cdtBuildSystem" version="4.0.0">
-<configuration artifactExtension="dll" artifactName="ExternalTwoPhaseMedium" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.mingw.so.release.1086584111" name="Release" parent="cdt.managedbuild.config.gnu.mingw.so.release" postannouncebuildStep="" postbuildStep="" preannouncebuildStep="" prebuildStep="">
+<configuration artifactExtension="dll" artifactName="ExternalMediaLib" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.mingw.so.release.1086584111" name="Release" parent="cdt.managedbuild.config.gnu.mingw.so.release" postannouncebuildStep="" postbuildStep="" preannouncebuildStep="" prebuildStep="">
 <folderInfo id="cdt.managedbuild.config.gnu.mingw.so.release.1086584111." name="/" resourcePath="">
 <toolChain id="cdt.managedbuild.toolchain.gnu.mingw.so.release.881082511" name="MinGW GCC" superClass="cdt.managedbuild.toolchain.gnu.mingw.so.release">
 <targetPlatform id="cdt.managedbuild.target.gnu.platform.mingw.so.release.1782813536" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.mingw.so.release"/>
-<builder buildPath="${workspace_loc:/ExternalTwoPhaseMedium/Release}" id="cdt.managedbuild.tool.gnu.builder.mingw.base.223695474" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" superClass="cdt.managedbuild.tool.gnu.builder.mingw.base"/>
+<builder buildPath="${workspace_loc:/ExternalMediaLib/Release}" id="cdt.managedbuild.tool.gnu.builder.mingw.base.223695474" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="CDT Internal Builder" superClass="cdt.managedbuild.tool.gnu.builder.mingw.base"/>
 <tool id="cdt.managedbuild.tool.gnu.assembler.mingw.so.release.720212033" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.so.release">
 <inputType id="cdt.managedbuild.tool.gnu.assembler.input.575190301" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 </tool>
@@ -515,7 +515,7 @@
 </tool>
 <tool id="cdt.managedbuild.tool.gnu.cpp.linker.mingw.so.release.1461888681" name="MinGW C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.mingw.so.release">
 <option defaultValue="true" id="gnu.cpp.link.mingw.so.release.option.shared.500630182" name="Shared (-shared)" superClass="gnu.cpp.link.mingw.so.release.option.shared" valueType="boolean"/>
-<option id="gnu.cpp.link.option.implname.970110677" superClass="gnu.cpp.link.option.implname" value="libExternalTwoPhaseMedium.a" valueType="string"/>
+<option id="gnu.cpp.link.option.implname.970110677" superClass="gnu.cpp.link.option.implname" value="libExternalMediaLib.a" valueType="string"/>
 <inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1713861617" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 <additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 <additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -950,6 +950,6 @@
 </cconfiguration>
 </storageModule>
 <storageModule moduleId="cdtBuildSystem" version="4.0.0">
-<project id="ExternalTwoPhaseMedium.cdt.managedbuild.target.gnu.mingw.so.1448936829" name="Shared Library" projectType="cdt.managedbuild.target.gnu.mingw.so"/>
+<project id="ExternalMediaLib.cdt.managedbuild.target.gnu.mingw.so.1448936829" name="Shared Library" projectType="cdt.managedbuild.target.gnu.mingw.so"/>
 </storageModule>
 </cproject>

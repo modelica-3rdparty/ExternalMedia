@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>ExternalTwoPhaseMedium</name>
+	<name>ExternalMediaLib</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -15,7 +15,7 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.buildLocation</key>
-					<value>${workspace_loc:/ExternalTwoPhaseMedium/Release}</value>
+					<value>${workspace_loc:/ExternalMediaLib/Debug}</value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.useDefaultBuildCmd</key>
@@ -67,4 +67,11 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.core.cnature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>Sources</name>
+			<type>2</type>
+			<location>D:/Richter/SoftwareProjects/ExternalMediaLibrary/Projects/Sources</location>
+		</link>
+	</linkedResources>
 </projectDescription>

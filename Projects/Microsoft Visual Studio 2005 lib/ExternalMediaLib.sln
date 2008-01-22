@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExternalTwoPhaseMedium", "ExternalTwoPhaseMedium.vcproj", "{291130D3-BA77-4AD6-97DC-1530B566E7ED}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExternalMediaLib", "ExternalMediaLib.vcproj", "{291130D3-BA77-4AD6-97DC-1530B566E7ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="ExternalTwoPhaseMedium"
+	Name="ExternalMediaLib"
 	ProjectGUID="{F502F38B-BC76-4473-A045-7F9D6E92A504}"
 	Keyword="Win32Proj">
 	<Platforms>
@@ -31,7 +31,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/ExternalTwoPhaseMedium.lib"/>
+				OutputFile="$(OutDir)/ExternalMediaLib.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
@@ -69,7 +69,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/ExternalTwoPhaseMedium.lib"/>
+				OutputFile="$(OutDir)/ExternalMediaLib.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
 			<Tool
