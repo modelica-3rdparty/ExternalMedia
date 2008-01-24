@@ -9,7 +9,8 @@
   This class is the default object embedding the fluid property
   computations at a given point of the plant. 
   
-  Christoph Richter, Francesco Casella, Sep 2006
+  Francesco Casella, Christoph Richter, Sep 2006
+  Copyright Politecnico di Milano and TU Braunschweig
 */
 class TwoPhaseMedium : public BaseTwoPhaseMedium{
 public:

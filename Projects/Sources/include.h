@@ -8,7 +8,8 @@
 
   Uncomment the define directives as appropriate
 
-  Christoph Richter, Francesco Casella, Oct 2006
+  Francesco Casella, Christoph Richter, Oct 2006
+  Copyright Politecnico di Milano and TU Braunschweig
 */
 #ifndef INCLUDE_H_
 #define INCLUDE_H_

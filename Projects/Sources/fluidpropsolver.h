@@ -27,6 +27,7 @@
  * See also the solvermap.cpp code
  *
  * Francesco Casella, Christoph Richter, Oct 2006 - Feb 2007
+ * Copyright Politecnico di Milano and TU Braunschweig
  ********************************************************************/
 
 #ifndef FLUIDPROPSOLVER_H_

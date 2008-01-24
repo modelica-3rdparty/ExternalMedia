@@ -11,7 +11,8 @@
   for the dew and the bubble line which makes it a real two phase medium
   property struct.
 
-  Francesco Casella, Christoph Richter Sep 2006
+  Francesco Casella, Christoph Richter, Sep 2006
+  Copyright Politecnico di Milano and TU Braunschweig
 */
 class TwoPhaseMediumProperties{
 public:

@@ -29,6 +29,7 @@
   libraryName = "TestMedium";
 
   Francesco Casella, Christoph Richter, Oct 2006
+  Copyright Politecnico di Milano and TU Braunschweig
 */
 class TestSolver : public BaseSolver{
 public:

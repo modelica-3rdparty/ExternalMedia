@@ -6,7 +6,8 @@
   to the Modelica layer. This class defines the required interface
   functions.
 
-  Francesco Casella, Christoph Richter Nov 2006
+  Francesco Casella, Christoph Richter, Nov 2006
+  Copyright Politecnico di Milano and TU Braunschweig
 */
 
 #ifndef ERRORHANDLING_H_

@@ -17,7 +17,8 @@ class BaseTwoPhaseMedium;
   record is not used in Modelica. The maximum number of transient unique IDs is called
   MAX_TRANSIENT_MEDIUM and can be set in include.h.
 
-  Christoph Richter, Francesco Casella, Sep 2006  
+  Francesco Casella, Christoph Richter, Sep 2006  
+  Copyright Politecnico di Milano and TU Braunschweig
 */
 class MediumMap{
 public:

@@ -18,7 +18,7 @@
 
   Copyright (c) 2006, Politecnico di Milano and TU Braunschweig.
 
-  \section architecture_sec 1. Architecture of the package
+  \section architecture_sec Architecture of the package
 
   At the top level there is a Modelica package (ExternalMedia), which
   contains all the basic infrastructure needed to use external fluid
@@ -34,7 +34,7 @@
   code to use.
 
   The functions within ExternalTwoPhaseMedium talk to a C/C++ interface
-  layer (called externaltwophasemedium_lib.cpp) via external functions
+  layer (called externalmedialib.cpp) via external functions
   calls. This layer takes care of initializing the external packages, and
   maintains a collection of C++ objects (stored within a MediumMap C++
   object), corresponding to different instances of the medium model. More
@@ -87,19 +87,19 @@
   which do not have the uniqueID. Support for calls to setState functions
   with automatic management of the uniqueID might be added in the future.
 
-  \section using_sec 2. Using an already implemented external medium with Dymola
+  \section using_sec Using an already implemented external medium with Dymola
 
   If somebody else has already implemented the external medium, you only need a few 
   things to use it on your computer:
 
   - the ExternalMedia Modelica package
   - the ExternalTwoPhaseMedium.lib (and possibly the ExternalTwoPhaseMedium.dll) files, containing the compiled C/C++ code
-  - the externaltwophasemedium.h C header file
+  - the externalmedialib.h C header file
 
   Copy the ExternalTwoPhaseMedium.lib file within the Dymola/bin/lib
   directory, the ExternalTwoPhaseMedium.dll file in the Windows/System32
   directory (only if the library has been compiled to a DLL), and the
-  externaltwophasemedium.h file in the Dymola/Source directory.
+  externalmedialib.h file in the Dymola/Source directory.
 
   You can check that the compiler setup is working by running the
   TestMedium model in the ExternalMedia.Test package - this will simulate
@@ -115,7 +115,7 @@
   string, ask to the implementor of the interface to the code you'll
   actually use.
 
-  \section development_sec 3. Developing a new external medium model
+  \section development_sec Developing a new external medium model
 
   The ExternalMedia package has been designed to ease your task, so that
   you will only have to write the mimum amount of code which is strictly

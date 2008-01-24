@@ -8,7 +8,8 @@
   The fluid constants struct contains all the constant fluid properties
   that are returned by the external solver.
 
-  Francesco Casella, Christoph Richter Nov 2006
+  Francesco Casella, Christoph Richter, Nov 2006
+  Copyright Politecnico di Milano and TU Braunschweig
 */
 struct FluidConstants{
 	//! Molar mass

@@ -12,7 +12,8 @@ struct FluidConstants;
   This is the base class for all external solver objects
   (e.g. TestSolver, FluidPropSolver).
 
-  Christoph Richter, Francesco Casella, Sep 2006
+  Francesco Casella, Christoph Richter, Sep 2006
+  Copyright Politecnico di Milano and TU Braunschweig
 */
 class BaseSolver{
 public:

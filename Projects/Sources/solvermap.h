@@ -11,7 +11,8 @@ class BaseSolver;
   from BaseSolver and that interfaces the external fluid property computation
   code. Only one instance is created for each external library.
 
-  Christoph Richter, Francesco Casella, Sep 2006
+  Francesco Casella, Christoph Richter, Sep 2006
+  Copyright Politecnico di Milano and TU Braunschweig
 */
 class SolverMap{
 public:

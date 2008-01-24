@@ -14,7 +14,8 @@
   The functions defined here are not fluid-specific, thus need not
   be adapted to your own specific fluid property computation code.
 
-  Francesco Casella, Christoph Richter Sep 2006
+  Francesco Casella, Christoph Richter, Sep 2006
+  Copyright Politecnico di Milano and TU Braunschweig
 */
 class BaseTwoPhaseMedium{
 public:

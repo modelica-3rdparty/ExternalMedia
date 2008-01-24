@@ -1,29 +1,25 @@
-//============================================================================================//
-//                                                                                            //
-//                              Microsoft Visual C++ 2005 Client                              //
-//                              --------------------------------                              //
-//                                                                                            //
-//  This is an example of a client application in Microsoft Visual C++ 2005 for FluidProp,    //
-//  a COM server module for the calculation of fluid properties. FluidProp is a common        //
-//  interface to GasMix, IF97, Refprop, StanMix, TPSI and is developed by Piero Colonna       //
-//  and Teus van der Stelt.                                                                   //
-//                                                                                            //
-//  The class implemented in this file, TFluidProp, is as a wrapper class for the base        //
-//  class IFluidProp_COM. TFluidProp hides specific COM server details like safe arrays       //
-//  (SAFEARRAY) and binary strings (BSTR) in IFluidProp_COM. In the TFluidProp class          //
-//  only standard C++ data types are used. This seriously facilitates working with the        //
-//  COM server.                                                                               //
-//                                                                                            //
-//  Teus van der Stelt                                                                        //
-//  Energy Technology Section                                                                 //
-//  TU Delft                                                                                  //
-//                                                                                            //
-//  July, 2004, for FluidProp 1                                                               //
-//  January, 2006, for FluidProp 2                                                            //
-//  April, 2007, for FluidProp 2.3                                                            //
-//                                                                                            //
-//============================================================================================//
+/*!
+  Microsoft Visual C++ 2005 Client
 
+  This is an example of a client application in Microsoft Visual C++ 2005 for FluidProp,
+  a COM server module for the calculation of fluid properties. FluidProp is a common
+  interface to GasMix, IF97, Refprop, StanMix, TPSI and is developed by Piero Colonna 
+  and Teus van der Stelt.
+
+  The class implemented in this file, TFluidProp, is as a wrapper class for the base
+  class IFluidProp_COM. TFluidProp hides specific COM server details like safe arrays
+  (SAFEARRAY) and binary strings (BSTR) in IFluidProp_COM. In the TFluidProp class
+  only standard C++ data types are used. This seriously facilitates working with the
+  COM server.
+
+  Teus van der Stelt
+  Energy Technology Section
+  TU Delft
+
+  July, 2004, for FluidProp 1
+  January, 2006, for FluidProp 2
+  April, 2007, for FluidProp 2.3
+*/
 
 #include "FluidProp_IF.h"
 

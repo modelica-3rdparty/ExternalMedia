@@ -215,11 +215,11 @@
 			Name="Interface layer"
 			>
 			<File
-				RelativePath="..\Sources\externaltwophasemedium.cpp"
+				RelativePath="..\Sources\externalmedialib.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Sources\externaltwophasemedium.h"
+				RelativePath="..\Sources\externalmedialib.h"
 				>
 			</File>
 		</Filter>

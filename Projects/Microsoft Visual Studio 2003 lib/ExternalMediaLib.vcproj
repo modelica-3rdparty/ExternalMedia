@@ -123,7 +123,7 @@
 			Name="Dymola"
 			Filter="">
 			<File
-				RelativePath="..\Sources\externaltwophasemedium.h">
+				RelativePath="..\Sources\externalmedialib.h">
 			</File>
 			<File
 				RelativePath="..\Sources\ModelicaUtilities.h">
@@ -162,7 +162,7 @@
 			Name="Interface layer"
 			Filter="">
 			<File
-				RelativePath="..\Sources\externaltwophasemedium.cpp">
+				RelativePath="..\Sources\externalmedialib.cpp">
 			</File>
 		</Filter>
 		<Filter
