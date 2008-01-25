@@ -13,3 +13,7 @@ Christoph Richter, ch.richter@tu-bs.de, 2007-01-19
    doxygen Doxyfile
    This will create the html documentation in
    \path-to-external-media-library\Documentation\html
+   and the LaTeX documentation in
+   \path-to-external-media-library\Documentation\latex
+
+Note that the first chapter of the documentation can be found in "documentation.h".
