@@ -103,7 +103,7 @@ extern "C" {
 		const char *mediumName, const char *libraryName, const char *substanceName);
 	EXPORT double TwoPhaseMedium_prandtlNumber_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
 		const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double surfaceTension_(double psat, double Tsat, int uniqueID, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT double TwoPhaseMedium_surfaceTension_(double psat, double Tsat, int uniqueID, const char *mediumName, const char *libraryName, const char *substanceName);
 
 	EXPORT double TwoPhaseMedium_velocityOfSound_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
 		const char *mediumName, const char *libraryName, const char *substanceName);
