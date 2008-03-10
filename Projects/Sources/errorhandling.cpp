@@ -10,7 +10,7 @@
 #include "errorhandling.h"
 
 #if (DYMOLA == 1)
-#if (BUILD_LIB == 1)
+#if (BUILD_DLL == 0)
 // This implementation uses the Dymola log and error window to report errors
 void errorMessage(char *errorMessage){
 	ModelicaError(errorMessage);

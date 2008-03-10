@@ -40,7 +40,7 @@
   Set this preprocessor variable to 1 to include the interface to the
   FluidProp solver developed and maintained by Francesco Casella.
 */
-#define FLUIDPROP 1
+#define FLUIDPROP 0
 
 // Selection of build type for this project
 //! Build project into a DLL
@@ -48,17 +48,8 @@
   Set this preprocessor variable to 1 if the project is built into a 
   dynamic link library. This setting influences the error reporting
   mechanism as well as the export statement.
-  \sa BUILD_LIB
 */
 #define BUILD_DLL 1
-//! Build project into a LIB
-/*!
-  Set this preprocessor variable to 1 if the project is built into a 
-  static library. This setting influences the error reporting
-  mechanism as well as the export statement.
-  \sa BUILD_DLL
-*/
-#define BUILD_LIB 0
 
 //! Maximum number of non-overlapping transient medium objects
 /*!

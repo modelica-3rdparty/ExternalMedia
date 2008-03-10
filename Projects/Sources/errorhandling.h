@@ -16,11 +16,11 @@
 #include "include.h"
 
 #if (DYMOLA == 1)
-#if (BUILD_LIB == 1)
+#if (BUILD_DLL == 0)
 extern "C" {
 #include "ModelicaUtilities.h"
 }
-#endif // BUILD_LIB == 1
+#endif // BUILD_DLL == 0
 #endif
 
 //! Function to display error message
