@@ -326,11 +326,11 @@ void FluidPropSolver::setState_dT(double &d, double &T, int &phase, TwoPhaseMedi
 
 	// Compute all FluidProp variables
 	if (T > _fluidConstants.Tc)
-	  FluidProp.AllProps("dT", d , T, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
+	  FluidProp.AllProps("Td", T , d, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
 		                 alpha_, beta_, chi_, fi_, ksi_, psi_,
 						 zeta_, theta_, kappa_, gamma_, eta_, lambda_, &ErrorMsg);
 	else
-	  FluidProp.AllPropsSat("dT", d , T, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
+	  FluidProp.AllPropsSat("Td", T , d, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
 		                    alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, theta_, kappa_, gamma_, eta_, lambda_,  
 	    			        d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
 						    dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
