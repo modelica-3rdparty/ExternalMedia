@@ -1,4 +1,6 @@
+within ;
 package ExternalMedia 
-  annotation (uses(Modelica(version="3.1")));
   import SI = Modelica.SIunits;
+
+  annotation (uses(Modelica(version="3.1")));
 end ExternalMedia;
