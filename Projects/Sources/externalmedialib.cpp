@@ -11,10 +11,15 @@
 #include "externalmedialib.h"
 #include "mediummap.h"
 #include "twophasemedium.h"
+#include <math.h>
 
 // Header of private function
 void TwoPhaseMedium_setStateDefault_(BaseTwoPhaseMedium *medium, int choice, double d, double h, double p, double s, double T, int phase);
 
+// Macro function to check if two double precision numbers don't match
+// simple equality check should be ok, but we allow for some tolerance just
+// in case something goes wrong with the least significant bits
+#define mismatch(x,y) (fabs((x)-(y))/(std::max(fabs(x),1e-10)) > 1e-15)
 
 //! Create medium
 /*!
@@ -475,8 +480,9 @@ double TwoPhaseMedium_density_(int uniqueID, int choice, double d, double h, dou
         TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
 		return medium->d();
 	}
-	else 
-	  return MediumMap::medium(uniqueID)->d();
+	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	return MediumMap::medium(uniqueID)->d();
 }
 
 //! Return derivative of density wrt pressure at constant specific enthalpy of specified medium
@@ -488,8 +494,9 @@ double TwoPhaseMedium_density_derp_h_(int uniqueID, int choice, double d, double
         TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
 		return medium->dd_dp_h();
 	}
-	else 
-	  return MediumMap::medium(uniqueID)->dd_dp_h();
+	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	return MediumMap::medium(uniqueID)->dd_dp_h();
 }
 
 //! Return derivative of density wrt specific enthalpy at constant pressure of specified medium
@@ -501,8 +508,9 @@ double TwoPhaseMedium_density_derh_p_(int uniqueID, int choice, double d, double
         TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
 		return medium->dd_dh_p();
 	}
-	else 
-		return MediumMap::medium(uniqueID)->dd_dh_p();
+	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	return MediumMap::medium(uniqueID)->dd_dh_p();
 }
 
 //! Return derivative of density wrt pressure and specific enthalpy of specified medium
@@ -529,8 +537,9 @@ double TwoPhaseMedium_pressure_(int uniqueID, int choice, double d, double h, do
         TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
 		return medium->p();
 	}
-	else 
-		return MediumMap::medium(uniqueID)->p();
+	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	return MediumMap::medium(uniqueID)->p();
 }
 
 //! Return specific enthalpy of specified medium
@@ -542,8 +551,9 @@ double TwoPhaseMedium_specificEnthalpy_(int uniqueID, int choice, double d, doub
         TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
 		return medium->h();
 	}
-	else 
-		return MediumMap::medium(uniqueID)->h();
+	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	return MediumMap::medium(uniqueID)->h();
 }
 
 //! Return specific entropy of specified medium
@@ -555,8 +565,9 @@ double TwoPhaseMedium_specificEntropy_(int uniqueID, int choice, double d, doubl
         TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
 		return medium->s();
 	}
-	else 
-		return MediumMap::medium(uniqueID)->s();
+	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	return MediumMap::medium(uniqueID)->s();
 }
 
 //! Return temperature of specified medium
@@ -568,8 +579,9 @@ double TwoPhaseMedium_temperature_(int uniqueID, int choice, double d, double h,
         TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
 		return medium->T();
 	}
-	else 
-		return MediumMap::medium(uniqueID)->T();
+	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	return MediumMap::medium(uniqueID)->T();
 }
 
 //! Return derivative of temperature wrt pressure and specific enthalpy of specified medium
@@ -596,8 +608,9 @@ double TwoPhaseMedium_isentropicEnthalpy_(double p_iso, int uniqueID, int choice
         TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
 		return medium->h_iso(p_iso);
 	}
-	else 
-		return MediumMap::medium(uniqueID)->h_iso(p_iso);
+	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	return MediumMap::medium(uniqueID)->h_iso(p_iso);
 }
 
 //! Return derivative of saturation temperature of specified medium from saturation properties
@@ -610,8 +623,9 @@ double TwoPhaseMedium_saturationTemperature_derp_sat_(double psat, double Tsat, 
 		medium->setSat_p(psat);
 		return medium->d_Ts_dp();
 	}
-	else
-		return MediumMap::medium(uniqueID)->d_Ts_dp();
+	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+        MediumMap::medium(uniqueID)->setSat_p(psat);
+	return MediumMap::medium(uniqueID)->d_Ts_dp();
 }
 
 //! Return bubble density of specified medium from saturation properties
@@ -624,8 +638,9 @@ double TwoPhaseMedium_bubbleDensity_(double psat, double Tsat, int uniqueID,
 		medium->setSat_p(psat);
 		return medium->dl();
 	}
-	else
-		return MediumMap::medium(uniqueID)->dl();
+	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+        MediumMap::medium(uniqueID)->setSat_p(psat);
+	return MediumMap::medium(uniqueID)->dl();
 }
 
 //! Return dew density of specified medium from saturation properties
@@ -638,8 +653,9 @@ double TwoPhaseMedium_dewDensity_(double psat, double Tsat, int uniqueID,
 		medium->setSat_p(psat);
 		return medium->dv();
 	}
-	else
-		return MediumMap::medium(uniqueID)->dv();
+	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+        MediumMap::medium(uniqueID)->setSat_p(psat);
+	return MediumMap::medium(uniqueID)->dv();
 }
 
 //! Return bubble specific enthalpy of specified medium from saturation properties
@@ -652,8 +668,9 @@ double TwoPhaseMedium_bubbleEnthalpy_(double psat, double Tsat, int uniqueID,
 		medium->setSat_p(psat);
 		return medium->hl();
 	}
-	else
-		return MediumMap::medium(uniqueID)->hl();
+	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+        MediumMap::medium(uniqueID)->setSat_p(psat);
+	return MediumMap::medium(uniqueID)->hl();
 }
 
 //! Return dew specific enthalpy of specified medium from saturation properties
@@ -666,8 +683,9 @@ double TwoPhaseMedium_dewEnthalpy_(double psat, double Tsat, int uniqueID,
 		medium->setSat_p(psat);
 		return medium->hv();
 	}
-	else
-		return MediumMap::medium(uniqueID)->hv();
+	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+        MediumMap::medium(uniqueID)->setSat_p(psat);
+	return MediumMap::medium(uniqueID)->hv();
 }
 
 //! Return bubble specific entropy of specified medium from saturation properties
@@ -680,8 +698,9 @@ double TwoPhaseMedium_bubbleEntropy_(double psat, double Tsat, int uniqueID,
 		medium->setSat_p(psat);
 		return medium->sl();
 	}
-	else
-		return MediumMap::medium(uniqueID)->sl();
+	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+        MediumMap::medium(uniqueID)->setSat_p(psat);
+	return MediumMap::medium(uniqueID)->sl();
 }
 
 //! Return dew specific entropy of specified medium from saturation properties
@@ -694,8 +713,9 @@ double TwoPhaseMedium_dewEntropy_(double psat, double Tsat, int uniqueID,
 		medium->setSat_p(psat);
 		return medium->sv();
 	}
-	else
-		return MediumMap::medium(uniqueID)->sv();
+	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+        MediumMap::medium(uniqueID)->setSat_p(psat);
+	return MediumMap::medium(uniqueID)->sv();
 }
 
 //! Return derivative of bubble density wrt pressure of specified medium from saturation properties
@@ -708,8 +728,9 @@ double TwoPhaseMedium_dBubbleDensity_dPressure_(double psat, double Tsat, int un
 		medium->setSat_p(psat);
 		return medium->d_dl_dp();
 	}
-	else
-		return MediumMap::medium(uniqueID)->d_dl_dp();
+	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+        MediumMap::medium(uniqueID)->setSat_p(psat);
+	return MediumMap::medium(uniqueID)->d_dl_dp();
 }
 
 //! Return derivative of dew density wrt pressure of specified medium from saturation properties
@@ -722,8 +743,9 @@ double TwoPhaseMedium_dDewDensity_dPressure_(double psat, double Tsat, int uniqu
 		medium->setSat_p(psat);
 		return medium->d_dv_dp();
 	}
-	else
-		return MediumMap::medium(uniqueID)->d_dv_dp();
+	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+        MediumMap::medium(uniqueID)->setSat_p(psat);
+	return MediumMap::medium(uniqueID)->d_dv_dp();
 }
 
 //! Return derivative of bubble specific enthalpy wrt pressure of specified medium from saturation properties
@@ -736,8 +758,9 @@ double TwoPhaseMedium_dBubbleEnthalpy_dPressure_(double psat, double Tsat, int u
 		medium->setSat_p(psat);
 		return medium->d_hl_dp();
 	}
-	else
-		return MediumMap::medium(uniqueID)->d_hl_dp();
+	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+        MediumMap::medium(uniqueID)->setSat_p(psat);
+	return MediumMap::medium(uniqueID)->d_hl_dp();
 }
 
 //! Return derivative of dew specific enthalpy wrt pressure of specified medium from saturation properties
@@ -750,8 +773,9 @@ double TwoPhaseMedium_dDewEnthalpy_dPressure_(double psat, double Tsat, int uniq
 		medium->setSat_p(psat);
 		return medium->d_hv_dp();
 	}
-	else
-		return MediumMap::medium(uniqueID)->d_hv_dp();
+	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+        MediumMap::medium(uniqueID)->setSat_p(psat);
+	return MediumMap::medium(uniqueID)->d_hv_dp();
 }
 
 //! Return isobaric expansion coefficient of specified medium
@@ -763,8 +787,9 @@ double TwoPhaseMedium_isobaricExpansionCoefficient_(int uniqueID, int choice, do
         TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
 		return medium->beta();
 	}
-	else 
-		return MediumMap::medium(uniqueID)->beta();
+	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	return MediumMap::medium(uniqueID)->beta();
 }
 
 //! Return isothermal compressibility of specified medium
@@ -776,8 +801,9 @@ double TwoPhaseMedium_isothermalCompressibility_(int uniqueID, int choice, doubl
         TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
 		return medium->kappa();
 	}
-	else 
-		return MediumMap::medium(uniqueID)->kappa();
+	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	return MediumMap::medium(uniqueID)->kappa();
 }
 
 //! Return specific heat capacity cp of specified medium
@@ -789,8 +815,9 @@ double TwoPhaseMedium_specificHeatCapacityCp_(int uniqueID, int choice, double d
         TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
 		return medium->cp();
 	}
-	else 
-		return MediumMap::medium(uniqueID)->cp();
+	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	return MediumMap::medium(uniqueID)->cp();
 }
 
 //! Return specific heat capacity cv of specified medium
@@ -802,8 +829,9 @@ double TwoPhaseMedium_specificHeatCapacityCv_(int uniqueID, int choice, double d
         TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
 		return medium->cv();
 	}
-	else 
-		return MediumMap::medium(uniqueID)->cv();
+	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	return MediumMap::medium(uniqueID)->cv();
 }
 
 //! Return dynamic viscosity of specified medium
@@ -815,8 +843,9 @@ double TwoPhaseMedium_dynamicViscosity_(int uniqueID, int choice, double d, doub
         TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
 		return medium->eta();
 	}
-	else 
-		return MediumMap::medium(uniqueID)->eta();
+	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	return MediumMap::medium(uniqueID)->eta();
 }
 
 //! Return thermal conductivity of specified medium
@@ -828,8 +857,9 @@ double TwoPhaseMedium_thermalConductivity_(int uniqueID, int choice, double d, d
         TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
 		return medium->lambda();
 	}
-	else 
-		return MediumMap::medium(uniqueID)->lambda();
+	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	return MediumMap::medium(uniqueID)->lambda();
 }
 
 //! Return Prandtl number of specified medium
@@ -841,8 +871,9 @@ double TwoPhaseMedium_prandtlNumber_(int uniqueID, int choice, double d, double 
         TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
 		return medium->Pr();
 	}
-	else 
-		return MediumMap::medium(uniqueID)->Pr();
+	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	return MediumMap::medium(uniqueID)->Pr();
 }
 
 //! Return surface tension of specified medium
@@ -855,8 +886,9 @@ double TwoPhaseMedium_surfaceTension_(double psat, double Tsat, int uniqueID,
 		medium->setSat_p(psat);
 		return medium->sigma();
 	}
-	else
-		return MediumMap::medium(uniqueID)->sigma();
+	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+        MediumMap::medium(uniqueID)->setSat_p(psat);
+	return MediumMap::medium(uniqueID)->sigma();
 }
 
 //! Return velocity of sound of specified medium
@@ -868,8 +900,9 @@ double TwoPhaseMedium_velocityOfSound_(int uniqueID, int choice, double d, doubl
         TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
 		return medium->a();
 	}
-	else 
-		return MediumMap::medium(uniqueID)->a();
+	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	return MediumMap::medium(uniqueID)->a();
 }
 
 //! Return derivative of density wrt pressure at constant specific enthalpy of specified medium
@@ -881,8 +914,9 @@ double TwoPhaseMedium_dDensity_dPressure_h_(int uniqueID, int choice, double d, 
         TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
 		return medium->dd_dp_h();
 	}
-	else 
-		return MediumMap::medium(uniqueID)->dd_dp_h();
+	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	return MediumMap::medium(uniqueID)->dd_dp_h();
 }
 
 //! Return derivative of density wrt specific enthalpy at constant pressure of specified medium
@@ -894,8 +928,9 @@ double TwoPhaseMedium_dDensity_dEnthalpy_p_(int uniqueID, int choice, double d, 
         TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
 		return medium->dd_dh_p();
 	}
-	else 
-		return MediumMap::medium(uniqueID)->dd_dh_p();
+	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	return MediumMap::medium(uniqueID)->dd_dh_p();
 }
 
 //! Compute saturation pressure for specified medium and temperature
