@@ -17,10 +17,10 @@
 #define EXTERNALMEDIALIB_H_
 
 // Constants for input choices (see ExternalMedia.Common.InputChoices)
-#define CHOICE_dT 0
-#define CHOICE_ph 1
-#define CHOICE_ps 2
-#define CHOICE_pT 3
+#define CHOICE_dT 1
+#define CHOICE_ph 2
+#define CHOICE_ps 3
+#define CHOICE_pT 4
 
 // Define export
 #ifdef __cplusplus
