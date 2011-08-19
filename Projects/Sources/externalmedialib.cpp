@@ -21,6 +21,14 @@ void TwoPhaseMedium_setStateDefault_(BaseTwoPhaseMedium *medium, int choice, dou
 // in case something goes wrong with the least significant bits
 #define mismatch(x,y) (fabs((x)-(y))/(std::max(fabs(x),1e-10)) > 1e-15)
 
+// Warning messages to be output in case of mismatch with the cached values
+// disabled by default, uncomment last two lines to turn on
+#define WARN_RECOMPUTE_PH
+#define WARN_RECOMPUTE_PSAT
+// #define WARN_RECOMPUTE_PH ModelicaFormatMessage("ExternalMedia Warning:\np = %f, h = %f don't match with cached values, properties have been re-computed\n", p, h)
+// #define WARN_RECOMPUTE_PSAT ModelicaFormatMessage("ExternalMedia Warning:\npsat = %f doesn't match with cached value, properties have been re-computed\n", psat)
+
+
 //! Create medium
 /*!
   This function creates a new medium with the specified medium name, library name,
@@ -481,7 +489,10 @@ double TwoPhaseMedium_density_(int uniqueID, int choice, double d, double h, dou
 		return medium->d();
 	}
 	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+	{
+		WARN_RECOMPUTE_PH;
         TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	}
 	return MediumMap::medium(uniqueID)->d();
 }
 
@@ -495,7 +506,10 @@ double TwoPhaseMedium_density_derp_h_(int uniqueID, int choice, double d, double
 		return medium->dd_dp_h();
 	}
 	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+	{
+		WARN_RECOMPUTE_PH;
         TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	}
 	return MediumMap::medium(uniqueID)->dd_dp_h();
 }
 
@@ -509,7 +523,10 @@ double TwoPhaseMedium_density_derh_p_(int uniqueID, int choice, double d, double
 		return medium->dd_dh_p();
 	}
 	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+	{
+		WARN_RECOMPUTE_PH;
         TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	}
 	return MediumMap::medium(uniqueID)->dd_dh_p();
 }
 
@@ -538,7 +555,10 @@ double TwoPhaseMedium_pressure_(int uniqueID, int choice, double d, double h, do
 		return medium->p();
 	}
 	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+	{
+		WARN_RECOMPUTE_PH;
         TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	}
 	return MediumMap::medium(uniqueID)->p();
 }
 
@@ -552,7 +572,10 @@ double TwoPhaseMedium_specificEnthalpy_(int uniqueID, int choice, double d, doub
 		return medium->h();
 	}
 	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
-        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+ 	{
+		WARN_RECOMPUTE_PH;
+		TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	}
 	return MediumMap::medium(uniqueID)->h();
 }
 
@@ -566,7 +589,10 @@ double TwoPhaseMedium_specificEntropy_(int uniqueID, int choice, double d, doubl
 		return medium->s();
 	}
 	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+	{
+		WARN_RECOMPUTE_PH;
         TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	}
 	return MediumMap::medium(uniqueID)->s();
 }
 
@@ -580,7 +606,10 @@ double TwoPhaseMedium_temperature_(int uniqueID, int choice, double d, double h,
 		return medium->T();
 	}
 	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+	{
+		WARN_RECOMPUTE_PH;
         TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	}
 	return MediumMap::medium(uniqueID)->T();
 }
 
@@ -609,7 +638,10 @@ double TwoPhaseMedium_isentropicEnthalpy_(double p_iso, int uniqueID, int choice
 		return medium->h_iso(p_iso);
 	}
 	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+	{
+		WARN_RECOMPUTE_PH;
         TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	}
 	return MediumMap::medium(uniqueID)->h_iso(p_iso);
 }
 
@@ -623,8 +655,11 @@ double TwoPhaseMedium_saturationTemperature_derp_sat_(double psat, double Tsat, 
 		medium->setSat_p(psat);
 		return medium->d_Ts_dp();
 	}
-	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+	if (mismatch(psat, MediumMap::medium(uniqueID)->ps()))
+	{
+		WARN_RECOMPUTE_PSAT;
         MediumMap::medium(uniqueID)->setSat_p(psat);
+	}
 	return MediumMap::medium(uniqueID)->d_Ts_dp();
 }
 
@@ -638,8 +673,11 @@ double TwoPhaseMedium_bubbleDensity_(double psat, double Tsat, int uniqueID,
 		medium->setSat_p(psat);
 		return medium->dl();
 	}
-	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
-        MediumMap::medium(uniqueID)->setSat_p(psat);
+	if (mismatch(psat, MediumMap::medium(uniqueID)->ps()))
+ 	{
+		WARN_RECOMPUTE_PSAT;
+		MediumMap::medium(uniqueID)->setSat_p(psat);
+	}
 	return MediumMap::medium(uniqueID)->dl();
 }
 
@@ -653,8 +691,11 @@ double TwoPhaseMedium_dewDensity_(double psat, double Tsat, int uniqueID,
 		medium->setSat_p(psat);
 		return medium->dv();
 	}
-	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+	if (mismatch(psat, MediumMap::medium(uniqueID)->ps()))
+	{
+		WARN_RECOMPUTE_PSAT;
         MediumMap::medium(uniqueID)->setSat_p(psat);
+	}
 	return MediumMap::medium(uniqueID)->dv();
 }
 
@@ -668,8 +709,11 @@ double TwoPhaseMedium_bubbleEnthalpy_(double psat, double Tsat, int uniqueID,
 		medium->setSat_p(psat);
 		return medium->hl();
 	}
-	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+	if (mismatch(psat, MediumMap::medium(uniqueID)->ps()))
+	{
+		WARN_RECOMPUTE_PSAT;
         MediumMap::medium(uniqueID)->setSat_p(psat);
+	}
 	return MediumMap::medium(uniqueID)->hl();
 }
 
@@ -683,8 +727,11 @@ double TwoPhaseMedium_dewEnthalpy_(double psat, double Tsat, int uniqueID,
 		medium->setSat_p(psat);
 		return medium->hv();
 	}
-	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
-        MediumMap::medium(uniqueID)->setSat_p(psat);
+	if (mismatch(psat, MediumMap::medium(uniqueID)->ps()))
+ 	{
+		WARN_RECOMPUTE_PSAT;
+		MediumMap::medium(uniqueID)->setSat_p(psat);
+	}
 	return MediumMap::medium(uniqueID)->hv();
 }
 
@@ -698,8 +745,11 @@ double TwoPhaseMedium_bubbleEntropy_(double psat, double Tsat, int uniqueID,
 		medium->setSat_p(psat);
 		return medium->sl();
 	}
-	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+	if (mismatch(psat, MediumMap::medium(uniqueID)->ps()))
+	{
+		WARN_RECOMPUTE_PSAT;
         MediumMap::medium(uniqueID)->setSat_p(psat);
+	}
 	return MediumMap::medium(uniqueID)->sl();
 }
 
@@ -713,8 +763,11 @@ double TwoPhaseMedium_dewEntropy_(double psat, double Tsat, int uniqueID,
 		medium->setSat_p(psat);
 		return medium->sv();
 	}
-	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+	if (mismatch(psat, MediumMap::medium(uniqueID)->ps()))
+ 	{
+		WARN_RECOMPUTE_PSAT;
         MediumMap::medium(uniqueID)->setSat_p(psat);
+	}
 	return MediumMap::medium(uniqueID)->sv();
 }
 
@@ -728,8 +781,11 @@ double TwoPhaseMedium_dBubbleDensity_dPressure_(double psat, double Tsat, int un
 		medium->setSat_p(psat);
 		return medium->d_dl_dp();
 	}
-	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+	if (mismatch(psat, MediumMap::medium(uniqueID)->ps()))
+	{
+		WARN_RECOMPUTE_PSAT;
         MediumMap::medium(uniqueID)->setSat_p(psat);
+	}
 	return MediumMap::medium(uniqueID)->d_dl_dp();
 }
 
@@ -743,8 +799,11 @@ double TwoPhaseMedium_dDewDensity_dPressure_(double psat, double Tsat, int uniqu
 		medium->setSat_p(psat);
 		return medium->d_dv_dp();
 	}
-	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+	if (mismatch(psat, MediumMap::medium(uniqueID)->ps()))
+ 	{
+	    WARN_RECOMPUTE_PSAT;
         MediumMap::medium(uniqueID)->setSat_p(psat);
+	}
 	return MediumMap::medium(uniqueID)->d_dv_dp();
 }
 
@@ -758,8 +817,11 @@ double TwoPhaseMedium_dBubbleEnthalpy_dPressure_(double psat, double Tsat, int u
 		medium->setSat_p(psat);
 		return medium->d_hl_dp();
 	}
-	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
-        MediumMap::medium(uniqueID)->setSat_p(psat);
+	if (mismatch(psat, MediumMap::medium(uniqueID)->ps()))
+    {
+		WARN_RECOMPUTE_PSAT;
+		MediumMap::medium(uniqueID)->setSat_p(psat);
+	}
 	return MediumMap::medium(uniqueID)->d_hl_dp();
 }
 
@@ -773,8 +835,11 @@ double TwoPhaseMedium_dDewEnthalpy_dPressure_(double psat, double Tsat, int uniq
 		medium->setSat_p(psat);
 		return medium->d_hv_dp();
 	}
-	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+	if (mismatch(psat, MediumMap::medium(uniqueID)->ps()))
+	{
+		WARN_RECOMPUTE_PSAT;
         MediumMap::medium(uniqueID)->setSat_p(psat);
+	}
 	return MediumMap::medium(uniqueID)->d_hv_dp();
 }
 
@@ -788,7 +853,10 @@ double TwoPhaseMedium_isobaricExpansionCoefficient_(int uniqueID, int choice, do
 		return medium->beta();
 	}
 	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+	{
+		WARN_RECOMPUTE_PH;
         TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	}
 	return MediumMap::medium(uniqueID)->beta();
 }
 
@@ -802,7 +870,10 @@ double TwoPhaseMedium_isothermalCompressibility_(int uniqueID, int choice, doubl
 		return medium->kappa();
 	}
 	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+	{
+		WARN_RECOMPUTE_PH;
         TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	}
 	return MediumMap::medium(uniqueID)->kappa();
 }
 
@@ -816,7 +887,10 @@ double TwoPhaseMedium_specificHeatCapacityCp_(int uniqueID, int choice, double d
 		return medium->cp();
 	}
 	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+	{
+		WARN_RECOMPUTE_PH;
         TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	}
 	return MediumMap::medium(uniqueID)->cp();
 }
 
@@ -830,7 +904,10 @@ double TwoPhaseMedium_specificHeatCapacityCv_(int uniqueID, int choice, double d
 		return medium->cv();
 	}
 	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+	{
+		WARN_RECOMPUTE_PH;
         TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	}
 	return MediumMap::medium(uniqueID)->cv();
 }
 
@@ -844,7 +921,10 @@ double TwoPhaseMedium_dynamicViscosity_(int uniqueID, int choice, double d, doub
 		return medium->eta();
 	}
 	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+	{
+		WARN_RECOMPUTE_PH;
         TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	}
 	return MediumMap::medium(uniqueID)->eta();
 }
 
@@ -858,7 +938,10 @@ double TwoPhaseMedium_thermalConductivity_(int uniqueID, int choice, double d, d
 		return medium->lambda();
 	}
 	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+	{
+		WARN_RECOMPUTE_PH;
         TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	}
 	return MediumMap::medium(uniqueID)->lambda();
 }
 
@@ -872,7 +955,10 @@ double TwoPhaseMedium_prandtlNumber_(int uniqueID, int choice, double d, double 
 		return medium->Pr();
 	}
 	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+	{
+		WARN_RECOMPUTE_PH;
         TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	}
 	return MediumMap::medium(uniqueID)->Pr();
 }
 
@@ -886,8 +972,11 @@ double TwoPhaseMedium_surfaceTension_(double psat, double Tsat, int uniqueID,
 		medium->setSat_p(psat);
 		return medium->sigma();
 	}
-	if (mismatch(psat, MediumMap::medium(uniqueID)->p()))
+	if (mismatch(psat, MediumMap::medium(uniqueID)->ps()))
+	{
+		WARN_RECOMPUTE_PSAT;
         MediumMap::medium(uniqueID)->setSat_p(psat);
+	}
 	return MediumMap::medium(uniqueID)->sigma();
 }
 
@@ -901,7 +990,10 @@ double TwoPhaseMedium_velocityOfSound_(int uniqueID, int choice, double d, doubl
 		return medium->a();
 	}
 	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+	{
+		WARN_RECOMPUTE_PH;
         TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	}
 	return MediumMap::medium(uniqueID)->a();
 }
 
@@ -915,7 +1007,10 @@ double TwoPhaseMedium_dDensity_dPressure_h_(int uniqueID, int choice, double d, 
 		return medium->dd_dp_h();
 	}
 	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+	{
+		WARN_RECOMPUTE_PH;
         TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	}
 	return MediumMap::medium(uniqueID)->dd_dp_h();
 }
 
@@ -929,7 +1024,10 @@ double TwoPhaseMedium_dDensity_dEnthalpy_p_(int uniqueID, int choice, double d, 
 		return medium->dd_dh_p();
 	}
 	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
+	{
+		WARN_RECOMPUTE_PH;
         TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
+	}
 	return MediumMap::medium(uniqueID)->dd_dh_p();
 }
 
