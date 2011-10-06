@@ -622,7 +622,12 @@ void TFluidProp::AllProps( string InputSpec, double Input1, double Input2, doubl
    SafeArrayDestroy( sa_x);
    SafeArrayDestroy( sa_y);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;   
+   
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec); 
 }
 
 void TFluidProp::AllPropsSat( string InputSpec, double Input1, double Input2, double& P, double& T,
@@ -664,7 +669,12 @@ void TFluidProp::AllPropsSat( string InputSpec, double Input1, double Input2, do
    SafeArrayDestroy( sa_x);
    SafeArrayDestroy( sa_y);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;   
+   
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec); 
 }
 
 
