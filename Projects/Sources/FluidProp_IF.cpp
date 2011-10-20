@@ -1,25 +1,29 @@
-/*!
-  Microsoft Visual C++ 2005 Client
+//============================================================================================//
+//                                                                                            //
+//                              Microsoft Visual C++ 2005 Client                              //
+//                              --------------------------------                              //
+//                                                                                            //
+//  This is an example of a client application in Microsoft Visual C++ 2005 for FluidProp,    //
+//  a COM server module for the calculation of fluid properties. FluidProp is a common        //
+//  interface to GasMix, IF97, Refprop, StanMix, TPSI and is developed by Piero Colonna       //
+//  and Teus van der Stelt.                                                                   //
+//                                                                                            //
+//  The class implemented in this file, TFluidProp, is as a wrapper class for the base        //
+//  class IFluidProp_COM. TFluidProp hides specific COM server details like safe arrays       //
+//  (SAFEARRAY) and binary strings (BSTR) in IFluidProp_COM. In the TFluidProp class          //
+//  only standard C++ data types are used. This seriously facilitates working with the        //
+//  COM server.                                                                               //
+//                                                                                            //
+//  Teus van der Stelt                                                                        //
+//  Energy Technology Section                                                                 //
+//  TU Delft                                                                                  //
+//                                                                                            //
+//  July, 2004, for FluidProp 1                                                               //
+//  January, 2006, for FluidProp 2                                                            //
+//  April, 2007, for FluidProp 2.3                                                            //
+//                                                                                            //
+//============================================================================================//
 
-  This is an example of a client application in Microsoft Visual C++ 2005 for FluidProp,
-  a COM server module for the calculation of fluid properties. FluidProp is a common
-  interface to GasMix, IF97, Refprop, StanMix, TPSI and is developed by Piero Colonna 
-  and Teus van der Stelt.
-
-  The class implemented in this file, TFluidProp, is as a wrapper class for the base
-  class IFluidProp_COM. TFluidProp hides specific COM server details like safe arrays
-  (SAFEARRAY) and binary strings (BSTR) in IFluidProp_COM. In the TFluidProp class
-  only standard C++ data types are used. This seriously facilitates working with the
-  COM server.
-
-  Teus van der Stelt
-  Energy Technology Section
-  TU Delft
-
-  July, 2004, for FluidProp 1
-  January, 2006, for FluidProp 2
-  April, 2007, for FluidProp 2.3
-*/
 
 #include "FluidProp_IF.h"
 
@@ -71,7 +75,12 @@ void TFluidProp::CreateObject( string ModelName, string* ErrorMsg)
 
    FluidProp_COM->CreateObject( BSTR_Model, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_Model);
 }
 
 void TFluidProp::ReleaseObjects()
@@ -84,35 +93,44 @@ void TFluidProp::SetFluid( string ModelName, int nComp, string* Comp, double* Co
    // _com_util::Convert model name to binary string
    BSTR BSTR_Model = _com_util::ConvertStringToBSTR( ModelName.c_str());
 
+   long long_nComp = nComp;
+   
    // _com_util::Convert character array Comp via binary strings (BSTR) into an OLE SafeArray
    SAFEARRAYBOUND sa_bounds_Comp[1];
    sa_bounds_Comp[0].lLbound = 0;
-   sa_bounds_Comp[0].cElements = nComp;
+   sa_bounds_Comp[0].cElements = 20; //nComp;
 
    SAFEARRAY FAR* sa_Comp;
    sa_Comp = SafeArrayCreate( VT_BSTR, 1, sa_bounds_Comp);
-   for( long i = 0; i < (long)nComp; i++)
+   BSTR BSTR_Comp;
+   for( long i = 0; i < long_nComp; i++)
    {
-      BSTR BSTR_Comp = _com_util::ConvertStringToBSTR( Comp[i].c_str());
+      BSTR_Comp = _com_util::ConvertStringToBSTR( Comp[i].c_str());
       SafeArrayPutElement(sa_Comp, &i, BSTR_Comp);
    }
 
    // _com_util::Convert the double array Conc into an OLE SafeArray
    SAFEARRAYBOUND sa_bounds_Conc[1];
    sa_bounds_Conc[0].lLbound = 0;
-   sa_bounds_Conc[0].cElements = nComp;
+   sa_bounds_Conc[0].cElements = 20; //nComp;
 
    SAFEARRAY FAR* sa_Conc;
    sa_Conc = SafeArrayCreate( VT_R8, 1, sa_bounds_Conc);
-   for(long i = 0; i < (long)nComp; i++)
+   for(long i = 0; i < long_nComp; i++)
       SafeArrayPutElement(sa_Conc, &i, &Conc[i]);
 
    // Now load the fluid parameters for the model selected.
    BSTR BSTR_Error;
-   FluidProp_COM->SetFluid( BSTR_Model, nComp, &sa_Comp, &sa_Conc, &BSTR_Error);
+   FluidProp_COM->SetFluid( BSTR_Model, long_nComp, &sa_Comp, &sa_Conc, &BSTR_Error);
 
    // Error handling
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Comp);
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_Model);
 }
 
 void TFluidProp::GetFluid( string* ModelName, int* nComp, string* Comp, double* Conc, bool CompInfo)
@@ -130,10 +148,11 @@ void TFluidProp::GetFluid( string* ModelName, int* nComp, string* Comp, double* 
    sa_bounds_Comp[0].cElements = long_nComp;
 
    SAFEARRAY FAR* sa_Comp;
+   BSTR BSTR_Comp;
    sa_Comp = SafeArrayCreate( VT_BSTR, 1, sa_bounds_Comp);
    for( long i = 0; i < long_nComp; i++)
    {
-      BSTR BSTR_Comp = _com_util::ConvertStringToBSTR( Comp[i].c_str());
+      BSTR_Comp = _com_util::ConvertStringToBSTR( Comp[i].c_str());
       SafeArrayPutElement(sa_Comp, &i, BSTR_Comp);
    }
 
@@ -165,7 +184,6 @@ void TFluidProp::GetFluid( string* ModelName, int* nComp, string* Comp, double* 
    // Put the values in the string array Comp
    for(long i = 0; i < long_nComp; i++)
    {
-      BSTR BSTR_Comp;
       SafeArrayGetElement( sa_Comp, &i, &BSTR_Comp);
       Comp[i] = _com_util::ConvertBSTRToString( BSTR_Comp);
    }
@@ -177,6 +195,9 @@ void TFluidProp::GetFluid( string* ModelName, int* nComp, string* Comp, double* 
    // Destroy the SafeArrays
    SafeArrayDestroy( sa_Comp);
    SafeArrayDestroy( sa_Conc);
+
+   SysFreeString(BSTR_Comp);
+   SysFreeString(BSTR_Model);
 }
 
 void TFluidProp::GetFluidNames( string LongShort, string ModelName, int* nFluids, 
@@ -203,16 +224,23 @@ void TFluidProp::GetFluidNames( string LongShort, string ModelName, int* nFluids
                                  &BSTR_Error);
 
    // Retrieve array with components from SafeArray
+   BSTR BSTR_Fluid;
    for( long i = 0; i < long_nFluids; i++)
    {
-      BSTR BSTR_Fluid;
       SafeArrayGetElement( sa_FluidNames, &i, &BSTR_Fluid);
       FluidNames[i] =  _com_util::ConvertBSTRToString( BSTR_Fluid);
    }
    *nFluids = long_nFluids;
 
    // Error handling
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Fluid);
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_LongShort);
+   SysFreeString(BSTR_Model);
 }
 
 double TFluidProp::Pressure( string InputSpec, double Input1, double Input2, string* ErrorMsg)
@@ -224,7 +252,12 @@ double TFluidProp::Pressure( string InputSpec, double Input1, double Input2, str
 
    FluidProp_COM->Pressure( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -238,7 +271,12 @@ double TFluidProp::Temperature( string InputSpec, double Input1, double Input2, 
 
    FluidProp_COM->Temperature( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -252,7 +290,12 @@ double TFluidProp::SpecVolume( string InputSpec, double Input1, double Input2, s
 
    FluidProp_COM->SpecVolume( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -266,7 +309,12 @@ double TFluidProp::Density( string InputSpec, double Input1, double Input2, stri
 
    FluidProp_COM->Density( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -280,7 +328,12 @@ double TFluidProp::Enthalpy( string InputSpec, double Input1, double Input2, str
 
    FluidProp_COM->Enthalpy( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -294,7 +347,12 @@ double TFluidProp::Entropy( string InputSpec, double Input1, double Input2, stri
 
    FluidProp_COM->Entropy( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -308,7 +366,12 @@ double TFluidProp::IntEnergy( string InputSpec, double Input1, double Input2, st
 
    FluidProp_COM->IntEnergy( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -322,7 +385,12 @@ double TFluidProp::VaporQual( string InputSpec, double Input1, double Input2, st
 
    FluidProp_COM->VaporQual( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -347,7 +415,12 @@ double* TFluidProp::LiquidCmp( string InputSpec, double Input1, double Input2, s
    for( long i = 0; i < (signed)sa_bounds_Output[0].cElements; i++)
       SafeArrayGetElement( sa_Output, &i, &Output[i]);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -372,7 +445,12 @@ double* TFluidProp::VaporCmp( string InputSpec, double Input1, double Input2, st
    for( long i = 0; i < (signed)sa_bounds_Output[0].cElements; i++)
       SafeArrayGetElement( sa_Output, &i, &Output[i]);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -386,7 +464,12 @@ double TFluidProp::HeatCapV( string InputSpec, double Input1, double Input2, str
 
    FluidProp_COM->HeatCapV( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -400,7 +483,12 @@ double TFluidProp::HeatCapP( string InputSpec, double Input1, double Input2, str
 
    FluidProp_COM->HeatCapP( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -414,7 +502,12 @@ double TFluidProp::SoundSpeed( string InputSpec, double Input1, double Input2, s
 
    FluidProp_COM->SoundSpeed( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -428,7 +521,12 @@ double TFluidProp::Alpha( string InputSpec, double Input1, double Input2, string
 
    FluidProp_COM->Alpha( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -442,7 +540,12 @@ double TFluidProp::Beta( string InputSpec, double Input1, double Input2, string*
 
    FluidProp_COM->Beta( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -456,7 +559,12 @@ double TFluidProp::Chi( string InputSpec, double Input1, double Input2, string* 
 
    FluidProp_COM->Chi( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -470,7 +578,12 @@ double TFluidProp::Fi( string InputSpec, double Input1, double Input2, string* E
 
    FluidProp_COM->Fi( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -484,7 +597,12 @@ double TFluidProp::Ksi( string InputSpec, double Input1, double Input2, string* 
 
    FluidProp_COM->Ksi( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -498,7 +616,12 @@ double TFluidProp::Psi( string InputSpec, double Input1, double Input2, string* 
 
    FluidProp_COM->Psi( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -512,7 +635,12 @@ double TFluidProp::Zeta( string InputSpec, double Input1, double Input2, string*
 
    FluidProp_COM->Zeta( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -526,7 +654,12 @@ double TFluidProp::Theta( string InputSpec, double Input1, double Input2, string
 
    FluidProp_COM->Theta( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -540,7 +673,12 @@ double TFluidProp::Kappa( string InputSpec, double Input1, double Input2, string
 
    FluidProp_COM->Kappa( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -554,7 +692,12 @@ double TFluidProp::Gamma( string InputSpec, double Input1, double Input2, string
 
    FluidProp_COM->Gamma( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -568,7 +711,12 @@ double TFluidProp::Viscosity( string InputSpec, double Input1, double Input2, st
 
    FluidProp_COM->Viscosity( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -582,7 +730,12 @@ double TFluidProp::ThermCond( string InputSpec, double Input1, double Input2, st
 
    FluidProp_COM->ThermCond( BSTR_InputSpec, Input1, Input2, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;    
+
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
 
    return Output;
 }
@@ -609,7 +762,7 @@ void TFluidProp::AllProps( string InputSpec, double Input1, double Input2, doubl
 
    FluidProp_COM->AllProps( BSTR_InputSpec, Input1, Input2, &P, &T, &v, &d, &h, &s, &u, &q, &sa_x,
                             &sa_y, &cv, &cp, &c, &alpha, &beta, &chi, &fi, &ksi, &psi, &zeta, 
-							&theta, &kappa, &gamma, &eta, &lambda, &BSTR_Error);
+                            &theta, &kappa, &gamma, &eta, &lambda, &BSTR_Error);
 
    // Retrieve array with liquid and vapor phase compositions from SafeArrays
    for( long i = 0; i < (signed)sa_bounds_x[0].cElements; i++)
@@ -627,7 +780,7 @@ void TFluidProp::AllProps( string InputSpec, double Input1, double Input2, doubl
    delete[] lpszErrorMsg;   
    
    SysFreeString(BSTR_Error);
-   SysFreeString(BSTR_InputSpec); 
+   SysFreeString(BSTR_InputSpec);
 }
 
 void TFluidProp::AllPropsSat( string InputSpec, double Input1, double Input2, double& P, double& T,
@@ -674,7 +827,7 @@ void TFluidProp::AllPropsSat( string InputSpec, double Input1, double Input2, do
    delete[] lpszErrorMsg;   
    
    SysFreeString(BSTR_Error);
-   SysFreeString(BSTR_InputSpec); 
+   SysFreeString(BSTR_InputSpec);
 }
 
 
@@ -690,7 +843,14 @@ double TFluidProp::Solve( string FuncSpec, double FuncVal, string InputSpec, lon
    FluidProp_COM->Solve( BSTR_FuncSpec, FuncVal, BSTR_InputSpec, Target, FixedVal, MinVal,
                          MaxVal, &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;   
+   
+   SysFreeString(BSTR_Error);
+   SysFreeString(BSTR_InputSpec);
+   SysFreeString(BSTR_FuncSpec);
 
    return Output;
 }
@@ -703,7 +863,10 @@ double TFluidProp::Mmol( string* ErrorMsg)
 
    FluidProp_COM->Mmol( &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;     
+   SysFreeString(BSTR_Error);
 
    return Output;
 }
@@ -716,7 +879,10 @@ double TFluidProp::Tcrit( string* ErrorMsg)
 
    FluidProp_COM->Tcrit( &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;     
+   SysFreeString(BSTR_Error);
 
    return Output;
 }
@@ -729,7 +895,10 @@ double TFluidProp::Pcrit( string* ErrorMsg)
 
    FluidProp_COM->Pcrit( &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;     
+   SysFreeString(BSTR_Error);
 
    return Output;
 }
@@ -742,7 +911,10 @@ double TFluidProp::Tmin( string* ErrorMsg)
 
    FluidProp_COM->Tmin( &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;     
+   SysFreeString(BSTR_Error);
 
    return Output;
 }
@@ -755,7 +927,10 @@ double TFluidProp::Tmax( string* ErrorMsg)
 
    FluidProp_COM->Tmax( &Output, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;     
+   SysFreeString(BSTR_Error);
 
    return Output;
 }
@@ -767,7 +942,10 @@ void TFluidProp::AllInfo( double& Mmol, double& Tcrit, double& Pcrit, double& Tm
 
    FluidProp_COM->AllInfo( &Mmol, &Tcrit, &Pcrit, &Tmin, &Tmax, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;     
+   SysFreeString(BSTR_Error);
 }
 
 void TFluidProp::SetUnits( string UnitSet, string MassOrMole, string Properties, string Units,
@@ -781,7 +959,15 @@ void TFluidProp::SetUnits( string UnitSet, string MassOrMole, string Properties,
 
    FluidProp_COM->SetUnits( BSTR_UnitSet, BSTR_MassOrMole, BSTR_Properties, BSTR_Units, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;     
+
+   SysFreeString(BSTR_Units);
+   SysFreeString(BSTR_Properties);
+   SysFreeString(BSTR_MassOrMole);
+   SysFreeString(BSTR_UnitSet);
+   SysFreeString(BSTR_Error);
 }
 
 void TFluidProp::SetRefState( double T_ref, double P_ref, string* ErrorMsg)
@@ -790,7 +976,10 @@ void TFluidProp::SetRefState( double T_ref, double P_ref, string* ErrorMsg)
 
    FluidProp_COM->SetRefState( T_ref, P_ref, &BSTR_Error);
 
-   *ErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
+   *ErrorMsg = lpszErrorMsg;
+   delete[] lpszErrorMsg;     
+   SysFreeString(BSTR_Error);
 }
 
 //==================================================================================== EOF ===//
