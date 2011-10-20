@@ -128,6 +128,10 @@ void TFluidProp::SetFluid( string ModelName, int nComp, string* Comp, double* Co
    *ErrorMsg = lpszErrorMsg;
    delete[] lpszErrorMsg;    
 
+   // Destroy the SafeArrays
+   SafeArrayDestroy( sa_Comp);
+   SafeArrayDestroy( sa_Conc);
+
    SysFreeString(BSTR_Comp);
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_Model);
