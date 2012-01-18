@@ -137,7 +137,7 @@ package Test
 
       model CompleteFluidConstants
         "Compute all available medium fluid constants"
-        replaceable package Medium = 
+        replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
 
         // Fluid constants
@@ -149,7 +149,7 @@ package Test
 
       model CompleteThermodynamicState
         "Compute all available two-phase medium properties from a ThermodynamicState model"
-        replaceable package Medium = 
+        replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
 
         // ThermodynamicState record
@@ -172,7 +172,7 @@ package Test
 
       model CompleteSaturationProperties
         "Compute all available saturation properties from a SaturationProperties record"
-        replaceable package Medium = 
+        replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
 
         // SaturationProperties record
@@ -193,7 +193,7 @@ package Test
 
       model CompleteBubbleDewStates
         "Compute all available properties for dewpoint and bubble point states corresponding to a sat record"
-        replaceable package Medium = 
+        replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
 
         // SaturationProperties record
@@ -215,7 +215,7 @@ package Test
 
       model CompleteBaseProperties
         "Compute all available two-phase medium properties from a BaseProperties model"
-        replaceable package Medium = 
+        replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
 
         // BaseProperties object
@@ -223,13 +223,13 @@ package Test
 
         // All the complete properties
         ExternalMedia.Test.TestMedium.GenericModels.CompleteThermodynamicState
-          completeState(                         redeclare package Medium = 
+          completeState(                         redeclare package Medium =
                      Medium, state=baseProperties.state);
         ExternalMedia.Test.TestMedium.GenericModels.CompleteSaturationProperties
-          completeSat(                           redeclare package Medium = 
+          completeSat(                           redeclare package Medium =
                      Medium, sat=baseProperties.sat);
         ExternalMedia.Test.TestMedium.GenericModels.CompleteFluidConstants
-          completeConstants(                     redeclare package Medium = 
+          completeConstants(                     redeclare package Medium =
                      Medium);
         ExternalMedia.Test.TestMedium.GenericModels.CompleteBubbleDewStates
           completeBubbleDewStates(
@@ -243,7 +243,7 @@ package Test
     partial package GenericModels "Generic models for FluidProp media tests"
       model CompleteFluidConstants
         "Compute all available medium fluid constants"
-        replaceable package Medium = 
+        replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
 
         // Fluid constants
@@ -255,7 +255,7 @@ package Test
 
       model CompleteThermodynamicState
         "Compute all available two-phase medium properties from a ThermodynamicState model"
-        replaceable package Medium = 
+        replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
 
         // ThermodynamicState record
@@ -279,7 +279,7 @@ package Test
 
       model CompleteSaturationProperties
         "Compute all available saturation properties from a SaturationProperties record"
-        replaceable package Medium = 
+        replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
 
         // SaturationProperties record
@@ -300,7 +300,7 @@ package Test
 
       model CompleteBubbleDewStates
         "Compute all available properties for dewpoint and bubble point states corresponding to a sat record"
-        replaceable package Medium = 
+        replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
 
         // SaturationProperties record
@@ -318,18 +318,18 @@ package Test
 
       model CompleteBaseProperties
         "Compute all available two-phase medium properties from a BaseProperties model"
-        replaceable package Medium = 
+        replaceable package Medium =
               Modelica.Media.Interfaces.PartialTwoPhaseMedium;
 
         // BaseProperties object
         Medium.BaseProperties baseProperties;
 
         // All the complete properties
-        CompleteThermodynamicState completeState(redeclare package Medium = 
+        CompleteThermodynamicState completeState(redeclare package Medium =
                              Medium, state=baseProperties.state);
-        CompleteSaturationProperties completeSat(redeclare package Medium = 
+        CompleteSaturationProperties completeSat(redeclare package Medium =
                              Medium, sat=baseProperties.sat);
-        CompleteFluidConstants completeConstants(redeclare package Medium = 
+        CompleteFluidConstants completeConstants(redeclare package Medium =
                              Medium);
         CompleteBubbleDewStates completeBubbleDewStates(
             redeclare package Medium = Medium, sat=baseProperties.sat);
@@ -353,27 +353,27 @@ package Test
 
         ExternalMedia.Test.FluidProp.GenericModels.CompleteThermodynamicState
           completeState1(                                    redeclare package
-            Medium = 
+            Medium =
               Medium, state=state1);
         ExternalMedia.Test.FluidProp.GenericModels.CompleteThermodynamicState
           completeState2(                                    redeclare package
-            Medium = 
+            Medium =
               Medium, state=state2);
         ExternalMedia.Test.FluidProp.GenericModels.CompleteSaturationProperties
           completeSat1(                                      redeclare package
-            Medium = 
+            Medium =
               Medium, sat=sat1);
         ExternalMedia.Test.FluidProp.GenericModels.CompleteSaturationProperties
           completeSat2(                                      redeclare package
-            Medium = 
+            Medium =
               Medium, sat=sat2);
         ExternalMedia.Test.FluidProp.GenericModels.CompleteBubbleDewStates
           completeBubbleDewStates1(                                 redeclare
-            package Medium = 
+            package Medium =
                      Medium, sat=sat1);
         ExternalMedia.Test.FluidProp.GenericModels.CompleteBubbleDewStates
           completeBubbleDewStates2(                                 redeclare
-            package Medium = 
+            package Medium =
                      Medium, sat=sat1);
       equation
         baseProperties1.p = 1e5+1e5*time;
@@ -393,7 +393,7 @@ package Test
 
       model TestBasePropertiesExplicit
         "Test case using FluidProp IF95 and explicit equations"
-        replaceable package Medium = Media.FluidPropMedia.WaterIF95 
+        replaceable package Medium = Media.FluidPropMedia.WaterIF95
           constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium;
         ExternalMedia.Test.FluidProp.GenericModels.CompleteBaseProperties
           medium1(                 redeclare package Medium = Medium)
@@ -410,7 +410,7 @@ package Test
 
       model TestBasePropertiesImplicit
         "Test case using FluidProp IF95  and implicit equations"
-        replaceable package Medium = Media.FluidPropMedia.WaterIF95 
+        replaceable package Medium = Media.FluidPropMedia.WaterIF95
           constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium;
         ExternalMedia.Test.FluidProp.GenericModels.CompleteBaseProperties
           medium1(                 redeclare package Medium = Medium,
@@ -429,7 +429,7 @@ package Test
 
     model TestBasePropertiesDynamic
         "Test case using FluidProp IF95 and dynamic equations"
-      replaceable package Medium = Media.FluidPropMedia.WaterIF95 
+      replaceable package Medium = Media.FluidPropMedia.WaterIF95
         constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium;
       parameter SI.Volume V = 1 "Storage Volume";
       parameter Real p_atm = 101325 "Atmospheric pressure";
@@ -557,7 +557,7 @@ package Test
   package SpeedTest
     "Test possible speed differences between BaseProperties and setState approaches"
     model TestSpeedTestMedium_BaseProperties
-      replaceable package Medium = ExternalMedia.Media.TestMedium 
+      replaceable package Medium = ExternalMedia.Media.TestMedium
         constrainedby ExternalMedia.Interfaces.PartialExternalTwoPhaseMedium
         "Medium package";
 
@@ -582,7 +582,7 @@ package Test
     end TestSpeedTestMedium_BaseProperties;
 
     model TestSpeedTestMedium_setState
-      replaceable package Medium = ExternalMedia.Media.TestMedium 
+      replaceable package Medium = ExternalMedia.Media.TestMedium
         constrainedby ExternalMedia.Interfaces.PartialExternalTwoPhaseMedium
         "Medium package";
 

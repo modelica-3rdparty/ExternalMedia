@@ -3,11 +3,6 @@ package ExternalTwoPhaseMedium
   "External two phase medium package - modify libraryName to set the external library"
   extends ExternalMedia.Interfaces.PartialExternalTwoPhaseMedium;
 
-  redeclare replaceable function extends createMedium
-  external "C" uniqueID=  TwoPhaseMedium_createMedium_(mediumName, libraryName, substanceName, oldUniqueID)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
-  end createMedium;
-
   redeclare replaceable function extends getMolarMass
   external "C" MM=  TwoPhaseMedium_getMolarMass_(mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
@@ -29,8 +24,7 @@ package ExternalTwoPhaseMedium
   end getCriticalMolarVolume;
 
   redeclare replaceable function extends setState_ph
-  external "C" TwoPhaseMedium_setState_ph_(p, h, phase, uniqueID, state.uniqueID, state.phase, state.d, state.h, state.p, state.s, state.T,
-   mediumName, libraryName, substanceName)
+  external "C" TwoPhaseMedium_setState_ph_(p, h, phase, state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end setState_ph;
 
@@ -61,13 +55,21 @@ package ExternalTwoPhaseMedium
   external "C" TwoPhaseMedium_setBubbleState_(sat.uniqueID, phase, state.uniqueID, state.phase, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end setBubbleState;
-
+/*
   redeclare replaceable function extends density
   external "C" d=  TwoPhaseMedium_density_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
    mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end density;
-
+  
+  redeclare replaceable function extends density 
+    "Return density from state"
+    input state 
+    output Density d "Density";
+  algorithm 
+    d := state.d;
+  end density;
+*/
   redeclare replaceable function extends pressure
   external "C" p=  TwoPhaseMedium_pressure_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
    mediumName, libraryName, substanceName)
