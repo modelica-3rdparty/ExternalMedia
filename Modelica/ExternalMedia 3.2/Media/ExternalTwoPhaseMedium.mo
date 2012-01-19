@@ -482,28 +482,27 @@ package ExternalTwoPhaseMedium
     d := state.d;
   end density;
 
-  redeclare replaceable function extends pressure
-  external "C" p=  TwoPhaseMedium_pressure_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
-   mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+  redeclare replaceable function extends pressure "Return pressure from state"
+  algorithm
+    p := state.p;
   end pressure;
 
   redeclare replaceable function extends specificEnthalpy
-  external "C" h=  TwoPhaseMedium_specificEnthalpy_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
-   mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Return specific enthalpy from state"
+  algorithm
+    h := state.h;
   end specificEnthalpy;
 
   redeclare replaceable function extends specificEntropy
-    external "C" s=  TwoPhaseMedium_specificEntropy_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
-     mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Return specific entropy from state"
+  algorithm
+    s := state.s;
   end specificEntropy;
 
   redeclare replaceable function extends temperature
-  external "C" T=  TwoPhaseMedium_temperature_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
-   mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Return temperature from state"
+  algorithm
+    T := state.T;
   end temperature;
 
   redeclare replaceable function extends isentropicEnthalpy
@@ -513,57 +512,57 @@ package ExternalTwoPhaseMedium
   end isentropicEnthalpy;
 
   redeclare replaceable function extends isobaricExpansionCoefficient
-  external "C" beta=  TwoPhaseMedium_isobaricExpansionCoefficient_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
-   mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Return isobaric expansion coefficient from state"
+  algorithm
+    beta := state.beta;
   end isobaricExpansionCoefficient;
 
   redeclare replaceable function extends isothermalCompressibility
-  external "C" kappa=  TwoPhaseMedium_isothermalCompressibility_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
-   mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Return isothermal compressibility from state"
+  algorithm
+    kappa := state.kappa;
   end isothermalCompressibility;
 
   redeclare replaceable function extends specificHeatCapacityCp
-  external "C" cp=  TwoPhaseMedium_specificHeatCapacityCp_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
-   mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Return specific heat capacity cp from state"
+  algorithm
+    cp := state.cp;
   end specificHeatCapacityCp;
 
   redeclare replaceable function extends specificHeatCapacityCv
-  external "C" cv=  TwoPhaseMedium_specificHeatCapacityCv_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
-   mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Return specific heat capacity cv from state"
+  algorithm
+    cv := state.cv;
   end specificHeatCapacityCv;
 
   redeclare replaceable function extends density_derp_h
-  external "C" ddph=  TwoPhaseMedium_density_derp_h_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
-   mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Return derivative of density wrt pressure at constant enthalpy from state"
+  algorithm
+    ddph := state.dd_dp_h;
   end density_derp_h;
 
   redeclare replaceable function extends density_derh_p
-    external "C" ddhp=  TwoPhaseMedium_density_derh_p_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
-     mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Return derivative of density wrt enthalpy at constant pressure from state"
+  algorithm
+    ddhp := state.dd_dh_p;
   end density_derh_p;
 
   redeclare replaceable function extends thermalConductivity
-  external "C" lambda=  TwoPhaseMedium_thermalConductivity_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
-   mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Return thermal conductivity from state"
+  algorithm
+    lambda := state.lambda;
   end thermalConductivity;
 
   redeclare replaceable function extends dynamicViscosity
-  external "C" eta=  TwoPhaseMedium_dynamicViscosity_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
-   mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Return dynamic viscosity from state"
+  algorithm
+    eta := state.eta;
   end dynamicViscosity;
 
   redeclare replaceable function extends velocityOfSound
-  external "C" a=  TwoPhaseMedium_velocityOfSound_(state.uniqueID, inputChoice, state.d, state.h, state.p, state.s, state.T, state.phase,
-   mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Return velocity of sound from state"
+  algorithm
+    a := state.a;
   end velocityOfSound;
 
   replaceable function density_ph_der "Total derivative of density_ph"
@@ -605,7 +604,6 @@ package ExternalTwoPhaseMedium
   external "C" TwoPhaseMedium_setSat_T_(T, sat.psat, sat.Tsat, sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end setSat_T;
-
 
   redeclare replaceable function extends saturationPressure
   external "C" p=  TwoPhaseMedium_saturationPressure_(T, mediumName, libraryName, substanceName)
