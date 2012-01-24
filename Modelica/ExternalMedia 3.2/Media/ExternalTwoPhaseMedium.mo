@@ -429,8 +429,8 @@ package ExternalTwoPhaseMedium
     output SaturationProperties sat "saturation property record";
   algorithm
     sat:=setSat_p(state.p);
-    annotation(Inline = true);
     //Redeclare this function for more efficient implementations avoiding the repeated computation of saturation properties
+    annotation(Inline = true);
   end setSat_p_state;
 
   redeclare replaceable function extends setDewState
@@ -439,7 +439,7 @@ package ExternalTwoPhaseMedium
     input SaturationProperties sat "saturation point";
     input FixedPhase phase =  1 "phase: default is one phase";
     output ThermodynamicState state "complete thermodynamic state info";
-  external "C" TwoPhaseMedium_setDewState_(sat.uniqueID, phase, state.uniqueID, state.phase, mediumName, libraryName, substanceName)
+  external "C" TwoPhaseMedium_setDewState_(sat, phase, state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end setDewState;
 
@@ -449,7 +449,7 @@ package ExternalTwoPhaseMedium
     input SaturationProperties sat "saturation point";
     input FixedPhase phase =  1 "phase: default is one phase";
     output ThermodynamicState state "complete thermodynamic state info";
-  external "C" TwoPhaseMedium_setBubbleState_(sat.uniqueID, phase, state.uniqueID, state.phase, mediumName, libraryName, substanceName)
+  external "C" TwoPhaseMedium_setBubbleState_(sat, phase, state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end setBubbleState;
 
