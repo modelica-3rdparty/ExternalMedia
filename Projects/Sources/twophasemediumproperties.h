@@ -14,50 +14,61 @@
   Francesco Casella, Christoph Richter, Sep 2006
   Copyright Politecnico di Milano and TU Braunschweig
 */
-class TwoPhaseMediumProperties{
+class ExternalMediaThermodynamicState{
 public:
 	TwoPhaseMediumProperties();
 	void initializeFields();
 
-	//! Phase 
-	/*!
-	  This phase flag is defined according to the phase flag in Modelica.Media:
-	  2 for two-phase, 1 for one-phase.
-	*/
-	int phase;
-
-	//! Isobaric expansion coefficient
-	double beta;
-	//! Specific heat capacity cp
-	double cp;
-	//! Specific heat capacity cv
-	double cv;
 	//! Density
 	double d;
-	//! Derivative of density wrt pressure at constant enthalpy
-	double dd_dp_h;
-	//! Derivative of density wrt enthalpy at constant pressure
-	double dd_dh_p;
 	//! Specific enthalpy
 	double h;
-	//! Compressibility
-	double kappa;
 	//! Pressure
 	double p;
 	//! Specific entropy
 	double s;
 	//! Temperature
 	double T;
+	//! Phase 
+	/*!
+	  This phase flag is defined according to the phase flag in Modelica.Media:
+	  2 for two-phase, 1 for one-phase.
+	*/
+	int phase;
+	//! Isobaric expansion coefficient
+	double beta;
+	//! Specific heat capacity cp
+	double cp;
+	//! Specific heat capacity cv
+	double cv;
+	//! Derivative of density wrt pressure at constant enthalpy
+	double ddph;
+	//! Derivative of density wrt enthalpy at constant pressure
+	double ddhp;
+	//! Compressibility
+	double kappa;
 	//! Derivative of temperature wrt pressure at constant enthalpy
 	double dT_dp_h;
 	//! Derivative of temperature wrt enthalpy at constant pressure
 	double dT_dh_p;
+	//! Dynamic viscosity
+	double eta;
+	//! Thermal conductivity
+	double lambda;
+	//! Prandtl number
+	double Pr;
+	//! Velocity of sound
+	double a;
+};
 
+class ExternalMediaSaturationProperties{
+public:
+	TwoPhaseMediumProperties();
+	void initializeFields();
 	//! Saturation pressure
-	double ps;
+	double psat;
 	//! Saturation temperature
-	double Ts;
-
+	double Tsat;
 	//! Density at bubble line (for pressure ps)
 	double dl;
 	//! Density at dew line (for pressure ps)
@@ -70,29 +81,18 @@ public:
 	double sl;
 	//! Specific entropy at dew line (for pressure ps)
 	double sv;
-
-	//! Dynamic viscosity
-	double eta;
-	//! Thermal conductivity
-	double lambda;
-	//! Prandtl number
-	double Pr;
 	//! Surface tension
 	double sigma;
-
-	//! Velocity of sound
-	double a;
-
 	//! Derivative of Ts wrt pressure
-    double d_Ts_dp;
+    double dTp;
 	//! Derivative of dls wrt pressure
-	double d_dl_dp;
+	double ddldp;
 	//! Derivative of dvs wrt pressure
-	double d_dv_dp;
+	double ddvdp;
 	//! Derivative of hls wrt pressure
-    double d_hl_dp;
+    double dhldp;
 	//! Derivative of hvs wrt pressure
-	double d_hv_dp;
+	double dhvdp;
 };
 
 #endif // TWOPHASEMEDIUMPROPERTIES_H_

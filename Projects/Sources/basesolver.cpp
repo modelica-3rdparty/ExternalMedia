@@ -233,13 +233,13 @@ bool BaseSolver::computeDerivatives(TwoPhaseMediumProperties *const properties){
 	// Check whether density is equal to zero
 	if (properties->d == 0.0)
 		return false;
-	// Compute dd_dp_h
-	properties->dd_dp_h = -(properties->T*properties->beta*properties->beta -
+	// Compute ddph
+	properties->ddph = -(properties->T*properties->beta*properties->beta -
 						  properties->beta -
 						  properties->kappa*properties->d*properties->cp)/
 						  properties->cp;
-	// Compute dd_dh_p
-	properties->dd_dh_p = -properties->beta*properties->d/properties->cp;
+	// Compute ddhp
+	properties->ddhp = -properties->beta*properties->d/properties->cp;
 	return true;
 }
 
@@ -257,3 +257,468 @@ double BaseSolver::isentropicEnthalpy(double &p, TwoPhaseMediumProperties *const
 	errorMessage("Internal error: isentropicEnthalpy() not implemented in the Solver object");
 	return 0;
 }
+// bonifetto (January 19, 2012)
+//! Compute phase flag
+/*!
+  This function returns the phase flag
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties ThermodynamicState property record corresponding to current state
+*/
+int BaseSolver::phase(ExternalMediaThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: phase() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute isobaric expansion coefficient
+/*!
+  This function returns the isobaric expansion coefficient
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties ThermodynamicState property record corresponding to current state
+*/
+double BaseSolver::beta(ExternalMediaThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: beta() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute specific heat capacity cp
+/*!
+  This function returns the specific heat capacity cp
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties ThermodynamicState property record corresponding to current state
+*/
+double BaseSolver::cp(ExternalMediaThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: cp() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute specific heat capacity cv
+/*!
+  This function returns the specific heat capacity cv
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties ThermodynamicState property record corresponding to current state
+*/
+double BaseSolver::cv(ExternalMediaThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: cv() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute density
+/*!
+  This function returns the density
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties ThermodynamicState property record corresponding to current state
+*/
+double BaseSolver::d(ExternalMediaThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: d() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute derivative of density wrt pressure at constant enthalpy
+/*!
+  This function returns the derivative of density wrt pressure at constant enthalpy
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties ThermodynamicState property record corresponding to current state
+*/
+double BaseSolver::ddph(ExternalMediaThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: ddph() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute derivative of density wrt enthalpy at constant pressure
+/*!
+  This function returns the derivative of density wrt enthalpy at constant pressure
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties ThermodynamicState property record corresponding to current state
+*/
+double BaseSolver::ddhp(ExternalMediaThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: ddhp() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute enthalpy
+/*!
+  This function returns the enthalpy
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties ThermodynamicState property record corresponding to current state
+*/
+double BaseSolver::h(ExternalMediaThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: h() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute compressibility
+/*!
+  This function returns the compressibility
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties ThermodynamicState property record corresponding to current state
+*/
+double BaseSolver::kappa(ExternalMediaThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: kappa() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute pressure
+/*!
+  This function returns the pressure
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties ThermodynamicState property record corresponding to current state
+*/
+double BaseSolver::p(ExternalMediaThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: p() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute entropy
+/*!
+  This function returns the entropy
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties ThermodynamicState property record corresponding to current state
+*/
+double BaseSolver::s(ExternalMediaThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: s() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute temperature
+/*!
+  This function returns the temperature
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties ThermodynamicState property record corresponding to current state
+*/
+double BaseSolver::T(ExternalMediaThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: T() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute derivative of temperature wrt pressure at constant enthalpy
+/*!
+  This function returns the derivative of temperature wrt pressure at constant enthalpy
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties ThermodynamicState property record corresponding to current state
+*/
+double BaseSolver::dT_dp_h(ExternalMediaThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: dT_dp_h() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute derivative of temperature wrt enthalpy at constant pressure
+/*!
+  This function returns the derivative of temperature wrt enthalpy at constant pressure
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties ThermodynamicState property record corresponding to current state
+*/
+double BaseSolver::dT_dh_p(ExternalMediaThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: dT_dh_p() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute dynamic viscosity
+/*!
+  This function returns the dynamic viscosity
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties ThermodynamicState property record corresponding to current state
+*/
+double BaseSolver::eta(ExternalMediaThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: eta() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute thermal conductivity
+/*!
+  This function returns the thermal conductivity
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties ThermodynamicState property record corresponding to current state
+*/
+double BaseSolver::lambda(ExternalMediaThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: lambda() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute velocity of sound
+/*!
+  This function returns the velocity of sound
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties ThermodynamicState property record corresponding to current state
+*/
+double BaseSolver::a(ExternalMediaThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: a() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute prandtl number
+/*!
+  This function returns the prandtl number
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties ThermodynamicState property record corresponding to current state
+*/
+double BaseSolver::Pr(ExternalMediaThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: Pr() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute total derivative of density ph
+/*!
+  This function returns the total derivative of density ph
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties ThermodynamicState property record corresponding to current state
+*/
+double BaseSolver::d_der(ExternalMediaThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: d_der() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute saturation pressure
+/*!
+  This function returns the saturation pressure
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties SaturationProperties property record corresponding to current state
+*/
+double BaseSolver::psat(ExternalMediaSaturationProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: psat() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute saturation temperature
+/*!
+  This function returns the saturation temperature
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties SaturationProperties property record corresponding to current state
+*/
+double BaseSolver::Tsat(ExternalMediaSaturationProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: Tsat() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute density at bubble line
+/*!
+  This function returns the density at bubble line
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties SaturationProperties property record corresponding to current state
+*/
+double BaseSolver::dl(ExternalMediaSaturationProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: dl() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute density at dew line
+/*!
+  This function returns the density at dew line
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties SaturationProperties property record corresponding to current state
+*/
+double BaseSolver::dv(ExternalMediaSaturationProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: dv() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute enthalpy at bubble line
+/*!
+  This function returns the enthalpy at bubble line
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties SaturationProperties property record corresponding to current state
+*/
+double BaseSolver::hl(ExternalMediaSaturationProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: hl() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute enthalpy at dew line
+/*!
+  This function returns the enthalpy at dew line
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties SaturationProperties property record corresponding to current state
+*/
+double BaseSolver::hv(ExternalMediaSaturationProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: hv() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute entropy at bubble line
+/*!
+  This function returns the entropy at bubble line
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties SaturationProperties property record corresponding to current state
+*/
+double BaseSolver::sl(ExternalMediaSaturationProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: sl() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute entropy at dew line
+/*!
+  This function returns the entropy at dew line
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties SaturationProperties property record corresponding to current state
+*/
+double BaseSolver::sv(ExternalMediaSaturationProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: sv() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute derivative of Ts wrt pressure
+/*!
+  This function returns the derivative of Ts wrt pressure
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties SaturationProperties property record corresponding to current state
+*/
+double BaseSolver::dTp(ExternalMediaSaturationProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: dTp() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute derivative of dls wrt pressure
+/*!
+  This function returns the derivative of dls wrt pressure
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties SaturationProperties property record corresponding to current state
+*/
+double BaseSolver::ddldp(ExternalMediaSaturationProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: ddldp() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute derivative of dvs wrt pressure
+/*!
+  This function returns the derivative of dvs wrt pressure
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties SaturationProperties property record corresponding to current state
+*/
+double BaseSolver::ddvdp(ExternalMediaSaturationProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: ddvdp() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute derivative of hls wrt pressure
+/*!
+  This function returns the derivative of hls wrt pressure
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties SaturationProperties property record corresponding to current state
+*/
+double BaseSolver::dhldp(ExternalMediaSaturationProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: dhldp() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute derivative of hvs wrt pressure
+/*!
+  This function returns the derivative of hvs wrt pressure
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties SaturationProperties property record corresponding to current state
+*/
+double BaseSolver::dhvdp(ExternalMediaSaturationProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: dhvdp() not implemented in the Solver object");
+	return 0;
+}
+
+//! Compute surface tension
+/*!
+  This function returns the surface tension
+  from the state specified by the properties input
+
+  Must be re-implemented in the specific solver
+  @param properties SaturationProperties property record corresponding to current state
+*/
+double BaseSolver::sigma(ExternalMediaSaturationProperties *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage("Internal error: sigma() not implemented in the Solver object");
+	return 0;
+}
+
+
+		double h_iso(double &p) const;
