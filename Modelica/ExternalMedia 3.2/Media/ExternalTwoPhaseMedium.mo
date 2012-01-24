@@ -43,51 +43,39 @@ package ExternalTwoPhaseMedium
     Integer phase "phase flag: 2 for two-phase, 1 for one-phase";
     Modelica.SIunits.CubicExpansionCoefficient beta
       "isobaric expansion coefficient";
-    Modelica.SIunits.SpecificHeatCapacityAtConstantPressure cp
-      "specific heat capacity cp";
-    Modelica.SIunits.SpecificHeatCapacityAtConstantVolume cv
-      "specific heat capacity cv";
-    Modelica.SIunits.DerDensityByPressure dd_dp_h
+    SpecificHeatCapacity cp "specific heat capacity cp";
+    SpecificHeatCapacity cv "specific heat capacity cv";
+    DerDensityByPressure ddph
       "derivative of density wrt pressure at constant enthalpy";
-    Modelica.SIunits.DerDensityByEnthalpy dd_dh_p
+    DerDensityByEnthalpy ddhp
       "derivative of density wrt enthalpy at constant pressure";
     Modelica.SIunits.Compressibility kappa "compressibility";
     Real dT_dp_h "derivative of temperature wrt pressure at constant enthalpy";
     Real dT_dh_p "derivative of temperature wrt enthalpy at constant pressure";
-    Modelica.SIunits.AbsolutePressure ps "saturation pressure";
-    Modelica.SIunits.Temperature Ts "saturation temperature";
-    Modelica.SIunits.Density dl "density at bubble line (for pressure ps)";
-    Modelica.SIunits.Density dv "density at dew line (for pressure ps)";
-    Modelica.SIunits.SpecificEnthalpy hl
-      "specific enthalpy at bubble line (for pressure ps)";
-    Modelica.SIunits.SpecificEnthalpy hv
-      "specific enthalpy at dew line (for pressure ps)";
-    Modelica.SIunits.SpecificEntropy sl
-      "specific entropy at bubble line (for pressure ps)";
-    Modelica.SIunits.SpecificEntropy sv
-      "specific entropy at dew line (for pressure ps)";
-    Modelica.SIunits.DynamicViscosity eta "dynamic viscosity";
-    Modelica.SIunits.ThermalConductivity lambda "thermal conductivity";
-    Modelica.SIunits.PrandtlNumber Pr "prandtl number";
-    Modelica.SIunits.SurfaceTension sigma "surface tension";
-    Modelica.SIunits.VelocityOfSound a "velocity of sound";
-    Real d_Ts_dp "derivative of Ts wrt pressure";
-    Modelica.SIunits.DerDensityByPressure d_dl_dp
-      "derivative of dls wrt pressure";
-    Modelica.SIunits.DerDensityByPressure d_dv_dp
-      "derivative of dvs wrt pressure";
-    Modelica.SIunits.DerEnthalpyByPressure d_hl_dp
-      "derivative of hls wrt pressure";
-    Modelica.SIunits.DerEnthalpyByPressure d_hv_dp
-      "derivative of hvs wrt pressure";
+    DynamicViscosity eta "dynamic viscosity";
+    ThermalConductivity lambda "thermal conductivity";
+    PrandtlNumber Pr "prandtl number";
+    VelocityOfSound a "velocity of sound";
   end ThermodynamicState;
 
   redeclare record extends SaturationProperties
-    Modelica.SIunits.AbsolutePressure psat "saturation pressure";
-    Modelica.SIunits.Temperature Tsat "saturation temperature";
+    AbsolutePressure psat "saturation pressure";
+    Temperature Tsat "saturation temperature";
+    Density dl "density at bubble line (for pressure ps)";
+    Density dv "density at dew line (for pressure ps)";
+    SpecificEnthalpy hl "specific enthalpy at bubble line (for pressure ps)";
+    SpecificEnthalpy hv "specific enthalpy at dew line (for pressure ps)";
+    SpecificEntropy sl "specific entropy at bubble line (for pressure ps)";
+    SpecificEntropy sv "specific entropy at dew line (for pressure ps)";
+    SurfaceTension sigma "surface tension";
+    Real dTp "derivative of Ts wrt pressure";
+    DerDensityByPressure ddldp "derivative of dls wrt pressure";
+    DerDensityByPressure ddvdp "derivative of dvs wrt pressure";
+    DerEnthalpyByPressure dhldp "derivative of hls wrt pressure";
+    DerEnthalpyByPressure dhvdp "derivative of hvs wrt pressure";
   end SaturationProperties;
 
-  redeclare model extends BaseProperties(
+  redeclare replaceable model extends BaseProperties(
     p(stateSelect = if preferredMediumStates and
                        (basePropertiesInputChoice == InputChoice.ph or
                         basePropertiesInputChoice == InputChoice.pT or
@@ -110,17 +98,11 @@ package ExternalTwoPhaseMedium
       "Phase input for property computation functions, 2 for two-phase, 1 for one-phase, 0 if not known";
     Integer phaseOutput
       "Phase output for medium, 2 for two-phase, 1 for one-phase";
-    Integer uniqueID(final start=0) "Unique ID of BaseProperty object";
     SpecificEntropy s(
       stateSelect = if basePropertiesInputChoice == InputChoice.ps then
                        StateSelect.prefer else StateSelect.default)
       "Specific entropy";
     SaturationProperties sat "saturation property record";
-  algorithm
-    when (initial()) then
-      uniqueID := createMedium(uniqueID);
-      assert(uniqueID>0, "Error in external medium library");
-    end when;
   equation
     MM = externalFluidConstants.molarMass;
     R = Modelica.Constants.R/MM;
@@ -131,7 +113,7 @@ package ExternalTwoPhaseMedium
     end if;
     if (basePropertiesInputChoice == InputChoice.ph) then
       // Compute the state record (including the unique ID)
-      state = setState_ph(p, h, phaseInput, uniqueID);
+      state = setState_ph(p, h, phaseInput);
       // Compute the remaining variables.
       // It is not possible to use the standard functions like
       // d = density(state), because differentiation for index
@@ -139,21 +121,21 @@ package ExternalTwoPhaseMedium
       // density_ph(), which has an appropriate derivative annotation,
       // is used instead. The implementation of density_ph() uses
       // setState with the same inputs, so there's no actual overhead
-      d = density_ph(p, h, phaseInput, uniqueID);
-      s = specificEntropy_ph(p, h, phaseInput, uniqueID);
-      T = temperature_ph(p, h, phaseInput, uniqueID);
+      d = density_ph(p, h, phaseInput);
+      s = specificEntropy_ph(p, h, phaseInput);
+      T = temperature_ph(p, h, phaseInput);
     elseif (basePropertiesInputChoice == InputChoice.dT) then
-      state = setState_dT(d, T, phaseInput, uniqueID);
+      state = setState_dT(d, T, phaseInput);
       h = specificEnthalpy(state);
       p = pressure(state);
       s = specificEntropy(state);
     elseif (basePropertiesInputChoice == InputChoice.pT) then
-      state = setState_pT(p, T, phaseInput, uniqueID);
+      state = setState_pT(p, T, phaseInput);
       d = density(state);
       h = specificEnthalpy(state);
       s = specificEntropy(state);
     elseif (basePropertiesInputChoice == InputChoice.ps) then
-      state = setState_ps(p, s, phaseInput, uniqueID);
+      state = setState_ps(p, s, phaseInput);
       d = density(state);
       h = specificEnthalpy(state);
       T = temperature(state);
@@ -224,8 +206,8 @@ package ExternalTwoPhaseMedium
     output Density d "Density";
   algorithm
     d := density(setState_ph(p, h, phase));
-    annotation(derivative(noDerivative = phase, noDerivative = uniqueID) = density_ph_der,
-               Inline = false);
+    annotation(derivative(noDerivative = phase) = density_ph_der,
+               Inline = true);
   end density_ph;
 
   redeclare replaceable function density_pT "Return density from p and T"
@@ -237,8 +219,8 @@ package ExternalTwoPhaseMedium
     output Density d "Density";
   algorithm
     d := density(setState_pT(p, T, phase));
-    annotation(derivative(noDerivative = phase, noDerivative = uniqueID) = density_pT_der,
-               Inline = false);
+    annotation(derivative(noDerivative = phase) = density_pT_der,
+               Inline = true);
   end density_pT;
 
   replaceable partial function density_pT_der "Total derivative of density_pT"
@@ -249,6 +231,8 @@ package ExternalTwoPhaseMedium
     input Real p_der;
     input Real T_der;
     output Real d_der;
+    // To be implemented
+    annotation(Inline = true);
   end density_pT_der;
 
   redeclare replaceable function density_ps "Return density from p and s"
@@ -260,8 +244,8 @@ package ExternalTwoPhaseMedium
     output Density d "Density";
   algorithm
     d := density(setState_ps(p, s, phase));
-    annotation(derivative(noDerivative = phase, noDerivative = uniqueID) = density_ps_der,
-               Inline = false);
+    annotation(derivative(noDerivative = phase) = density_ps_der,
+               Inline = true);
   end density_ps;
 
   replaceable partial function density_ps_der "Total derivative of density_ps"
@@ -272,6 +256,8 @@ package ExternalTwoPhaseMedium
     input Real p_der;
     input Real h_der;
     output Real d_der;
+    // To be implemented
+    annotation(Inline = true);
   end density_ps_der;
 
   redeclare replaceable function temperature_ph
@@ -284,8 +270,7 @@ package ExternalTwoPhaseMedium
     output Temperature T "Temperature";
   algorithm
     T := temperature(setState_ph(p, h, phase));
-    annotation(derivative(noDerivative = phase, noDerivative = uniqueID) = temperature_ph_der,
-               Inline = false);
+    annotation(Inline = true);
   end temperature_ph;
 
   redeclare replaceable function temperature_ps
@@ -298,6 +283,7 @@ package ExternalTwoPhaseMedium
     output Temperature T "Temperature";
   algorithm
     T := temperature(setState_ps(p, s, phase));
+    annotation(Inline = true);
   end temperature_ps;
 
   replaceable function specificEntropy_ph
@@ -310,6 +296,7 @@ package ExternalTwoPhaseMedium
     output SpecificEntropy s "specific entropy";
   algorithm
     s := specificEntropy(setState_ph(p, h, phase));
+    annotation(Inline = true);
   end specificEntropy_ph;
 
   redeclare replaceable function pressure_dT "Return pressure from d and T"
@@ -321,6 +308,7 @@ package ExternalTwoPhaseMedium
     output AbsolutePressure p "Pressure";
   algorithm
     p := pressure(setState_dT(d, T, phase));
+    annotation(Inline = true);
   end pressure_dT;
 
   redeclare replaceable function specificEnthalpy_pT
@@ -333,21 +321,8 @@ package ExternalTwoPhaseMedium
     output SpecificEnthalpy h "specific enthalpy";
   algorithm
     h := specificEnthalpy(setState_pT(p, T, phase));
+    annotation(Inline = true);
   end specificEnthalpy_pT;
-
-/*
-  redeclare replaceable function specificEntropy_pT 
-    "Return specific entropy from p and T" 
-    extends Modelica.Icons.Function;
-    input Pressure p "Pressure";
-    input Temperature T "Temperature";
-    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID "Unique ID";
-    output SpecificEntropy s "specific entropy";
-  algorithm 
-    s := specificEntropy(setState_pT(p, T, phase, uniqueID));
-  end specificEntropy_ph;
-*/
 
   redeclare replaceable function specificEnthalpy_dT
     "Return specific enthalpy from d and T"
@@ -359,21 +334,8 @@ package ExternalTwoPhaseMedium
     output SpecificEnthalpy h "specific enthalpy";
   algorithm
     h := specificEnthalpy(setState_dT(d, T, phase));
+    annotation(Inline = true);
   end specificEnthalpy_dT;
-
-/*
-  redeclare replaceable function specificEntropy_dT 
-    "Return specific entropy from d and T" 
-    extends Modelica.Icons.Function;
-    input Density d "Density";
-    input Temperature T "Temperature";
-    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Integer uniqueID "Unique ID";
-    output SpecificEntropy s "specific entropy";
-  algorithm 
-    s := specificEntropy(setState_dt(d, T, phase, uniqueID));
-  end specificEntropy_ph;
-*/
 
   redeclare replaceable function specificEnthalpy_ps
     "Return specific enthalpy from p and s"
@@ -385,6 +347,7 @@ package ExternalTwoPhaseMedium
     output SpecificEnthalpy h "specific enthalpy";
   algorithm
     h := specificEnthalpy(setState_ps(p,s, phase));
+    annotation(Inline = true);
   end specificEnthalpy_ps;
 
   replaceable partial function getMolarMass
@@ -411,7 +374,7 @@ package ExternalTwoPhaseMedium
       annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end getCriticalMolarVolume;
 
-  redeclare replaceable function extends setState_ph
+  redeclare replaceable function setState_ph
     "Return thermodynamic state record from p and h"
     extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
@@ -423,17 +386,19 @@ package ExternalTwoPhaseMedium
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end setState_ph;
 
-  redeclare replaceable function extends setState_pT
+  redeclare replaceable function setState_pT
     "Return thermodynamic state record from p and T"
     extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
     input Temperature T "temperature";
+    input FixedPhase phase = 0
+      "2 for two-phase, 1 for one-phase, 0 if not known";
     output ThermodynamicState state;
   external "C" TwoPhaseMedium_setState_pT_(p, T, state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end setState_pT;
 
-  redeclare replaceable function extends setState_dT
+  redeclare replaceable function setState_dT
     "Return thermodynamic state record from d and T"
     extends Modelica.Icons.Function;
     input Density d "density";
@@ -445,7 +410,7 @@ package ExternalTwoPhaseMedium
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end setState_dT;
 
-  redeclare replaceable function extends setState_ps
+  redeclare replaceable function setState_ps
     "Return thermodynamic state record from p and s"
     extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
@@ -456,6 +421,17 @@ package ExternalTwoPhaseMedium
   external "C" TwoPhaseMedium_setState_ps_(p, s, phase, state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end setState_ps;
+
+  replaceable partial function setSat_p_state
+    "Return saturation properties from the state"
+    extends Modelica.Icons.Function;
+    input ThermodynamicState state;
+    output SaturationProperties sat "saturation property record";
+  algorithm
+    sat:=setSat_p(state.p);
+    annotation(Inline = true);
+    //Redeclare this function for more efficient implementations avoiding the repeated computation of saturation properties
+  end setSat_p_state;
 
   redeclare replaceable function extends setDewState
     "set the thermodynamic state on the dew line"
@@ -480,33 +456,38 @@ package ExternalTwoPhaseMedium
   redeclare replaceable function extends density "Return density from state"
   algorithm
     d := state.d;
+    annotation(Inline = true);
   end density;
 
   redeclare replaceable function extends pressure "Return pressure from state"
   algorithm
     p := state.p;
+    annotation(Inline = true);
   end pressure;
 
   redeclare replaceable function extends specificEnthalpy
     "Return specific enthalpy from state"
   algorithm
     h := state.h;
+    annotation(Inline = true);
   end specificEnthalpy;
 
   redeclare replaceable function extends specificEntropy
     "Return specific entropy from state"
   algorithm
     s := state.s;
+    annotation(Inline = true);
   end specificEntropy;
 
   redeclare replaceable function extends temperature
     "Return temperature from state"
   algorithm
     T := state.T;
+    annotation(Inline = true);
   end temperature;
 
   redeclare replaceable function extends isentropicEnthalpy
-  external "C" h_is=  TwoPhaseMedium_isentropicEnthalpy_(p_downstream, refState.uniqueID, inputChoice, refState.d, refState.h, refState.p, refState.s, refState.T, refState.phase,
+  external "C" h_is=  TwoPhaseMedium_isentropicEnthalpy_(p_downstream, refState,
    mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end isentropicEnthalpy;
@@ -515,54 +496,63 @@ package ExternalTwoPhaseMedium
     "Return isobaric expansion coefficient from state"
   algorithm
     beta := state.beta;
+    annotation(Inline = true);
   end isobaricExpansionCoefficient;
 
   redeclare replaceable function extends isothermalCompressibility
     "Return isothermal compressibility from state"
   algorithm
     kappa := state.kappa;
+    annotation(Inline = true);
   end isothermalCompressibility;
 
   redeclare replaceable function extends specificHeatCapacityCp
     "Return specific heat capacity cp from state"
   algorithm
     cp := state.cp;
+    annotation(Inline = true);
   end specificHeatCapacityCp;
 
   redeclare replaceable function extends specificHeatCapacityCv
     "Return specific heat capacity cv from state"
   algorithm
     cv := state.cv;
+    annotation(Inline = true);
   end specificHeatCapacityCv;
 
   redeclare replaceable function extends density_derp_h
     "Return derivative of density wrt pressure at constant enthalpy from state"
   algorithm
-    ddph := state.dd_dp_h;
+    ddph := state.ddph;
+    annotation(Inline = true);
   end density_derp_h;
 
   redeclare replaceable function extends density_derh_p
     "Return derivative of density wrt enthalpy at constant pressure from state"
   algorithm
-    ddhp := state.dd_dh_p;
+    ddhp := state.ddhp;
+    annotation(Inline = true);
   end density_derh_p;
 
   redeclare replaceable function extends thermalConductivity
     "Return thermal conductivity from state"
   algorithm
     lambda := state.lambda;
+    annotation(Inline = true);
   end thermalConductivity;
 
   redeclare replaceable function extends dynamicViscosity
     "Return dynamic viscosity from state"
   algorithm
     eta := state.eta;
+    annotation(Inline = true);
   end dynamicViscosity;
 
   redeclare replaceable function extends velocityOfSound
     "Return velocity of sound from state"
   algorithm
     a := state.a;
+    annotation(Inline = true);
   end velocityOfSound;
 
   replaceable function density_ph_der "Total derivative of density_ph"
@@ -573,27 +563,17 @@ package ExternalTwoPhaseMedium
     input Real p_der;
     input Real h_der;
     output Real d_der;
-  external "C" d_der=  TwoPhaseMedium_density_ph_der_(uniqueID, p_der, h_der, p, h, phase, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+  algorithm
+    d_der:=density_derp_h(setState_ph(p, h))*p_der + density_derh_p(setState_ph(
+      p, h))*h_der;
+    annotation(Inline = true);
   end density_ph_der;
-
-  replaceable function temperature_ph_der "Total derivative of density_ph"
-    extends Modelica.Icons.Function;
-    input AbsolutePressure p "Pressure";
-    input SpecificEnthalpy h "Specific enthalpy";
-    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Real p_der;
-    input Real h_der;
-    output Real T_der;
-  external "C" T_der=  TwoPhaseMedium_temperature_ph_der_(uniqueID, p_der, h_der, p, h, phase, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
-  end temperature_ph_der;
 
   redeclare replaceable function setSat_p "Return saturation properties from p"
     extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
     output SaturationProperties sat "saturation property record";
-  external "C" TwoPhaseMedium_setSat_p_(p, sat.psat, sat.Tsat, sat, mediumName, libraryName, substanceName)
+  external "C" TwoPhaseMedium_setSat_p_(p, sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end setSat_p;
 
@@ -601,7 +581,7 @@ package ExternalTwoPhaseMedium
     extends Modelica.Icons.Function;
     input Temperature T "temperature";
     output SaturationProperties sat "saturation property record";
-  external "C" TwoPhaseMedium_setSat_T_(T, sat.psat, sat.Tsat, sat, mediumName, libraryName, substanceName)
+  external "C" TwoPhaseMedium_setSat_T_(T, sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end setSat_T;
 
@@ -615,6 +595,16 @@ package ExternalTwoPhaseMedium
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end saturationTemperature;
 
+  redeclare function extends saturationPressure_sat
+
+    annotation(Inline = true);
+  end saturationPressure_sat;
+
+  redeclare function extends saturationTemperature_sat
+
+    annotation(Inline = true);
+  end saturationTemperature_sat;
+
   redeclare replaceable function extends saturationTemperature_derp
   external "C" dTp=  TwoPhaseMedium_saturationTemperature_derp_(p, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
@@ -625,63 +615,85 @@ package ExternalTwoPhaseMedium
     extends Modelica.Icons.Function;
     input SaturationProperties sat "saturation property record";
     output Real dTp "derivative of saturation temperature w.r.t. pressure";
-  external "C" dTp=  TwoPhaseMedium_saturationTemperature_derp_sat_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+  algorithm
+    dTp := sat.dTp;
+    annotation(Inline = true);
   end saturationTemperature_derp_sat;
 
   redeclare replaceable function extends bubbleDensity
-  external "C" dl=  TwoPhaseMedium_bubbleDensity_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Returns bubble point density"
+  algorithm
+    dl := sat.dl;
+    annotation(Inline = true);
   end bubbleDensity;
 
-  redeclare replaceable function extends dewDensity
-  external "C" dv=  TwoPhaseMedium_dewDensity_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+  redeclare replaceable function extends dewDensity "Returns dew point density"
+  algorithm
+    dv := sat.dv;
+    annotation(Inline = true);
   end dewDensity;
 
   redeclare replaceable function extends bubbleEnthalpy
-  external "C" hl=  TwoPhaseMedium_bubbleEnthalpy_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Returns bubble point specific enthalpy"
+  algorithm
+    hl := sat.hl;
+    annotation(Inline = true);
   end bubbleEnthalpy;
 
   redeclare replaceable function extends dewEnthalpy
-  external "C" hv=  TwoPhaseMedium_dewEnthalpy_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Returns dew point specific enthalpy"
+  algorithm
+    hv := sat.hv;
+    annotation(Inline = true);
   end dewEnthalpy;
 
   redeclare replaceable function extends bubbleEntropy
-  external "C" sl=  TwoPhaseMedium_bubbleEntropy_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Returns bubble point specific entropy"
+  algorithm
+    sl := sat.sl;
+    annotation(Inline = true);
   end bubbleEntropy;
 
   redeclare replaceable function extends dewEntropy
-  external "C" sv=  TwoPhaseMedium_dewDensity_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Returns dew point specific entropy"
+  algorithm
+    sv := sat.sv;
+    annotation(Inline = true);
   end dewEntropy;
 
   redeclare replaceable function extends dBubbleDensity_dPressure
-  external "C" ddldp=  TwoPhaseMedium_dBubbleDensity_dPressure_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Returns bubble point density derivative"
+  algorithm
+    ddldp := sat.ddldp;
+    annotation(Inline = true);
   end dBubbleDensity_dPressure;
 
   redeclare replaceable function extends dDewDensity_dPressure
-  external "C" ddvdp=  TwoPhaseMedium_dDewDensity_dPressure_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Returns dew point density derivative"
+  algorithm
+    ddvdp := sat.ddvdp;
+    annotation(Inline = true);
   end dDewDensity_dPressure;
 
   redeclare replaceable function extends dBubbleEnthalpy_dPressure
-  external "C" dhldp=  TwoPhaseMedium_dBubbleEnthalpy_dPressure_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Returns bubble point specific enthalpy derivative"
+  algorithm
+    dhldp := sat.dhldp;
+    annotation(Inline = true);
   end dBubbleEnthalpy_dPressure;
 
   redeclare replaceable function extends dDewEnthalpy_dPressure
-  external "C" dhvdp=  TwoPhaseMedium_dDewEnthalpy_dPressure_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Returns dew point specific enthalpy derivative"
+  algorithm
+    dhvdp := sat.dhvdp;
+    annotation(Inline = true);
   end dDewEnthalpy_dPressure;
 
   redeclare replaceable function extends surfaceTension
-  external "C" sigma=  TwoPhaseMedium_surfaceTension_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    "Returns surface tension sigma in the two phase region"
+  algorithm
+    sigma := sat.sigma;
+    annotation(Inline = true);
   end surfaceTension;
 
 end ExternalTwoPhaseMedium;
