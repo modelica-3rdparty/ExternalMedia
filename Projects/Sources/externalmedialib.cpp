@@ -14,17 +14,17 @@
 #include <math.h>
 
 // Header of private function
-void TwoPhaseMedium_setStateDefault_(BaseTwoPhaseMedium *medium, int choice, double d, double h, double p, double s, double T, int phase);
+// void TwoPhaseMedium_setStateDefault_(BaseTwoPhaseMedium *medium, int choice, double d, double h, double p, double s, double T, int phase);
 
 // Macro function to check if two double precision numbers don't match
 // simple equality check should be ok, but we allow for some tolerance just
 // in case something goes wrong with the least significant bits
-#define mismatch(x,y) (fabs((x)-(y))/(std::max(fabs(x),1e-10)) > 1e-15)
+// #define mismatch(x,y) (fabs((x)-(y))/(std::max(fabs(x),1e-10)) > 1e-15)
 
 // Warning messages to be output in case of mismatch with the cached values
 // disabled by default, uncomment last two lines to turn on
-#define WARN_RECOMPUTE_PH
-#define WARN_RECOMPUTE_PSAT
+// #define WARN_RECOMPUTE_PH
+// #define WARN_RECOMPUTE_PSAT
 // #define WARN_RECOMPUTE_PH ModelicaFormatMessage("ExternalMedia Warning:\np = %f, h = %f don't match with cached values, properties have been re-computed\n", p, h)
 // #define WARN_RECOMPUTE_PSAT ModelicaFormatMessage("ExternalMedia Warning:\npsat = %f doesn't match with cached value, properties have been re-computed\n", psat)
 
@@ -39,6 +39,7 @@ void TwoPhaseMedium_setStateDefault_(BaseTwoPhaseMedium *medium, int choice, dou
   @param substanceName Substance name
   @param oldUniqueID Old unique ID number
 */
+/*
 int TwoPhaseMedium_createMedium_(const char *mediumName, const char *libraryName, const char *substanceName, int oldUniqueID){
 	// Allocate a new object and return a unique ID if oldUniqueID == 0
 	if (oldUniqueID == 0){
@@ -48,6 +49,7 @@ int TwoPhaseMedium_createMedium_(const char *mediumName, const char *libraryName
 		return oldUniqueID;
 	}
 }
+*/
 
 //! Get molar mass
 /*!
@@ -117,35 +119,11 @@ double TwoPhaseMedium_getCriticalMolarVolume_(const char *mediumName, const char
   @param libraryName Library name
   @param substanceName Substance name
 */
-void TwoPhaseMedium_setState_dT_(double d, double T, int phase, int uniqueID, int *state_uniqueID, int *state_phase, double *state_d, double *state_h, double *state_p, double *state_s, double *state_T,
+void TwoPhaseMedium_setState_dT_(double d, double T, int phase, ExternalThermodynamicState *state,
 								 const char *mediumName, const char *libraryName, const char *substanceName){
-	if (uniqueID == 0){
-	  // setState_dT was called with uniqueID == 0
-	  // create a new transient medium object and get a transientUniqueID
-	  int transientUniqueID = MediumMap::addTransientMedium(mediumName, libraryName, substanceName);
-      // run setState_dT_ with the transientUniqueID
-	  TwoPhaseMedium_setState_dT_(d, T, phase, transientUniqueID, state_uniqueID, state_phase, state_d, state_h, state_p, state_s, state_T, mediumName, libraryName, substanceName);
-	} else {
-      // setState_dT was called with the uniqueID of an existing medium object
- 	  // Call the medium object's setState_dT function
-	  BaseTwoPhaseMedium *medium = MediumMap::medium(uniqueID);
-	  medium->setState_dT(d, T, phase);
-	  // Return values
-	  if (state_uniqueID != NULL)
-  		  *state_uniqueID = uniqueID;
-	  if (state_phase != NULL)
-	 	  *state_phase = MediumMap::medium(uniqueID)->phase();
-	  if (state_d != NULL)
-		  *state_d = medium->d();
-	  if (state_h != NULL)
-		  *state_h = medium->h();
-	  if (state_p != NULL)
-		  *state_p = medium->p();
-	  if (state_s != NULL)
-		  *state_s = medium->s();
-	  if (state_T != NULL)
-		  *state_T = medium->T();
-    }
+	
+	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
+    solver->setState_dT(d, T, phase, state);
 }
 
 //! Compute properties from p, h, and phase
@@ -393,6 +371,8 @@ void TwoPhaseMedium_setSat_T_(double T, int uniqueID, double *sat_psat, double *
   @param sat_Tsat Pointer to return temperature for saturation record
   @param sat_uniqueID Pointer to return unique ID number for saturation record
 */
+
+/*
 void TwoPhaseMedium_setSat_p_state_(int uniqueID, double *sat_psat, double *sat_Tsat, int *sat_uniqueID){
 	// Check for the validity of the uniqueID - this function should never be 
 	// called with a zero unique ID
@@ -412,6 +392,7 @@ void TwoPhaseMedium_setSat_p_state_(int uniqueID, double *sat_psat, double *sat_
 	  if (sat_Tsat != NULL)
 		  *sat_Tsat = medium->Ts();
 }
+*/
 
 //! Compute dew state
 /*!
@@ -424,27 +405,13 @@ void TwoPhaseMedium_setSat_p_state_(int uniqueID, double *sat_psat, double *sat_
   @param libraryName Library name
   @param substanceName Substance name
 */
-void TwoPhaseMedium_setDewState_(int uniqueID, int phase, int *state_uniqueID, int *state_phase,
+void TwoPhaseMedium_setDewState_(ExternalSaturationProperties *sat, int phase, ExternalThermodynamicState *state,
 								 const char *mediumName, const char *libraryName, const char *substanceName){
-	// Check for the validity of the uniqueID - this function should never be 
-	// called with a zero unique ID or phase inputs
-	if (uniqueID == 0)
-		errorMessage("setDewState_ called without a valid uniqueID");
-	if (phase < 1 || phase > 2)
-		errorMessage("setDewState_ called with invalid phase");
-	// Get the unique ID of the the dewState object, and allocate a new medium
-	// object and set the dewState uniqueID if necessary
-	int dewUniqueID = MediumMap::medium(uniqueID)->getDewUniqueID(phase);
-	// Call the original medium object's setDewState function
-	// which will compute the properties of the dew state and store them
-	// in the medium with the dew state unique ID
-    MediumMap::medium(uniqueID)->setDewState(phase);
-    // Return values
-	if (state_uniqueID != NULL)
-  	  *state_uniqueID = dewUniqueID;
-	if (state_phase != NULL)
-	  *state_phase = phase;
+
+	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
+    solver->setDewState(phase, sat, state);
 }
+
 
 //! Compute bubble state
 /*!
@@ -480,21 +447,12 @@ void TwoPhaseMedium_setBubbleState_(int uniqueID, int phase, int *state_uniqueID
 }
 
 //! Return density of specified medium
-double TwoPhaseMedium_density_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+double TwoPhaseMedium_density_(ExternalThermodynamicState *state,
 							   const char *mediumName, const char *libraryName, const char *substanceName){
-	if (uniqueID == 0)
-	{
-		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
-        TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
-		return medium->d();
-	}
-	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
-	{
-		WARN_RECOMPUTE_PH;
-        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
-	}
-	return MediumMap::medium(uniqueID)->d();
+	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
+    solver->d(state);
 }
+
 
 //! Return derivative of density wrt pressure at constant specific enthalpy of specified medium
 double TwoPhaseMedium_density_derp_h_(int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
@@ -629,21 +587,12 @@ double TwoPhaseMedium_temperature_ph_der_(int uniqueID, double p_der, double h_d
 }
 
 //! Return the enthalpy at pressure p after an isentropic transformation form the specified medium state
-double TwoPhaseMedium_isentropicEnthalpy_(double p_iso, int uniqueID, int choice, double d, double h, double p, double s, double T, int phase,
+double TwoPhaseMedium_isentropicEnthalpy_(double p_downstream, ExternalThermodynamicState *refState,
 										  const char *mediumName, const char *libraryName, const char *substanceName){
-	if (uniqueID == 0)
-	{
-		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
-        TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
-		return medium->h_iso(p_iso);
-	}
-	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
-	{
-		WARN_RECOMPUTE_PH;
-        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
-	}
-	return MediumMap::medium(uniqueID)->h_iso(p_iso);
+	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
+    solver->isentropicEnthalpy(p, refState);
 }
+
 
 //! Return derivative of saturation temperature of specified medium from saturation properties
 double TwoPhaseMedium_saturationTemperature_derp_sat_(double psat, double Tsat, int uniqueID,
@@ -1072,6 +1021,7 @@ double TwoPhaseMedium_saturationTemperature_derp_(double p, const char *mediumNa
   @param T Temperature
   @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
 */
+/*
 void TwoPhaseMedium_setStateDefault_(BaseTwoPhaseMedium *medium, int choice, double d, double h, double p, double s, double T, int phase){
 	if(choice == CHOICE_dT)
 		medium->setState_dT(d,T,phase);
@@ -1085,3 +1035,4 @@ void TwoPhaseMedium_setStateDefault_(BaseTwoPhaseMedium *medium, int choice, dou
 		errorMessage("Wrong choice of inputs in setStateDefault_()\n");
 }
 
+*/
