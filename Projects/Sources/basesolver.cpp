@@ -71,13 +71,13 @@ void BaseSolver::setFluidConstants(){
 //! Set saturation properties from p
 /*!
   This function sets the saturation properties for the given pressure p.
-  The computed values are written to the two phase medium propery struct.
+  The computed values are written to the ExternalSaturationProperties propery struct.
 
   Must be re-implemented in the specific solver
   @param p Pressure
-  @param properties Two phase medium property record
+  @param properties ExternalSaturationProperties property struct
 */
-void BaseSolver::setSat_p(double &p, TwoPhaseMediumProperties *const properties){
+void BaseSolver::setSat_p(double &p, ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: setSat_p() not implemented in the Solver object");
 }
@@ -85,13 +85,13 @@ void BaseSolver::setSat_p(double &p, TwoPhaseMediumProperties *const properties)
 //! Set saturation properties from T
 /*!
   This function sets the saturation properties for the given temperature T.
-  The computed values are written to the two phase medium propery struct.
+  The computed values are written to the ExternalSaturationProperties propery struct.
 
   Must be re-implemented in the specific solver
   @param T Temperature
-  @param properties Two phase medium property record
+  @param properties ExternalSaturationProperties property struct
 */
-void BaseSolver::setSat_T(double &T, TwoPhaseMediumProperties *const properties){
+void BaseSolver::setSat_T(double &T, ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: setSat_T() not implemented in the Solver object");
 }
@@ -115,15 +115,15 @@ void BaseSolver::setSat_p_state(TwoPhaseMediumProperties *const properties){
 /*!
   This function sets the thermodynamic state record for the given density
   d, the temperature T and the specified phase. The computed values are
-  written to the two phase medium property struct.
+  written to the ExternalThermodynamicState property struct.
 
   Must be re-implemented in the specific solver
   @param d Density
   @param T Temperature
   @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
-  @param properties Two phase medium property record
+  @param properties ExternalThermodynamicState property struct
 */
-void BaseSolver::setState_dT(double &d, double &T, int &phase, TwoPhaseMediumProperties *const properties){
+void BaseSolver::setState_dT(double &d, double &T, int &phase, ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: setState_dT() not implemented in the Solver object");
 }
@@ -132,15 +132,15 @@ void BaseSolver::setState_dT(double &d, double &T, int &phase, TwoPhaseMediumPro
 /*!
   This function sets the thermodynamic state record for the given pressure
   p, the specific enthalpy h and the specified phase. The computed values are
-  written to the two phase medium property struct.
+  written to the ExternalThermodynamicState property struct.
 
   Must be re-implemented in the specific solver
   @param p Pressure
   @param h Specific enthalpy
   @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
-  @param properties Two phase medium property record
+  @param properties ExternalThermodynamicState property struct
 */
-void BaseSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMediumProperties *const properties){
+void BaseSolver::setState_ph(double &p, double &h, int &phase, ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: setState_ph() not implemented in the Solver object");
 }
@@ -149,15 +149,15 @@ void BaseSolver::setState_ph(double &p, double &h, int &phase, TwoPhaseMediumPro
 /*!
   This function sets the thermodynamic state record for the given pressure
   p, the specific entropy s and the specified phase. The computed values are
-  written to the two phase medium property struct.
+  written to the ExternalThermodynamicState property struct.
 
   Must be re-implemented in the specific solver
   @param p Pressure
   @param s Specific entropy
   @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
-  @param properties Two phase medium property record
+  @param properties ExternalThermodynamicState property struct
 */
-void BaseSolver::setState_ps(double &p, double &s, int &phase, TwoPhaseMediumProperties *const properties){
+void BaseSolver::setState_ps(double &p, double &s, int &phase, ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: setState_ps() not implemented in the Solver object");
 }
@@ -166,14 +166,14 @@ void BaseSolver::setState_ps(double &p, double &s, int &phase, TwoPhaseMediumPro
 /*!
   This function sets the thermodynamic state record for the given pressure
   p and the temperature T. The computed values are
-  written to the two phase medium property struct.
+  written to the ExternalThermodynamicState property struct.
 
   Must be re-implemented in the specific solver
   @param p Pressure
   @param T Temperature
-  @param properties Two phase medium property record
+  @param properties ExternalThermodynamicState property struct
 */
-void BaseSolver::setState_pT(double &p, double &T, TwoPhaseMediumProperties *const properties){
+void BaseSolver::setState_pT(double &p, double &T, ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: setState_pT() not implemented in the Solver object");
 }
@@ -250,23 +250,23 @@ bool BaseSolver::computeDerivatives(TwoPhaseMediumProperties *const properties){
 
   Must be re-implemented in the specific solver
   @param p New pressure
-  @param properties Two phase medium property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-double BaseSolver::isentropicEnthalpy(double &p, TwoPhaseMediumProperties *const properties){
+double BaseSolver::isentropicEnthalpy(double &p, ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: isentropicEnthalpy() not implemented in the Solver object");
 	return 0;
 }
-// bonifetto (January 19, 2012)
+
 //! Compute phase flag
 /*!
   This function returns the phase flag
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties ThermodynamicState property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-int BaseSolver::phase(ExternalMediaThermodynamicState *const properties){
+int BaseSolver::phase(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: phase() not implemented in the Solver object");
 	return 0;
@@ -278,9 +278,9 @@ int BaseSolver::phase(ExternalMediaThermodynamicState *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties ThermodynamicState property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-double BaseSolver::beta(ExternalMediaThermodynamicState *const properties){
+double BaseSolver::beta(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: beta() not implemented in the Solver object");
 	return 0;
@@ -292,9 +292,9 @@ double BaseSolver::beta(ExternalMediaThermodynamicState *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties ThermodynamicState property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-double BaseSolver::cp(ExternalMediaThermodynamicState *const properties){
+double BaseSolver::cp(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: cp() not implemented in the Solver object");
 	return 0;
@@ -306,9 +306,9 @@ double BaseSolver::cp(ExternalMediaThermodynamicState *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties ThermodynamicState property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-double BaseSolver::cv(ExternalMediaThermodynamicState *const properties){
+double BaseSolver::cv(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: cv() not implemented in the Solver object");
 	return 0;
@@ -320,9 +320,9 @@ double BaseSolver::cv(ExternalMediaThermodynamicState *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties ThermodynamicState property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-double BaseSolver::d(ExternalMediaThermodynamicState *const properties){
+double BaseSolver::d(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: d() not implemented in the Solver object");
 	return 0;
@@ -334,9 +334,9 @@ double BaseSolver::d(ExternalMediaThermodynamicState *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties ThermodynamicState property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-double BaseSolver::ddph(ExternalMediaThermodynamicState *const properties){
+double BaseSolver::ddph(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: ddph() not implemented in the Solver object");
 	return 0;
@@ -348,23 +348,23 @@ double BaseSolver::ddph(ExternalMediaThermodynamicState *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties ThermodynamicState property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-double BaseSolver::ddhp(ExternalMediaThermodynamicState *const properties){
+double BaseSolver::ddhp(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: ddhp() not implemented in the Solver object");
 	return 0;
 }
 
-//! Compute enthalpy
+//! Compute specific enthalpy
 /*!
-  This function returns the enthalpy
+  This function returns the specific enthalpy
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties ThermodynamicState property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-double BaseSolver::h(ExternalMediaThermodynamicState *const properties){
+double BaseSolver::h(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: h() not implemented in the Solver object");
 	return 0;
@@ -376,9 +376,9 @@ double BaseSolver::h(ExternalMediaThermodynamicState *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties ThermodynamicState property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-double BaseSolver::kappa(ExternalMediaThermodynamicState *const properties){
+double BaseSolver::kappa(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: kappa() not implemented in the Solver object");
 	return 0;
@@ -390,23 +390,23 @@ double BaseSolver::kappa(ExternalMediaThermodynamicState *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties ThermodynamicState property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-double BaseSolver::p(ExternalMediaThermodynamicState *const properties){
+double BaseSolver::p(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: p() not implemented in the Solver object");
 	return 0;
 }
 
-//! Compute entropy
+//! Compute specific entropy
 /*!
-  This function returns the entropy
+  This function returns the specific entropy
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties ThermodynamicState property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-double BaseSolver::s(ExternalMediaThermodynamicState *const properties){
+double BaseSolver::s(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: s() not implemented in the Solver object");
 	return 0;
@@ -418,9 +418,9 @@ double BaseSolver::s(ExternalMediaThermodynamicState *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties ThermodynamicState property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-double BaseSolver::T(ExternalMediaThermodynamicState *const properties){
+double BaseSolver::T(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: T() not implemented in the Solver object");
 	return 0;
@@ -432,9 +432,9 @@ double BaseSolver::T(ExternalMediaThermodynamicState *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties ThermodynamicState property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-double BaseSolver::dT_dp_h(ExternalMediaThermodynamicState *const properties){
+double BaseSolver::dT_dp_h(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: dT_dp_h() not implemented in the Solver object");
 	return 0;
@@ -446,9 +446,9 @@ double BaseSolver::dT_dp_h(ExternalMediaThermodynamicState *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties ThermodynamicState property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-double BaseSolver::dT_dh_p(ExternalMediaThermodynamicState *const properties){
+double BaseSolver::dT_dh_p(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: dT_dh_p() not implemented in the Solver object");
 	return 0;
@@ -460,9 +460,9 @@ double BaseSolver::dT_dh_p(ExternalMediaThermodynamicState *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties ThermodynamicState property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-double BaseSolver::eta(ExternalMediaThermodynamicState *const properties){
+double BaseSolver::eta(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: eta() not implemented in the Solver object");
 	return 0;
@@ -474,9 +474,9 @@ double BaseSolver::eta(ExternalMediaThermodynamicState *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties ThermodynamicState property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-double BaseSolver::lambda(ExternalMediaThermodynamicState *const properties){
+double BaseSolver::lambda(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: lambda() not implemented in the Solver object");
 	return 0;
@@ -488,9 +488,9 @@ double BaseSolver::lambda(ExternalMediaThermodynamicState *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties ThermodynamicState property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-double BaseSolver::a(ExternalMediaThermodynamicState *const properties){
+double BaseSolver::a(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: a() not implemented in the Solver object");
 	return 0;
@@ -502,9 +502,9 @@ double BaseSolver::a(ExternalMediaThermodynamicState *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties ThermodynamicState property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-double BaseSolver::Pr(ExternalMediaThermodynamicState *const properties){
+double BaseSolver::Pr(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: Pr() not implemented in the Solver object");
 	return 0;
@@ -516,9 +516,9 @@ double BaseSolver::Pr(ExternalMediaThermodynamicState *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties ThermodynamicState property record corresponding to current state
+  @param properties ExternalThermodynamicState property struct corresponding to current state
 */
-double BaseSolver::d_der(ExternalMediaThermodynamicState *const properties){
+double BaseSolver::d_der(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: d_der() not implemented in the Solver object");
 	return 0;
@@ -530,9 +530,9 @@ double BaseSolver::d_der(ExternalMediaThermodynamicState *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties SaturationProperties property record corresponding to current state
+  @param properties ExternalSaturationProperties property struct corresponding to current state
 */
-double BaseSolver::psat(ExternalMediaSaturationProperties *const properties){
+double BaseSolver::psat(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: psat() not implemented in the Solver object");
 	return 0;
@@ -544,9 +544,9 @@ double BaseSolver::psat(ExternalMediaSaturationProperties *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties SaturationProperties property record corresponding to current state
+  @param properties ExternalSaturationProperties property struct corresponding to current state
 */
-double BaseSolver::Tsat(ExternalMediaSaturationProperties *const properties){
+double BaseSolver::Tsat(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: Tsat() not implemented in the Solver object");
 	return 0;
@@ -558,9 +558,9 @@ double BaseSolver::Tsat(ExternalMediaSaturationProperties *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties SaturationProperties property record corresponding to current state
+  @param properties ExternalSaturationProperties property struct corresponding to current state
 */
-double BaseSolver::dl(ExternalMediaSaturationProperties *const properties){
+double BaseSolver::dl(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: dl() not implemented in the Solver object");
 	return 0;
@@ -572,9 +572,9 @@ double BaseSolver::dl(ExternalMediaSaturationProperties *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties SaturationProperties property record corresponding to current state
+  @param properties ExternalSaturationProperties property struct corresponding to current state
 */
-double BaseSolver::dv(ExternalMediaSaturationProperties *const properties){
+double BaseSolver::dv(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: dv() not implemented in the Solver object");
 	return 0;
@@ -586,9 +586,9 @@ double BaseSolver::dv(ExternalMediaSaturationProperties *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties SaturationProperties property record corresponding to current state
+  @param properties ExternalSaturationProperties property struct corresponding to current state
 */
-double BaseSolver::hl(ExternalMediaSaturationProperties *const properties){
+double BaseSolver::hl(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: hl() not implemented in the Solver object");
 	return 0;
@@ -600,9 +600,9 @@ double BaseSolver::hl(ExternalMediaSaturationProperties *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties SaturationProperties property record corresponding to current state
+  @param properties ExternalSaturationProperties property struct corresponding to current state
 */
-double BaseSolver::hv(ExternalMediaSaturationProperties *const properties){
+double BaseSolver::hv(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: hv() not implemented in the Solver object");
 	return 0;
@@ -614,9 +614,9 @@ double BaseSolver::hv(ExternalMediaSaturationProperties *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties SaturationProperties property record corresponding to current state
+  @param properties ExternalSaturationProperties property struct corresponding to current state
 */
-double BaseSolver::sl(ExternalMediaSaturationProperties *const properties){
+double BaseSolver::sl(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: sl() not implemented in the Solver object");
 	return 0;
@@ -628,9 +628,9 @@ double BaseSolver::sl(ExternalMediaSaturationProperties *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties SaturationProperties property record corresponding to current state
+  @param properties ExternalSaturationProperties property struct corresponding to current state
 */
-double BaseSolver::sv(ExternalMediaSaturationProperties *const properties){
+double BaseSolver::sv(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: sv() not implemented in the Solver object");
 	return 0;
@@ -642,9 +642,9 @@ double BaseSolver::sv(ExternalMediaSaturationProperties *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties SaturationProperties property record corresponding to current state
+  @param properties ExternalSaturationProperties property struct corresponding to current state
 */
-double BaseSolver::dTp(ExternalMediaSaturationProperties *const properties){
+double BaseSolver::dTp(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: dTp() not implemented in the Solver object");
 	return 0;
@@ -656,9 +656,9 @@ double BaseSolver::dTp(ExternalMediaSaturationProperties *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties SaturationProperties property record corresponding to current state
+  @param properties ExternalSaturationProperties property struct corresponding to current state
 */
-double BaseSolver::ddldp(ExternalMediaSaturationProperties *const properties){
+double BaseSolver::ddldp(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: ddldp() not implemented in the Solver object");
 	return 0;
@@ -670,9 +670,9 @@ double BaseSolver::ddldp(ExternalMediaSaturationProperties *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties SaturationProperties property record corresponding to current state
+  @param properties ExternalSaturationProperties property struct corresponding to current state
 */
-double BaseSolver::ddvdp(ExternalMediaSaturationProperties *const properties){
+double BaseSolver::ddvdp(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: ddvdp() not implemented in the Solver object");
 	return 0;
@@ -684,9 +684,9 @@ double BaseSolver::ddvdp(ExternalMediaSaturationProperties *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties SaturationProperties property record corresponding to current state
+  @param properties ExternalSaturationProperties property struct corresponding to current state
 */
-double BaseSolver::dhldp(ExternalMediaSaturationProperties *const properties){
+double BaseSolver::dhldp(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: dhldp() not implemented in the Solver object");
 	return 0;
@@ -698,9 +698,9 @@ double BaseSolver::dhldp(ExternalMediaSaturationProperties *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties SaturationProperties property record corresponding to current state
+  @param properties ExternalSaturationProperties property struct corresponding to current state
 */
-double BaseSolver::dhvdp(ExternalMediaSaturationProperties *const properties){
+double BaseSolver::dhvdp(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: dhvdp() not implemented in the Solver object");
 	return 0;
@@ -712,9 +712,9 @@ double BaseSolver::dhvdp(ExternalMediaSaturationProperties *const properties){
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
-  @param properties SaturationProperties property record corresponding to current state
+  @param properties ExternalSaturationProperties property struct corresponding to current state
 */
-double BaseSolver::sigma(ExternalMediaSaturationProperties *const properties){
+double BaseSolver::sigma(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
 	errorMessage("Internal error: sigma() not implemented in the Solver object");
 	return 0;
