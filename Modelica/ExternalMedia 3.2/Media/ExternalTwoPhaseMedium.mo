@@ -35,44 +35,44 @@ package ExternalTwoPhaseMedium
     "Default choice of input variables for property computations";
 
   redeclare replaceable record extends ThermodynamicState
-    Density d "density";
-    SpecificEnthalpy h "specific enthalpy";
-    AbsolutePressure p "pressure";
-    SpecificEntropy s "specific entropy";
+    PrandtlNumber Pr "prandtl number";
     Temperature T "temperature";
-    Integer phase "phase flag: 2 for two-phase, 1 for one-phase";
+    VelocityOfSound a "velocity of sound";
     Modelica.SIunits.CubicExpansionCoefficient beta
       "isobaric expansion coefficient";
     SpecificHeatCapacity cp "specific heat capacity cp";
     SpecificHeatCapacity cv "specific heat capacity cv";
-    DerDensityByPressure ddph
-      "derivative of density wrt pressure at constant enthalpy";
+    Density d "density";
+    Real dT_dh_p "derivative of temperature wrt enthalpy at constant pressure";
+    Real dT_dp_h "derivative of temperature wrt pressure at constant enthalpy";
     DerDensityByEnthalpy ddhp
       "derivative of density wrt enthalpy at constant pressure";
-    Modelica.SIunits.Compressibility kappa "compressibility";
-    Real dT_dp_h "derivative of temperature wrt pressure at constant enthalpy";
-    Real dT_dh_p "derivative of temperature wrt enthalpy at constant pressure";
+    DerDensityByPressure ddph
+      "derivative of density wrt pressure at constant enthalpy";
     DynamicViscosity eta "dynamic viscosity";
+    SpecificEnthalpy h "specific enthalpy";
+    Modelica.SIunits.Compressibility kappa "compressibility";
     ThermalConductivity lambda "thermal conductivity";
-    PrandtlNumber Pr "prandtl number";
-    VelocityOfSound a "velocity of sound";
+    AbsolutePressure p "pressure";
+    Integer phase "phase flag: 2 for two-phase, 1 for one-phase";
+    SpecificEntropy s "specific entropy";
   end ThermodynamicState;
 
   redeclare record extends SaturationProperties
-    AbsolutePressure psat "saturation pressure";
     Temperature Tsat "saturation temperature";
-    Density dl "density at bubble line (for pressure ps)";
-    Density dv "density at dew line (for pressure ps)";
-    SpecificEnthalpy hl "specific enthalpy at bubble line (for pressure ps)";
-    SpecificEnthalpy hv "specific enthalpy at dew line (for pressure ps)";
-    SpecificEntropy sl "specific entropy at bubble line (for pressure ps)";
-    SpecificEntropy sv "specific entropy at dew line (for pressure ps)";
-    SurfaceTension sigma "surface tension";
     Real dTp "derivative of Ts wrt pressure";
     DerDensityByPressure ddldp "derivative of dls wrt pressure";
     DerDensityByPressure ddvdp "derivative of dvs wrt pressure";
     DerEnthalpyByPressure dhldp "derivative of hls wrt pressure";
     DerEnthalpyByPressure dhvdp "derivative of hvs wrt pressure";
+    Density dl "density at bubble line (for pressure ps)";
+    Density dv "density at dew line (for pressure ps)";
+    SpecificEnthalpy hl "specific enthalpy at bubble line (for pressure ps)";
+    SpecificEnthalpy hv "specific enthalpy at dew line (for pressure ps)";
+    AbsolutePressure psat "saturation pressure";
+    SurfaceTension sigma "surface tension";
+    SpecificEntropy sl "specific entropy at bubble line (for pressure ps)";
+    SpecificEntropy sv "specific entropy at dew line (for pressure ps)";
   end SaturationProperties;
 
   redeclare replaceable model extends BaseProperties(
@@ -454,36 +454,61 @@ package ExternalTwoPhaseMedium
   end setBubbleState;
 
   redeclare replaceable function extends density "Return density from state"
+    //Standard definition
   algorithm
     d := state.d;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" d=  TwoPhaseMedium_density_(state, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end density;
 
   redeclare replaceable function extends pressure "Return pressure from state"
+    //Standard definition
   algorithm
     p := state.p;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" p=  TwoPhaseMedium_pressure_(state, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end pressure;
 
   redeclare replaceable function extends specificEnthalpy
     "Return specific enthalpy from state"
+    //Standard definition
   algorithm
     h := state.h;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" h=  TwoPhaseMedium_specificEnthalpy_(state, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end specificEnthalpy;
 
   redeclare replaceable function extends specificEntropy
     "Return specific entropy from state"
+    //Standard definition
   algorithm
     s := state.s;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+    external "C" s=  TwoPhaseMedium_specificEntropy_(state, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end specificEntropy;
 
   redeclare replaceable function extends temperature
     "Return temperature from state"
+    //Standard definition
   algorithm
     T := state.T;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" T=  TwoPhaseMedium_temperature_(state, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end temperature;
 
   redeclare replaceable function extends isentropicEnthalpy
@@ -494,65 +519,110 @@ package ExternalTwoPhaseMedium
 
   redeclare replaceable function extends isobaricExpansionCoefficient
     "Return isobaric expansion coefficient from state"
+    //Standard definition
   algorithm
     beta := state.beta;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" beta=  TwoPhaseMedium_isobaricExpansionCoefficient_(state, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end isobaricExpansionCoefficient;
 
   redeclare replaceable function extends isothermalCompressibility
     "Return isothermal compressibility from state"
+    //Standard definition
   algorithm
     kappa := state.kappa;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" kappa=  TwoPhaseMedium_isothermalCompressibility_(state, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end isothermalCompressibility;
 
   redeclare replaceable function extends specificHeatCapacityCp
     "Return specific heat capacity cp from state"
+    //Standard definition
   algorithm
     cp := state.cp;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" cp=  TwoPhaseMedium_specificHeatCapacityCp_(state, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end specificHeatCapacityCp;
 
   redeclare replaceable function extends specificHeatCapacityCv
     "Return specific heat capacity cv from state"
+    //Standard definition
   algorithm
     cv := state.cv;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" cv=  TwoPhaseMedium_specificHeatCapacityCv_(state, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end specificHeatCapacityCv;
 
   redeclare replaceable function extends density_derp_h
     "Return derivative of density wrt pressure at constant enthalpy from state"
+    //Standard definition
   algorithm
     ddph := state.ddph;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" ddph=  TwoPhaseMedium_density_derp_h_(state, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end density_derp_h;
 
   redeclare replaceable function extends density_derh_p
     "Return derivative of density wrt enthalpy at constant pressure from state"
+    //Standard definition
   algorithm
     ddhp := state.ddhp;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" ddhp=  TwoPhaseMedium_density_derh_p_(state, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end density_derh_p;
 
   redeclare replaceable function extends thermalConductivity
     "Return thermal conductivity from state"
+    //Standard definition
   algorithm
     lambda := state.lambda;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" lambda=  TwoPhaseMedium_thermalConductivity_(state, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end thermalConductivity;
 
   redeclare replaceable function extends dynamicViscosity
     "Return dynamic viscosity from state"
+    //Standard definition
   algorithm
     eta := state.eta;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" eta=  TwoPhaseMedium_dynamicViscosity_(state, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end dynamicViscosity;
 
   redeclare replaceable function extends velocityOfSound
     "Return velocity of sound from state"
+    //Standard definition
   algorithm
     a := state.a;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" a=  TwoPhaseMedium_velocityOfSound_(state, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end velocityOfSound;
 
   replaceable function density_ph_der "Total derivative of density_ph"
@@ -563,10 +633,15 @@ package ExternalTwoPhaseMedium
     input Real p_der;
     input Real h_der;
     output Real d_der;
+    //Standard definition
   algorithm
     d_der:=density_derp_h(setState_ph(p, h))*p_der + density_derh_p(setState_ph(
       p, h))*h_der;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" d_der=  TwoPhaseMedium_density_ph_der_(state, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end density_ph_der;
 
   redeclare replaceable function setSat_p "Return saturation properties from p"
@@ -615,85 +690,145 @@ package ExternalTwoPhaseMedium
     extends Modelica.Icons.Function;
     input SaturationProperties sat "saturation property record";
     output Real dTp "derivative of saturation temperature w.r.t. pressure";
+    //Standard definition
   algorithm
     dTp := sat.dTp;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" dTp=  TwoPhaseMedium_saturationTemperature_derp_sat_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end saturationTemperature_derp_sat;
 
   redeclare replaceable function extends bubbleDensity
     "Returns bubble point density"
+    //Standard definition
   algorithm
     dl := sat.dl;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" dl=  TwoPhaseMedium_bubbleDensity_(sat, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end bubbleDensity;
 
   redeclare replaceable function extends dewDensity "Returns dew point density"
+    //Standard definition
   algorithm
     dv := sat.dv;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" dv=  TwoPhaseMedium_dewDensity_(sat, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end dewDensity;
 
   redeclare replaceable function extends bubbleEnthalpy
     "Returns bubble point specific enthalpy"
+    //Standard definition
   algorithm
     hl := sat.hl;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" hl=  TwoPhaseMedium_bubbleEnthalpy_(sat, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end bubbleEnthalpy;
 
   redeclare replaceable function extends dewEnthalpy
     "Returns dew point specific enthalpy"
+    //Standard definition
   algorithm
     hv := sat.hv;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" hv=  TwoPhaseMedium_dewEnthalpy_(sat, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end dewEnthalpy;
 
   redeclare replaceable function extends bubbleEntropy
     "Returns bubble point specific entropy"
+    //Standard definition
   algorithm
     sl := sat.sl;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" sl=  TwoPhaseMedium_bubbleEntropy_(sat, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end bubbleEntropy;
 
   redeclare replaceable function extends dewEntropy
     "Returns dew point specific entropy"
+    //Standard definition
   algorithm
     sv := sat.sv;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" sv=  TwoPhaseMedium_dewEntropy_(sat, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end dewEntropy;
 
   redeclare replaceable function extends dBubbleDensity_dPressure
     "Returns bubble point density derivative"
+    //Standard definition
   algorithm
     ddldp := sat.ddldp;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" ddldp=  TwoPhaseMedium_dBubbleDensity_dPressure_(sat, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end dBubbleDensity_dPressure;
 
   redeclare replaceable function extends dDewDensity_dPressure
     "Returns dew point density derivative"
+    //Standard definition
   algorithm
     ddvdp := sat.ddvdp;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" ddvdp=  TwoPhaseMedium_dDewDensity_dPressure_(sat, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end dDewDensity_dPressure;
 
   redeclare replaceable function extends dBubbleEnthalpy_dPressure
     "Returns bubble point specific enthalpy derivative"
+    //Standard definition
   algorithm
     dhldp := sat.dhldp;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" dhldp=  TwoPhaseMedium_dBubbleEnthalpy_dPressure_(sat, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end dBubbleEnthalpy_dPressure;
 
   redeclare replaceable function extends dDewEnthalpy_dPressure
     "Returns dew point specific enthalpy derivative"
+    //Standard definition
   algorithm
     dhvdp := sat.dhvdp;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" dhvdp=  TwoPhaseMedium_dDewEnthalpy_dPressure_(sat, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end dDewEnthalpy_dPressure;
 
   redeclare replaceable function extends surfaceTension
     "Returns surface tension sigma in the two phase region"
+    //Standard definition
   algorithm
     sigma := sat.sigma;
     annotation(Inline = true);
+    /*  //If special definition in "C"
+  external "C" sigma=  TwoPhaseMedium_surfaceTension_(sat, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
   end surfaceTension;
 
 end ExternalTwoPhaseMedium;
