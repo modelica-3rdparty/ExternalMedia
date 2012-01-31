@@ -49,10 +49,6 @@ typedef struct {
     double cv;
 	//! Density
     double d;
-	//! Derivative of temperature wrt enthalpy at constant pressure
-    double dT_dh_p;
-	//! Derivative of temperature wrt pressure at constant enthalpy
-    double dT_dp_h;
 	//! Derivative of density wrt enthalpy at constant pressure
     double ddhp;
 	//! Derivative of density wrt pressure at constant enthalpy
