@@ -54,12 +54,12 @@ void TestSolver::setState_ph(double &p, double &h, int &phase, ExternalThermodyn
 	properties->T = h/4200.0 + 273.15;
 	properties->d = (1000.0 - h/4200.0)*(1.0 + p/21000e5);
 	properties->s = 4200.0 * log(properties->T/273.15);
-/*	if (phase == 0) {
+	if (phase == 0) {
 		double hl = 417.5e3 + (504.7e3 - 417.5e3)*(p - 1.0e5)/1.0e5;
 		double hv = 2.67e6 + (2.71e6 - 2.67e6)*(p - 1.0e5)/1.0e5;
 		properties->phase = (h > hl && h < hv) ? 2 : 1;
 	} else
-*/		properties->phase = phase;
+		properties->phase = phase;
 	properties->beta = 2.4e-4;
 	properties->cp = 4200;
 	properties->cv = 4150;
@@ -90,14 +90,14 @@ void TestSolver::setState_dT(double &d, double &T, int &phase, ExternalThermodyn
 	properties->h = (T - 273.15)*4200;
 	properties->p = 1e5;
 	properties->s = 4200.0 * log(properties->T/273.15);
-/*	if (phase == 0) {
+	if (phase == 0) {
 	    double p = properties->p;
 		double h = properties->h;
 		double hl = 417.5e3 + (504.7e3 - 417.5e3)*(p - 1.0e5)/1.0e5;
 		double hv = 2.67e6 + (2.71e6 - 2.67e6)*(p - 1.0e5)/1.0e5;
 		properties->phase = (h > hl && h < hv) ? 2 : 1;
 	} else
-*/		properties->phase = phase;
+		properties->phase = phase;
 	properties->beta = 2.4e-4;
 	properties->cp = 4200;
 	properties->cv = 4150;
@@ -113,13 +113,13 @@ void TestSolver::setState_ps(double &p, double &s, int &phase, ExternalThermodyn
 	properties->T = 273.15*exp(s/4200);
 	properties->h = (properties->T - 273.15)*4200;
 	properties->d = (1000.0 - properties->h/4200.0)*(1.0 + p/21000e5);
-/*	if (phase == 0) {
+	if (phase == 0) {
 		double h = properties->h;
 		double hl = 417.5e3 + (504.7e3 - 417.5e3)*(p - 1.0e5)/1.0e5;
 		double hv = 2.67e6 + (2.71e6 - 2.67e6)*(p - 1.0e5)/1.0e5;
 		properties->phase = (h > hl && h < hv) ? 2 : 1;
 	} else
-*/		properties->phase = phase;
+		properties->phase = phase;
 	properties->beta = 2.4e-4;
 	properties->cp = 4200;
 	properties->cv = 4150;
