@@ -29,6 +29,9 @@ package FluidPropMedia
 
     extends ExternalTwoPhaseMedium;
 
+    constant Real h_eps_sat = 1e-6
+      "small delta h to ensure computation in the correct phase";
+
     redeclare replaceable function extends setBubbleState "set the thermodynamic state on the bubble line: change hl a little to guarantee the correct phase,
     since the phase input is currently not supported"
       extends Modelica.Icons.Function;
@@ -38,9 +41,9 @@ package FluidPropMedia
       // Standard definition
     algorithm
       if (phase == 1) then // liquid
-        state :=setState_ph(sat.psat, sat.hl*(1-1e-6), phase);
+        state :=setState_ph(sat.psat, sat.hl*(1-h_eps_sat), phase);
       else // two-phase
-        state :=setState_ph(sat.psat, sat.hl*(1+1e-6), phase);
+        state :=setState_ph(sat.psat, sat.hl*(1+h_eps_sat), phase);
       end if;
       /*  // If special definition in "C"
   external "C" TwoPhaseMedium_setBubbleState_(sat, phase, state, mediumName, libraryName, substanceName)
@@ -58,9 +61,9 @@ package FluidPropMedia
       // Standard definition
     algorithm
       if (phase == 1) then // vapour
-        state :=setState_ph(sat.psat, sat.hv*(1+1e-6), phase);
+        state :=setState_ph(sat.psat, sat.hv*(1+h_eps_sat), phase);
       else // two-phase
-        state :=setState_ph(sat.psat, sat.hv*(1-1e-6), phase);
+        state :=setState_ph(sat.psat, sat.hv*(1-h_eps_sat), phase);
       end if;
       /*  // If special definition in "C"
   external "C" TwoPhaseMedium_setDewState_(sat, phase, state, mediumName, libraryName, substanceName)

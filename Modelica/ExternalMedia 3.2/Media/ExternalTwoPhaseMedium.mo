@@ -873,7 +873,7 @@ package ExternalTwoPhaseMedium
     "Returns bubble point specific entropy"
     //Standard definition
   algorithm
-    sl := sat.sl;
+    sl := entropy(setBubbleState(p)); //sat.sl;
     /*  //If special definition in "C"
   external "C" sl=  TwoPhaseMedium_bubbleEntropy_(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
@@ -886,7 +886,7 @@ package ExternalTwoPhaseMedium
     "Returns dew point specific entropy"
     //Standard definition
   algorithm
-    sv := sat.sv;
+    sv := entropy(setDewState(p)); //sat.sv;
     /*  //If special definition in "C"
   external "C" sv=  TwoPhaseMedium_dewEntropy_(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
