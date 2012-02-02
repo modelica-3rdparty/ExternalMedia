@@ -132,7 +132,7 @@ void TwoPhaseMedium_setState_ph_(double p, double h, int phase, ExternalThermody
 void TwoPhaseMedium_setState_pT_(double p, double T, int phase, ExternalThermodynamicState *state,
 								 const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->setState_pT(p, T, phase, state);
+    solver->setState_pT(p, T, state);
 }
 
 //! Compute properties from d, T, and phase
@@ -371,7 +371,7 @@ void TwoPhaseMedium_setDewState_(ExternalSaturationProperties *sat, int phase, E
 //! Compute saturation temperature for specified medium and pressure
 double TwoPhaseMedium_saturationTemperature_(double p, const char *mediumName, const char *libraryName, const char *substanceName){
 	// Get medium object
-	BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+	ExternalSaturationProperties *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
 	// Compute saturation state
 	medium->setSat_p(p, sat);
 	// Return saturation temperature
@@ -381,7 +381,7 @@ double TwoPhaseMedium_saturationTemperature_(double p, const char *mediumName, c
 //! Compute derivative of saturation temperature for specified medium and pressure
 double TwoPhaseMedium_saturationTemperature_derp_(double p, const char *mediumName, const char *libraryName, const char *substanceName){
 	// Get medium object
-	BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
+	ExternalSaturationProperties *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
 	// Compute saturation pressure
 	medium->setSat_p(p);
 	return medium->dTp();
@@ -479,52 +479,6 @@ double TwoPhaseMedium_dewEntropy_(ExternalSaturationProperties *sat,
 								  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
     solver->sv(sat);
-}
-
-//! Compute saturation properties from within BaseProperties
-/*!
-  This function computes the saturation properties and is designed to be called
-  from within the BaseProperties model. The saturation properties are set according
-  to the medium pressure
-  @param uniqueID Unique ID number
-  @param sat_psat Pointer to return pressure for saturation record
-  @param sat_Tsat Pointer to return temperature for saturation record
-  @param sat_uniqueID Pointer to return unique ID number for saturation record
-*/
-
-
-
-/*
-//! Return derivative of temperature wrt pressure and specific enthalpy of specified medium
-double TwoPhaseMedium_temperature_ph_der_(ExternalThermodynamicState *state,
-										  const char *mediumName, const char *libraryName, const char *substanceName){
-	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->???(state);
-}
-*/
-
-//! Return derivative of density wrt pressure at constant specific enthalpy of specified medium
-double TwoPhaseMedium_dDensity_dPressure_h_(ExternalThermodynamicState *state,
-											const char *mediumName, const char *libraryName, const char *substanceName){
-	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->beta(state);
-}
-
-//! Return derivative of density wrt specific enthalpy at constant pressure of specified medium
-double TwoPhaseMedium_dDensity_dEnthalpy_p_(ExternalThermodynamicState *state,
-											const char *mediumName, const char *libraryName, const char *substanceName){
-	if (uniqueID == 0)
-	{
-		BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
-        TwoPhaseMedium_setStateDefault_(medium, choice, d, h, p, s, T, phase);
-		return medium->dd_dh_p();
-	}
-	if (mismatch(p, MediumMap::medium(uniqueID)->p()) || mismatch(h, MediumMap::medium(uniqueID)->h()))
-	{
-		WARN_RECOMPUTE_PH;
-        TwoPhaseMedium_setStateDefault_(MediumMap::medium(uniqueID), choice, d, h, p, s, T, phase);
-	}
-	return MediumMap::medium(uniqueID)->dd_dh_p();
 }
 
 //! Call the appropriate setState_xx() function of the medium object

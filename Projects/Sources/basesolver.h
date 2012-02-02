@@ -4,7 +4,8 @@
 #include "include.h"
 #include "fluidconstants.h"
 
-class TwoPhaseMediumProperties;
+class ExternalThermodynamicState;
+class ExternalSaturationProperties;
 struct FluidConstants;
 
 //! Base solver class.
@@ -20,31 +21,65 @@ public:
 	BaseSolver(const string &mediumName, const string &libraryName, const string &substanceName);
 	virtual ~BaseSolver();
 
-    virtual void setFluidConstants();
-	virtual void setSat_p(double &p, TwoPhaseMediumProperties *const properties);
-	virtual void setSat_T(double &T, TwoPhaseMediumProperties *const properties);
-	virtual void setSat_p_state(TwoPhaseMediumProperties *const properties);
-
-	virtual void setState_dT(double &d, double &T, int &phase, TwoPhaseMediumProperties *const properties);
-	virtual void setState_ph(double &p, double &h, int &phase, TwoPhaseMediumProperties *const properties);
-	virtual void setState_ps(double &p, double &s, int &phase, TwoPhaseMediumProperties *const properties);
-	virtual void setState_pT(double &p, double &T, TwoPhaseMediumProperties *const properties);
-
-	virtual void setBubbleState(int phase, TwoPhaseMediumProperties *const properties,
-		                        TwoPhaseMediumProperties *const bubbleProperties);
-   	virtual void setDewState(int phase, TwoPhaseMediumProperties *const properties,
-	                         TwoPhaseMediumProperties *const bubbleProperties);
-
-	virtual bool computeDerivatives(TwoPhaseMediumProperties *const properties);
-
-	virtual double isentropicEnthalpy(double &p, TwoPhaseMediumProperties *const properties);
     double molarMass() const;
 	double criticalTemperature() const;
 	double criticalPressure() const;
-	double criticalDensity() const;
 	double criticalMolarVolume() const;
+	double criticalDensity() const;
 	double criticalEnthalpy() const;
 	double criticalEntropy() const;
+
+	virtual void setFluidConstants();
+
+	virtual void setState_ph(double &p, double &h, int &phase, ExternalThermodynamicState *const properties);
+	virtual void setState_pT(double &p, double &T, ExternalThermodynamicState *const properties);
+	virtual void setState_dT(double &d, double &T, int &phase, ExternalThermodynamicState *const properties);
+	virtual void setState_ps(double &p, double &s, int &phase, ExternalThermodynamicState *const properties);
+
+	virtual double Pr(ExternalThermodynamicState *const properties);
+	virtual double T(ExternalThermodynamicState *const properties);
+	virtual double a(ExternalThermodynamicState *const properties);
+	virtual double beta(ExternalThermodynamicState *const properties);
+	virtual double cp(ExternalThermodynamicState *const properties);
+	virtual double cv(ExternalThermodynamicState *const properties);
+	virtual double d(ExternalThermodynamicState *const properties);
+	virtual double ddhp(ExternalThermodynamicState *const properties);
+	virtual double ddph(ExternalThermodynamicState *const properties);
+	virtual double eta(ExternalThermodynamicState *const properties);
+	virtual double h(ExternalThermodynamicState *const properties);
+	virtual double kappa(ExternalThermodynamicState *const properties);
+	virtual double lambda(ExternalThermodynamicState *const properties);
+	virtual double p(ExternalThermodynamicState *const properties);
+	virtual int phase(ExternalThermodynamicState *const properties);
+	virtual double s(ExternalThermodynamicState *const properties);
+	virtual double d_der(ExternalThermodynamicState *const properties);
+	virtual double isentropicEnthalpy(double &p, ExternalThermodynamicState *const properties);
+
+	virtual void setSat_p(double &p, ExternalSaturationProperties *const properties);
+	virtual void setSat_T(double &T, ExternalSaturationProperties *const properties);
+
+	virtual void setBubbleState(ExternalSaturationProperties *const properties, int phase,
+		                        ExternalThermodynamicState *const bubbleProperties);
+   	virtual void setDewState(ExternalSaturationProperties *const properties, int phase,
+	                         ExternalThermodynamicState *const bubbleProperties);
+
+	virtual double dTp(ExternalSaturationProperties *const properties);
+	virtual double ddldp(ExternalSaturationProperties *const properties);
+	virtual double ddvdp(ExternalSaturationProperties *const properties);
+	virtual double dhldp(ExternalSaturationProperties *const properties);
+	virtual double dhvdp(ExternalSaturationProperties *const properties);
+	virtual double dl(ExternalSaturationProperties *const properties);
+	virtual double dv(ExternalSaturationProperties *const properties);
+	virtual double hl(ExternalSaturationProperties *const properties);
+	virtual double hv(ExternalSaturationProperties *const properties);
+	virtual double sigma(ExternalSaturationProperties *const properties);
+	virtual double sl(ExternalSaturationProperties *const properties);
+	virtual double sv(ExternalSaturationProperties *const properties);
+
+	virtual bool computeDerivatives(ExternalThermodynamicState *const properties);
+
+	virtual double psat(ExternalSaturationProperties *const properties);
+	virtual double Tsat(ExternalSaturationProperties *const properties);
 
 	//! Medium name
 	string mediumName;

@@ -402,23 +402,6 @@ void BaseSolver::setSat_p(double &p, ExternalSaturationProperties *const propert
 	errorMessage("Internal error: setSat_p() not implemented in the Solver object");
 }
 
-//! Set saturation properties from within BaseProperties model
-/*!
-  This function sets the saturation properties for the given pressure p
-  and is designed to be used from within the BaseProperties model in
-  Modelica. The computed values are written to the two phase medium propery 
-  struct.
-
-  Must be re-implemented in the specific solver
-  @param properties Two phase medium property record
-*/
-/*
-void BaseSolver::setSat_p_state(ExternalSaturationProperties *const properties){
-    // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: setSat_p_state() not implemented in the Solver object");
-};
-*/
-
 //! Set saturation properties from T
 /*!
   This function sets the saturation properties for the given temperature T.
@@ -649,7 +632,7 @@ double BaseSolver::sv(ExternalSaturationProperties *const properties){
   Default implementation provided.
   @param properties Two phase medium property record
 */
-bool BaseSolver::computeDerivatives(TwoPhaseMediumProperties *const properties){
+bool BaseSolver::computeDerivatives(ExternalThermodynamicState *const properties){
 	// Check whether cp is equal to zero
 	if (properties->cp == 0.0)
 		return false;
