@@ -349,7 +349,7 @@ void TwoPhaseMedium_setSat_T_(double T, ExternalSaturationProperties *sat,
 void TwoPhaseMedium_setBubbleState_(ExternalSaturationProperties *sat, int phase, ExternalThermodynamicState *state,
 									const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->setBubbleState(phase, sat, state);
+    solver->setBubbleState(sat, phase, state);
 }
 
 //! Compute dew state
@@ -365,7 +365,7 @@ void TwoPhaseMedium_setBubbleState_(ExternalSaturationProperties *sat, int phase
 void TwoPhaseMedium_setDewState_(ExternalSaturationProperties *sat, int phase, ExternalThermodynamicState *state,
 								 const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->setDewState(phase, sat, state);
+    solver->setDewState(sat, phase, state);
 }
 
 //! Compute saturation temperature for specified medium and pressure

@@ -5,12 +5,12 @@
 /*!
   The constructor is calling initializeFields.
 */
-TwoPhaseMediumProperties::ExternalMediaThermodynamicState(){
+TwoPhaseMediumProperties::ExternalThermodynamicState(){
     // Initialize entire class
 	initializeFields();
 }
 
-TwoPhaseMediumProperties::ExternalMediaSaturationProperties(){
+TwoPhaseMediumProperties::ExternalSaturationProperties(){
     // Initialize entire class
 	initializeFields();
 }
@@ -20,44 +20,42 @@ TwoPhaseMediumProperties::ExternalMediaSaturationProperties(){
   This function initializes all fields of ExternalMediaThermodynamicState to the
   NAN value defined in include.h. The phase is initialized to zero.
 */
-void ExternalMediaThermodynamicState::initializeFields(){
-	d = NAN;
-	h = NAN;
-	p = NAN;
-	s = NAN;
+void ExternalThermodynamicState::initializeFields(){
+	Pr = NAN;
 	T = NAN;
-	phase = 0;
+	a = NAN;
 	beta = NAN;
 	cp = NAN;
 	cv = NAN;
-	ddph = NAN;
+	d = NAN;
 	ddhp = NAN;
-	kappa = NAN;
-	dT_dp_h = NAN;
-	dT_dh_p = NAN;
+	ddph = NAN;
 	eta = NAN;
+	h = NAN;
+	kappa = NAN;
 	lambda = NAN;
-	Pr = NAN;
-	a = NAN;
+	p = NAN;
+	phase = 0;
+	s = NAN;
 }
 
 /*!
   This function initializes all fields of ExternalMediaSaturationProperties to the
   NAN value defined in include.h.
 */
-void ExternalMediaSaturationProperties::initializeFields(){
-	psat = NAN;
+void ExternalSaturationProperties::initializeFields(){
 	Tsat = NAN;
-	dl = NAN;
-	dv = NAN;
-	hl = NAN;
-	hv = NAN;
-	sl = NAN;
-	sv = NAN;
-	sigma = NAN;
     dTp = NAN;
 	ddldp = NAN;
 	ddvdp = NAN;
     dhldp = NAN;
 	dhvdp = NAN;
+	dl = NAN;
+	dv = NAN;
+	hl = NAN;
+	hv = NAN;
+	psat = NAN;
+	sigma = NAN;
+	sl = NAN;
+	sv = NAN;
 }

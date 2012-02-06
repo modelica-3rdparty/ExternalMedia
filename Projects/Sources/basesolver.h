@@ -4,9 +4,9 @@
 #include "include.h"
 #include "fluidconstants.h"
 
-//class ExternalThermodynamicState;
-//class ExternalSaturationProperties;
 struct FluidConstants;
+struct ExternalThermodynamicState;
+struct ExternalSaturationProperties;
 
 //! Base solver class.
 /*!
