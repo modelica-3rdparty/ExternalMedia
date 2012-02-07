@@ -10,7 +10,7 @@
 
 #include "externalmedialib.h"
 #include "mediummap.h"
-#include "twophasemedium.h"
+#include "basesolver.h"
 #include <math.h>
 
 // Header of private function
@@ -285,7 +285,7 @@ double TwoPhaseMedium_density_ph_der_(ExternalThermodynamicState *state,
 double TwoPhaseMedium_isentropicEnthalpy_(double p_downstream, ExternalThermodynamicState *refState,
 										  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->isentropicEnthalpy(p, refState);
+    solver->isentropicEnthalpy(p_downstream, refState);
 }
 
 //! Compute saturation properties from p
@@ -370,21 +370,18 @@ void TwoPhaseMedium_setDewState_(ExternalSaturationProperties *sat, int phase, E
 
 //! Compute saturation temperature for specified medium and pressure
 double TwoPhaseMedium_saturationTemperature_(double p, const char *mediumName, const char *libraryName, const char *substanceName){
-	// Get medium object
-	ExternalSaturationProperties *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
-	// Compute saturation state
-	medium->setSat_p(p, sat);
-	// Return saturation temperature
-	return medium->Tsat();
+	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
+    ExternalSaturationProperties sat;
+	solver->setSat_p(p, &sat);
+	return sat.Tsat;
 }
 
 //! Compute derivative of saturation temperature for specified medium and pressure
 double TwoPhaseMedium_saturationTemperature_derp_(double p, const char *mediumName, const char *libraryName, const char *substanceName){
-	// Get medium object
-	ExternalSaturationProperties *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
-	// Compute saturation pressure
-	medium->setSat_p(p);
-	return medium->dTp();
+	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
+    ExternalSaturationProperties sat;
+	solver->setSat_p(p, &sat);
+	return sat.dTp;
 }
 
 //! Return derivative of saturation temperature of specified medium from saturation properties
@@ -452,12 +449,10 @@ double TwoPhaseMedium_dewEnthalpy_(ExternalSaturationProperties *sat,
 
 //! Compute saturation pressure for specified medium and temperature
 double TwoPhaseMedium_saturationPressure_(double T, const char *mediumName, const char *libraryName, const char *substanceName){
-	// Get medium object
-	BaseTwoPhaseMedium *medium = MediumMap::solverMedium(mediumName, libraryName, substanceName);
-	// Compute saturation state
-	medium->setSat_T(T, sat);
-	// Return saturation pressure
-	return medium->psat();
+	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
+    ExternalSaturationProperties sat;
+	solver->setSat_T(T, &sat);
+	return sat.psat;
 }
 
 //! Return surface tension of specified medium

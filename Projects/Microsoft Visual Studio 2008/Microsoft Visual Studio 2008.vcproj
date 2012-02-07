@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="ExternalMediaLib"
 	ProjectGUID="{E5E8CFA2-9107-41F1-B39A-C3C1A8EC2889}"
 	RootNamespace="MicrosoftVisualStudio2008"
@@ -170,14 +170,6 @@
 			>
 			<File
 				RelativePath="..\Sources\fluidconstants.h"
-				>
-			</File>
-			<File
-				RelativePath="..\Sources\twophasemediumproperties.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\Sources\twophasemediumproperties.h"
 				>
 			</File>
 		</Filter>

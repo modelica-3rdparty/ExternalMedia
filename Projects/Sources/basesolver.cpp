@@ -1,7 +1,7 @@
 #include "basesolver.h"
 #include <math.h>
-#include "twophasemediumproperties.h"
 #include "mediummap.h"
+#include "externalmedialib.h"
 
 //! Constructor.
 /*!
@@ -447,7 +447,7 @@ void BaseSolver::setBubbleState(ExternalSaturationProperties *const properties, 
   @param bubbleProperties ExternalThermodynamicState record where to write the dew point properties
 */
 void BaseSolver::setDewState(ExternalSaturationProperties *const properties, int phase,
-		                        ExternalThermodynamicState *const bubbleProperties){
+		                        ExternalThermodynamicState *const dewProperties){
 	// Set the dew state property record based on the original medium saturation state
 	setState_ph(properties->psat, properties->hv, phase, dewProperties);
 }

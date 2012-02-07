@@ -3,10 +3,9 @@
 
 #include "include.h"
 #include "fluidconstants.h"
+#include "externalmedialib.h"
 
 struct FluidConstants;
-struct ExternalThermodynamicState;
-struct ExternalSaturationProperties;
 
 //! Base solver class.
 /*!

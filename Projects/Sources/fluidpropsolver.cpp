@@ -5,7 +5,6 @@
  ********************************************************************/
 
 #include "fluidpropsolver.h"
-#include "twophasemediumproperties.h"
 
 #if (FLUIDPROP == 1)
 #define _AFXDLL
