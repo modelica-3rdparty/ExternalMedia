@@ -32,11 +32,11 @@ package FluidPropMedia
     constant Real h_eps_sat = 1e-6
       "small delta h to ensure computation in the correct phase";
 
-    redeclare replaceable function extends setBubbleState "set the thermodynamic state on the bubble line: change hl a little to guarantee the correct phase,
+    redeclare replaceable function setBubbleState "set the thermodynamic state on the bubble line: change hl a little to guarantee the correct phase,
     since the phase input is currently not supported"
       extends Modelica.Icons.Function;
       input SaturationProperties sat "saturation point";
-      input FixedPhase phase "phase flag";
+      input FixedPhase phase = 1 "phase flag";
       output ThermodynamicState state "complete thermodynamic state info";
       // Standard definition
     algorithm
@@ -52,11 +52,11 @@ package FluidPropMedia
       annotation(Inline = true);
     end setBubbleState;
 
-    redeclare replaceable function extends setDewState "set the thermodynamic state on the dew line: change hv a little to guarantee the correct phase,
+    redeclare replaceable function setDewState "set the thermodynamic state on the dew line: change hv a little to guarantee the correct phase,
     since the phase input is currently not supported"
       extends Modelica.Icons.Function;
       input SaturationProperties sat "saturation point";
-      input FixedPhase phase "phase flag";
+      input FixedPhase phase = 1 "phase flag";
       output ThermodynamicState state "complete thermodynamic state info";
       // Standard definition
     algorithm
