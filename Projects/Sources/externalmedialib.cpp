@@ -9,8 +9,8 @@
 */
 
 #include "externalmedialib.h"
-#include "mediummap.h"
 #include "basesolver.h"
+#include "solvermap.h"
 #include <math.h>
 
 // Header of private function

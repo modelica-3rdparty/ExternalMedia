@@ -1,5 +1,4 @@
 #include "testsolver.h"
-#include "mediummap.h"
 #include <math.h>
 
 TestSolver::TestSolver(const string &mediumName, const string &libraryName, const string &substanceName)

@@ -1,6 +1,5 @@
 #include "solvermap.h"
 #include "basesolver.h"
-#include "mediummap.h"
 #include "testsolver.h"
 
 #if (FLUIDPROP == 1)
@@ -38,8 +37,6 @@ BaseSolver *SolverMap::getSolver(const string &mediumName, const string &library
 	  sprintf(error, "Error: libraryName = %s is not supported by any external solver\n", libraryName.c_str());
 	  errorMessage(error);
 	}
-	// Create new medium object for function calls without specified unique ID
-	MediumMap::addSolverMedium(solverKeyString, _solvers[solverKeyString]);
 	// Return pointer to solver
 	return _solvers[solverKeyString];  
 };

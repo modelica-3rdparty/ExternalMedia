@@ -1,6 +1,5 @@
 #include "basesolver.h"
 #include <math.h>
-#include "mediummap.h"
 #include "externalmedialib.h"
 
 //! Constructor.
