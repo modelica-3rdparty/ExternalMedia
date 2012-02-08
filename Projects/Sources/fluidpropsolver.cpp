@@ -163,9 +163,7 @@ void FluidPropSolver::setState_ph(double &p, double &h, int &phase, ExternalTher
 	// FluidProp variables (in SI units)
     double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
 		   cv_, cp_, c_, alpha_, beta_, chi_, fi_, ksi_,
-		   psi_, zeta_ , theta_, kappa_, gamma_, eta_, lambda_,
-		   d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
-		   dh_vap_dP_, dT_sat_dP_;
+		   psi_, zeta_ , theta_, kappa_, gamma_, eta_, lambda_;
 
 	// Compute all FluidProp variables
 //	if (p > _fluidConstants.pc)
@@ -218,10 +216,8 @@ void FluidPropSolver::setState_pT(double &p, double &T, ExternalThermodynamicSta
 	// FluidProp variables (in SI units)
     double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
 		   cv_, cp_, c_, alpha_, beta_, chi_, fi_, ksi_,
-		   psi_, zeta_ , theta_, kappa_, gamma_, eta_, lambda_,
-		   d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
-		   dh_vap_dP_, dT_sat_dP_;
-
+		   psi_, zeta_ , theta_, kappa_, gamma_, eta_, lambda_;
+	
 	// Compute all FluidProp variables
 //	if (p > _fluidConstants.pc)
 	  FluidProp.AllProps("PT", p , T, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
@@ -267,9 +263,7 @@ void FluidPropSolver::setState_dT(double &d, double &T, int &phase, ExternalTher
 	// FluidProp variables (in SI units)
     double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
 		   cv_, cp_, c_, alpha_, beta_, chi_, fi_, ksi_,
-		   psi_, zeta_ , theta_, kappa_, gamma_, eta_, lambda_,
-		   d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
-		   dh_vap_dP_, dT_sat_dP_;
+		   psi_, zeta_ , theta_, kappa_, gamma_, eta_, lambda_;
 
 	// Compute all FluidProp variables
 //	if (T > _fluidConstants.Tc)
@@ -321,10 +315,8 @@ void FluidPropSolver::setState_ps(double &p, double &s, int &phase, ExternalTher
 	// FluidProp variables (in SI units)
     double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
 		   cv_, cp_, c_, alpha_, beta_, chi_, fi_, ksi_,
-		   psi_, zeta_ , theta_, kappa_, gamma_, eta_, lambda_,
-		   d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
-		   dh_vap_dP_, dT_sat_dP_;
-
+		   psi_, zeta_ , theta_, kappa_, gamma_, eta_, lambda_;
+	
 	// Compute all FluidProp variables
 //    if (p > _fluidConstants.pc)
 	  FluidProp.AllProps("Ps", p , s, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,

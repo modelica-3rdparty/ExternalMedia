@@ -129,7 +129,7 @@ void TwoPhaseMedium_setState_ph_(double p, double h, int phase, ExternalThermody
   @param libraryName Library name
   @param substanceName Substance name
 */
-void TwoPhaseMedium_setState_pT_(double p, double T, int phase, ExternalThermodynamicState *state,
+void TwoPhaseMedium_setState_pT_(double p, double T, ExternalThermodynamicState *state,
 								 const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
     solver->setState_pT(p, T, state);
@@ -173,119 +173,119 @@ void TwoPhaseMedium_setState_ps_(double p, double s, int phase, ExternalThermody
 double TwoPhaseMedium_prandtlNumber_(ExternalThermodynamicState *state,
 									 const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->Pr(state);
+    return solver->Pr(state);
 }
 
 //! Return temperature of specified medium
 double TwoPhaseMedium_temperature_(ExternalThermodynamicState *state,
 								   const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->T(state);
+    return solver->T(state);
 }
 
 //! Return velocity of sound of specified medium
 double TwoPhaseMedium_velocityOfSound_(ExternalThermodynamicState *state,
 									   const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->a(state);
+    return solver->a(state);
 }
 
 //! Return isobaric expansion coefficient of specified medium
 double TwoPhaseMedium_isobaricExpansionCoefficient_(ExternalThermodynamicState *state,
 													const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->beta(state);
+    return solver->beta(state);
 }
 
 //! Return specific heat capacity cp of specified medium
 double TwoPhaseMedium_specificHeatCapacityCp_(ExternalThermodynamicState *state,
 											  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->cp(state);
+    return solver->cp(state);
 }
 
 //! Return specific heat capacity cv of specified medium
 double TwoPhaseMedium_specificHeatCapacityCv_(ExternalThermodynamicState *state,
 											  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->cv(state);
+    return solver->cv(state);
 }
 
 //! Return density of specified medium
 double TwoPhaseMedium_density_(ExternalThermodynamicState *state,
 							   const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->d(state);
+    return solver->d(state);
 }
 
 //! Return derivative of density wrt specific enthalpy at constant pressure of specified medium
 double TwoPhaseMedium_density_derh_p_(ExternalThermodynamicState *state,
 									  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->ddhp(state);
+    return solver->ddhp(state);
 }
 
 //! Return derivative of density wrt pressure at constant specific enthalpy of specified medium
 double TwoPhaseMedium_density_derp_h_(ExternalThermodynamicState *state,
 									  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->ddph(state);
+    return solver->ddph(state);
 }
 
 //! Return dynamic viscosity of specified medium
 double TwoPhaseMedium_dynamicViscosity_(ExternalThermodynamicState *state,
 										const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->eta(state);
+    return solver->eta(state);
 }
 
 //! Return specific enthalpy of specified medium
 double TwoPhaseMedium_specificEnthalpy_(ExternalThermodynamicState *state,
 										const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->h(state);
+    return solver->h(state);
 }
 
 //! Return isothermal compressibility of specified medium
 double TwoPhaseMedium_isothermalCompressibility_(ExternalThermodynamicState *state,
 												 const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->kappa(state);
+    return solver->kappa(state);
 }
 
 //! Return thermal conductivity of specified medium
 double TwoPhaseMedium_thermalConductivity_(ExternalThermodynamicState *state,
 										   const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->lambda(state);
+    return solver->lambda(state);
 }
 
 //! Return pressure of specified medium
 double TwoPhaseMedium_pressure_(ExternalThermodynamicState *state,
 								const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->p(state);
+    return solver->p(state);
 }
 
 //! Return specific entropy of specified medium
 double TwoPhaseMedium_specificEntropy_(ExternalThermodynamicState *state,
 									   const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->s(state);
+    return solver->s(state);
 }
 
 //! Return derivative of density wrt pressure and specific enthalpy of specified medium
 double TwoPhaseMedium_density_ph_der_(ExternalThermodynamicState *state,
 									  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->d_der(state);
+    return solver->d_der(state);
 }
 
 //! Return the enthalpy at pressure p after an isentropic transformation form the specified medium state
 double TwoPhaseMedium_isentropicEnthalpy_(double p_downstream, ExternalThermodynamicState *refState,
 										  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->isentropicEnthalpy(p_downstream, refState);
+    return solver->isentropicEnthalpy(p_downstream, refState);
 }
 
 //! Compute saturation properties from p
@@ -388,63 +388,63 @@ double TwoPhaseMedium_saturationTemperature_derp_(double p, const char *mediumNa
 double TwoPhaseMedium_saturationTemperature_derp_sat_(ExternalSaturationProperties *sat,
 													  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->dTp(sat);
+    return solver->dTp(sat);
 }
 
 //! Return derivative of bubble density wrt pressure of specified medium from saturation properties
 double TwoPhaseMedium_dBubbleDensity_dPressure_(ExternalSaturationProperties *sat,
 												const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->ddldp(sat);
+    return solver->ddldp(sat);
 }
 
 //! Return derivative of dew density wrt pressure of specified medium from saturation properties
 double TwoPhaseMedium_dDewDensity_dPressure_(ExternalSaturationProperties *sat,
 											 const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->ddvdp(sat);
+    return solver->ddvdp(sat);
 }
 
 //! Return derivative of bubble specific enthalpy wrt pressure of specified medium from saturation properties
 double TwoPhaseMedium_dBubbleEnthalpy_dPressure_(ExternalSaturationProperties *sat,
 												 const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->dhldp(sat);
+    return solver->dhldp(sat);
 }
 
 //! Return derivative of dew specific enthalpy wrt pressure of specified medium from saturation properties
 double TwoPhaseMedium_dDewEnthalpy_dPressure_(ExternalSaturationProperties *sat,
 											  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->dhvdp(sat);
+    return solver->dhvdp(sat);
 }
 
 //! Return bubble density of specified medium from saturation properties
 double TwoPhaseMedium_bubbleDensity_(ExternalSaturationProperties *sat,
 									 const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->dl(sat);
+    return solver->dl(sat);
 }
 
 //! Return dew density of specified medium from saturation properties
 double TwoPhaseMedium_dewDensity_(ExternalSaturationProperties *sat,
 								  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->dv(sat);
+    return solver->dv(sat);
 }
 
 //! Return bubble specific enthalpy of specified medium from saturation properties
 double TwoPhaseMedium_bubbleEnthalpy_(ExternalSaturationProperties *sat,
 									  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->hl(sat);
+    return solver->hl(sat);
 }
 
 //! Return dew specific enthalpy of specified medium from saturation properties
 double TwoPhaseMedium_dewEnthalpy_(ExternalSaturationProperties *sat,
 								   const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->hv(sat);
+    return solver->hv(sat);
 }
 
 //! Compute saturation pressure for specified medium and temperature
@@ -459,21 +459,21 @@ double TwoPhaseMedium_saturationPressure_(double T, const char *mediumName, cons
 double TwoPhaseMedium_surfaceTension_(ExternalSaturationProperties *sat,
 									  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->sigma(sat);
+    return solver->sigma(sat);
 }
 
 //! Return bubble specific entropy of specified medium from saturation properties
 double TwoPhaseMedium_bubbleEntropy_(ExternalSaturationProperties *sat,
 									 const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->sl(sat);
+    return solver->sl(sat);
 }
 
 //! Return dew specific entropy of specified medium from saturation properties
 double TwoPhaseMedium_dewEntropy_(ExternalSaturationProperties *sat,
 								  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    solver->sv(sat);
+    return solver->sv(sat);
 }
 
 //! Call the appropriate setState_xx() function of the medium object
