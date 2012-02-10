@@ -3,9 +3,8 @@
 
 /* Utility functions which can be called by external Modelica functions.
 
-  These are defined in Modelica 2.0, 
-  and the functions are implemented in Dymola.
-
+  These are defined in the Modelica Language specification and implemented
+  by all Modelica tools
 */
 
 extern void ModelicaMessage(const char *string);

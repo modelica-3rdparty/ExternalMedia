@@ -134,9 +134,9 @@ void BaseSolver::setState_ps(double &p, double &s, int &phase, ExternalThermodyn
 	errorMessage("Internal error: setState_ps() not implemented in the Solver object");
 }
 
-//! Compute prandtl number
+//! Compute Prandtl number
 /*!
-  This function returns the prandtl number
+  This function returns the Prandtl number
   from the state specified by the properties input
 
   Must be re-implemented in the specific solver
@@ -647,36 +647,6 @@ bool BaseSolver::computeDerivatives(ExternalThermodynamicState *const properties
 	properties->ddhp = -properties->beta*properties->d/properties->cp;
 	return true;
 }
-
-//! Compute derivative of temperature wrt pressure at constant enthalpy
-/*!
-  This function returns the derivative of temperature wrt pressure at constant enthalpy
-  from the state specified by the properties input
-
-  Must be re-implemented in the specific solver
-  @param properties ExternalThermodynamicState property struct corresponding to current state
-*/
-/*double BaseSolver::dT_dp_h(ExternalThermodynamicState *const properties){
-    // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: dT_dp_h() not implemented in the Solver object");
-	return 0;
-}
-*/
-
-//! Compute derivative of temperature wrt enthalpy at constant pressure
-/*!
-  This function returns the derivative of temperature wrt enthalpy at constant pressure
-  from the state specified by the properties input
-
-  Must be re-implemented in the specific solver
-  @param properties ExternalThermodynamicState property struct corresponding to current state
-*/
-/*double BaseSolver::dT_dh_p(ExternalThermodynamicState *const properties){
-    // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: dT_dh_p() not implemented in the Solver object");
-	return 0;
-}
-*/
 
 //! Compute saturation pressure
 /*!

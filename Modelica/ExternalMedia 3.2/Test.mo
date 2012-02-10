@@ -340,7 +340,7 @@ package Test
     package IF95 "Test suite for the FluidProp-Refprop IF95 medium model"
       model TestStatesSat
         "Test case using TestMedium, with baseProperties and state + sat records without explicit uniqueID handling"
-        replaceable package Medium = Media.FluidPropMedia.WaterIF95;
+        replaceable package Medium = ExternalMedia.Examples.WaterIF95;
         Medium.BaseProperties baseProperties1;
         Medium.BaseProperties baseProperties2;
         Medium.ThermodynamicState state1;
@@ -393,7 +393,7 @@ package Test
 
       model TestBasePropertiesExplicit
         "Test case using FluidProp IF95 and explicit equations"
-        replaceable package Medium = Media.FluidPropMedia.WaterIF95
+        replaceable package Medium = ExternalMedia.Examples.WaterIF95
           constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium;
         ExternalMedia.Test.FluidProp.GenericModels.CompleteBaseProperties
           medium1(                 redeclare package Medium = Medium)
@@ -410,7 +410,7 @@ package Test
 
       model TestBasePropertiesImplicit
         "Test case using FluidProp IF95  and implicit equations"
-        replaceable package Medium = Media.FluidPropMedia.WaterIF95
+        replaceable package Medium = ExternalMedia.Examples.WaterIF95
           constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium;
         ExternalMedia.Test.FluidProp.GenericModels.CompleteBaseProperties
           medium1(                 redeclare package Medium = Medium,
@@ -429,7 +429,7 @@ package Test
 
     model TestBasePropertiesDynamic
         "Test case using FluidProp IF95 and dynamic equations"
-      replaceable package Medium = Media.FluidPropMedia.WaterIF95
+      replaceable package Medium = ExternalMedia.Examples.WaterIF95
         constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium;
       parameter SI.Volume V = 1 "Storage Volume";
       parameter Real p_atm = 101325 "Atmospheric pressure";
@@ -497,7 +497,7 @@ package Test
           "Modelica IF97 model";
         ExternalMedia.Test.FluidProp.GenericModels.CompleteBaseProperties
           fluidPropMedium(
-          redeclare package Medium = Media.FluidPropMedia.WaterIF95)
+          redeclare package Medium = ExternalMedia.Examples.WaterIF95)
           "FluidProp IF95";
         parameter Modelica.SIunits.Pressure pmin;
         parameter Modelica.SIunits.Pressure pmax;

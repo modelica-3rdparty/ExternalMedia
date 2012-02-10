@@ -1,15 +1,16 @@
 /*!
   \file include.h
-  \brief generic include file
+  \brief Main include file
 
-  This is a generic include for for the entire ExternalMediaPackage
+  This is a main include file for the entire ExternalMediaPackage
   project. It defines some important preprocessor variables that might
   have to be changed by the user.
 
   Uncomment the define directives as appropriate
 
-  Francesco Casella, Christoph Richter, Oct 2006
-  Copyright Politecnico di Milano and TU Braunschweig
+  Francesco Casella, Christoph Richter, Roberto Bonifetto
+  2006-2012
+  Copyright Politecnico di Milano, TU Braunschweig, Politecnico di Torino
 */
 #ifndef INCLUDE_H_
 #define INCLUDE_H_
@@ -26,9 +27,10 @@
   \sa OPEN_MODELICA
 */
 #define DYMOLA 1
+
 //! Modelica compiler is OpenModelica
 /*!
-  Set this preprocessor variable to 1 if OpanModelica is the Modelica
+  Set this preprocessor variable to 1 if OpenModelica is the Modelica
   compiler that is going to be used with the compiled library.
   \sa DYMOLA
 */
@@ -50,14 +52,6 @@
   mechanism as well as the export statement.
 */
 #define BUILD_DLL 1
-
-//! Maximum number of non-overlapping transient medium objects
-/*!
-  Increase this number if you ran a large model with more than 
-  a thousand instances of  ThermodynamicState and SaturationState 
-  outside BaseProperties records, and without explicit uniqueID handling
-*/
-#define MAX_TRANSIENT_MEDIUM 1000
 
 //! Not a number
 /*!

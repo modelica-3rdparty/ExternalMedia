@@ -24,10 +24,11 @@ BaseSolver *SolverMap::getSolver(const string &mediumName, const string &library
 	if (_solvers.find(solverKeyString) != _solvers.end())
 		return _solvers[solverKeyString];
 	// Create new solver if it doesn't exist
-	// CompilerTest solver
+	// Test solver for compiler setup debugging
 	if (libraryName.compare("TestMedium") == 0)
 	  _solvers[solverKeyString] = new TestSolver(mediumName, libraryName, substanceName);
 #if (FLUIDPROP == 1)
+	// FluidProp solver
 	else if (libraryName.find("FluidProp") == 0)
 	  _solvers[solverKeyString] = new FluidPropSolver(mediumName, libraryName, substanceName);
 #endif // FLUIDPROP == 1

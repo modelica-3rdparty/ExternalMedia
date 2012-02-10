@@ -28,8 +28,9 @@
 
   libraryName = "TestMedium";
 
-  Francesco Casella, Christoph Richter, Oct 2006
-  Copyright Politecnico di Milano and TU Braunschweig
+  Francesco Casella, Christoph Richter, Roberto Bonifetto
+  2006-2012
+  Copyright Politecnico di Milano, TU Braunschweig, Politecnico di Torino
 */
 class TestSolver : public BaseSolver{
 public:

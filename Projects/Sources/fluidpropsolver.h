@@ -1,6 +1,5 @@
-/* *****************************************************************
- * Interface of class FluidPropSolver
- *
+//! FluidProp solver interface class
+/*!
  * This class defines a solver object encapsulating a FluidProp object
  *
  * The class will work if FluidProp is correctly installed, and if
@@ -9,12 +8,13 @@
  *   - FluidProp_IF.h
  *   - FluidProp_IF.cpp
  *   - FluidProp_COM.h
+ *  These files are developed and maintained by TU Delft and distributed
+ *  as a part of the FluidProp suite http://www.fluidprop.com
  *
- * Currently, only Microsoft Visual Studio .NET (2002) is supported.
- * It should be used both to compile the ExternalTwoPhaseMedium.lib
- * library, and to compile the dymosim.exe Dymola executable.
+ *  Compilation requires support of the COM libraries:
+ *  http://en.wikipedia.org/wiki/Component_Object_Model
  *
- * To instatiate a specific FluidProp fluid, it is necessary to set 
+ * To instantiate a specific FluidProp fluid, it is necessary to set 
  * the libraryName and substanceNames package constants as in the
  * following example:
  *
@@ -26,8 +26,10 @@
  *
  * See also the solvermap.cpp code
  *
- * Francesco Casella, Christoph Richter, Oct 2006 - Feb 2007
- * Copyright Politecnico di Milano and TU Braunschweig
+ * Francesco Casella, Christoph Richter, Roberto Bonifetto
+ * 2006 - 2012
+ * Copyright Politecnico di Milano, TU Braunschweig, 
+ * Politecnico di Torino
  ********************************************************************/
 
 #ifndef FLUIDPROPSOLVER_H_
@@ -52,10 +54,6 @@ public:
 	virtual void setState_pT(double &p, double &T, ExternalThermodynamicState *const properties);
 	virtual void setState_dT(double &d, double &T, int &phase, ExternalThermodynamicState *const properties);
 	virtual void setState_ps(double &p, double &s, int &phase, ExternalThermodynamicState *const properties);
-	virtual void setBubbleState(ExternalSaturationProperties *const properties, int phase,
-		                        ExternalThermodynamicState *const bubbleProperties);
-	virtual void setDewState(ExternalSaturationProperties *const properties, int phase,
-		                     ExternalThermodynamicState *const bubbleProperties);
 	virtual double isentropicEnthalpy(double &p, ExternalThermodynamicState *const properties);
 
 protected:

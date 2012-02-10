@@ -1,16 +1,13 @@
 /*! 
   \file externalmedialib.h
-  \brief Header file to be included in Dymola
+  \brief Header file to be included in the Modelica tool, with external function interfaces
   
-  This is the header file to be included in the Dymola/Source directory.
-  It proived function prototypes for all the external functions needed
-  by medium models extending from PartialExternalTwoPhaseMedium.
+  C/C++ layer for external medium models extending from 
+  PartialExternalTwoPhaseMedium.
 
-  Please be aware that other Modelica tools might require a slightly
-  different header files depending on the compiler.
-
-  Francesco Casella, Christoph Richter, Sep 2006
-  Copyright Politecnico di Milano and TU Braunschweig
+  Francesco Casella, Christoph Richter, Roberto Bonifetto
+  2006-2012
+  Copyright Politecnico di Milano, TU Braunschweig, Politecnico di Torino
 */
 
 #ifndef EXTERNALMEDIALIB_H_
@@ -28,9 +25,6 @@
   The ExternalThermodynamicState propery struct defines all the properties that
   are computed by external Modelica medium models extending from
   PartialExternalTwoPhaseMedium.
-
-  Francesco Casella, Christoph Richter, Sep 2006
-  Copyright Politecnico di Milano and TU Braunschweig
 */
 
 typedef struct {
@@ -74,15 +68,10 @@ typedef struct {
 /*!
   The ExternalSaturationProperties propery struct defines all the saturation properties
   for the dew and the bubble line that are computed by external Modelica medium models
-  extending from PartialExternalTwoPhaseMedium. It also contains the  which makes it a
-  real two phase medium property struct.
-
-  Francesco Casella, Christoph Richter, Sep 2006
-  Copyright Politecnico di Milano and TU Braunschweig
+  extending from PartialExternalTwoPhaseMedium.
 */
 
 typedef struct {
-
 	//! Saturation temperature
     double Tsat;
 	//! Derivative of Ts wrt pressure
@@ -125,8 +114,6 @@ typedef struct {
 extern "C" {
 #endif // __cplusplus
 
-//	EXPORT int TwoPhaseMedium_createMedium_(const char *mediumName, const char *libraryName, const char *substanceName, int oldUniqueID);
-	
 	EXPORT double TwoPhaseMedium_getMolarMass_(const char *mediumName, const char *libraryName, const char *substanceName);
 	EXPORT double TwoPhaseMedium_getCriticalTemperature_(const char *mediumName, const char *libraryName, const char *substanceName);
 	EXPORT double TwoPhaseMedium_getCriticalPressure_(const char *mediumName, const char *libraryName, const char *substanceName);

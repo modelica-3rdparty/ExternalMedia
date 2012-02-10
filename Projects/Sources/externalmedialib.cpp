@@ -1,55 +1,12 @@
-/*!
-  \file externalmedialib.cpp
-  \brief Interface layer
-
+/*
   C/C++ layer for external medium models extending from 
   PartialExternalTwoPhaseMedium.
-
-  Francesco Casella, Christoph Richter, Sep 2006
 */
 
 #include "externalmedialib.h"
 #include "basesolver.h"
 #include "solvermap.h"
 #include <math.h>
-
-// Header of private function
-// void TwoPhaseMedium_setStateDefault_(BaseTwoPhaseMedium *medium, int choice, double d, double h, double p, double s, double T, int phase);
-
-// Macro function to check if two double precision numbers don't match
-// simple equality check should be ok, but we allow for some tolerance just
-// in case something goes wrong with the least significant bits
-// #define mismatch(x,y) (fabs((x)-(y))/(std::max(fabs(x),1e-10)) > 1e-15)
-
-// Warning messages to be output in case of mismatch with the cached values
-// disabled by default, uncomment last two lines to turn on
-// #define WARN_RECOMPUTE_PH
-// #define WARN_RECOMPUTE_PSAT
-// #define WARN_RECOMPUTE_PH ModelicaFormatMessage("ExternalMedia Warning:\np = %f, h = %f don't match with cached values, properties have been re-computed\n", p, h)
-// #define WARN_RECOMPUTE_PSAT ModelicaFormatMessage("ExternalMedia Warning:\npsat = %f doesn't match with cached value, properties have been re-computed\n", psat)
-
-
-//! Create medium
-/*!
-  This function creates a new medium with the specified medium name, library name,
-  and substance name. The old unique ID is required to check whether a medium
-  has already been created.
-  @param mediumName Medium name
-  @param libraryName Library name
-  @param substanceName Substance name
-  @param oldUniqueID Old unique ID number
-*/
-/*
-int TwoPhaseMedium_createMedium_(const char *mediumName, const char *libraryName, const char *substanceName, int oldUniqueID){
-	// Allocate a new object and return a unique ID if oldUniqueID == 0
-	if (oldUniqueID == 0){
-		return MediumMap::addMedium(mediumName, libraryName, substanceName);
-	} else {
-	// Do nothing if oldUniqueID > 0 (medium object already allocated)
-		return oldUniqueID;
-	}
-}
-*/
 
 //! Get molar mass
 /*!
@@ -170,7 +127,9 @@ void TwoPhaseMedium_setState_ps_(double p, double s, int phase, ExternalThermody
 }
 
 //! Return Prandtl number of specified medium
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_prandtlNumber_(ExternalThermodynamicState *state,
 									 const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -178,7 +137,9 @@ double TwoPhaseMedium_prandtlNumber_(ExternalThermodynamicState *state,
 }
 
 //! Return temperature of specified medium
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_temperature_(ExternalThermodynamicState *state,
 								   const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -186,7 +147,9 @@ double TwoPhaseMedium_temperature_(ExternalThermodynamicState *state,
 }
 
 //! Return velocity of sound of specified medium
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_velocityOfSound_(ExternalThermodynamicState *state,
 									   const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -194,7 +157,9 @@ double TwoPhaseMedium_velocityOfSound_(ExternalThermodynamicState *state,
 }
 
 //! Return isobaric expansion coefficient of specified medium
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_isobaricExpansionCoefficient_(ExternalThermodynamicState *state,
 													const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -202,7 +167,9 @@ double TwoPhaseMedium_isobaricExpansionCoefficient_(ExternalThermodynamicState *
 }
 
 //! Return specific heat capacity cp of specified medium
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_specificHeatCapacityCp_(ExternalThermodynamicState *state,
 											  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -210,7 +177,9 @@ double TwoPhaseMedium_specificHeatCapacityCp_(ExternalThermodynamicState *state,
 }
 
 //! Return specific heat capacity cv of specified medium
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_specificHeatCapacityCv_(ExternalThermodynamicState *state,
 											  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -218,7 +187,9 @@ double TwoPhaseMedium_specificHeatCapacityCv_(ExternalThermodynamicState *state,
 }
 
 //! Return density of specified medium
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_density_(ExternalThermodynamicState *state,
 							   const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -226,7 +197,9 @@ double TwoPhaseMedium_density_(ExternalThermodynamicState *state,
 }
 
 //! Return derivative of density wrt specific enthalpy at constant pressure of specified medium
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_density_derh_p_(ExternalThermodynamicState *state,
 									  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -234,7 +207,9 @@ double TwoPhaseMedium_density_derh_p_(ExternalThermodynamicState *state,
 }
 
 //! Return derivative of density wrt pressure at constant specific enthalpy of specified medium
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_density_derp_h_(ExternalThermodynamicState *state,
 									  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -242,7 +217,9 @@ double TwoPhaseMedium_density_derp_h_(ExternalThermodynamicState *state,
 }
 
 //! Return dynamic viscosity of specified medium
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_dynamicViscosity_(ExternalThermodynamicState *state,
 										const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -250,7 +227,9 @@ double TwoPhaseMedium_dynamicViscosity_(ExternalThermodynamicState *state,
 }
 
 //! Return specific enthalpy of specified medium
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_specificEnthalpy_(ExternalThermodynamicState *state,
 										const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -258,7 +237,9 @@ double TwoPhaseMedium_specificEnthalpy_(ExternalThermodynamicState *state,
 }
 
 //! Return isothermal compressibility of specified medium
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_isothermalCompressibility_(ExternalThermodynamicState *state,
 												 const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -266,7 +247,9 @@ double TwoPhaseMedium_isothermalCompressibility_(ExternalThermodynamicState *sta
 }
 
 //! Return thermal conductivity of specified medium
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_thermalConductivity_(ExternalThermodynamicState *state,
 										   const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -274,7 +257,9 @@ double TwoPhaseMedium_thermalConductivity_(ExternalThermodynamicState *state,
 }
 
 //! Return pressure of specified medium
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_pressure_(ExternalThermodynamicState *state,
 								const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -282,7 +267,9 @@ double TwoPhaseMedium_pressure_(ExternalThermodynamicState *state,
 }
 
 //! Return specific entropy of specified medium
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_specificEntropy_(ExternalThermodynamicState *state,
 									   const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -290,7 +277,9 @@ double TwoPhaseMedium_specificEntropy_(ExternalThermodynamicState *state,
 }
 
 //! Return derivative of density wrt pressure and specific enthalpy of specified medium
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_density_ph_der_(ExternalThermodynamicState *state,
 									  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -383,7 +372,9 @@ double TwoPhaseMedium_saturationTemperature_derp_(double p, const char *mediumNa
 }
 
 //! Return derivative of saturation temperature of specified medium from saturation properties
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_saturationTemperature_derp_sat_(ExternalSaturationProperties *sat,
 													  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -391,7 +382,9 @@ double TwoPhaseMedium_saturationTemperature_derp_sat_(ExternalSaturationProperti
 }
 
 //! Return derivative of bubble density wrt pressure of specified medium from saturation properties
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_dBubbleDensity_dPressure_(ExternalSaturationProperties *sat,
 												const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -399,7 +392,9 @@ double TwoPhaseMedium_dBubbleDensity_dPressure_(ExternalSaturationProperties *sa
 }
 
 //! Return derivative of dew density wrt pressure of specified medium from saturation properties
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_dDewDensity_dPressure_(ExternalSaturationProperties *sat,
 											 const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -407,7 +402,9 @@ double TwoPhaseMedium_dDewDensity_dPressure_(ExternalSaturationProperties *sat,
 }
 
 //! Return derivative of bubble specific enthalpy wrt pressure of specified medium from saturation properties
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_dBubbleEnthalpy_dPressure_(ExternalSaturationProperties *sat,
 												 const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -415,7 +412,9 @@ double TwoPhaseMedium_dBubbleEnthalpy_dPressure_(ExternalSaturationProperties *s
 }
 
 //! Return derivative of dew specific enthalpy wrt pressure of specified medium from saturation properties
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_dDewEnthalpy_dPressure_(ExternalSaturationProperties *sat,
 											  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -423,7 +422,9 @@ double TwoPhaseMedium_dDewEnthalpy_dPressure_(ExternalSaturationProperties *sat,
 }
 
 //! Return bubble density of specified medium from saturation properties
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_bubbleDensity_(ExternalSaturationProperties *sat,
 									 const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -431,7 +432,9 @@ double TwoPhaseMedium_bubbleDensity_(ExternalSaturationProperties *sat,
 }
 
 //! Return dew density of specified medium from saturation properties
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_dewDensity_(ExternalSaturationProperties *sat,
 								  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -439,7 +442,9 @@ double TwoPhaseMedium_dewDensity_(ExternalSaturationProperties *sat,
 }
 
 //! Return bubble specific enthalpy of specified medium from saturation properties
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_bubbleEnthalpy_(ExternalSaturationProperties *sat,
 									  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -447,7 +452,9 @@ double TwoPhaseMedium_bubbleEnthalpy_(ExternalSaturationProperties *sat,
 }
 
 //! Return dew specific enthalpy of specified medium from saturation properties
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_dewEnthalpy_(ExternalSaturationProperties *sat,
 								   const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -455,7 +462,9 @@ double TwoPhaseMedium_dewEnthalpy_(ExternalSaturationProperties *sat,
 }
 
 //! Compute saturation pressure for specified medium and temperature
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_saturationPressure_(double T, const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
     ExternalSaturationProperties sat;
@@ -464,7 +473,9 @@ double TwoPhaseMedium_saturationPressure_(double T, const char *mediumName, cons
 }
 
 //! Return surface tension of specified medium
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_surfaceTension_(ExternalSaturationProperties *sat,
 									  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -472,7 +483,9 @@ double TwoPhaseMedium_surfaceTension_(ExternalSaturationProperties *sat,
 }
 
 //! Return bubble specific entropy of specified medium from saturation properties
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_bubbleEntropy_(ExternalSaturationProperties *sat,
 									 const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
@@ -480,38 +493,11 @@ double TwoPhaseMedium_bubbleEntropy_(ExternalSaturationProperties *sat,
 }
 
 //! Return dew specific entropy of specified medium from saturation properties
-//! Attention: this function is not used in ExternalMedia standard definition in modelica
+/*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
+    It might be used by external medium models customized solvers redeclaring the default functions
+*/
 double TwoPhaseMedium_dewEntropy_(ExternalSaturationProperties *sat,
 								  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
     return solver->sv(sat);
 }
-
-//! Call the appropriate setState_xx() function of the medium object
-/*!
-  This function calls the setState_xx() function of the medium object corresponding 
-  to the choice input.
-  @param medium Medium object (class BaseTwoPhaseMedium)
-  @param choice of inputs (dT, ph, ps, pT)
-  @param d Density
-  @param h Specific Enthalpy
-  @param p Pressure
-  @param s Specific entropy
-  @param T Temperature
-  @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
-*/
-/*
-void TwoPhaseMedium_setStateDefault_(BaseTwoPhaseMedium *medium, int choice, double d, double h, double p, double s, double T, int phase){
-	if(choice == CHOICE_dT)
-		medium->setState_dT(d,T,phase);
-	else if(choice == CHOICE_ph)
-		medium->setState_ph(p,h,phase);
-	else if(choice == CHOICE_ps)
-		medium->setState_ps(p,s,phase);
-	else if(choice == CHOICE_pT)
-		medium->setState_pT(p,T);
-	else
-		errorMessage("Wrong choice of inputs in setStateDefault_()\n");
-}
-
-*/
