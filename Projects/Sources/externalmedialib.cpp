@@ -73,14 +73,13 @@ void TwoPhaseMedium_setState_ph_(double p, double h, int phase, ExternalThermody
     solver->setState_ph(p, h, phase, state);
 }
 
-//! Compute properties from p, T, and phase
+//! Compute properties from p and T
 /*!
   This function computes the properties for the specified inputs.
 
   Attention: The phase input is ignored for this function!
   @param p Pressure
   @param T Temperature
-  @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
   @param ExternalThermodynamicState Pointer to return values for ExternalThermodynamicState struct
   @param mediumName Medium name
   @param libraryName Library name
@@ -286,7 +285,7 @@ double TwoPhaseMedium_density_ph_der_(ExternalThermodynamicState *state,
     return solver->d_der(state);
 }
 
-//! Return the enthalpy at pressure p after an isentropic transformation form the specified medium state
+//! Return the enthalpy at pressure p after an isentropic transformation from the specified medium state
 double TwoPhaseMedium_isentropicEnthalpy_(double p_downstream, ExternalThermodynamicState *refState,
 										  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);

@@ -629,7 +629,7 @@ double BaseSolver::sv(ExternalSaturationProperties *const properties){
   returns false if the computation failed.
 
   Default implementation provided.
-  @param properties Two phase medium property record
+  @param properties ExternalThermodynamicState property record
 */
 bool BaseSolver::computeDerivatives(ExternalThermodynamicState *const properties){
 	// Check whether cp is equal to zero
@@ -640,9 +640,9 @@ bool BaseSolver::computeDerivatives(ExternalThermodynamicState *const properties
 		return false;
 	// Compute ddph
 	properties->ddph = -(properties->T*properties->beta*properties->beta -
-						  properties->beta -
-						  properties->kappa*properties->d*properties->cp)/
-						  properties->cp;
+						 properties->beta -
+						 properties->kappa*properties->d*properties->cp)/
+						 properties->cp;
 	// Compute ddhp
 	properties->ddhp = -properties->beta*properties->d/properties->cp;
 	return true;
