@@ -1,6 +1,5 @@
 within ExternalMedia.Media;
-package ExternalTwoPhaseMedium
-  "Generic external two phase medium package - modify libraryName to set the external library"
+package ExternalTwoPhaseMedium "Generic external two phase medium package"
 
   extends Modelica.Media.Interfaces.PartialTwoPhaseMedium(
     mediumName = "ExternalMedium",

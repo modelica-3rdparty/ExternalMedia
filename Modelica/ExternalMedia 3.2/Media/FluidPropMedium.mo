@@ -1,5 +1,5 @@
 within ExternalMedia.Media;
-package FluidPropMedium "Fluid prop medium package"
+package FluidPropMedium "FluidProp medium package"
 
   extends ExternalTwoPhaseMedium;
 

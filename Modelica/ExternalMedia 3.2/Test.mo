@@ -1,5 +1,5 @@
 within ExternalMedia;
-package Test
+package Test "Test models"
   package TestMedium "Test cases for TestMedium"
     model TestStatesSat
       "Test case using TestMedium, with baseProperties and state + sat records without explicit uniqueID handling"

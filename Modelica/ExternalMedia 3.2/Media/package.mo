@@ -1,4 +1,4 @@
 within ExternalMedia;
-package Media 
+package Media "Medium packages compatible with Modelica.Media"
 
 end Media;

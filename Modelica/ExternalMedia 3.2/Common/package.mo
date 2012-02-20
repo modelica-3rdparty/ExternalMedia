@@ -1,3 +1,3 @@
 within ExternalMedia;
-package Common 
+package Common "Package with common definitions"
 end Common;

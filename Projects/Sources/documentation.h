@@ -32,15 +32,16 @@
   releases available on the Modelica website, which include a pre-compiled
   interface to the FluidProp tool (http://www.fluidprop.com). FluidProp features
   many built-in fluid models, and can optionally be used to access the whole
-  RefProp database, thus giving easy access to a wide range of fluid models
+  NIST RefProp database, thus giving easy access to a wide range of fluid models
   with state-of-the-art accuracy. If you want to use your own fluid property
   computation code instead, then you need to check out the source code and
   add the interface to it, as described in this manual.
   
-  The library is released under Modelica License 2.0. 
-  
-  Please contact the main developer, Francesco Casella (casella@elet.polimi.it)
+  Please contact the main developer, Francesco Casella 
+  (<a href="mailto://casella@elet.polimi.it">casella@elet.polimi.it</a>)
   if you have questions or suggestions for improvement.
+  
+  Licensed by the Modelica Association under the Modelica License 2
   
   Copyright (c) 2006-2012, Politecnico di Milano, TU Braunschweig, Politecnico
   di Torino.
@@ -48,10 +49,11 @@
   \section releases_sec Using the pre-packaged releases with FluidProp
   
   Download and install the latest version of FluidProp from 
-  http://www.fluidprop.com. If you want to use the RefProp fluid models,
+  <a href="http://www.fluidprop.com">http://www.fluidprop.com</a>. 
+  If you want to use the RefProp fluid models,
   you need to get the full version of FluidProp, which has an extra license fee.
   
-  Download and unzip the library corresponding to the version of Visual Studio
+  Download and unzip the library corresponding to the version of Microsoft Visual Studio
   that you use to compile your Modelica models, in order to avoid linker errors.
   Make sure that you load the ExternalMedia library in your Modelica tool
   workspace, e.g. by opening the main package.mo file.
@@ -68,8 +70,8 @@
   
   Please note that the medium models IF97 and GasMix are already available
   natively in Modelica.Media as Water.StandardWater and IdealGases.MixtureGases,
-  respectively - it is recommended to use the Modelica.Media models, since they
-  are much faster to compute.
+  respectively - it is recommended to use the Modelica.Media models instead,
+  since they are much faster to compute.
   
   \section architecture_sec Architecture of the package
 
@@ -149,6 +151,10 @@
   The most straightforward implementation is the one in which all fluid
   properties are computed at once by the setState_XX() and setSat_X() functions
   and all the other functions return the values cached in the state records.
+
+  Get the source code from the SVN repository of the Modelica Association:
+  <a href="https://svn.modelica.org/projects/ExternalMediaLibrary/trunk">
+  https://svn.modelica.org/projects/ExternalMediaLibrary/trunk</a>.
   
   First of all, you have to write you own solver object code: you can
   look at the code of the TestMedium and FluidPropMedium code as
@@ -185,4 +191,11 @@
   and setSat functions and stored in the cache records, but rather computed
   on demand, based on a smaller set of thermodynamic properties computed by the
   setState and setSat functions and stored in the state C struct.
+  
+  Please note that compiling ExternalMedia from source code might require
+  the professional version of Microsoft Visual Studio, which includes the
+  COM libraries used by the FluidProp interface. However, if you remove
+  all the FluidProp files and references from the project, then you should be
+  able to compile the source code with the Express edition, or possibly also
+  with gcc.
 */
