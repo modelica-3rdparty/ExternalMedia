@@ -847,7 +847,9 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   external "C" p=  TwoPhaseMedium_saturationPressure_(T, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-    annotation(Inline = true);
+    annotation(Inline = false,
+               LateInline = true,
+               derivative = saturationPressure_der);
   end saturationPressure;
 
   redeclare function extends saturationPressure_sat
@@ -894,4 +896,14 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end dewEntropy;
 
+  function saturationPressure_der "Return saturation pressure time derivative"
+    extends Modelica.Icons.Function;
+    input Temperature T "temperature";
+    input Real T_der "Temperature derivative";
+    output Real p_der "saturation pressure derivative";
+    // Standard definition
+  algorithm
+    p_der :=T_der/saturationTemperature_derp_sat(setSat_T(T));
+    annotation(Inline = true);
+  end saturationPressure_der;
 end ExternalTwoPhaseMedium;
