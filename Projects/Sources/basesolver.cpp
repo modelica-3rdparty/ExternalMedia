@@ -443,7 +443,7 @@ void BaseSolver::setBubbleState(ExternalSaturationProperties *const properties, 
   in the specific solver code to get more efficient or correct handling of this situation.
   @param properties ExternalSaturationProperties record with saturation properties data
   @param phase Phase (1: one-phase, 2: two-phase)
-  @param bubbleProperties ExternalThermodynamicState record where to write the dew point properties
+  @param dewProperties ExternalThermodynamicState record where to write the dew point properties
 */
 void BaseSolver::setDewState(ExternalSaturationProperties *const properties, int phase,
 		                        ExternalThermodynamicState *const dewProperties){
