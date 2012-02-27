@@ -51,7 +51,7 @@
   dynamic link library. This setting influences the error reporting
   mechanism as well as the export statement.
 */
-#define BUILD_DLL 1
+#define BUILD_DLL 0
 
 //! Not a number
 /*!
