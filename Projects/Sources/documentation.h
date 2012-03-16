@@ -58,20 +58,21 @@
   Make sure that you load the ExternalMedia library in your Modelica tool
   workspace, e.g. by opening the main package.mo file.
   
-  You can now define medium models for all the libraries supported by FluidProp,
-  by extending the ExternalMedia.Media.FluidPropMedium package. Set libraryName
-  to "FluidProp.RefProp", "FluidProp.StanMix", "FluidProp.TPSI", "FluidProp.IF97",
-  or "FluidProp.GasMix" depending on the specific library you need to use.
+  You can now define medium models for the different libraries supported by FluidProp,
+  by extending the ExternalMedia.Media.FluidPropMedium package. Please note that
+  only single-component fluids are supported. Set libraryName
+  to "FluidProp.RefProp", "FluidProp.StanMix", "FluidProp.TPSI", or "FluidProp.IF97",
+  depending on the specific library you need to use.
   Set substanceNames to a single-element string array containing the name
   of the specific medium, as specified by the FluidProp documentation. Set
   mediumName to a string that describes the medium (this only used for
   documentation purposes but has no effect in selecting the medium model). 
   See ExternalMedia.Examples for examples.
   
-  Please note that the medium models IF97 and GasMix are already available
-  natively in Modelica.Media as Water.StandardWater and IdealGases.MixtureGases,
-  respectively - it is recommended to use the Modelica.Media models instead,
-  since they are much faster to compute.
+  Please note that the medium model IF97 is already available
+  natively in Modelica.Media as Water.StandardWater, which is much faster than
+  the FluidProp version. If you need ideal gas models (single-component or
+  mixtures), use the medium packages contained in Modelica.Media.IdealGases.
   
   \section architecture_sec Architecture of the package
 
