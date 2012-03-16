@@ -80,12 +80,22 @@ void FluidPropSolver::setFluidConstants(){
   _fluidConstants.dc = FluidProp.Density("PT", _fluidConstants.pc, _fluidConstants.Tc, &ErrorMsg);
   if (isError(ErrorMsg))  // An error occurred
 	{
-	// Build error message and pass it to the Modelica environment
-	char error[300];
-	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute critical density\n %s\n", ErrorMsg.c_str());
-	errorMessage(error);
-	}
-}
+	// Retry with slightly higher temperature to avoid convergence problems
+	_fluidConstants.dc = FluidProp.Density("PT", _fluidConstants.pc, _fluidConstants.Tc*(1.0 + 1e-5), &ErrorMsg);
+	if (isError(ErrorMsg))  // An error occurred
+	  {
+	  // Retry with slightly higher temperature to avoid convergence problems
+	  _fluidConstants.dc = FluidProp.Density("PT", _fluidConstants.pc, _fluidConstants.Tc*(1.0 + 1e-4), &ErrorMsg);
+      if (isError(ErrorMsg))  // An error occurred
+	    {
+	    // Build error message and pass it to the Modelica environment
+	    char error[300];
+	    sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute critical density\n %s\n", ErrorMsg.c_str());
+	    errorMessage(error);
+	    }
+	  }
+    }
+  }
 
 void FluidPropSolver::setSat_p(double &p, ExternalSaturationProperties *const properties){
 	string ErrorMsg;
