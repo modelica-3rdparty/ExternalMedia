@@ -10,6 +10,9 @@
 #if (FLUIDPROP == 1)
 #define _AFXDLL
 
+ExternalSaturationProperties satPropClose2Crit; // saturation properties close to  critical conditions 
+double p_eps = 1e-5; // relative tolerance margin for subcritical pressure conditions 
+double T_eps = 1e-5; // relative tolerance margin for supercritical temperature conditions
 
 FluidPropSolver::FluidPropSolver(const string &mediumName,
 								 const string &libraryName,
@@ -81,11 +84,12 @@ void FluidPropSolver::setFluidConstants(){
   if (isError(ErrorMsg))  // An error occurred
 	{
 	// Retry with slightly higher temperature to avoid convergence problems
-	_fluidConstants.dc = FluidProp.Density("PT", _fluidConstants.pc, _fluidConstants.Tc*(1.0 + 1e-5), &ErrorMsg);
+	_fluidConstants.dc = FluidProp.Density("PT", _fluidConstants.pc, _fluidConstants.Tc*(1.0 + T_eps), &ErrorMsg);
 	if (isError(ErrorMsg))  // An error occurred
 	  {
 	  // Retry with slightly higher temperature to avoid convergence problems
-	  _fluidConstants.dc = FluidProp.Density("PT", _fluidConstants.pc, _fluidConstants.Tc*(1.0 + 1e-4), &ErrorMsg);
+	  T_eps = T_eps*10;
+	  _fluidConstants.dc = FluidProp.Density("PT", _fluidConstants.pc, _fluidConstants.Tc*(1.0 + T_eps), &ErrorMsg);
       if (isError(ErrorMsg))  // An error occurred
 	    {
 	    // Build error message and pass it to the Modelica environment
@@ -94,7 +98,45 @@ void FluidPropSolver::setFluidConstants(){
 	    errorMessage(error);
 	    }
 	  }
-    }
+	}
+
+  // Temporary variables for calling AllPropSat in slightly subcritical conditions
+  double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
+		 cv_, cp_, c_, alpha_, beta_, chi_, fi_, ksi_,
+		 psi_, zeta_, theta_, kappa_, gamma_, eta_, lambda_,
+		 d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
+		 dh_vap_dP_, dT_sat_dP_;
+  // Compute slightly subcritical saturation properties
+  FluidProp.AllPropsSat("Pq", _fluidConstants.pc*(1-p_eps) , 0.0, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
+						alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, theta_, kappa_, gamma_, eta_, lambda_,  
+						d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
+						dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
+  if (isError(ErrorMsg)) {  // An error occurred
+    p_eps = p_eps*10;
+    FluidProp.AllPropsSat("Pq", _fluidConstants.pc*(1-p_eps) , 0.0, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
+						  alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, theta_, kappa_, gamma_, eta_, lambda_,  
+						  d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
+						  dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
+	if (isError(ErrorMsg)) { // An error occurred
+	  // Build error message and pass it to the Modelica environment
+	  char error[300];
+	  sprintf(error, "FluidProp error: %s\nCannot compute saturation conditions at p = %f\n",
+		      ErrorMsg.c_str(), _fluidConstants.pc*(1-p_eps));
+	  errorMessage(error);
+	  }
+  }
+  // Fill in the satPropClose2Crit record
+  satPropClose2Crit.Tsat = T_sat_;		// saturation temperature
+  satPropClose2Crit.dTp = dT_sat_dP_;  // derivative of Ts by pressure
+  satPropClose2Crit.ddldp = dd_liq_dP_; // derivative of dls by pressure
+  satPropClose2Crit.ddvdp = dd_vap_dP_; // derivative of dvs by pressure
+  satPropClose2Crit.dhldp = dh_liq_dP_; // derivative of hls by pressure
+  satPropClose2Crit.dhvdp = dh_vap_dP_; // derivative of hvs by pressure
+  satPropClose2Crit.dl = d_liq_;	// bubble density
+  satPropClose2Crit.dv = d_vap_;	// dew density
+  satPropClose2Crit.hl = h_liq_;	// bubble specific enthalpy
+  satPropClose2Crit.hv = h_vap_;	// dew specific enthalpy
+  satPropClose2Crit.psat = _fluidConstants.pc*(1-p_eps);     // saturation pressure
   }
 
 void FluidPropSolver::setSat_p(double &p, ExternalSaturationProperties *const properties){
@@ -107,30 +149,45 @@ void FluidPropSolver::setSat_p(double &p, ExternalSaturationProperties *const pr
 		   dh_vap_dP_, dT_sat_dP_;
 
 	// Compute all FluidProp variables at pressure p and steam quality 0
-	FluidProp.AllPropsSat("Pq", p , 0.0, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
-		                  alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, theta_, kappa_, gamma_, eta_, lambda_,  
-	    			      d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
-						  dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
-	if (isError(ErrorMsg)) {  // An error occurred
-		// Build error message and pass it to the Modelica environment
-		char error[300];
-		sprintf(error, "FluidProp error in FluidPropSolver::setSat_p(%f)\n %s\n", p, ErrorMsg.c_str());
-		errorMessage(error);
+	if (p < _fluidConstants.pc*(1-p_eps))  // subcritical conditions
+	{
+		FluidProp.AllPropsSat("Pq", p , 0.0, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
+							   alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, theta_, kappa_, gamma_, eta_, lambda_,  
+							   d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
+							   dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
+		if (isError(ErrorMsg)) {  // An error occurred
+			// Build error message and pass it to the Modelica environment
+			char error[300];
+			sprintf(error, "FluidProp error in FluidPropSolver::setSat_p(%f)\n %s\n", p, ErrorMsg.c_str());
+			errorMessage(error);
+		}
+		// Fill in the ExternalSaturationProperties variables (in SI units)
+		properties->Tsat = T_sat_;		// saturation temperature
+		properties->dTp = dT_sat_dP_;  // derivative of Ts by pressure
+		properties->ddldp = dd_liq_dP_; // derivative of dls by pressure
+		properties->ddvdp = dd_vap_dP_; // derivative of dvs by pressure
+		properties->dhldp = dh_liq_dP_; // derivative of hls by pressure
+		properties->dhvdp = dh_vap_dP_; // derivative of hvs by pressure
+		properties->dl = d_liq_;	// bubble density
+		properties->dv = d_vap_;	// dew density
+		properties->hl = h_liq_;	// bubble specific enthalpy
+		properties->hv = h_vap_;	// dew specific enthalpy
+		properties->psat = p;             // saturation pressure
 	}
-
-    // Fill in the ExternalSaturationProperties variables (in SI units)
-	properties->Tsat = T_sat_;		// saturation temperature
-	properties->dTp = dT_sat_dP_;  // derivative of Ts by pressure
-	properties->ddldp = dd_liq_dP_; // derivative of dls by pressure
-	properties->ddvdp = dd_vap_dP_; // derivative of dvs by pressure
-    properties->dhldp = dh_liq_dP_; // derivative of hls by pressure
-	properties->dhvdp = dh_vap_dP_; // derivative of hvs by pressure
-	properties->dl = d_liq_;	// bubble density
-	properties->dv = d_vap_;	// dew density
-	properties->hl = h_liq_;	// bubble specific enthalpy
-	properties->hv = h_vap_;	// dew specific enthalpy
-    properties->psat = p;             // saturation pressure
-
+	else  // supercritical conditions, return slightly subcritical conditions for continuity
+	{
+		properties->Tsat = satPropClose2Crit.Tsat;		// saturation temperature
+		properties->dTp = satPropClose2Crit.dTp;  // derivative of Ts by pressure
+		properties->ddldp = satPropClose2Crit.ddldp; // derivative of dls by pressure
+		properties->ddvdp = satPropClose2Crit.ddvdp; // derivative of dvs by pressure
+		properties->dhldp = satPropClose2Crit.dhldp; // derivative of hls by pressure
+		properties->dhvdp = satPropClose2Crit.dhvdp; // derivative of hvs by pressure
+		properties->dl = satPropClose2Crit.dl;	// bubble density
+		properties->dv = satPropClose2Crit.dv;	// dew density
+		properties->hl = satPropClose2Crit.hl;	// bubble specific enthalpy
+		properties->hv = satPropClose2Crit.hv;	// dew specific enthalpy
+		properties->psat = satPropClose2Crit.psat;             // saturation pressure
+	}
 }
 
 void FluidPropSolver::setSat_T(double &T, ExternalSaturationProperties *const properties){
@@ -142,31 +199,34 @@ void FluidPropSolver::setSat_T(double &T, ExternalSaturationProperties *const pr
 		   d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
 		   dh_vap_dP_, dT_sat_dP_;
 
-	// Compute all FluidProp variables at temperature T and steam quality 0
-	FluidProp.AllPropsSat("Tq", T , 0.0, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
-		                  alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, theta_, kappa_, gamma_, eta_, lambda_,  
-	    			      d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
-						  dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
-	if (isError(ErrorMsg)) {  // An error occurred
-		// Build error message and pass it to the Modelica environment
-		char error[300];
-		sprintf(error, "FluidProp error in FluidPropSolver::setSat_T(%f)\n %s\n", T, ErrorMsg.c_str());
-		errorMessage(error);
+	if (T < satPropClose2Crit.Tsat)  // subcritical conditions
+	{
+	  // Compute all FluidProp variables at temperature T and steam quality 0
+	  FluidProp.AllPropsSat("Tq", T , 0.0, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
+	 	                    alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, theta_, kappa_, gamma_, eta_, lambda_,  
+	    			        d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
+						    dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
+	  if (isError(ErrorMsg)) {  // An error occurred
+		  // Build error message and pass it to the Modelica environment
+		  char error[300];
+		  sprintf(error, "FluidProp error in FluidPropSolver::setSat_T(%f)\n %s\n", T, ErrorMsg.c_str());
+		  errorMessage(error);
+	  }
 	}
-
-    // Fill in the ExternalSaturationProperties variables (in SI units)
-	properties->Tsat = T;			// saturation temperature
-	properties->dTp = dT_sat_dP_;  // derivative of Ts by pressure
-	properties->ddldp = dd_liq_dP_; // derivative of dls by pressure
-	properties->ddvdp = dd_vap_dP_; // derivative of dvs by pressure
-    properties->dhldp = dh_liq_dP_; // derivative of hls by pressure
-	properties->dhvdp = dh_vap_dP_; // derivative of hvs by pressure
-	properties->dl = d_liq_;	// bubble density
-	properties->dv = d_vap_;	// dew density
-	properties->hl = h_liq_;	// bubble specific enthalpy
-	properties->hv = h_vap_;	// dew specific enthalpy
-    properties->psat = P_;        // saturation pressure
-
+	else  // supercritical conditions, return slightly subcritical conditions for continuity
+	{
+		properties->Tsat = satPropClose2Crit.Tsat;		// saturation temperature
+		properties->dTp = satPropClose2Crit.dTp;  // derivative of Ts by pressure
+		properties->ddldp = satPropClose2Crit.ddldp; // derivative of dls by pressure
+		properties->ddvdp = satPropClose2Crit.ddvdp; // derivative of dvs by pressure
+		properties->dhldp = satPropClose2Crit.dhldp; // derivative of hls by pressure
+		properties->dhvdp = satPropClose2Crit.dhvdp; // derivative of hvs by pressure
+		properties->dl = satPropClose2Crit.dl;	// bubble density
+		properties->dv = satPropClose2Crit.dv;	// dew density
+		properties->hl = satPropClose2Crit.hl;	// bubble specific enthalpy
+		properties->hv = satPropClose2Crit.hv;	// dew specific enthalpy
+		properties->psat = satPropClose2Crit.psat;             // saturation pressure
+	}
 }
 
 //! Computes the properties of the state vector from p and h
