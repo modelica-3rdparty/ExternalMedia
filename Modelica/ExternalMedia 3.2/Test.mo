@@ -14,26 +14,18 @@ package Test "Test models"
       Medium.Temperature Ts;
       Medium.AbsolutePressure ps;
 
-      ExternalMedia.Test.TestMedium.GenericModels.CompleteThermodynamicState
-        completeState1(                         redeclare package Medium = Medium,
-                                                state = state1);
-      ExternalMedia.Test.TestMedium.GenericModels.CompleteThermodynamicState
-        completeState2(                         redeclare package Medium = Medium,
-                                                state = state2);
-      ExternalMedia.Test.TestMedium.GenericModels.CompleteSaturationProperties
-        completeSat1(                           redeclare package Medium = Medium,
-                                                sat = sat1);
-      ExternalMedia.Test.TestMedium.GenericModels.CompleteSaturationProperties
-        completeSat2(                           redeclare package Medium = Medium,
-                                                sat = sat2);
-      ExternalMedia.Test.TestMedium.GenericModels.CompleteBubbleDewStates
-        completeBubbleDewStates1(                      redeclare package Medium
-          =                                                                       Medium,
-                                                       sat = sat1);
-      ExternalMedia.Test.TestMedium.GenericModels.CompleteBubbleDewStates
-        completeBubbleDewStates2(                      redeclare package Medium
-          =                                                                       Medium,
-                                                       sat = sat1);
+      GenericModels.CompleteThermodynamicState completeState1(
+        redeclare package Medium = Medium, state = state1);
+      GenericModels.CompleteThermodynamicState completeState2(
+        redeclare package Medium = Medium, state = state2);
+      GenericModels.CompleteSaturationProperties completeSat1(
+        redeclare package Medium = Medium, sat = sat1);
+      GenericModels.CompleteSaturationProperties completeSat2(
+        redeclare package Medium = Medium, sat = sat2);
+      GenericModels.CompleteBubbleDewStates completeBubbleDewStates1(
+        redeclare package Medium = Medium, sat = sat1);
+      GenericModels.CompleteBubbleDewStates completeBubbleDewStates2(
+        redeclare package Medium = Medium, sat = sat1);
     equation
       baseProperties1.p = 1e5+1e5*time;
       baseProperties1.h = 1e5;
@@ -153,7 +145,7 @@ package Test "Test models"
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
 
         // ThermodynamicState record
-        Medium.ThermodynamicState state;
+        input Medium.ThermodynamicState state;
 
         // Medium properties
         Medium.AbsolutePressure p =                Medium.pressure(state);
@@ -176,7 +168,7 @@ package Test "Test models"
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
 
         // SaturationProperties record
-        Medium.SaturationProperties sat;
+        input Medium.SaturationProperties sat;
 
         // Saturation properties
         Medium.Temperature Ts =      Medium.saturationTemperature_sat(sat);
@@ -197,20 +189,16 @@ package Test "Test models"
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
 
         // SaturationProperties record
-        Medium.SaturationProperties sat;
+        input Medium.SaturationProperties sat;
 
-        ExternalMedia.Test.TestMedium.GenericModels.CompleteThermodynamicState
-          dewStateOnePhase(                         state=
-              Medium.setDewState(sat, 1), redeclare package Medium = Medium);
-        ExternalMedia.Test.TestMedium.GenericModels.CompleteThermodynamicState
-          dewStateTwoPhase(                         state=
-              Medium.setDewState(sat, 2), redeclare package Medium = Medium);
-        ExternalMedia.Test.TestMedium.GenericModels.CompleteThermodynamicState
-          bubbleStateOnePhase(                         state=
-              Medium.setBubbleState(sat, 1), redeclare package Medium = Medium);
-        ExternalMedia.Test.TestMedium.GenericModels.CompleteThermodynamicState
-          bubbleStateTwoPhase(                         state=
-              Medium.setBubbleState(sat, 2), redeclare package Medium = Medium);
+        CompleteThermodynamicState dewStateOnePhase(
+          state=Medium.setDewState(sat, 1), redeclare package Medium = Medium);
+        CompleteThermodynamicState dewStateTwoPhase(
+          state=Medium.setDewState(sat, 2), redeclare package Medium = Medium);
+        CompleteThermodynamicState bubbleStateOnePhase(
+          state=Medium.setBubbleState(sat, 1), redeclare package Medium = Medium);
+        CompleteThermodynamicState bubbleStateTwoPhase(
+          state=Medium.setBubbleState(sat, 2), redeclare package Medium = Medium);
       end CompleteBubbleDewStates;
 
       model CompleteBaseProperties
@@ -222,17 +210,13 @@ package Test "Test models"
         Medium.BaseProperties baseProperties;
 
         // All the complete properties
-        ExternalMedia.Test.TestMedium.GenericModels.CompleteThermodynamicState
-          completeState(                         redeclare package Medium =
-                     Medium, state=baseProperties.state);
-        ExternalMedia.Test.TestMedium.GenericModels.CompleteSaturationProperties
-          completeSat(                           redeclare package Medium =
-                     Medium, sat=baseProperties.sat);
-        ExternalMedia.Test.TestMedium.GenericModels.CompleteFluidConstants
-          completeConstants(                     redeclare package Medium =
-                     Medium);
-        ExternalMedia.Test.TestMedium.GenericModels.CompleteBubbleDewStates
-          completeBubbleDewStates(
+        CompleteThermodynamicState completeState(
+          redeclare package Medium = Medium, state=baseProperties.state);
+        CompleteSaturationProperties completeSat(
+          redeclare package Medium = Medium, sat=baseProperties.sat);
+        CompleteFluidConstants completeConstants(
+          redeclare package Medium = Medium);
+        CompleteBubbleDewStates completeBubbleDewStates(
             redeclare package Medium = Medium, sat=baseProperties.sat);
       end CompleteBaseProperties;
     end GenericModels;
@@ -325,14 +309,14 @@ package Test "Test models"
         Medium.BaseProperties baseProperties;
 
         // All the complete properties
-        CompleteThermodynamicState completeState(redeclare package Medium =
-                             Medium, state=baseProperties.state);
-        CompleteSaturationProperties completeSat(redeclare package Medium =
-                             Medium, sat=baseProperties.sat);
-        CompleteFluidConstants completeConstants(redeclare package Medium =
-                             Medium);
+        CompleteThermodynamicState completeState(
+          redeclare package Medium = Medium, state=baseProperties.state);
+        CompleteSaturationProperties completeSat(
+          redeclare package Medium = Medium, sat=baseProperties.sat);
+        CompleteFluidConstants completeConstants(
+          redeclare package Medium = Medium);
         CompleteBubbleDewStates completeBubbleDewStates(
-            redeclare package Medium = Medium, sat=baseProperties.sat);
+          redeclare package Medium = Medium, sat=baseProperties.sat);
       end CompleteBaseProperties;
 
     end GenericModels;
@@ -351,30 +335,18 @@ package Test "Test models"
         Medium.Temperature Ts;
         Medium.AbsolutePressure ps;
 
-        ExternalMedia.Test.FluidProp.GenericModels.CompleteThermodynamicState
-          completeState1(                                    redeclare package
-            Medium =
-              Medium, state=state1);
-        ExternalMedia.Test.FluidProp.GenericModels.CompleteThermodynamicState
-          completeState2(                                    redeclare package
-            Medium =
-              Medium, state=state2);
-        ExternalMedia.Test.FluidProp.GenericModels.CompleteSaturationProperties
-          completeSat1(                                      redeclare package
-            Medium =
-              Medium, sat=sat1);
-        ExternalMedia.Test.FluidProp.GenericModels.CompleteSaturationProperties
-          completeSat2(                                      redeclare package
-            Medium =
-              Medium, sat=sat2);
-        ExternalMedia.Test.FluidProp.GenericModels.CompleteBubbleDewStates
-          completeBubbleDewStates1(                                 redeclare
-            package Medium =
-                     Medium, sat=sat1);
-        ExternalMedia.Test.FluidProp.GenericModels.CompleteBubbleDewStates
-          completeBubbleDewStates2(                                 redeclare
-            package Medium =
-                     Medium, sat=sat1);
+        FluidProp.GenericModels.CompleteThermodynamicState
+          completeState1(redeclare package Medium = Medium, state=state1);
+        FluidProp.GenericModels.CompleteThermodynamicState
+          completeState2(redeclare package Medium = Medium, state=state2);
+        FluidProp.GenericModels.CompleteSaturationProperties
+          completeSat1(redeclare package Medium = Medium, sat=sat1);
+        FluidProp.GenericModels.CompleteSaturationProperties
+          completeSat2(redeclare package Medium = Medium, sat=sat2);
+        FluidProp.GenericModels.CompleteBubbleDewStates
+          completeBubbleDewStates1(redeclare package Medium = Medium, sat=sat1);
+        FluidProp.GenericModels.CompleteBubbleDewStates
+          completeBubbleDewStates2(redeclare package Medium = Medium, sat=sat1);
       equation
         baseProperties1.p = 1e5+1e5*time;
         baseProperties1.h = 1e5;
@@ -396,10 +368,10 @@ package Test "Test models"
         replaceable package Medium = ExternalMedia.Examples.WaterIF95
           constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium;
         ExternalMedia.Test.FluidProp.GenericModels.CompleteBaseProperties
-          medium1(                 redeclare package Medium = Medium)
+          medium1(redeclare package Medium = Medium)
           "Constant pressure, varying enthalpy";
         ExternalMedia.Test.FluidProp.GenericModels.CompleteBaseProperties
-          medium2(                 redeclare package Medium = Medium)
+          medium2(redeclare package Medium = Medium)
           "Varying pressure, constant enthalpy";
       equation
         medium1.baseProperties.p = 1e5+1e5*time;
@@ -413,12 +385,12 @@ package Test "Test models"
         replaceable package Medium = ExternalMedia.Examples.WaterIF95
           constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium;
         ExternalMedia.Test.FluidProp.GenericModels.CompleteBaseProperties
-          medium1(                 redeclare package Medium = Medium,
-                                   baseProperties(h(start=1e5)))
+          medium1(redeclare package Medium = Medium,
+                   baseProperties(h(start=1e5)))
           "Constant pressure, varying enthalpy";
         ExternalMedia.Test.FluidProp.GenericModels.CompleteBaseProperties
-          medium2(                 redeclare package Medium = Medium,
-                                   baseProperties(h(start=1e5)))
+          medium2(redeclare package Medium = Medium,
+                  baseProperties(h(start=1e5)))
           "Varying pressure, constant enthalpy";
       equation
         medium1.baseProperties.p = 1e5+1e5*time;
