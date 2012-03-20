@@ -1,0 +1,11 @@
+openModel("../../Modelica/ExternalMedia 3.2/package.mo")
+cd("../../Projects/RunTests/Results")
+simulateModel("ExternalMedia.Test.TestMedium.TestStatesSat", method="dassl", resultFile="TestMedium-TestStatesSat");
+simulateModel("ExternalMedia.Test.TestMedium.TestBasePropertiesExplicit", method="dassl", resultFile="TestMedium-TestBasePropertiesExplicit");
+simulateModel("ExternalMedia.Test.TestMedium.TestBasePropertiesImplicit", method="dassl", resultFile="TestMedium-TestBasePropertiesImplicit");
+simulateModel("ExternalMedia.Test.TestMedium.TestBasePropertiesDynamic", method="dassl", resultFile="TestMedium-TestBasePropertiesDynamic");
+simulateModel("ExternalMedia.Test.FluidProp.IF95.TestStatesSat", method="dassl", resultFile="FluidProp-IF95-TestStatesSat");
+simulateModel("ExternalMedia.Test.FluidProp.IF95.TestBasePropertiesExplicit", method="dassl", resultFile="FluidProp-IF95-TestBasePropertiesExplicit");
+simulateModel("ExternalMedia.Test.FluidProp.IF95.TestBasePropertiesImplicit", method="dassl", resultFile="FluidProp-IF95-TestBasePropertiesImplicit");
+simulateModel("ExternalMedia.Test.FluidProp.IF95.TestBasePropertiesDynamic", method="dassl", resultFile="FluidProp-IF95-TestBasePropertiesDynamic");
+
