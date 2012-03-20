@@ -292,8 +292,28 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     d := density(setState_ph(p, h, phase));
     annotation(derivative(noDerivative = phase) = density_ph_der,
-               Inline = true);
+               Inline = false, LateInline = true);
   end density_ph;
+
+  replaceable function density_ph_der "Total derivative of density_ph"
+    extends Modelica.Icons.Function;
+    input AbsolutePressure p "Pressure";
+    input SpecificEnthalpy h "Specific enthalpy";
+    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
+    input Real p_der;
+    input Real h_der;
+    output Real d_der;
+    // Standard definition
+  algorithm
+    d_der:=density_derp_h(setState_ph(p, h))*p_der + density_derh_p(setState_ph(
+      p, h))*h_der;
+    /*  // If special definition in "C"
+  external "C" d_der=  TwoPhaseMedium_density_ph_der_(state, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+*/
+
+    annotation(Inline = true);
+  end density_ph_der;
 
   redeclare replaceable function temperature_ph
     "Return temperature from p and h"
@@ -331,7 +351,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     d := density(setState_pT(p, T, phase));
     annotation(derivative(noDerivative = phase) = density_pT_der,
-               Inline = true);
+               Inline = false, LateInline = true);
   end density_pT;
 
   replaceable partial function density_pT_der "Total derivative of density_pT"
@@ -394,7 +414,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     d := density(setState_ps(p, s, phase));
     annotation(derivative(noDerivative = phase) = density_ps_der,
-               Inline = true);
+               Inline = false, LateInline = true);
   end density_ps;
 
   replaceable partial function density_ps_der "Total derivative of density_ps"
@@ -624,26 +644,6 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end specificEntropy;
 
-  replaceable function density_ph_der "Total derivative of density_ph"
-    extends Modelica.Icons.Function;
-    input AbsolutePressure p "Pressure";
-    input SpecificEnthalpy h "Specific enthalpy";
-    input FixedPhase phase "2 for two-phase, 1 for one-phase, 0 if not known";
-    input Real p_der;
-    input Real h_der;
-    output Real d_der;
-    // Standard definition
-  algorithm
-    d_der:=density_derp_h(setState_ph(p, h))*p_der + density_derh_p(setState_ph(
-      p, h))*h_der;
-    /*  // If special definition in "C"
-  external "C" d_der=  TwoPhaseMedium_density_ph_der_(state, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
-*/
-
-    annotation(Inline = true);
-  end density_ph_der;
-
   redeclare replaceable function extends isentropicEnthalpy
   external "C" h_is=  TwoPhaseMedium_isentropicEnthalpy_(p_downstream, refState,
    mediumName, libraryName, substanceName)
@@ -852,6 +852,17 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
                derivative = saturationPressure_der);
   end saturationPressure;
 
+  function saturationPressure_der "Return saturation pressure time derivative"
+    extends Modelica.Icons.Function;
+    input Temperature T "temperature";
+    input Real T_der "Temperature derivative";
+    output Real p_der "saturation pressure derivative";
+    // Standard definition
+  algorithm
+    p_der :=T_der/saturationTemperature_derp_sat(setSat_T(T));
+    annotation(Inline = true);
+  end saturationPressure_der;
+
   redeclare function extends saturationPressure_sat
 
     annotation(Inline = true);
@@ -896,14 +907,4 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end dewEntropy;
 
-  function saturationPressure_der "Return saturation pressure time derivative"
-    extends Modelica.Icons.Function;
-    input Temperature T "temperature";
-    input Real T_der "Temperature derivative";
-    output Real p_der "saturation pressure derivative";
-    // Standard definition
-  algorithm
-    p_der :=T_der/saturationTemperature_derp_sat(setSat_T(T));
-    annotation(Inline = true);
-  end saturationPressure_der;
 end ExternalTwoPhaseMedium;
