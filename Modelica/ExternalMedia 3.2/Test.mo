@@ -525,13 +525,6 @@ package Test "Test models"
             equdistant=false));
     end TestBasePropertiesDynamic;
 
-      model TestBasePropertiesExplicit_ModelicaIF97
-        "Test case using FluidProp IF95 and explicit equations"
-        extends TestBasePropertiesExplicit(
-          redeclare package Medium = Modelica.Media.Water.StandardWater);
-      end TestBasePropertiesExplicit_ModelicaIF97;
-
-
       model CompareModelicaFluidProp_liquid
         "Comparison between Modelica IF97 and FluidProp IF95 models - liquid"
         extends GenericModels.CompareModelicaFluidProp(

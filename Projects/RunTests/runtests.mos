@@ -8,4 +8,7 @@ simulateModel("ExternalMedia.Test.FluidProp.IF95.TestStatesSat", method="dassl",
 simulateModel("ExternalMedia.Test.FluidProp.IF95.TestBasePropertiesExplicit", method="dassl", resultFile="FluidProp-IF95-TestBasePropertiesExplicit");
 simulateModel("ExternalMedia.Test.FluidProp.IF95.TestBasePropertiesImplicit", method="dassl", resultFile="FluidProp-IF95-TestBasePropertiesImplicit");
 simulateModel("ExternalMedia.Test.FluidProp.IF95.TestBasePropertiesDynamic", method="dassl", resultFile="FluidProp-IF95-TestBasePropertiesDynamic");
-
+simulateModel("ExternalMedia.Test.FluidProp.IF95.TestBasePropertiesDynamic", method="dassl", resultFile="FluidProp-IF95-TestBasePropertiesDynamic");
+simulateModel("ExternalMedia.Test.FluidProp.IF95.CompareModelicaFluidProp_liquid", method="dassl", resultFile="FluidProp-IF95-CompareModelicaFluidProp_liquid");
+simulateModel("ExternalMedia.Test.FluidProp.IF95.CompareModelicaFluidProp_twophase", method="dassl", resultFile="FluidProp-IF95-CompareModelicaFluidProp_twophase");
+simulateModel("ExternalMedia.Test.FluidProp.IF95.CompareModelicaFluidProp_vapour", method="dassl", resultFile="FluidProp-IF95-CompareModelicaFluidProp_vapour");
