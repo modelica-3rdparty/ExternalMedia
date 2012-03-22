@@ -24,19 +24,19 @@ package Examples "Examples of external medium models"
       ThermoStates = Modelica.Media.Interfaces.PartialMedium.Choices.IndependentVariables.ph);
   end WaterIF97;
 
-  package CarbonDioxideStanMix "StanMix model of CO2"
+  package CO2StanMix "StanMix model of CO2"
     extends ExternalMedia.Media.FluidPropMedium(
       mediumName = "Carbon Dioxide",
       libraryName = "FluidProp.StanMix",
       substanceNames = {"CO2"},
       ThermoStates = Modelica.Media.Interfaces.PartialMedium.Choices.IndependentVariables.ph);
-  end CarbonDioxideStanMix;
+  end CO2StanMix;
 
-  package CarbonDioxideRefProp "RefProp model of CO2"
+  package CO2RefProp "RefProp model of CO2"
     extends ExternalMedia.Media.FluidPropMedium(
       mediumName = "Carbon Dioxide",
       libraryName = "FluidProp.RefProp",
       substanceNames = {"CO2"},
       ThermoStates = Modelica.Media.Interfaces.PartialMedium.Choices.IndependentVariables.ph);
-  end CarbonDioxideRefProp;
+  end CO2RefProp;
 end Examples;

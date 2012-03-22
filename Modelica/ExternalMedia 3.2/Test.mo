@@ -327,11 +327,8 @@ package Test "Test models"
         Medium.AbsolutePressure p1;
         Medium.SpecificEnthalpy h1;
         Medium.AbsolutePressure p2;
-        Medium.SpecificEnthalpy h2;
         Medium.Temperature T2;
 
-        Medium.BaseProperties baseProperties1;
-        Medium.BaseProperties baseProperties2;
         Medium.ThermodynamicState state1;
         Medium.ThermodynamicState state2;
         Medium.SaturationProperties sat1;
@@ -353,14 +350,8 @@ package Test "Test models"
         CompleteBubbleDewStates
           completeBubbleDewStates2(redeclare package Medium = Medium, sat=sat1);
       equation
-        baseProperties1.p = p1;
-        baseProperties1.h = h1;
-        baseProperties2.p = p2;
-        baseProperties2.h = h2;
-
         state1 = Medium.setState_ph(p1, h1);
         state2 = Medium.setState_pT(p2, T2);
-
         sat1 = Medium.setSat_p(p1);
         sat2 = Medium.setSat_T(T2);
 
@@ -476,10 +467,9 @@ package Test "Test models"
         extends GenericModels.TestStatesSat(
           redeclare package Medium = ExternalMedia.Examples.WaterIF95);
       equation
-        p1 = 1e5 + time*1e5;
-        h1 = 1e5;
+        p1 = 1e5;
+        h1 = 1e5+2e5*time;
         p2 = 1e5;
-        h2 = 1e5 + time*2e5;
         T2 = 300 + 50*time;
       end TestStatesSat;
 
@@ -561,6 +551,197 @@ package Test "Test models"
       end CompareModelicaFluidProp_vapour;
     end IF95;
 
+    package IF97 "Test suite for the FluidProp IF97 medium model"
+      model TestStatesSat
+        "Test case with baseProperties and state + sat records"
+        extends GenericModels.TestStatesSat(
+          redeclare package Medium = ExternalMedia.Examples.WaterIF95);
+      equation
+        p1 = 1e5;
+        h1 = 1e5+2e5*time;
+        p2 = 1e5;
+        T2 = 300 + 50*time;
+      end TestStatesSat;
+
+      model TestBasePropertiesExplicit
+        "Test case using BaseProperties and explicit equations"
+        extends GenericModels.TestBasePropertiesExplicit(
+          redeclare package Medium = ExternalMedia.Examples.WaterIF95);
+
+      equation
+        p1 = 1e5+1e5*time;
+        h1 = 1e5;
+        p2 = 1e5;
+        h2 = 1e5 + 2e5*time;
+      end TestBasePropertiesExplicit;
+
+      model TestBasePropertiesImplicit
+        "Test case using BaseProperties and implicit equations"
+        extends GenericModels.TestBasePropertiesImplicit(
+          redeclare package Medium = ExternalMedia.Examples.WaterIF95,
+          hstart = 1e5);
+      equation
+        p1 = 1e5+1e5*time;
+        T1 = 300 + 25*time;
+        p2 = 1e5+1e5*time;
+        T2 = 300;
+      end TestBasePropertiesImplicit;
+
+    model TestBasePropertiesDynamic
+        "Test case using BaseProperties and dynamic equations"
+      extends GenericModels.TestBasePropertiesDynamic(
+        redeclare package Medium = ExternalMedia.Examples.WaterIF95,
+        Tstart = 300,
+        Kv0 = 1.00801e-2);
+    equation
+      // Inlet pump equations
+      medium.p - p_atm = 2e5 - (1e5/100^2)*win^2;
+      hin = 1e5;
+
+      // Input variables
+      Kv = if time<50 then Kv0 else Kv0*1.1;
+      Q = if time < 1 then 0 else 1e7;
+      annotation (experiment(StopTime=80, Tolerance=1e-007),experimentSetupOutput(
+            equdistant=false));
+    end TestBasePropertiesDynamic;
+
+      model CompareModelicaFluidProp_liquid
+        "Comparison between Modelica IF97 and FluidProp IF97 models - liquid"
+        extends GenericModels.CompareModelicaFluidProp(
+          redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
+          redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF95,
+          pmin = 1e5,
+          pmax = 1e5,
+          hmin = 1e5,
+          hmax = 4e5);
+      end CompareModelicaFluidProp_liquid;
+
+      model CompareModelicaFluidProp_twophase
+        "Comparison between Modelica IF97 and FluidProp IF97 models - liquid"
+        extends GenericModels.CompareModelicaFluidProp(
+          redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
+          redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF95,
+          pmin = 60e5,
+          pmax = 60e5,
+          hmin = 1000e3,
+          hmax = 2000e3);
+
+      end CompareModelicaFluidProp_twophase;
+
+      model CompareModelicaFluidProp_vapour
+        "Comparison between Modelica IF97 and FluidProp IF97 models - liquid"
+        extends GenericModels.CompareModelicaFluidProp(
+          redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
+          redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF95,
+          pmin = 60e5,
+          pmax = 60e5,
+          hmin = 2800e3,
+          hmax = 3200e3);
+
+      end CompareModelicaFluidProp_vapour;
+    end IF97;
+
+    package CO2StanMix "Test suite for the StanMix CO2 medium model"
+
+      model TestStatesSatSupercritical
+        "Test case with baseProperties and state + sat records"
+        extends GenericModels.TestStatesSat(
+          redeclare package Medium = ExternalMedia.Examples.CO2StanMix);
+      equation
+        p1 = 8e6;
+        h1 = -4.2e5+6e5*time;
+        p2 = 8e6;
+        T2 = 280 + 50*time;
+      end TestStatesSatSupercritical;
+
+      model TestStatesSatSubcritical
+        "Test case with baseProperties and state + sat records"
+        extends GenericModels.TestStatesSat(
+          redeclare package Medium = ExternalMedia.Examples.CO2StanMix);
+      equation
+        p1 = 1e6 + time*1e6;
+        h1 =  -4.2e5+6e5*time;
+        p2 = 1e6;
+        T2 = 280 + 50*time;
+      end TestStatesSatSubcritical;
+
+      model TestBasePropertiesExplicit
+        "Test case using BaseProperties and explicit equations"
+        extends GenericModels.TestBasePropertiesExplicit(
+          redeclare package Medium = ExternalMedia.Examples.CO2StanMix);
+
+      equation
+        p1 = 1e5+1e5*time;
+        h1 = 1e5;
+        p2 = 1e5;
+        h2 = 1e5 + 2e5*time;
+      end TestBasePropertiesExplicit;
+
+      model TestBasePropertiesImplicit
+        "Test case using BaseProperties and implicit equations"
+        extends GenericModels.TestBasePropertiesImplicit(
+          redeclare package Medium = ExternalMedia.Examples.CO2StanMix,
+          hstart = 1e5);
+      equation
+        p1 = 1e5+1e5*time;
+        T1 = 300 + 25*time;
+        p2 = 1e5+1e5*time;
+        T2 = 300;
+      end TestBasePropertiesImplicit;
+
+    model TestBasePropertiesDynamic
+        "Test case using BaseProperties and dynamic equations"
+      extends GenericModels.TestBasePropertiesDynamic(
+        redeclare package Medium = ExternalMedia.Examples.CO2StanMix,
+        Tstart = 300,
+        Kv0 = 1.00801e-2);
+    equation
+      // Inlet pump equations
+      medium.p - p_atm = 2e5 - (1e5/100^2)*win^2;
+      hin = 1e5;
+
+      // Input variables
+      Kv = if time<50 then Kv0 else Kv0*1.1;
+      Q = if time < 1 then 0 else 1e7;
+      annotation (experiment(StopTime=80, Tolerance=1e-007),experimentSetupOutput(
+            equdistant=false));
+    end TestBasePropertiesDynamic;
+
+      model CompareModelicaFluidProp_liquid
+        "Comparison between Modelica IF97 and FluidProp IF97 models - liquid"
+        extends GenericModels.CompareModelicaFluidProp(
+          redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
+          redeclare package FluidPropMedium = ExternalMedia.Examples.CO2StanMix,
+          pmin = 1e5,
+          pmax = 1e5,
+          hmin = 1e5,
+          hmax = 4e5);
+      end CompareModelicaFluidProp_liquid;
+
+      model CompareModelicaFluidProp_twophase
+        "Comparison between Modelica IF97 and FluidProp IF97 models - liquid"
+        extends GenericModels.CompareModelicaFluidProp(
+          redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
+          redeclare package FluidPropMedium = ExternalMedia.Examples.CO2StanMix,
+          pmin = 60e5,
+          pmax = 60e5,
+          hmin = 1000e3,
+          hmax = 2000e3);
+
+      end CompareModelicaFluidProp_twophase;
+
+      model CompareModelicaFluidProp_vapour
+        "Comparison between Modelica IF97 and FluidProp IF97 models - liquid"
+        extends GenericModels.CompareModelicaFluidProp(
+          redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
+          redeclare package FluidPropMedium = ExternalMedia.Examples.CO2StanMix,
+          pmin = 60e5,
+          pmax = 60e5,
+          hmin = 2800e3,
+          hmax = 3200e3);
+
+      end CompareModelicaFluidProp_vapour;
+    end CO2StanMix;
   end FluidProp;
 
   package WrongMedium "Test cases with wrong medium models"
