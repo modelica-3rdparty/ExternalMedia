@@ -212,6 +212,18 @@ void FluidPropSolver::setSat_T(double &T, ExternalSaturationProperties *const pr
 		  sprintf(error, "FluidProp error in FluidPropSolver::setSat_T(%f)\n %s\n", T, ErrorMsg.c_str());
 		  errorMessage(error);
 	  }
+	  // Fill in the ExternalSaturationProperties variables (in SI units)
+	  properties->Tsat = T;			// saturation temperature
+	  properties->dTp = dT_sat_dP_;  // derivative of Ts by pressure
+	  properties->ddldp = dd_liq_dP_; // derivative of dls by pressure
+	  properties->ddvdp = dd_vap_dP_; // derivative of dvs by pressure
+      properties->dhldp = dh_liq_dP_; // derivative of hls by pressure
+	  properties->dhvdp = dh_vap_dP_; // derivative of hvs by pressure
+	  properties->dl = d_liq_;	// bubble density
+	  properties->dv = d_vap_;	// dew density
+	  properties->hl = h_liq_;	// bubble specific enthalpy
+	  properties->hv = h_vap_;	// dew specific enthalpy
+      properties->psat = P_;        // saturation pressure
 	}
 	else  // supercritical conditions, return slightly subcritical conditions for continuity
 	{

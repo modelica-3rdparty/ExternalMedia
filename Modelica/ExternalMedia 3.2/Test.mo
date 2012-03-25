@@ -348,7 +348,7 @@ package Test "Test models"
         CompleteBubbleDewStates
           completeBubbleDewStates1(redeclare package Medium = Medium, sat=sat1);
         CompleteBubbleDewStates
-          completeBubbleDewStates2(redeclare package Medium = Medium, sat=sat1);
+          completeBubbleDewStates2(redeclare package Medium = Medium, sat=sat2);
       equation
         state1 = Medium.setState_ph(p1, h1);
         state2 = Medium.setState_pT(p2, T2);
