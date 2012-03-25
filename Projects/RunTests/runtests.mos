@@ -4,19 +4,28 @@ simulateModel("ExternalMedia.Test.TestMedium.TestStatesSat", method="dassl", res
 simulateModel("ExternalMedia.Test.TestMedium.TestBasePropertiesExplicit", method="dassl", resultFile="TestMedium-TestBasePropertiesExplicit");
 simulateModel("ExternalMedia.Test.TestMedium.TestBasePropertiesImplicit", method="dassl", resultFile="TestMedium-TestBasePropertiesImplicit");
 simulateModel("ExternalMedia.Test.TestMedium.TestBasePropertiesDynamic", method="dassl", resultFile="TestMedium-TestBasePropertiesDynamic");
-simulateModel("ExternalMedia.Test.FluidProp.IF95.TestStatesSat", method="dassl", resultFile="FluidProp-IF95-TestStatesSat");
-simulateModel("ExternalMedia.Test.FluidProp.IF95.TestBasePropertiesExplicit", method="dassl", resultFile="FluidProp-IF95-TestBasePropertiesExplicit");
-simulateModel("ExternalMedia.Test.FluidProp.IF95.TestBasePropertiesImplicit", method="dassl", resultFile="FluidProp-IF95-TestBasePropertiesImplicit");
-simulateModel("ExternalMedia.Test.FluidProp.IF95.TestBasePropertiesDynamic", method="dassl", resultFile="FluidProp-IF95-TestBasePropertiesDynamic");
-simulateModel("ExternalMedia.Test.FluidProp.IF95.TestBasePropertiesDynamic", method="dassl", resultFile="FluidProp-IF95-TestBasePropertiesDynamic");
-simulateModel("ExternalMedia.Test.FluidProp.IF95.CompareModelicaFluidProp_liquid", method="dassl", resultFile="FluidProp-IF95-CompareModelicaFluidProp_liquid");
-simulateModel("ExternalMedia.Test.FluidProp.IF95.CompareModelicaFluidProp_twophase", method="dassl", resultFile="FluidProp-IF95-CompareModelicaFluidProp_twophase");
-simulateModel("ExternalMedia.Test.FluidProp.IF95.CompareModelicaFluidProp_vapour", method="dassl", resultFile="FluidProp-IF95-CompareModelicaFluidProp_vapour");
-simulateModel("ExternalMedia.Test.FluidProp.IF97.TestStatesSat", method="dassl", resultFile="FluidProp-IF97-TestStatesSat");
-simulateModel("ExternalMedia.Test.FluidProp.IF97.TestBasePropertiesExplicit", method="dassl", resultFile="FluidProp-IF97-TestBasePropertiesExplicit");
-simulateModel("ExternalMedia.Test.FluidProp.IF97.TestBasePropertiesImplicit", method="dassl", resultFile="FluidProp-IF97-TestBasePropertiesImplicit");
-simulateModel("ExternalMedia.Test.FluidProp.IF97.TestBasePropertiesDynamic", method="dassl", resultFile="FluidProp-IF97-TestBasePropertiesDynamic");
-simulateModel("ExternalMedia.Test.FluidProp.IF97.TestBasePropertiesDynamic", method="dassl", resultFile="FluidProp-IF97-TestBasePropertiesDynamic");
-simulateModel("ExternalMedia.Test.FluidProp.IF97.CompareModelicaFluidProp_liquid", method="dassl", resultFile="FluidProp-IF97-CompareModelicaFluidProp_liquid");
-simulateModel("ExternalMedia.Test.FluidProp.IF97.CompareModelicaFluidProp_twophase", method="dassl", resultFile="FluidProp-IF97-CompareModelicaFluidProp_twophase");
-simulateModel("ExternalMedia.Test.FluidProp.IF97.CompareModelicaFluidProp_vapour", method="dassl", resultFile="FluidProp-IF95-CompareModelicaFluidProp_vapour");
+
+simulateModel("ExternalMedia.Test.FluidProp.WaterIF95.TestStatesSat", method="dassl", resultFile="FluidProp-IF95-TestStatesSat");
+simulateModel("ExternalMedia.Test.FluidProp.WaterIF95.TestBasePropertiesExplicit", method="dassl", resultFile="FluidProp-IF95-TestBasePropertiesExplicit");
+simulateModel("ExternalMedia.Test.FluidProp.WaterIF95.TestBasePropertiesImplicit", method="dassl", resultFile="FluidProp-IF95-TestBasePropertiesImplicit");
+simulateModel("ExternalMedia.Test.FluidProp.WaterIF95.TestBasePropertiesDynamic", method="dassl", resultFile="FluidProp-IF95-TestBasePropertiesDynamic");
+simulateModel("ExternalMedia.Test.FluidProp.WaterIF95.CompareModelicaFluidProp_liquid", method="dassl", resultFile="FluidProp-IF95-CompareModelicaFluidProp_liquid");
+simulateModel("ExternalMedia.Test.FluidProp.WaterIF95.CompareModelicaFluidProp_twophase", method="dassl", resultFile="FluidProp-IF95-CompareModelicaFluidProp_twophase");
+simulateModel("ExternalMedia.Test.FluidProp.WaterIF95.CompareModelicaFluidProp_vapour", method="dassl", resultFile="FluidProp-IF95-CompareModelicaFluidProp_vapour");
+
+simulateModel("ExternalMedia.Test.FluidProp.WaterIF97.TestStatesSat", method="dassl", resultFile="FluidProp-IF97-TestStatesSat");
+simulateModel("ExternalMedia.Test.FluidProp.WaterIF97.TestBasePropertiesExplicit", method="dassl", resultFile="FluidProp-IF97-TestBasePropertiesExplicit");
+simulateModel("ExternalMedia.Test.FluidProp.WaterIF97.TestBasePropertiesImplicit", method="dassl", resultFile="FluidProp-IF97-TestBasePropertiesImplicit");
+simulateModel("ExternalMedia.Test.FluidProp.WaterIF97.TestBasePropertiesDynamic", method="dassl", resultFile="FluidProp-IF97-TestBasePropertiesDynamic");
+simulateModel("ExternalMedia.Test.FluidProp.WaterIF97.CompareModelicaFluidProp_liquid", method="dassl", resultFile="FluidProp-IF97-CompareModelicaFluidProp_liquid");
+simulateModel("ExternalMedia.Test.FluidProp.WaterIF97.CompareModelicaFluidProp_twophase", method="dassl", resultFile="FluidProp-IF97-CompareModelicaFluidProp_twophase");
+simulateModel("ExternalMedia.Test.FluidProp.WaterIF97.CompareModelicaFluidProp_vapour", method="dassl", resultFile="FluidProp-IF97-CompareModelicaFluidProp_vapour");
+
+simulateModel("ExternalMedia.Test.FluidProp.WaterTPSI.TestStatesSat", method="dassl", resultFile="FluidProp-TPSI-TestStatesSat");
+simulateModel("ExternalMedia.Test.FluidProp.WaterTPSI.TestBasePropertiesExplicit", method="dassl", resultFile="FluidProp-TPSI-TestBasePropertiesExplicit");
+simulateModel("ExternalMedia.Test.FluidProp.WaterTPSI.TestBasePropertiesImplicit", method="dassl", resultFile="FluidProp-TPSI-TestBasePropertiesImplicit");
+simulateModel("ExternalMedia.Test.FluidProp.WaterTPSI.TestBasePropertiesDynamic", method="dassl", resultFile="FluidProp-TPSI-TestBasePropertiesDynamic");
+simulateModel("ExternalMedia.Test.FluidProp.WaterTPSI.CompareModelicaFluidProp_liquid", method="dassl", resultFile="FluidProp-TPSI-CompareModelicaFluidProp_liquid");
+simulateModel("ExternalMedia.Test.FluidProp.WaterTPSI.CompareModelicaFluidProp_twophase", method="dassl", resultFile="FluidProp-TPSI-CompareModelicaFluidProp_twophase");
+simulateModel("ExternalMedia.Test.FluidProp.WaterTPSI.CompareModelicaFluidProp_vapour", method="dassl", resultFile="FluidProp-TPSI-CompareModelicaFluidProp_vapour");
+
