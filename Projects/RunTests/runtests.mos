@@ -39,6 +39,7 @@ simulateModel("ExternalMedia.Test.FluidProp.CO2StanMix.TestStatesSatSubcritical"
 simulateModel("ExternalMedia.Test.FluidProp.CO2StanMix.TestBasePropertiesExplicit", method="dassl", resultFile="FluidProp-CO2StanMix-TestBasePropertiesExplicit");
 simulateModel("ExternalMedia.Test.FluidProp.CO2StanMix.TestBasePropertiesImplicit", method="dassl", resultFile="FluidProp-CO2StanMix-TestBasePropertiesImplicit");
 simulateModel("ExternalMedia.Test.FluidProp.CO2StanMix.TestBasePropertiesDynamic", method="dassl", stopTime = 80, resultFile="FluidProp-CO2StanMix-TestBasePropertiesDynamic");
+simulateModel("ExternalMedia.Test.FluidProp.CO2StanMix.TestBasePropertiesTranscritical", method="dassl", resultFile="FluidProp-CO2StanMix-TestBasePropertiesTranscritical");
 
 simulateModel("ExternalMedia.Test.FluidProp.CO2RefProp.TestStatesSupercritical", method="dassl", resultFile="FluidProp-CO2RefProp-TestStatesSupercritical");
 simulateModel("ExternalMedia.Test.FluidProp.CO2RefProp.TestStatesTranscritical", method="dassl", resultFile="FluidProp-CO2RefProp-TestStatesTranscritical");
@@ -46,4 +47,5 @@ simulateModel("ExternalMedia.Test.FluidProp.CO2RefProp.TestStatesSatSubcritical"
 simulateModel("ExternalMedia.Test.FluidProp.CO2RefProp.TestBasePropertiesExplicit", method="dassl", resultFile="FluidProp-CO2RefProp-TestBasePropertiesExplicit");
 simulateModel("ExternalMedia.Test.FluidProp.CO2RefProp.TestBasePropertiesImplicit", method="dassl", resultFile="FluidProp-CO2RefProp-TestBasePropertiesImplicit");
 simulateModel("ExternalMedia.Test.FluidProp.CO2RefProp.TestBasePropertiesDynamic", method="dassl", stopTime = 80, resultFile="FluidProp-CO2RefProp-TestBasePropertiesDynamic");
+simulateModel("ExternalMedia.Test.FluidProp.CO2RefProp.TestBasePropertiesTranscritical", method="dassl", resultFile="FluidProp-CO2RefProp-TestBasePropertiesTranscritical");
 

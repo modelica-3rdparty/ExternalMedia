@@ -810,7 +810,7 @@ package Test "Test models"
         p1 = 1e6;
         h1 =  -4.2e5+6e5*time;
         p2 = 1e6;
-        T2 = 280 + 50*time;
+        T2 = 250 + 50*time;
       end TestStatesSatSubcritical;
 
       model TestBasePropertiesExplicit
@@ -857,6 +857,18 @@ package Test "Test models"
       annotation (experiment(StopTime=80, Tolerance=1e-007),experimentSetupOutput(
             equdistant=false));
     end TestBasePropertiesDynamic;
+
+      model TestBasePropertiesTranscritical
+        "Test case using BaseProperties and explicit equations"
+        extends GenericModels.TestBasePropertiesExplicit(
+          redeclare package Medium = ExternalMedia.Examples.CO2StanMix);
+
+      equation
+        p1 = 1e6 + time*10e6;
+        h1 =  -4.2e5+0*time;
+        p2 = 1e6 + time*10e6;
+        h2 = 2.0e5;
+      end TestBasePropertiesTranscritical;
     end CO2StanMix;
 
     package CO2RefProp "Test suite for the StanMix CO2 medium model"
@@ -891,7 +903,7 @@ package Test "Test models"
         p1 = 1e6;
         h1 = 1.0e5 + 6e5*time;
         p2 = 1e6;
-        T2 = 280 + 50*time;
+        T2 = 250 + 50*time;
       end TestStatesSatSubcritical;
 
       model TestBasePropertiesExplicit
@@ -901,16 +913,16 @@ package Test "Test models"
 
       equation
         p1 = 8e6;
-        h1 = -4.2e5+6e5*time;
+        h1 = 1.0e5 + 6e5*time;
         p2 = 1e6;
-        h2 =  -4.2e5+6e5*time;
+        h2 = 1.0e5 + 6e5*time;
       end TestBasePropertiesExplicit;
 
       model TestBasePropertiesImplicit
         "Test case using BaseProperties and implicit equations"
         extends GenericModels.TestBasePropertiesImplicit(
           redeclare package Medium = ExternalMedia.Examples.CO2RefProp,
-          hstart = 0);
+          hstart = 1e5);
       equation
         p1 = 8e6;
         T1 = 280 + 50*time;
@@ -923,14 +935,14 @@ package Test "Test models"
       extends GenericModels.TestBasePropertiesDynamic(
         redeclare package Medium = ExternalMedia.Examples.CO2RefProp,
         Tstart = 300,
-        hstart = 0,
+        hstart = 4e5,
         pstart = 1e6,
         Kv0 = 1.00801e-4,
         V = 0.1);
     equation
       // Inlet equations
       win = 1;
-      hin = 0;
+      hin = 5e5;
 
       // Input variables
       Kv = if time<50 then Kv0 else Kv0*1.1;
@@ -939,39 +951,17 @@ package Test "Test models"
             equdistant=false));
     end TestBasePropertiesDynamic;
 
-      model TemporaryTest
-        package Medium = Examples.CO2RefProp;
-        // Medium.SaturationProperties sat;
-        Medium.Temperature Tc = Medium.fluidConstants[1].criticalTemperature;
-        // Medium.AbsolutePressure pc = Medium.fluidConstants[1].criticalPressure;
-
-        //Medium.ThermodynamicState state;
-
-        //Real p_eps = 1-sat.psat/pc;
+      model TestBasePropertiesTranscritical
+        "Test case using BaseProperties and explicit equations"
+        extends GenericModels.TestBasePropertiesExplicit(
+          redeclare package Medium = ExternalMedia.Examples.CO2RefProp);
 
       equation
-       // sat = Medium.setSat_p(7.32e6);
-       // sat = Medium.setSat_p(8e6);
-       // state = Medium.setState_ph(sat.psat,sat.hl+(sat.hv-sat.hl)*(-0.1+time*1.2));
-       //state = Medium.setDewState(sat,1);
-      end TemporaryTest;
-
-      model TemporaryTest2
-        package Medium = Examples.CO2RefProp;
-        Medium.SaturationProperties sat;
-        Medium.Temperature Tc = Medium.fluidConstants[1].criticalTemperature;
-        Medium.AbsolutePressure pc = Medium.fluidConstants[1].criticalPressure;
-
-        //Medium.ThermodynamicState state;
-
-        Real p_eps = 1-sat.psat/pc;
-
-      equation
-       sat = Medium.setSat_p(7376562.270000);
-      //  sat = Medium.setSat_p(8e6);
-       state = Medium.setState_ph(7376562.270000, 337479.694057);
-      // state = Medium.setDewState(sat,1);
-      end TemporaryTest2;
+        p1 = 1e6 + time*10e6;
+        h1 = 1.0e5;
+        p2 = 1e6 + time*10e6;
+        h2 = 7.0e5;
+      end TestBasePropertiesTranscritical;
     end CO2RefProp;
   end FluidProp;
 
