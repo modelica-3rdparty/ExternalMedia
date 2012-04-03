@@ -37,6 +37,7 @@ package Examples "Examples of external medium models"
       mediumName = "Carbon Dioxide",
       libraryName = "FluidProp.RefProp",
       substanceNames = {"CO2"},
-      ThermoStates = Modelica.Media.Interfaces.PartialMedium.Choices.IndependentVariables.ph);
+      ThermoStates = Modelica.Media.Interfaces.PartialMedium.Choices.IndependentVariables.ph,
+      SpecificEnthalpy(start = 2e5));
   end CO2RefProp;
 end Examples;
