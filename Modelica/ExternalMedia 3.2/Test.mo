@@ -1,8 +1,7 @@
 within ExternalMedia;
 package Test "Test models"
   package TestMedium "Test cases for TestMedium"
-    model TestStatesSat
-      "Test case using TestMedium, with baseProperties and state + sat records without explicit uniqueID handling"
+    model TestStatesSat "Test case using TestMedium with state + sat records"
       replaceable package Medium = Media.TestMedium;
       Medium.BaseProperties baseProperties1;
       Medium.BaseProperties baseProperties2;
@@ -315,12 +314,30 @@ package Test "Test models"
           redeclare package Medium = Medium, sat=baseProperties.sat);
         CompleteFluidConstants completeConstants(
           redeclare package Medium = Medium);
-        CompleteBubbleDewStates completeBubbleDewStates(
-          redeclare package Medium = Medium, sat=baseProperties.sat);
       end CompleteBaseProperties;
 
-      partial model TestStatesSat
-        "Test case with baseProperties and state + sat records"
+      partial model TestStates "Test case with state"
+        replaceable package Medium =
+            Modelica.Media.Interfaces.PartialTwoPhaseMedium;
+
+        Medium.AbsolutePressure p1;
+        Medium.SpecificEnthalpy h1;
+        Medium.AbsolutePressure p2;
+        Medium.Temperature T2;
+
+        Medium.ThermodynamicState state1;
+        Medium.ThermodynamicState state2;
+
+        CompleteThermodynamicState
+          completeState1(redeclare package Medium = Medium, state=state1);
+        CompleteThermodynamicState
+          completeState2(redeclare package Medium = Medium, state=state2);
+      equation
+        state1 = Medium.setState_ph(p1, h1);
+        state2 = Medium.setState_pT(p2, T2);
+      end TestStates;
+
+      partial model TestStatesSat "Test case with state + sat records"
         replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
 
@@ -464,8 +481,17 @@ package Test "Test models"
     end GenericModels;
 
     package WaterIF95 "Test suite for the FluidProp-Refprop IF95 medium model"
-      model TestStatesSat
-        "Test case with baseProperties and state + sat records"
+      model TestStates "Test case with state records"
+        extends GenericModels.TestStates(
+          redeclare package Medium = ExternalMedia.Examples.WaterIF95);
+      equation
+        p1 = 1e5;
+        h1 = 1e5+2e5*time;
+        p2 = 1e5;
+        T2 = 300 + 50*time;
+      end TestStates;
+
+      model TestStatesSat "Test case with state + sat records"
         extends GenericModels.TestStatesSat(
           redeclare package Medium = ExternalMedia.Examples.WaterIF95);
       equation
@@ -554,8 +580,17 @@ package Test "Test models"
     end WaterIF95;
 
     package WaterIF97 "Test suite for the FluidProp IF97 medium model"
-      model TestStatesSat
-        "Test case with baseProperties and state + sat records"
+      model TestStates "Test case with state records"
+        extends GenericModels.TestStates(
+          redeclare package Medium = ExternalMedia.Examples.WaterIF95);
+      equation
+        p1 = 1e5;
+        h1 = 1e5+2e5*time;
+        p2 = 1e5;
+        T2 = 300 + 50*time;
+      end TestStates;
+
+      model TestStatesSat "Test case with state + sat records"
         extends GenericModels.TestStatesSat(
           redeclare package Medium = ExternalMedia.Examples.WaterIF95);
       equation
@@ -644,8 +679,17 @@ package Test "Test models"
     end WaterIF97;
 
     package WaterTPSI "Test suite for the FluidProp TPSI water medium model"
-      model TestStatesSat
-        "Test case with baseProperties and state + sat records"
+      model TestStates "Test case with state records"
+        extends GenericModels.TestStates(
+          redeclare package Medium = ExternalMedia.Examples.WaterTPSI);
+      equation
+        p1 = 1e5;
+        h1 = 1e5+2e5*time;
+        p2 = 1e5;
+        T2 = 300 + 50*time;
+      end TestStates;
+
+      model TestStatesSat "Test case with state + sat records"
         extends GenericModels.TestStatesSat(
           redeclare package Medium = ExternalMedia.Examples.WaterTPSI);
       equation
@@ -736,19 +780,30 @@ package Test "Test models"
 
     package CO2StanMix "Test suite for the StanMix CO2 medium model"
 
-      model TestStatesSatSupercritical
-        "Test case with baseProperties and state + sat records"
-        extends GenericModels.TestStatesSat(
+      model TestStatesSupercritical
+        "Test case with state records, supercritical conditions"
+        extends GenericModels.TestStates(
           redeclare package Medium = ExternalMedia.Examples.CO2StanMix);
       equation
         p1 = 8e6;
         h1 = -4.2e5+6e5*time;
         p2 = 8e6;
         T2 = 280 + 50*time;
-      end TestStatesSatSupercritical;
+      end TestStatesSupercritical;
+
+      model TestStatesTranscritical
+        "Test case with state records, transcritical conditions"
+        extends GenericModels.TestStates(
+          redeclare package Medium = ExternalMedia.Examples.CO2StanMix);
+      equation
+        p1 = 1e6 + time*10e6;
+        h1 =  -4.2e5+0*time;
+        p2 = 1e6 + time*10e6;
+        T2 = 330;
+      end TestStatesTranscritical;
 
       model TestStatesSatSubcritical
-        "Test case with baseProperties and state + sat records"
+        "Test case with state + sat records, subcritical conditions"
         extends GenericModels.TestStatesSat(
           redeclare package Medium = ExternalMedia.Examples.CO2StanMix);
       equation
@@ -757,17 +812,6 @@ package Test "Test models"
         p2 = 1e6;
         T2 = 280 + 50*time;
       end TestStatesSatSubcritical;
-
-      model TestStatesSatTranscritical
-        "Test case with baseProperties and state + sat records"
-        extends GenericModels.TestStatesSat(
-          redeclare package Medium = ExternalMedia.Examples.CO2StanMix);
-      equation
-        p1 = 1e6 + time*10e6;
-        h1 =  -4.2e5+0*time;
-        p2 = 1e6 + time*10e6;
-        T2 = 330;
-      end TestStatesSatTranscritical;
 
       model TestBasePropertiesExplicit
         "Test case using BaseProperties and explicit equations"
@@ -817,38 +861,38 @@ package Test "Test models"
 
     package CO2RefProp "Test suite for the StanMix CO2 medium model"
 
-      model TestStatesSatSupercritical
-        "Test case with baseProperties and state + sat records"
-        extends GenericModels.TestStatesSat(
+      model TestStatesSupercritical
+        "Test case with state records, supercritical conditions"
+        extends GenericModels.TestStates(
           redeclare package Medium = ExternalMedia.Examples.CO2RefProp);
       equation
         p1 = 8e6;
-        h1 = -4.2e5+6e5*time;
+        h1 = 1.0e5 + 6e5*time;
         p2 = 8e6;
         T2 = 280 + 50*time;
-      end TestStatesSatSupercritical;
+      end TestStatesSupercritical;
+
+      model TestStatesTranscritical
+        "Test case with state records, transcritical conditions"
+        extends GenericModels.TestStates(
+          redeclare package Medium = ExternalMedia.Examples.CO2RefProp);
+      equation
+        p1 = 1e6 + time*10e6;
+        h1 = 1.0e5;
+        p2 = 1e6 + time*10e6;
+        T2 = 330;
+      end TestStatesTranscritical;
 
       model TestStatesSatSubcritical
-        "Test case with baseProperties and state + sat records"
+        "Test case state + sat records, subcritical conditions"
         extends GenericModels.TestStatesSat(
           redeclare package Medium = ExternalMedia.Examples.CO2RefProp);
       equation
         p1 = 1e6;
-        h1 =  -4.2e5+6e5*time;
+        h1 = 1.0e5 + 6e5*time;
         p2 = 1e6;
         T2 = 280 + 50*time;
       end TestStatesSatSubcritical;
-
-      model TestStatesSatTranscritical
-        "Test case with baseProperties and state + sat records"
-        extends GenericModels.TestStatesSat(
-          redeclare package Medium = ExternalMedia.Examples.CO2RefProp);
-      equation
-        p1 = 1e6 + time*10e6;
-        h1 =  -4.2e5+0*time;
-        p2 = 1e6 + time*10e6;
-        T2 = 330;
-      end TestStatesSatTranscritical;
 
       model TestBasePropertiesExplicit
         "Test case using BaseProperties and explicit equations"
@@ -895,6 +939,39 @@ package Test "Test models"
             equdistant=false));
     end TestBasePropertiesDynamic;
 
+      model TemporaryTest
+        package Medium = Examples.CO2RefProp;
+        // Medium.SaturationProperties sat;
+        Medium.Temperature Tc = Medium.fluidConstants[1].criticalTemperature;
+        // Medium.AbsolutePressure pc = Medium.fluidConstants[1].criticalPressure;
+
+        //Medium.ThermodynamicState state;
+
+        //Real p_eps = 1-sat.psat/pc;
+
+      equation
+       // sat = Medium.setSat_p(7.32e6);
+       // sat = Medium.setSat_p(8e6);
+       // state = Medium.setState_ph(sat.psat,sat.hl+(sat.hv-sat.hl)*(-0.1+time*1.2));
+       //state = Medium.setDewState(sat,1);
+      end TemporaryTest;
+
+      model TemporaryTest2
+        package Medium = Examples.CO2RefProp;
+        Medium.SaturationProperties sat;
+        Medium.Temperature Tc = Medium.fluidConstants[1].criticalTemperature;
+        Medium.AbsolutePressure pc = Medium.fluidConstants[1].criticalPressure;
+
+        //Medium.ThermodynamicState state;
+
+        Real p_eps = 1-sat.psat/pc;
+
+      equation
+       sat = Medium.setSat_p(7376562.270000);
+      //  sat = Medium.setSat_p(8e6);
+       state = Medium.setState_ph(7376562.270000, 337479.694057);
+      // state = Medium.setDewState(sat,1);
+      end TemporaryTest2;
     end CO2RefProp;
   end FluidProp;
 

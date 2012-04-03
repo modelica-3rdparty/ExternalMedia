@@ -11,8 +11,9 @@
 #define _AFXDLL
 
 ExternalSaturationProperties satPropClose2Crit; // saturation properties close to  critical conditions 
-double p_eps = 1e-5; // relative tolerance margin for subcritical pressure conditions 
-double T_eps = 1e-5; // relative tolerance margin for supercritical temperature conditions
+double p_eps; // relative tolerance margin for subcritical pressure conditions 
+double T_eps; // relative tolerance margin for supercritical temperature conditions
+double delta_h = 1e-3; // delta_h for one-phase/two-phase discrimination
 
 FluidPropSolver::FluidPropSolver(const string &mediumName,
 								 const string &libraryName,
@@ -54,51 +55,44 @@ void FluidPropSolver::setFluidConstants(){
   string ErrorMsg;
 
   _fluidConstants.MM = FluidProp.Mmol(&ErrorMsg);
-  if (isError(ErrorMsg))  // An error occurred
-	{
+  if (isError(ErrorMsg))  { // An error occurred
 	// Build error message and pass it to the Modelica environment
 	char error[300];
 	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute molar mass\n %s\n", ErrorMsg.c_str());
 	errorMessage(error);
-	}
+  }
 
   _fluidConstants.Tc = FluidProp.Tcrit(&ErrorMsg);
-  if (isError(ErrorMsg))  // An error occurred
-	{
+  if (isError(ErrorMsg)) { // An error occurred
 	// Build error message and pass it to the Modelica environment
 	char error[300];
 	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute critical temperature\n %s\n", ErrorMsg.c_str());
 	errorMessage(error);
-	}
+  }
 
   _fluidConstants.pc = FluidProp.Pcrit(&ErrorMsg);
-  if (isError(ErrorMsg))  // An error occurred
-	{
+  if (isError(ErrorMsg))  { // An error occurred
 	// Build error message and pass it to the Modelica environment
 	char error[300];
 	sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute critical pressure\n %s\n", ErrorMsg.c_str());
 	errorMessage(error);
-	}
+  }
 
-  _fluidConstants.dc = FluidProp.Density("PT", _fluidConstants.pc, _fluidConstants.Tc, &ErrorMsg);
-  if (isError(ErrorMsg))  // An error occurred
-	{
-	// Retry with slightly higher temperature to avoid convergence problems
-	_fluidConstants.dc = FluidProp.Density("PT", _fluidConstants.pc, _fluidConstants.Tc*(1.0 + T_eps), &ErrorMsg);
-	if (isError(ErrorMsg))  // An error occurred
-	  {
-	  // Retry with slightly higher temperature to avoid convergence problems
-	  T_eps = T_eps*10;
-	  _fluidConstants.dc = FluidProp.Density("PT", _fluidConstants.pc, _fluidConstants.Tc*(1.0 + T_eps), &ErrorMsg);
-      if (isError(ErrorMsg))  // An error occurred
-	    {
-	    // Build error message and pass it to the Modelica environment
-	    char error[300];
-	    sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute critical density\n %s\n", ErrorMsg.c_str());
-	    errorMessage(error);
-	    }
-	  }
+  // Computation of critical density with slightly supercritical temperature to avoid convergence problems
+  // T_eps is kept as a static variable 
+  for(T_eps = 1e-5;; T_eps *= 3)
+  {
+	if (T_eps > 1e-3) { 
+	  // Superheating is too large:
+	  // Build error message and pass it to the Modelica environment
+	  char error[300];
+	  sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants: can't compute critical density\n %s\n", ErrorMsg.c_str());
+	  errorMessage(error);
 	}
+    _fluidConstants.dc = FluidProp.Density("PT", _fluidConstants.pc, _fluidConstants.Tc*(1.0 + T_eps), &ErrorMsg);
+    if (!isError(ErrorMsg))  // computation succeeded
+		break;
+  }
 
   // Temporary variables for calling AllPropSat in slightly subcritical conditions
   double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
@@ -106,24 +100,27 @@ void FluidPropSolver::setFluidConstants(){
 		 psi_, zeta_, theta_, kappa_, gamma_, eta_, lambda_,
 		 d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
 		 dh_vap_dP_, dT_sat_dP_;
-  // Compute slightly subcritical saturation properties
-  FluidProp.AllPropsSat("Pq", _fluidConstants.pc*(1-p_eps) , 0.0, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
-						alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, theta_, kappa_, gamma_, eta_, lambda_,  
-						d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
-						dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
-  if (isError(ErrorMsg)) {  // An error occurred
-    p_eps = p_eps*10;
-    FluidProp.AllPropsSat("Pq", _fluidConstants.pc*(1-p_eps) , 0.0, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
+  int    failed = false;
+
+  // Computation of limit saturation properties at slightly subcritical pressure
+  // p_eps is kept as a static variable 
+  for(p_eps = 1e-5;; p_eps *= 2)
+  {
+	if (p_eps > 2e-2) {
+      // subcritical pressure limit too low:
+      // Build error message and pass it to the Modelica environment
+	  char error[300];
+	  sprintf(error, "FluidProp error in FluidPropSolver::setFluidConstants:\nCannot compute saturation conditions at p = p_crit*(1 - %f)\n",
+		      p_eps);
+	  errorMessage(error);
+	}
+	// Compute saturation properties at pc*(1-p_eps)
+	FluidProp.AllPropsSat("Pq", _fluidConstants.pc*(1-p_eps) , 0.0, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
 						  alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, theta_, kappa_, gamma_, eta_, lambda_,  
 						  d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
 						  dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
-	if (isError(ErrorMsg)) { // An error occurred
-	  // Build error message and pass it to the Modelica environment
-	  char error[300];
-	  sprintf(error, "FluidProp error: %s\nCannot compute saturation conditions at p = %f\n",
-		      ErrorMsg.c_str(), _fluidConstants.pc*(1-p_eps));
-	  errorMessage(error);
-	  }
+    if (!isError(ErrorMsg))
+      break; // computation succeeded
   }
   // Fill in the satPropClose2Crit record
   satPropClose2Crit.Tsat = T_sat_;		// saturation temperature

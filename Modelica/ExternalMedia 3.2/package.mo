@@ -33,8 +33,9 @@ package ExternalMedia
   <p>  You can now define medium models for all the libraries supported by FluidProp,
   by extending the <a href=\"modelica://ExternalMedia.Media.FluidPropMedium\">
   ExternalMedia.Media.FluidPropMedium</a> package. Set libraryName
-  to FluidProp.RefProp, FluidProp.StanMix, FluidProp.TPSI, FluidProp.IF97,
-  or FluidProp.GasMix, depending on the specific library you need to use.
+  to FluidProp.RefProp, FluidProp.StanMix, FluidProp.TPSI or FluidProp.IF97,
+  or FluidProp.GasMix (only single-component), depending on the specific
+  library you need to use.
   Set substanceNames to a single-element string array containing the name
   of the specific medium, as specified by the FluidProp documentation. Set
   mediumName to a string that describes the medium (this only used for
