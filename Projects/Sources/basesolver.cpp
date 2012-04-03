@@ -429,7 +429,7 @@ void BaseSolver::setSat_T(double &T, ExternalSaturationProperties *const propert
 */
 void BaseSolver::setBubbleState(ExternalSaturationProperties *const properties, int phase,
 		                        ExternalThermodynamicState *const bubbleProperties){
-	// Set the bubble state property record based on the original medium saturation state
+	// Set the bubble state property record based on the saturation properties record
 	setState_ph(properties->psat, properties->hl, phase, bubbleProperties);
 }
 
@@ -446,8 +446,8 @@ void BaseSolver::setBubbleState(ExternalSaturationProperties *const properties, 
   @param dewProperties ExternalThermodynamicState record where to write the dew point properties
 */
 void BaseSolver::setDewState(ExternalSaturationProperties *const properties, int phase,
-		                        ExternalThermodynamicState *const dewProperties){
-	// Set the dew state property record based on the original medium saturation state
+		                     ExternalThermodynamicState *const dewProperties){
+	// Set the dew state property record based on the saturation properties record
 	setState_ph(properties->psat, properties->hv, phase, dewProperties);
 }
 

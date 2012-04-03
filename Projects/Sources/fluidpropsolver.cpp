@@ -13,7 +13,7 @@
 ExternalSaturationProperties satPropClose2Crit; // saturation properties close to  critical conditions 
 double p_eps; // relative tolerance margin for subcritical pressure conditions 
 double T_eps; // relative tolerance margin for supercritical temperature conditions
-double delta_h = 1e-3; // delta_h for one-phase/two-phase discrimination
+double delta_h = 1e-2; // delta_h for one-phase/two-phase discrimination
 
 FluidPropSolver::FluidPropSolver(const string &mediumName,
 								 const string &libraryName,
@@ -396,6 +396,60 @@ void FluidPropSolver::setState_ps(double &p, double &s, int &phase, ExternalTher
 	properties->s = s;     			    // specific entropy
 	properties->phase = phase;			// phase
 }
+
+//! Set bubble state
+/*!
+  This function sets the bubble state record bubbleProperties corresponding to the 
+  saturation data contained in the properties record.
+
+  Due to current lack of direct control over the phase in FluidProp, a small delta is added to
+  the dewpoint enthalpy to make sure the correct phase is selected.
+  @param properties ExternalSaturationProperties record with saturation properties data
+  @param phase Phase (1: one-phase, 2: two-phase)
+  @param bubbleProperties ExternalThermodynamicState record where to write the bubble point properties
+*/
+void FluidPropSolver::setBubbleState(ExternalSaturationProperties *const properties, int phase,
+		                             ExternalThermodynamicState *const bubbleProperties){
+	// Set the bubble state property record based on the saturation properties record
+    double hl;
+
+	if (phase == 0)
+		hl = properties->hl;
+	else if (phase == 1) // liquid phase
+		hl = properties->hl-delta_h;
+	else                 // two-phase mixture
+		hl = properties->hl+delta_h;
+
+	setState_ph(properties->psat, hl, phase, bubbleProperties);
+}
+
+//! Set dew state
+/*!
+  This function sets the dew state record dewProperties corresponding to the 
+  saturation data contained in the properties record.
+
+  The default implementation of the setDewState function is relying on the correct 
+  behaviour of setState_ph with respect to the state input. Can be overridden 
+  in the specific solver code to get more efficient or correct handling of this situation.
+  @param properties ExternalSaturationProperties record with saturation properties data
+  @param phase Phase (1: one-phase, 2: two-phase)
+  @param dewProperties ExternalThermodynamicState record where to write the dew point properties
+*/
+void FluidPropSolver::setDewState(ExternalSaturationProperties *const properties, int phase,
+		                          ExternalThermodynamicState *const dewProperties){
+	// Set the dew state property record based on the saturation properties record
+    double hv;
+
+	if (phase == 0)
+		hv = properties->hv;
+	else if (phase == 1) // liquid phase
+		hv = properties->hv+delta_h;
+	else                 // two-phase mixture
+		hv = properties->hv-delta_h;
+
+	setState_ph(properties->psat, hv, phase, dewProperties);
+}
+
 
 //! Compute isentropic enthalpy
 /*!

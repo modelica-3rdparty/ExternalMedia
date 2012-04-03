@@ -54,6 +54,10 @@ public:
 	virtual void setState_pT(double &p, double &T, ExternalThermodynamicState *const properties);
 	virtual void setState_dT(double &d, double &T, int &phase, ExternalThermodynamicState *const properties);
 	virtual void setState_ps(double &p, double &s, int &phase, ExternalThermodynamicState *const properties);
+    virtual void setBubbleState(ExternalSaturationProperties *const properties, int phase,
+		                        ExternalThermodynamicState *const bubbleProperties);
+    virtual void setDewState(ExternalSaturationProperties *const properties, int phase,
+		                     ExternalThermodynamicState *const dewProperties);
 	virtual double isentropicEnthalpy(double &p, ExternalThermodynamicState *const properties);
 
 protected:

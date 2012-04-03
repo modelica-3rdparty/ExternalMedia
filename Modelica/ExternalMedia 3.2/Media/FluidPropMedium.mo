@@ -3,9 +3,6 @@ package FluidPropMedium "FluidProp medium package"
 
   extends ExternalTwoPhaseMedium;
 
-  constant Real delta_h = 1e-3
-    "small delta h to ensure computation in the correct phase";
-
   redeclare replaceable function setBubbleState
     "Set the thermodynamic state on the bubble line"
     extends Modelica.Icons.Function;
@@ -13,18 +10,8 @@ package FluidPropMedium "FluidProp medium package"
     input FixedPhase phase = 0 "phase flag";
     output ThermodynamicState state "complete thermodynamic state info";
     // Standard definition
-  algorithm
-    if (phase == 0) then // phase doesn't matter
-      state := setState_ph(sat.psat, sat.hl, phase);
-    elseif (phase == 1) then // liquid
-      state := setState_ph(sat.psat, sat.hl-delta_h, phase);
-    else // two-phase
-      state := setState_ph(sat.psat, sat.hl+delta_h, phase);
-    end if;
-    /*  // If special definition in "C"
-  external "C" TwoPhaseMedium_setBubbleState_(sat, phase, state, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
-*/
+    external "C" TwoPhaseMedium_setBubbleState_(sat, phase, state, mediumName, libraryName, substanceName)
+      annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
     annotation(Inline = true);
   end setBubbleState;
 
@@ -35,18 +22,8 @@ package FluidPropMedium "FluidProp medium package"
     input FixedPhase phase = 0 "phase flag";
     output ThermodynamicState state "complete thermodynamic state info";
     // Standard definition
-  algorithm
-    if (phase == 0) then // phase doesn't matter
-      state := setState_ph(sat.psat, sat.hv, phase);
-    elseif (phase == 1) then // vapour
-      state := setState_ph(sat.psat, sat.hv+delta_h, phase);
-    else // two-phase
-      state := setState_ph(sat.psat, sat.hv-delta_h, phase);
-    end if;
-    /*  // If special definition in "C"
-  external "C" TwoPhaseMedium_setDewState_(sat, phase, state, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
-*/
+    external "C" TwoPhaseMedium_setDewState_(sat, phase, state, mediumName, libraryName, substanceName)
+      annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
     annotation(Inline = true);
   end setDewState;
 
