@@ -567,6 +567,16 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end density_derp_h;
 
+  redeclare replaceable function extends density_derp_T
+  algorithm
+    ddpT := state.kappa*state.d;
+  end density_derp_T;
+
+  redeclare replaceable function extends density_derT_p
+  algorithm
+    ddTp :=-state.beta*state.d;
+  end density_derT_p;
+
   redeclare replaceable function extends dynamicViscosity
     "Return dynamic viscosity from state"
     // Standard definition
