@@ -1,5 +1,5 @@
 within ExternalMedia.Media;
-package TestMedium
+package TestMedium "Simple water medium model for debugging and testing"
   extends ExternalTwoPhaseMedium(
     mediumName = "TestMedium",
     libraryName = "TestMedium",

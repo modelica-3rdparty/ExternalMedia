@@ -93,7 +93,7 @@
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="4"
 			CharacterSet="1"
-			WholeProgramOptimization="1"
+			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -114,6 +114,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				WholeProgramOptimization="false"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;MICROSOFTVISUALSTUDIO2008_EXPORTS;_CRT_SECURE_NO_DEPRECATE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -169,23 +170,7 @@
 			Name="Base two-phase medium"
 			>
 			<File
-				RelativePath="..\Sources\basetwophasemedium.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\Sources\basetwophasemedium.h"
-				>
-			</File>
-			<File
 				RelativePath="..\Sources\fluidconstants.h"
-				>
-			</File>
-			<File
-				RelativePath="..\Sources\twophasemediumproperties.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\Sources\twophasemediumproperties.h"
 				>
 			</File>
 		</Filter>
@@ -246,18 +231,6 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Medium map"
-			>
-			<File
-				RelativePath="..\Sources\mediummap.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\Sources\mediummap.h"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="Solver map"
 			>
 			<File
@@ -278,18 +251,6 @@
 			</File>
 			<File
 				RelativePath="..\Sources\testsolver.h"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Two-phase medium"
-			>
-			<File
-				RelativePath="..\Sources\twophasemedium.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\Sources\twophasemedium.h"
 				>
 			</File>
 		</Filter>

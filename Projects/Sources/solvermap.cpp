@@ -1,6 +1,5 @@
 #include "solvermap.h"
 #include "basesolver.h"
-#include "mediummap.h"
 #include "testsolver.h"
 
 #if (FLUIDPROP == 1)
@@ -25,10 +24,11 @@ BaseSolver *SolverMap::getSolver(const string &mediumName, const string &library
 	if (_solvers.find(solverKeyString) != _solvers.end())
 		return _solvers[solverKeyString];
 	// Create new solver if it doesn't exist
-	// CompilerTest solver
+	// Test solver for compiler setup debugging
 	if (libraryName.compare("TestMedium") == 0)
 	  _solvers[solverKeyString] = new TestSolver(mediumName, libraryName, substanceName);
 #if (FLUIDPROP == 1)
+	// FluidProp solver
 	else if (libraryName.find("FluidProp") == 0)
 	  _solvers[solverKeyString] = new FluidPropSolver(mediumName, libraryName, substanceName);
 #endif // FLUIDPROP == 1
@@ -38,8 +38,6 @@ BaseSolver *SolverMap::getSolver(const string &mediumName, const string &library
 	  sprintf(error, "Error: libraryName = %s is not supported by any external solver\n", libraryName.c_str());
 	  errorMessage(error);
 	}
-	// Create new medium object for function calls without specified unique ID
-	MediumMap::addSolverMedium(solverKeyString, _solvers[solverKeyString]);
 	// Return pointer to solver
 	return _solvers[solverKeyString];  
 };
