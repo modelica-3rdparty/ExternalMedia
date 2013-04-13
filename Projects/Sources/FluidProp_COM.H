@@ -70,12 +70,12 @@ interface IFluidProp_COM : public IDispatch
                                             double* Output, BSTR* ErrorMsg) = 0;
      virtual void __stdcall VaporQual     ( BSTR InputSpec, double Input1, double Input2,
                                             double* Output, BSTR* ErrorMsg) = 0;
-    
+
 	 virtual void __stdcall LiquidCmp     ( BSTR InputSpec, double Input1, double Input2,
                                             SAFEARRAY** Output, BSTR* ErrorMsg) = 0;
      virtual void __stdcall LiquidCmp_M   ( BSTR InputSpec, double Input1, double Input2,
                                             SAFEARRAY** Output, BSTR* ErrorMsg) = 0;
-    
+
 	 virtual void __stdcall VaporCmp      ( BSTR InputSpec, double Input1, double Input2,
                                             SAFEARRAY** Output, BSTR* ErrorMsg) = 0;
      virtual void __stdcall VaporCmp_M    ( BSTR InputSpec, double Input1, double Input2,
@@ -118,7 +118,7 @@ interface IFluidProp_COM : public IDispatch
                                             double* h, double* s, double* u, double* q,
                                             SAFEARRAY** x, SAFEARRAY** y, double* cv, double* cp,
                                             double* c, double* alpha, double* beta, double* chi,
-                                            double* fi, double* ksi, double* psi, double* zeta, 
+                                            double* fi, double* ksi, double* psi, double* zeta,
 											double* theta, double* kappa, double* gamma,
                                             double* eta, double* lambda, BSTR* ErrorMsg) = 0;
 	 virtual void __stdcall AllProps_M    ( BSTR InputSpec, double Input1, double Input2,
@@ -126,7 +126,7 @@ interface IFluidProp_COM : public IDispatch
                                             double* h, double* s, double* u, double* q,
                                             SAFEARRAY** x, SAFEARRAY** y, double* cv, double* cp,
                                             double* c, double* alpha, double* beta, double* chi,
-                                            double* fi, double* ksi, double* psi, double* zeta, 
+                                            double* fi, double* ksi, double* psi, double* zeta,
 											double* theta, double* kappa, double* gamma,
                                             double* eta, double* lambda, BSTR* ErrorMsg) = 0;
 
@@ -136,11 +136,11 @@ interface IFluidProp_COM : public IDispatch
                                             SAFEARRAY** x, SAFEARRAY** y, double* cv, double* cp,
                                             double* c, double* alpha, double* beta, double* chi,
                                             double* fi, double* ksi, double* psi, double* zeta,
-                                            double* theta, double* kappa, double* gamma, 
-											double* eta, double* lambda, double* d_liq, 
-											double* d_vap, double* h_liq, double* h_vap, 
-											double* T_sat,  double* dd_liq_dP, double* dd_vap_dP, 
-											double* dh_liq_dP, double* dh_vap_dP, 
+                                            double* theta, double* kappa, double* gamma,
+											double* eta, double* lambda, double* d_liq,
+											double* d_vap, double* h_liq, double* h_vap,
+											double* T_sat,  double* dd_liq_dP, double* dd_vap_dP,
+											double* dh_liq_dP, double* dh_vap_dP,
 											double* dT_sat_dP, BSTR* ErrorMsg) = 0;
      virtual void __stdcall AllPropsSat_M ( BSTR InputSpec, double Input1, double Input2,
                                             double* P, double* T, double* v, double* d,
@@ -148,11 +148,11 @@ interface IFluidProp_COM : public IDispatch
                                             SAFEARRAY** x, SAFEARRAY** y, double* cv, double* cp,
                                             double* c, double* alpha, double* beta, double* chi,
                                             double* fi, double* ksi, double* psi, double* zeta,
-                                            double* theta, double* kappa, double* gamma, 
-											double* eta, double* lambda, double* d_liq, 
-											double* d_vap, double* h_liq, double* h_vap, 
-											double* T_sat,  double* dd_liq_dP, double* dd_vap_dP, 
-											double* dh_liq_dP, double* dh_vap_dP, 
+                                            double* theta, double* kappa, double* gamma,
+											double* eta, double* lambda, double* d_liq,
+											double* d_vap, double* h_liq, double* h_vap,
+											double* T_sat,  double* dd_liq_dP, double* dd_vap_dP,
+											double* dh_liq_dP, double* dh_vap_dP,
 											double* dT_sat_dP, BSTR* ErrorMsg) = 0;
 
 	 virtual void __stdcall Solve         ( BSTR FuncSpec, double FuncVal, BSTR InputSpec,

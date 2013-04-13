@@ -37,7 +37,7 @@
 #define OPEN_MODELICA 0
 
 // Selection of used external fluid property computation packages.
-//! FluidProp solver	
+//! FluidProp solver
 /*!
   Set this preprocessor variable to 1 to include the interface to the
   FluidProp solver developed and maintained by Francesco Casella.
@@ -47,7 +47,7 @@
 // Selection of build type for this project
 //! Build project into a DLL
 /*!
-  Set this preprocessor variable to 1 if the project is built into a 
+  Set this preprocessor variable to 1 if the project is built into a
   dynamic link library. This setting influences the error reporting
   mechanism as well as the export statement.
 */
@@ -63,7 +63,7 @@
 
 /********************************************************************
  *                 End of user option selection
- *            Do not change anything below this line                                    
+ *            Do not change anything below this line
  ********************************************************************/
 
 // General purpose includes

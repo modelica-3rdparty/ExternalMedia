@@ -1,5 +1,5 @@
 /*
-  C/C++ layer for external medium models extending from 
+  C/C++ layer for external medium models extending from
   PartialExternalTwoPhaseMedium.
 */
 

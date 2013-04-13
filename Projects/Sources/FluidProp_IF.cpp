@@ -77,7 +77,7 @@ void TFluidProp::CreateObject( string ModelName, string* ErrorMsg)
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_Model);
@@ -94,7 +94,7 @@ void TFluidProp::SetFluid( string ModelName, int nComp, string* Comp, double* Co
    BSTR BSTR_Model = _com_util::ConvertStringToBSTR( ModelName.c_str());
 
    long long_nComp = nComp;
-   
+
    // _com_util::Convert character array Comp via binary strings (BSTR) into an OLE SafeArray
    SAFEARRAYBOUND sa_bounds_Comp[1];
    sa_bounds_Comp[0].lLbound = 0;
@@ -126,7 +126,7 @@ void TFluidProp::SetFluid( string ModelName, int nComp, string* Comp, double* Co
    // Error handling
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    // Destroy the SafeArrays
    SafeArrayDestroy( sa_Comp);
@@ -204,7 +204,7 @@ void TFluidProp::GetFluid( string* ModelName, int* nComp, string* Comp, double* 
    SysFreeString(BSTR_Model);
 }
 
-void TFluidProp::GetFluidNames( string LongShort, string ModelName, int* nFluids, 
+void TFluidProp::GetFluidNames( string LongShort, string ModelName, int* nFluids,
                                 string* FluidNames, string* ErrorMsg)
 {
    long long_nFluids;
@@ -239,7 +239,7 @@ void TFluidProp::GetFluidNames( string LongShort, string ModelName, int* nFluids
    // Error handling
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Fluid);
    SysFreeString(BSTR_Error);
@@ -258,7 +258,7 @@ double TFluidProp::Pressure( string InputSpec, double Input1, double Input2, str
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -277,7 +277,7 @@ double TFluidProp::Temperature( string InputSpec, double Input1, double Input2, 
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -296,7 +296,7 @@ double TFluidProp::SpecVolume( string InputSpec, double Input1, double Input2, s
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -315,7 +315,7 @@ double TFluidProp::Density( string InputSpec, double Input1, double Input2, stri
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -334,7 +334,7 @@ double TFluidProp::Enthalpy( string InputSpec, double Input1, double Input2, str
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -353,7 +353,7 @@ double TFluidProp::Entropy( string InputSpec, double Input1, double Input2, stri
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -372,7 +372,7 @@ double TFluidProp::IntEnergy( string InputSpec, double Input1, double Input2, st
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -391,7 +391,7 @@ double TFluidProp::VaporQual( string InputSpec, double Input1, double Input2, st
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -421,7 +421,7 @@ double* TFluidProp::LiquidCmp( string InputSpec, double Input1, double Input2, s
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -451,7 +451,7 @@ double* TFluidProp::VaporCmp( string InputSpec, double Input1, double Input2, st
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -470,7 +470,7 @@ double TFluidProp::HeatCapV( string InputSpec, double Input1, double Input2, str
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -489,7 +489,7 @@ double TFluidProp::HeatCapP( string InputSpec, double Input1, double Input2, str
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -508,7 +508,7 @@ double TFluidProp::SoundSpeed( string InputSpec, double Input1, double Input2, s
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -527,7 +527,7 @@ double TFluidProp::Alpha( string InputSpec, double Input1, double Input2, string
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -546,7 +546,7 @@ double TFluidProp::Beta( string InputSpec, double Input1, double Input2, string*
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -565,7 +565,7 @@ double TFluidProp::Chi( string InputSpec, double Input1, double Input2, string* 
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -584,7 +584,7 @@ double TFluidProp::Fi( string InputSpec, double Input1, double Input2, string* E
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -603,7 +603,7 @@ double TFluidProp::Ksi( string InputSpec, double Input1, double Input2, string* 
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -622,7 +622,7 @@ double TFluidProp::Psi( string InputSpec, double Input1, double Input2, string* 
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -641,7 +641,7 @@ double TFluidProp::Zeta( string InputSpec, double Input1, double Input2, string*
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -660,7 +660,7 @@ double TFluidProp::Theta( string InputSpec, double Input1, double Input2, string
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -679,7 +679,7 @@ double TFluidProp::Kappa( string InputSpec, double Input1, double Input2, string
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -698,7 +698,7 @@ double TFluidProp::Gamma( string InputSpec, double Input1, double Input2, string
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -717,7 +717,7 @@ double TFluidProp::Viscosity( string InputSpec, double Input1, double Input2, st
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -736,7 +736,7 @@ double TFluidProp::ThermCond( string InputSpec, double Input1, double Input2, st
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;    
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
@@ -748,7 +748,7 @@ void TFluidProp::AllProps( string InputSpec, double Input1, double Input2, doubl
                            double& v, double& d, double& h, double& s, double& u, double& q,
                            double* x, double* y, double& cv, double& cp, double& c, double& alpha,
                            double& beta, double& chi, double& fi, double& ksi, double& psi,
-                           double& zeta, double& theta, double& kappa, double& gamma, double& eta, 
+                           double& zeta, double& theta, double& kappa, double& gamma, double& eta,
 						   double& lambda, string* ErrorMsg)
 {
    BSTR BSTR_InputSpec = _com_util::ConvertStringToBSTR(InputSpec.c_str());
@@ -765,7 +765,7 @@ void TFluidProp::AllProps( string InputSpec, double Input1, double Input2, doubl
    sa_y = SafeArrayCreate( VT_R8, 1, sa_bounds_y);
 
    FluidProp_COM->AllProps( BSTR_InputSpec, Input1, Input2, &P, &T, &v, &d, &h, &s, &u, &q, &sa_x,
-                            &sa_y, &cv, &cp, &c, &alpha, &beta, &chi, &fi, &ksi, &psi, &zeta, 
+                            &sa_y, &cv, &cp, &c, &alpha, &beta, &chi, &fi, &ksi, &psi, &zeta,
                             &theta, &kappa, &gamma, &eta, &lambda, &BSTR_Error);
 
    // Retrieve array with liquid and vapor phase compositions from SafeArrays
@@ -781,8 +781,8 @@ void TFluidProp::AllProps( string InputSpec, double Input1, double Input2, doubl
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;   
-   
+   delete[] lpszErrorMsg;
+
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
 }
@@ -791,9 +791,9 @@ void TFluidProp::AllPropsSat( string InputSpec, double Input1, double Input2, do
                               double& v, double& d, double& h, double& s, double& u, double& q,
                               double* x, double* y, double& cv, double& cp, double& c, double& alpha,
                               double& beta, double& chi, double& fi, double& ksi, double& psi,
-                              double& zeta, double& theta, double& kappa, double& gamma, double& eta, 
-							  double& lambda, double& d_liq, double& d_vap, double& h_liq, double& h_vap, 
-						      double& T_sat,  double& dd_liq_dP, double& dd_vap_dP, double& dh_liq_dP, 
+                              double& zeta, double& theta, double& kappa, double& gamma, double& eta,
+							  double& lambda, double& d_liq, double& d_vap, double& h_liq, double& h_vap,
+						      double& T_sat,  double& dd_liq_dP, double& dd_vap_dP, double& dh_liq_dP,
 						      double& dh_vap_dP, double& dT_sat_dP, string* ErrorMsg)
 {
    BSTR BSTR_InputSpec = _com_util::ConvertStringToBSTR( InputSpec.c_str());
@@ -810,9 +810,9 @@ void TFluidProp::AllPropsSat( string InputSpec, double Input1, double Input2, do
    sa_y = SafeArrayCreate( VT_R8, 1, sa_bounds_y);
 
    FluidProp_COM->AllPropsSat( BSTR_InputSpec, Input1, Input2, &P, &T, &v, &d, &h, &s, &u, &q, &sa_x,
-                               &sa_y, &cv, &cp, &c, &alpha, &beta, &chi, &fi, &ksi, &psi, &zeta, 
-                               &theta, &kappa, &gamma, &eta, &lambda, &d_liq, &d_vap, &h_liq, &h_vap, 
-							   &T_sat, &dd_liq_dP, &dd_vap_dP, &dh_liq_dP, &dh_vap_dP, &dT_sat_dP, 
+                               &sa_y, &cv, &cp, &c, &alpha, &beta, &chi, &fi, &ksi, &psi, &zeta,
+                               &theta, &kappa, &gamma, &eta, &lambda, &d_liq, &d_vap, &h_liq, &h_vap,
+							   &T_sat, &dd_liq_dP, &dd_vap_dP, &dh_liq_dP, &dh_vap_dP, &dT_sat_dP,
 							   &BSTR_Error);
 
    // Retrieve array with liquid and vapor phase compositions from SafeArrays
@@ -828,8 +828,8 @@ void TFluidProp::AllPropsSat( string InputSpec, double Input1, double Input2, do
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;   
-   
+   delete[] lpszErrorMsg;
+
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
 }
@@ -850,8 +850,8 @@ double TFluidProp::Solve( string FuncSpec, double FuncVal, string InputSpec, lon
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;   
-   
+   delete[] lpszErrorMsg;
+
    SysFreeString(BSTR_Error);
    SysFreeString(BSTR_InputSpec);
    SysFreeString(BSTR_FuncSpec);
@@ -869,7 +869,7 @@ double TFluidProp::Mmol( string* ErrorMsg)
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;     
+   delete[] lpszErrorMsg;
    SysFreeString(BSTR_Error);
 
    return Output;
@@ -885,7 +885,7 @@ double TFluidProp::Tcrit( string* ErrorMsg)
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;     
+   delete[] lpszErrorMsg;
    SysFreeString(BSTR_Error);
 
    return Output;
@@ -901,7 +901,7 @@ double TFluidProp::Pcrit( string* ErrorMsg)
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;     
+   delete[] lpszErrorMsg;
    SysFreeString(BSTR_Error);
 
    return Output;
@@ -917,7 +917,7 @@ double TFluidProp::Tmin( string* ErrorMsg)
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;     
+   delete[] lpszErrorMsg;
    SysFreeString(BSTR_Error);
 
    return Output;
@@ -933,7 +933,7 @@ double TFluidProp::Tmax( string* ErrorMsg)
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;     
+   delete[] lpszErrorMsg;
    SysFreeString(BSTR_Error);
 
    return Output;
@@ -948,7 +948,7 @@ void TFluidProp::AllInfo( double& Mmol, double& Tcrit, double& Pcrit, double& Tm
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;     
+   delete[] lpszErrorMsg;
    SysFreeString(BSTR_Error);
 }
 
@@ -965,7 +965,7 @@ void TFluidProp::SetUnits( string UnitSet, string MassOrMole, string Properties,
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;     
+   delete[] lpszErrorMsg;
 
    SysFreeString(BSTR_Units);
    SysFreeString(BSTR_Properties);
@@ -982,7 +982,7 @@ void TFluidProp::SetRefState( double T_ref, double P_ref, string* ErrorMsg)
 
    char* lpszErrorMsg = _com_util::ConvertBSTRToString( BSTR_Error);
    *ErrorMsg = lpszErrorMsg;
-   delete[] lpszErrorMsg;     
+   delete[] lpszErrorMsg;
    SysFreeString(BSTR_Error);
 }
 

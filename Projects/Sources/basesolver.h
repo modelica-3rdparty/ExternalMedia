@@ -93,7 +93,7 @@ public:
 
 protected:
 	//! Fluid constants
-	FluidConstants _fluidConstants; 
+	FluidConstants _fluidConstants;
 };
 
 #endif // BASESOLVER_H_

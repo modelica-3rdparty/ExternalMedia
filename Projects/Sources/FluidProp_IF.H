@@ -45,9 +45,9 @@ class TFluidProp
   	  void CreateObject  ( string ModelName, string* ErrorMsg);
   	  void ReleaseObjects( );
 
-      void SetFluid      ( string ModelName, int nComp, string* Comp, double* Conc, 
+      void SetFluid      ( string ModelName, int nComp, string* Comp, double* Conc,
 		                   string* ErrorMsg);
-      void GetFluid      ( string* ModelName, int* nComp, string* Comp, double* Conc, 
+      void GetFluid      ( string* ModelName, int* nComp, string* Comp, double* Conc,
 		                   bool CompInfo = true);
       void GetFluidNames ( string LongShort, string ModelName, int* nFluids, string* FluidNames,
                            string* ErrorMsg);
@@ -82,7 +82,7 @@ class TFluidProp
                            double& v, double& d, double& h, double& s, double& u, double& q,
                            double* x, double* y, double& cv, double& cp, double& c, double& alpha,
                            double& beta, double& chi, double& fi, double& ksi, double& psi,
-                           double& zeta, double& theta, double& kappa, double& gamma, double& eta, 
+                           double& zeta, double& theta, double& kappa, double& gamma, double& eta,
 						   double& lambda, string* ErrorMsg);
 
 	  // Compute all the properties at once, including saturation properties
@@ -90,9 +90,9 @@ class TFluidProp
                           double& v, double& d, double& h, double& s, double& u, double& q,
                           double* x, double* y, double& cv, double& cp, double& c, double& alpha,
                           double& beta, double& chi, double& fi, double& ksi, double& psi,
-                          double& zeta, double& theta, double& kappa, double& gamma, double& eta, 
-						  double& lambda, double& d_liq, double& d_vap, double& h_liq, double& h_vap, 
-						  double& T_sat,  double& dd_liq_dP, double& dd_vap_dP, double& dh_liq_dP, 
+                          double& zeta, double& theta, double& kappa, double& gamma, double& eta,
+						  double& lambda, double& d_liq, double& d_vap, double& h_liq, double& h_vap,
+						  double& T_sat,  double& dd_liq_dP, double& dd_vap_dP, double& dh_liq_dP,
 						  double& dh_vap_dP, double& dT_sat_dP, string* ErrorMsg);
 
       double Solve       ( string FuncSpec, double FuncVal, string InputSpec, long Target,
@@ -106,7 +106,7 @@ class TFluidProp
       void   AllInfo 	 ( double& Mmol, double& Tcrit, double& Pcrit, double& Tmin, double& Tmax,
                            string* ErrorMsg);
 
-      void SetUnits      ( string UnitSet, string MassOrMole, string Properties, string Units, 
+      void SetUnits      ( string UnitSet, string MassOrMole, string Properties, string Units,
                            string* ErrorMsg);
       void SetRefState   ( double T_ref, double P_ref, string* ErrorMsg);
 

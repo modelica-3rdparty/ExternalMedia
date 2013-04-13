@@ -10,8 +10,8 @@
 #if (FLUIDPROP == 1)
 #define _AFXDLL
 
-ExternalSaturationProperties satPropClose2Crit; // saturation properties close to  critical conditions 
-double p_eps; // relative tolerance margin for subcritical pressure conditions 
+ExternalSaturationProperties satPropClose2Crit; // saturation properties close to  critical conditions
+double p_eps; // relative tolerance margin for subcritical pressure conditions
 double T_eps; // relative tolerance margin for supercritical temperature conditions
 double delta_h = 1e-2; // delta_h for one-phase/two-phase discrimination
 
@@ -34,7 +34,7 @@ FluidPropSolver::FluidPropSolver(const string &mediumName,
 		errorMessage(error);
 	}
 
-	// Set SI units 
+	// Set SI units
 	FluidProp.SetUnits("SI", " ", " ", " ", &ErrorMsg);
 	if (isError(ErrorMsg))  // An error occurred
 	{
@@ -79,10 +79,10 @@ void FluidPropSolver::setFluidConstants(){
   }
 
   // Computation of critical density with slightly supercritical temperature to avoid convergence problems
-  // T_eps is kept as a static variable 
+  // T_eps is kept as a static variable
   for(T_eps = 1e-5;; T_eps *= 3)
   {
-	if (T_eps > 1e-3) { 
+	if (T_eps > 1e-3) {
 	  // Superheating is too large:
 	  // Build error message and pass it to the Modelica environment
 	  char error[300];
@@ -95,15 +95,15 @@ void FluidPropSolver::setFluidConstants(){
   }
 
   // Temporary variables for calling AllPropSat in slightly subcritical conditions
-  double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
+  double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20],
 		 cv_, cp_, c_, alpha_, beta_, chi_, fi_, ksi_,
 		 psi_, zeta_, theta_, kappa_, gamma_, eta_, lambda_,
-		 d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
+		 d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_,
 		 dh_vap_dP_, dT_sat_dP_;
   int    failed = false;
 
   // Computation of limit saturation properties at slightly subcritical pressure
-  // p_eps is kept as a static variable 
+  // p_eps is kept as a static variable
   for(p_eps = 1e-5;; p_eps *= 2)
   {
 	if (p_eps > 2e-2) {
@@ -116,8 +116,8 @@ void FluidPropSolver::setFluidConstants(){
 	}
 	// Compute saturation properties at pc*(1-p_eps)
 	FluidProp.AllPropsSat("Pq", _fluidConstants.pc*(1-p_eps) , 0.0, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
-						  alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, theta_, kappa_, gamma_, eta_, lambda_,  
-						  d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
+						  alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, theta_, kappa_, gamma_, eta_, lambda_,
+						  d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_,
 						  dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
     if (!isError(ErrorMsg))
       break; // computation succeeded
@@ -139,18 +139,18 @@ void FluidPropSolver::setFluidConstants(){
 void FluidPropSolver::setSat_p(double &p, ExternalSaturationProperties *const properties){
 	string ErrorMsg;
 	// FluidProp variables (in SI units)
-    double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
+    double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20],
 		   cv_, cp_, c_, alpha_, beta_, chi_, fi_, ksi_,
 		   psi_, zeta_, theta_, kappa_, gamma_, eta_, lambda_,
-		   d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
+		   d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_,
 		   dh_vap_dP_, dT_sat_dP_;
 
 	// Compute all FluidProp variables at pressure p and steam quality 0
 	if (p < _fluidConstants.pc*(1-p_eps))  // subcritical conditions
 	{
 		FluidProp.AllPropsSat("Pq", p , 0.0, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
-							   alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, theta_, kappa_, gamma_, eta_, lambda_,  
-							   d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
+							   alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, theta_, kappa_, gamma_, eta_, lambda_,
+							   d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_,
 							   dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
 		if (isError(ErrorMsg)) {  // An error occurred
 			// Build error message and pass it to the Modelica environment
@@ -190,18 +190,18 @@ void FluidPropSolver::setSat_p(double &p, ExternalSaturationProperties *const pr
 void FluidPropSolver::setSat_T(double &T, ExternalSaturationProperties *const properties){
 	string ErrorMsg;
 	// FluidProp variables (in SI units)
-    double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
+    double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20],
 		   cv_, cp_, c_, alpha_, beta_, chi_, fi_, ksi_,
 		   psi_, zeta_ , theta_, kappa_, gamma_, eta_, lambda_,
-		   d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
+		   d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_,
 		   dh_vap_dP_, dT_sat_dP_;
 
 	if (T < satPropClose2Crit.Tsat)  // subcritical conditions
 	{
 	  // Compute all FluidProp variables at temperature T and steam quality 0
 	  FluidProp.AllPropsSat("Tq", T , 0.0, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
-	 	                    alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, theta_, kappa_, gamma_, eta_, lambda_,  
-	    			        d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_, 
+	 	                    alpha_, beta_, chi_, fi_, ksi_, psi_, zeta_, theta_, kappa_, gamma_, eta_, lambda_,
+	    			        d_liq_, d_vap_, h_liq_, h_vap_, T_sat_, dd_liq_dP_, dd_vap_dP_, dh_liq_dP_,
 						    dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
 	  if (isError(ErrorMsg)) {  // An error occurred
 		  // Build error message and pass it to the Modelica environment
@@ -239,19 +239,19 @@ void FluidPropSolver::setSat_T(double &T, ExternalSaturationProperties *const pr
 }
 
 //! Computes the properties of the state vector from p and h
-/*! Note: the phase input is currently not supported according to the standard, 
+/*! Note: the phase input is currently not supported according to the standard,
     the phase input is returned in the state record
 */
 void FluidPropSolver::setState_ph(double &p, double &h, int &phase, ExternalThermodynamicState *const properties){
 	string ErrorMsg;
 	// FluidProp variables (in SI units)
-    double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
+    double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20],
 		   cv_, cp_, c_, alpha_, beta_, chi_, fi_, ksi_,
 		   psi_, zeta_ , theta_, kappa_, gamma_, eta_, lambda_;
 
 	// Compute all FluidProp variables
 	FluidProp.AllProps("Ph", p , h, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
-		                 alpha_, beta_, chi_, fi_, ksi_, psi_, 
+		                 alpha_, beta_, chi_, fi_, ksi_, psi_,
 						 zeta_, theta_, kappa_, gamma_, eta_, lambda_, &ErrorMsg);
 	if (isError(ErrorMsg)) {  // An error occurred
 		// Build error message and pass it to the Modelica environment
@@ -283,10 +283,10 @@ void FluidPropSolver::setState_ph(double &p, double &h, int &phase, ExternalTher
 void FluidPropSolver::setState_pT(double &p, double &T, ExternalThermodynamicState *const properties){
 	string ErrorMsg;
 	// FluidProp variables (in SI units)
-    double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
+    double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20],
 		   cv_, cp_, c_, alpha_, beta_, chi_, fi_, ksi_,
 		   psi_, zeta_ , theta_, kappa_, gamma_, eta_, lambda_;
-	
+
 	// Compute all FluidProp variables
 	FluidProp.AllProps("PT", p , T, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
 		                 alpha_, beta_, chi_, fi_, ksi_, psi_,
@@ -317,13 +317,13 @@ void FluidPropSolver::setState_pT(double &p, double &T, ExternalThermodynamicSta
 }
 
 // Computes the properties of the state vector from d and T
-/*! Note: the phase input is currently not supported according to the standard, 
+/*! Note: the phase input is currently not supported according to the standard,
     the phase input is returned in the state record
 */
 void FluidPropSolver::setState_dT(double &d, double &T, int &phase, ExternalThermodynamicState *const properties){
 	string ErrorMsg;
 	// FluidProp variables (in SI units)
-    double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
+    double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20],
 		   cv_, cp_, c_, alpha_, beta_, chi_, fi_, ksi_,
 		   psi_, zeta_ , theta_, kappa_, gamma_, eta_, lambda_;
 
@@ -357,21 +357,21 @@ void FluidPropSolver::setState_dT(double &d, double &T, int &phase, ExternalTher
 }
 
 //! Computes the properties of the state vector from p and s
-/*! Note: the phase input is currently not supported according to the standard, 
+/*! Note: the phase input is currently not supported according to the standard,
     the phase input is returned in the state record
 */
 void FluidPropSolver::setState_ps(double &p, double &s, int &phase, ExternalThermodynamicState *const properties){
 	string ErrorMsg;
 	// FluidProp variables (in SI units)
-    double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20], 
+    double P_, T_, v_, d_, h_, s_, u_, q_, x_[20], y_[20],
 		   cv_, cp_, c_, alpha_, beta_, chi_, fi_, ksi_,
 		   psi_, zeta_ , theta_, kappa_, gamma_, eta_, lambda_;
-	
+
 	// Compute all FluidProp variables
 	FluidProp.AllProps("Ps", p , s, P_, T_, v_, d_, h_, s_, u_, q_, x_, y_, cv_, cp_, c_,
 		                 alpha_, beta_, chi_, fi_, ksi_, psi_,
 						 zeta_, theta_, kappa_, gamma_, eta_, lambda_, &ErrorMsg);
-	if (isError(ErrorMsg)) {  
+	if (isError(ErrorMsg)) {
 		// An error occurred
 		// Build error message and pass it to the Modelica environment
 		char error[300];
@@ -399,7 +399,7 @@ void FluidPropSolver::setState_ps(double &p, double &s, int &phase, ExternalTher
 
 //! Set bubble state
 /*!
-  This function sets the bubble state record bubbleProperties corresponding to the 
+  This function sets the bubble state record bubbleProperties corresponding to the
   saturation data contained in the properties record.
 
   Due to current lack of direct control over the phase in FluidProp, a small delta is added to
@@ -425,11 +425,11 @@ void FluidPropSolver::setBubbleState(ExternalSaturationProperties *const propert
 
 //! Set dew state
 /*!
-  This function sets the dew state record dewProperties corresponding to the 
+  This function sets the dew state record dewProperties corresponding to the
   saturation data contained in the properties record.
 
-  The default implementation of the setDewState function is relying on the correct 
-  behaviour of setState_ph with respect to the state input. Can be overridden 
+  The default implementation of the setDewState function is relying on the correct
+  behaviour of setState_ph with respect to the state input. Can be overridden
   in the specific solver code to get more efficient or correct handling of this situation.
   @param properties ExternalSaturationProperties record with saturation properties data
   @param phase Phase (1: one-phase, 2: two-phase)
