@@ -3,7 +3,7 @@ package ExternalMedia
   import SI = Modelica.SIunits;
 
 
-  annotation (uses(Modelica(version="3.2")), Documentation(info="<html>
+  annotation (uses(Modelica(version="3.2.1")), Documentation(info="<html>
 
   <p>The ExternalMedia library provides a framework for interfacing
   external codes computing fluid properties to Modelica.Media-compatible
