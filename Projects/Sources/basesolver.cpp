@@ -61,7 +61,7 @@ double BaseSolver::criticalEntropy() const{
   This function sets the fluid constants which are defined in the
   FluidConstants record in Modelica. It should be called when a new
   solver is created.
-
+  
   Must be re-implemented in the specific solver
 */
 void BaseSolver::setFluidConstants(){
@@ -81,7 +81,7 @@ void BaseSolver::setFluidConstants(){
 */
 void BaseSolver::setState_ph(double &p, double &h, int &phase, ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: setState_ph() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: setState_ph() not implemented in the Solver object");
 }
 
 //! Set state from p and T
@@ -97,7 +97,7 @@ void BaseSolver::setState_ph(double &p, double &h, int &phase, ExternalThermodyn
 */
 void BaseSolver::setState_pT(double &p, double &T, ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: setState_pT() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: setState_pT() not implemented in the Solver object");
 }
 
 //! Set state from d, T, and phase
@@ -114,7 +114,7 @@ void BaseSolver::setState_pT(double &p, double &T, ExternalThermodynamicState *c
 */
 void BaseSolver::setState_dT(double &d, double &T, int &phase, ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: setState_dT() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: setState_dT() not implemented in the Solver object");
 }
 
 //! Set state from p, s, and phase
@@ -131,7 +131,7 @@ void BaseSolver::setState_dT(double &d, double &T, int &phase, ExternalThermodyn
 */
 void BaseSolver::setState_ps(double &p, double &s, int &phase, ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: setState_ps() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: setState_ps() not implemented in the Solver object");
 }
 
 //! Compute Prandtl number
@@ -144,7 +144,7 @@ void BaseSolver::setState_ps(double &p, double &s, int &phase, ExternalThermodyn
 */
 double BaseSolver::Pr(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: Pr() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: Pr() not implemented in the Solver object");
 	return 0;
 }
 
@@ -158,7 +158,7 @@ double BaseSolver::Pr(ExternalThermodynamicState *const properties){
 */
 double BaseSolver::T(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: T() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: T() not implemented in the Solver object");
 	return 0;
 }
 
@@ -172,7 +172,7 @@ double BaseSolver::T(ExternalThermodynamicState *const properties){
 */
 double BaseSolver::a(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: a() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: a() not implemented in the Solver object");
 	return 0;
 }
 
@@ -186,7 +186,7 @@ double BaseSolver::a(ExternalThermodynamicState *const properties){
 */
 double BaseSolver::beta(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: beta() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: beta() not implemented in the Solver object");
 	return 0;
 }
 
@@ -200,7 +200,7 @@ double BaseSolver::beta(ExternalThermodynamicState *const properties){
 */
 double BaseSolver::cp(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: cp() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: cp() not implemented in the Solver object");
 	return 0;
 }
 
@@ -214,7 +214,7 @@ double BaseSolver::cp(ExternalThermodynamicState *const properties){
 */
 double BaseSolver::cv(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: cv() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: cv() not implemented in the Solver object");
 	return 0;
 }
 
@@ -228,7 +228,7 @@ double BaseSolver::cv(ExternalThermodynamicState *const properties){
 */
 double BaseSolver::d(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: d() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: d() not implemented in the Solver object");
 	return 0;
 }
 
@@ -242,7 +242,7 @@ double BaseSolver::d(ExternalThermodynamicState *const properties){
 */
 double BaseSolver::ddhp(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: ddhp() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: ddhp() not implemented in the Solver object");
 	return 0;
 }
 
@@ -256,7 +256,7 @@ double BaseSolver::ddhp(ExternalThermodynamicState *const properties){
 */
 double BaseSolver::ddph(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: ddph() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: ddph() not implemented in the Solver object");
 	return 0;
 }
 
@@ -270,7 +270,7 @@ double BaseSolver::ddph(ExternalThermodynamicState *const properties){
 */
 double BaseSolver::eta(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: eta() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: eta() not implemented in the Solver object");
 	return 0;
 }
 
@@ -284,7 +284,7 @@ double BaseSolver::eta(ExternalThermodynamicState *const properties){
 */
 double BaseSolver::h(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: h() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: h() not implemented in the Solver object");
 	return 0;
 }
 
@@ -298,7 +298,7 @@ double BaseSolver::h(ExternalThermodynamicState *const properties){
 */
 double BaseSolver::kappa(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: kappa() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: kappa() not implemented in the Solver object");
 	return 0;
 }
 
@@ -312,7 +312,7 @@ double BaseSolver::kappa(ExternalThermodynamicState *const properties){
 */
 double BaseSolver::lambda(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: lambda() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: lambda() not implemented in the Solver object");
 	return 0;
 }
 
@@ -326,7 +326,7 @@ double BaseSolver::lambda(ExternalThermodynamicState *const properties){
 */
 double BaseSolver::p(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: p() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: p() not implemented in the Solver object");
 	return 0;
 }
 
@@ -340,7 +340,7 @@ double BaseSolver::p(ExternalThermodynamicState *const properties){
 */
 int BaseSolver::phase(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: phase() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: phase() not implemented in the Solver object");
 	return 0;
 }
 
@@ -354,7 +354,7 @@ int BaseSolver::phase(ExternalThermodynamicState *const properties){
 */
 double BaseSolver::s(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: s() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: s() not implemented in the Solver object");
 	return 0;
 }
 
@@ -368,7 +368,7 @@ double BaseSolver::s(ExternalThermodynamicState *const properties){
 */
 double BaseSolver::d_der(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: d_der() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: d_der() not implemented in the Solver object");
 	return 0;
 }
 
@@ -383,7 +383,7 @@ double BaseSolver::d_der(ExternalThermodynamicState *const properties){
 */
 double BaseSolver::isentropicEnthalpy(double &p, ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: isentropicEnthalpy() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: isentropicEnthalpy() not implemented in the Solver object");
 	return 0;
 }
 
@@ -398,7 +398,7 @@ double BaseSolver::isentropicEnthalpy(double &p, ExternalThermodynamicState *con
 */
 void BaseSolver::setSat_p(double &p, ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: setSat_p() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: setSat_p() not implemented in the Solver object");
 }
 
 //! Set saturation properties from T
@@ -412,16 +412,16 @@ void BaseSolver::setSat_p(double &p, ExternalSaturationProperties *const propert
 */
 void BaseSolver::setSat_T(double &T, ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: setSat_T() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: setSat_T() not implemented in the Solver object");
 }
 
 //! Set bubble state
 /*!
-  This function sets the bubble state record bubbleProperties corresponding to the
+  This function sets the bubble state record bubbleProperties corresponding to the 
   saturation data contained in the properties record.
 
-  The default implementation of the setBubbleState function is relying on the correct
-  behaviour of setState_ph with respect to the state input. Can be overridden
+  The default implementation of the setBubbleState function is relying on the correct 
+  behaviour of setState_ph with respect to the state input. Can be overridden 
   in the specific solver code to get more efficient or correct handling of this situation.
   @param properties ExternalSaturationProperties record with saturation properties data
   @param phase Phase (1: one-phase, 2: two-phase)
@@ -435,11 +435,11 @@ void BaseSolver::setBubbleState(ExternalSaturationProperties *const properties, 
 
 //! Set dew state
 /*!
-  This function sets the dew state record dewProperties corresponding to the
+  This function sets the dew state record dewProperties corresponding to the 
   saturation data contained in the properties record.
 
-  The default implementation of the setDewState function is relying on the correct
-  behaviour of setState_ph with respect to the state input. Can be overridden
+  The default implementation of the setDewState function is relying on the correct 
+  behaviour of setState_ph with respect to the state input. Can be overridden 
   in the specific solver code to get more efficient or correct handling of this situation.
   @param properties ExternalSaturationProperties record with saturation properties data
   @param phase Phase (1: one-phase, 2: two-phase)
@@ -461,7 +461,7 @@ void BaseSolver::setDewState(ExternalSaturationProperties *const properties, int
 */
 double BaseSolver::dTp(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: dTp() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: dTp() not implemented in the Solver object");
 	return 0;
 }
 
@@ -475,7 +475,7 @@ double BaseSolver::dTp(ExternalSaturationProperties *const properties){
 */
 double BaseSolver::ddldp(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: ddldp() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: ddldp() not implemented in the Solver object");
 	return 0;
 }
 
@@ -489,7 +489,7 @@ double BaseSolver::ddldp(ExternalSaturationProperties *const properties){
 */
 double BaseSolver::ddvdp(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: ddvdp() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: ddvdp() not implemented in the Solver object");
 	return 0;
 }
 
@@ -503,7 +503,7 @@ double BaseSolver::ddvdp(ExternalSaturationProperties *const properties){
 */
 double BaseSolver::dhldp(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: dhldp() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: dhldp() not implemented in the Solver object");
 	return 0;
 }
 
@@ -517,7 +517,7 @@ double BaseSolver::dhldp(ExternalSaturationProperties *const properties){
 */
 double BaseSolver::dhvdp(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: dhvdp() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: dhvdp() not implemented in the Solver object");
 	return 0;
 }
 
@@ -531,7 +531,7 @@ double BaseSolver::dhvdp(ExternalSaturationProperties *const properties){
 */
 double BaseSolver::dl(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: dl() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: dl() not implemented in the Solver object");
 	return 0;
 }
 
@@ -545,7 +545,7 @@ double BaseSolver::dl(ExternalSaturationProperties *const properties){
 */
 double BaseSolver::dv(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: dv() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: dv() not implemented in the Solver object");
 	return 0;
 }
 
@@ -559,7 +559,7 @@ double BaseSolver::dv(ExternalSaturationProperties *const properties){
 */
 double BaseSolver::hl(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: hl() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: hl() not implemented in the Solver object");
 	return 0;
 }
 
@@ -573,7 +573,7 @@ double BaseSolver::hl(ExternalSaturationProperties *const properties){
 */
 double BaseSolver::hv(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: hv() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: hv() not implemented in the Solver object");
 	return 0;
 }
 
@@ -587,7 +587,7 @@ double BaseSolver::hv(ExternalSaturationProperties *const properties){
 */
 double BaseSolver::sigma(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: sigma() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: sigma() not implemented in the Solver object");
 	return 0;
 }
 
@@ -601,7 +601,7 @@ double BaseSolver::sigma(ExternalSaturationProperties *const properties){
 */
 double BaseSolver::sl(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: sl() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: sl() not implemented in the Solver object");
 	return 0;
 }
 
@@ -615,7 +615,7 @@ double BaseSolver::sl(ExternalSaturationProperties *const properties){
 */
 double BaseSolver::sv(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: sv() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: sv() not implemented in the Solver object");
 	return 0;
 }
 
@@ -623,7 +623,7 @@ double BaseSolver::sv(ExternalSaturationProperties *const properties){
 /*!
   This function computes the derivatives according to the Bridgman's table.
   The computed values are written to the two phase medium property struct.
-  This function can be called from within the setState_XX routines
+  This function can be called from within the setState_XX routines 
   when implementing a new solver. Please be aware that cp, beta and
   kappa have to be provided to allow the computation of the derivatives. It
   returns false if the computation failed.
@@ -658,7 +658,7 @@ bool BaseSolver::computeDerivatives(ExternalThermodynamicState *const properties
 */
 double BaseSolver::psat(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: psat() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: psat() not implemented in the Solver object");
 	return 0;
 }
 
@@ -672,7 +672,7 @@ double BaseSolver::psat(ExternalSaturationProperties *const properties){
 */
 double BaseSolver::Tsat(ExternalSaturationProperties *const properties){
     // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage("Internal error: Tsat() not implemented in the Solver object");
+	errorMessage((char*)"Internal error: Tsat() not implemented in the Solver object");
 	return 0;
 }
 

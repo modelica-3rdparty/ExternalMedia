@@ -3,13 +3,16 @@
  *
  * The actual implementation depends on the selected preprocessor
  * variable defined in include.h
- *
+ * 
  * Francesco Casella, Christoph Richter, Nov 2006
  ********************************************************************/
 
 #include "errorhandling.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#if (DYMOLA == 1)
+#if (DYMOLA == 1) || (OPENMODELICA == 1)
 #if (BUILD_DLL == 0)
 // This implementation uses the Dymola log and error window to report errors
 void errorMessage(char *errorMessage){

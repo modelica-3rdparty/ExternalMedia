@@ -4,6 +4,9 @@
 #include "include.h"
 #include "fluidconstants.h"
 #include "externalmedialib.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 struct FluidConstants;
 
@@ -93,7 +96,7 @@ public:
 
 protected:
 	//! Fluid constants
-	FluidConstants _fluidConstants;
+	FluidConstants _fluidConstants; 
 };
 
 #endif // BASESOLVER_H_
