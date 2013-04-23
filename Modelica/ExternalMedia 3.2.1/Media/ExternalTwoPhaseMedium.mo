@@ -51,7 +51,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     Modelica.SIunits.Compressibility kappa "compressibility";
     ThermalConductivity lambda "thermal conductivity";
     AbsolutePressure p "pressure";
-    Integer phase "phase flag: 2 for two-phase, 1 for one-phase";
+    FixedPhase phase(min=0, max=2) "phase flag: 2 for two-phase, 1 for one-phase";
     SpecificEntropy s "specific entropy";
   end ThermodynamicState;
 
@@ -680,7 +680,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     "set the thermodynamic state on the bubble line"
     extends Modelica.Icons.Function;
     input SaturationProperties sat "saturation point";
-    input FixedPhase phase =  1 "phase: default is one phase";
+    input FixedPhase phase(min = 1, max = 2) =  1 "phase: default is one phase";
     output ThermodynamicState state "complete thermodynamic state info";
     // Standard definition
   algorithm
@@ -696,7 +696,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     "set the thermodynamic state on the dew line"
     extends Modelica.Icons.Function;
     input SaturationProperties sat "saturation point";
-    input FixedPhase phase =  1 "phase: default is one phase";
+    input FixedPhase phase(min = 1, max = 2) = 1 "phase: default is one phase";
     output ThermodynamicState state "complete thermodynamic state info";
     // Standard definition
   algorithm
