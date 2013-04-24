@@ -1051,10 +1051,10 @@ package Test "Test models"
         package Medium = Helium;
         Medium.ThermodynamicState state;
         Medium.Temperature T;
-        Medium.Temperature Tcrit=Medium.fluidConstants.criticalTemperature[1];
+        Medium.Temperature Tcrit=Medium.fluidConstants[1].criticalTemperature;
         Medium.AbsolutePressure p;
         Modelica.SIunits.Density d;
-        Medium.AbsolutePressure pcrit=Medium.fluidConstants.criticalPressure[1];
+        Medium.AbsolutePressure pcrit=Medium.fluidConstants[1].criticalPressure;
         Modelica.SIunits.SpecificHeatCapacity cv=Medium.specificHeatCapacityCv(
             state);
       equation
@@ -1152,10 +1152,10 @@ package Test "Test models"
         package Medium = Helium;
         Medium.ThermodynamicState state;
         Medium.Temperature T;
-        Medium.Temperature Tcrit=Medium.fluidConstants.criticalTemperature[1];
+        Medium.Temperature Tcrit=Medium.fluidConstants[1].criticalTemperature;
         Medium.AbsolutePressure p;
         Modelica.SIunits.Density d;
-        Medium.AbsolutePressure pcrit=Medium.fluidConstants.criticalPressure[1];
+        Medium.AbsolutePressure pcrit=Medium.fluidConstants[1].criticalPressure;
         Modelica.SIunits.SpecificHeatCapacity cv=Medium.specificHeatCapacityCv(
             state);
       equation
