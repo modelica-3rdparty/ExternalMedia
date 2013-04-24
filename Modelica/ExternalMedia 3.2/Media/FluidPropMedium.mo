@@ -10,7 +10,7 @@ package FluidPropMedium "FluidProp medium package"
     input FixedPhase phase = 0 "phase flag";
     output ThermodynamicState state "complete thermodynamic state info";
     // Standard definition
-    external "C" TwoPhaseMedium_setBubbleState_(sat, phase, state, mediumName, libraryName, substanceName)
+    external "C" TwoPhaseMedium_setBubbleState_C_impl(sat, phase, state, mediumName, libraryName, substanceName)
       annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
     annotation(Inline = true);
   end setBubbleState;
@@ -22,7 +22,7 @@ package FluidPropMedium "FluidProp medium package"
     input FixedPhase phase = 0 "phase flag";
     output ThermodynamicState state "complete thermodynamic state info";
     // Standard definition
-    external "C" TwoPhaseMedium_setDewState_(sat, phase, state, mediumName, libraryName, substanceName)
+    external "C" TwoPhaseMedium_setDewState_C_impl(sat, phase, state, mediumName, libraryName, substanceName)
       annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
     annotation(Inline = true);
   end setDewState;

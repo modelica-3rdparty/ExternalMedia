@@ -172,25 +172,25 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
 
   replaceable partial function getMolarMass
     output MolarMass MM "molar mass";
-    external "C" MM=  TwoPhaseMedium_getMolarMass_(mediumName, libraryName, substanceName)
+    external "C" MM=  TwoPhaseMedium_getMolarMass_C_impl(mediumName, libraryName, substanceName)
       annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end getMolarMass;
 
   replaceable partial function getCriticalTemperature
     output Temperature Tc "Critical temperature";
-    external "C" Tc=  TwoPhaseMedium_getCriticalTemperature_(mediumName, libraryName, substanceName)
+    external "C" Tc=  TwoPhaseMedium_getCriticalTemperature_C_impl(mediumName, libraryName, substanceName)
       annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end getCriticalTemperature;
 
   replaceable partial function getCriticalPressure
     output AbsolutePressure pc "Critical temperature";
-    external "C" pc=  TwoPhaseMedium_getCriticalPressure_(mediumName, libraryName, substanceName)
+    external "C" pc=  TwoPhaseMedium_getCriticalPressure_C_impl(mediumName, libraryName, substanceName)
       annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end getCriticalPressure;
 
   replaceable partial function getCriticalMolarVolume
     output MolarVolume vc "Critical molar volume";
-    external "C" vc=  TwoPhaseMedium_getCriticalMolarVolume_(mediumName, libraryName, substanceName)
+    external "C" vc=  TwoPhaseMedium_getCriticalMolarVolume_C_impl(mediumName, libraryName, substanceName)
       annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end getCriticalMolarVolume;
 
@@ -202,7 +202,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     input FixedPhase phase = 0
       "2 for two-phase, 1 for one-phase, 0 if not known";
     output ThermodynamicState state;
-  external "C" TwoPhaseMedium_setState_ph_(p, h, phase, state, mediumName, libraryName, substanceName)
+  external "C" TwoPhaseMedium_setState_ph_C_impl(p, h, phase, state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end setState_ph;
 
@@ -214,7 +214,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     input FixedPhase phase = 0
       "2 for two-phase, 1 for one-phase, 0 if not known";
     output ThermodynamicState state;
-  external "C" TwoPhaseMedium_setState_pT_(p, T, state, mediumName, libraryName, substanceName)
+  external "C" TwoPhaseMedium_setState_pT_C_impl(p, T, state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end setState_pT;
 
@@ -226,7 +226,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     input FixedPhase phase = 0
       "2 for two-phase, 1 for one-phase, 0 if not known";
     output ThermodynamicState state;
-  external "C" TwoPhaseMedium_setState_dT_(d, T, phase, state, mediumName, libraryName, substanceName)
+  external "C" TwoPhaseMedium_setState_dT_C_impl(d, T, phase, state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end setState_dT;
 
@@ -238,7 +238,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     input FixedPhase phase = 0
       "2 for two-phase, 1 for one-phase, 0 if not known";
     output ThermodynamicState state;
-  external "C" TwoPhaseMedium_setState_ps_(p, s, phase, state, mediumName, libraryName, substanceName)
+  external "C" TwoPhaseMedium_setState_ps_C_impl(p, s, phase, state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end setState_ps;
 
@@ -252,7 +252,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     sat:=setSat_p(state.p);
     //Redeclare this function for more efficient implementations avoiding the repeated computation of saturation properties
   /*  // If special definition in "C"
-  external "C" TwoPhaseMedium_setSat_p_state_(state, sat)
+  external "C" TwoPhaseMedium_setSat_p_state_C_impl(state, sat)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
     annotation(Inline = true);
@@ -308,7 +308,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     d_der:=density_derp_h(setState_ph(p, h))*p_der + density_derh_p(setState_ph(
       p, h))*h_der;
     /*  // If special definition in "C"
-  external "C" d_der=  TwoPhaseMedium_density_ph_der_(state, mediumName, libraryName, substanceName)
+  external "C" d_der=  TwoPhaseMedium_density_ph_der_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -458,7 +458,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   redeclare function extends prandtlNumber
 
     /*  // If special definition in "C"
-  external "C" T=  TwoPhaseMedium_prandtlNumber_(state, mediumName, libraryName, substanceName)
+  external "C" T=  TwoPhaseMedium_prandtlNumber_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
     annotation(Inline = true);
@@ -470,7 +470,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     T := state.T;
     /*  // If special definition in "C"
-  external "C" T=  TwoPhaseMedium_temperature_(state, mediumName, libraryName, substanceName)
+  external "C" T=  TwoPhaseMedium_temperature_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -483,7 +483,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     a := state.a;
     /*  // If special definition in "C"
-  external "C" a=  TwoPhaseMedium_velocityOfSound_(state, mediumName, libraryName, substanceName)
+  external "C" a=  TwoPhaseMedium_velocityOfSound_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -496,7 +496,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     beta := state.beta;
     /*  // If special definition in "C"
-  external "C" beta=  TwoPhaseMedium_isobaricExpansionCoefficient_(state, mediumName, libraryName, substanceName)
+  external "C" beta=  TwoPhaseMedium_isobaricExpansionCoefficient_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -509,7 +509,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     cp := state.cp;
     /*  // If special definition in "C"
-  external "C" cp=  TwoPhaseMedium_specificHeatCapacityCp_(state, mediumName, libraryName, substanceName)
+  external "C" cp=  TwoPhaseMedium_specificHeatCapacityCp_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -522,7 +522,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     cv := state.cv;
     /*  // If special definition in "C"
-  external "C" cv=  TwoPhaseMedium_specificHeatCapacityCv_(state, mediumName, libraryName, substanceName)
+  external "C" cv=  TwoPhaseMedium_specificHeatCapacityCv_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -534,7 +534,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     d := state.d;
     /*  // If special definition in "C"
-  external "C" d=  TwoPhaseMedium_density_(state, mediumName, libraryName, substanceName)
+  external "C" d=  TwoPhaseMedium_density_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -547,7 +547,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     ddhp := state.ddhp;
     /*  // If special definition in "C"
-  external "C" ddhp=  TwoPhaseMedium_density_derh_p_(state, mediumName, libraryName, substanceName)
+  external "C" ddhp=  TwoPhaseMedium_density_derh_p_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -560,7 +560,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     ddph := state.ddph;
     /*  // If special definition in "C"
-  external "C" ddph=  TwoPhaseMedium_density_derp_h_(state, mediumName, libraryName, substanceName)
+  external "C" ddph=  TwoPhaseMedium_density_derp_h_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -583,7 +583,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     eta := state.eta;
     /*  // If special definition in "C"
-  external "C" eta=  TwoPhaseMedium_dynamicViscosity_(state, mediumName, libraryName, substanceName)
+  external "C" eta=  TwoPhaseMedium_dynamicViscosity_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -596,7 +596,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     h := state.h;
     /*  // If special definition in "C"
-  external "C" h=  TwoPhaseMedium_specificEnthalpy_(state, mediumName, libraryName, substanceName)
+  external "C" h=  TwoPhaseMedium_specificEnthalpy_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -609,7 +609,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     kappa := state.kappa;
     /*  // If special definition in "C"
-  external "C" kappa=  TwoPhaseMedium_isothermalCompressibility_(state, mediumName, libraryName, substanceName)
+  external "C" kappa=  TwoPhaseMedium_isothermalCompressibility_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -622,7 +622,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     lambda := state.lambda;
     /*  // If special definition in "C"
-  external "C" lambda=  TwoPhaseMedium_thermalConductivity_(state, mediumName, libraryName, substanceName)
+  external "C" lambda=  TwoPhaseMedium_thermalConductivity_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -634,7 +634,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     p := state.p;
     /*  // If special definition in "C"
-  external "C" p=  TwoPhaseMedium_pressure_(state, mediumName, libraryName, substanceName)
+  external "C" p=  TwoPhaseMedium_pressure_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -647,7 +647,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     s := state.s;
     /*  // If special definition in "C"
-    external "C" s=  TwoPhaseMedium_specificEntropy_(state, mediumName, libraryName, substanceName)
+    external "C" s=  TwoPhaseMedium_specificEntropy_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -655,7 +655,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   end specificEntropy;
 
   redeclare replaceable function extends isentropicEnthalpy
-  external "C" h_is=  TwoPhaseMedium_isentropicEnthalpy_(p_downstream, refState,
+  external "C" h_is=  TwoPhaseMedium_isentropicEnthalpy_C_impl(p_downstream, refState,
    mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end isentropicEnthalpy;
@@ -664,7 +664,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
     output SaturationProperties sat "saturation property record";
-  external "C" TwoPhaseMedium_setSat_p_(p, sat, mediumName, libraryName, substanceName)
+  external "C" TwoPhaseMedium_setSat_p_C_impl(p, sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end setSat_p;
 
@@ -672,7 +672,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     extends Modelica.Icons.Function;
     input Temperature T "temperature";
     output SaturationProperties sat "saturation property record";
-  external "C" TwoPhaseMedium_setSat_T_(T, sat, mediumName, libraryName, substanceName)
+  external "C" TwoPhaseMedium_setSat_T_C_impl(T, sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end setSat_T;
 
@@ -686,7 +686,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     state :=setState_ph(sat.psat, sat.hl, phase);
     /*  // If special definition in "C"
-  external "C" TwoPhaseMedium_setBubbleState_(sat, phase, state, mediumName, libraryName, substanceName)
+  external "C" TwoPhaseMedium_setBubbleState_C_impl(sat, phase, state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
     annotation(Inline = true);
@@ -702,7 +702,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     state :=setState_ph(sat.psat, sat.hv, phase);
     /*  // If special definition in "C"
-  external "C" TwoPhaseMedium_setDewState_(sat, phase, state, mediumName, libraryName, substanceName)
+  external "C" TwoPhaseMedium_setDewState_C_impl(sat, phase, state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
     annotation(Inline = true);
@@ -713,7 +713,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     T :=saturationTemperature_sat(setSat_p(p));
     /*  // If special definition in "C"
-  external "C" T=  TwoPhaseMedium_saturationTemperature_(p, mediumName, libraryName, substanceName)
+  external "C" T=  TwoPhaseMedium_saturationTemperature_C_impl(p, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
     annotation(Inline = true);
@@ -726,7 +726,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
 
   redeclare replaceable function extends saturationTemperature_derp "Returns derivative of saturation temperature w.r.t.. pressureBeing this function inefficient, it is strongly recommended to use saturationTemperature_derp_sat
      and never use saturationTemperature_derp directly"
-  external "C" dTp=  TwoPhaseMedium_saturationTemperature_derp_(p, mediumName, libraryName, substanceName)
+  external "C" dTp=  TwoPhaseMedium_saturationTemperature_derp_C_impl(p, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end saturationTemperature_derp;
 
@@ -739,7 +739,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     dTp := sat.dTp;
     /*  // If special definition in "C"
-  external "C" dTp=  TwoPhaseMedium_saturationTemperature_derp_sat_(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName)
+  external "C" dTp=  TwoPhaseMedium_saturationTemperature_derp_sat_C_impl(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -752,7 +752,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     ddldp := sat.ddldp;
     /*  // If special definition in "C"
-  external "C" ddldp=  TwoPhaseMedium_dBubbleDensity_dPressure_(sat, mediumName, libraryName, substanceName)
+  external "C" ddldp=  TwoPhaseMedium_dBubbleDensity_dPressure_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -765,7 +765,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     ddvdp := sat.ddvdp;
     /*  // If special definition in "C"
-  external "C" ddvdp=  TwoPhaseMedium_dDewDensity_dPressure_(sat, mediumName, libraryName, substanceName)
+  external "C" ddvdp=  TwoPhaseMedium_dDewDensity_dPressure_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -778,7 +778,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     dhldp := sat.dhldp;
     /*  // If special definition in "C"
-  external "C" dhldp=  TwoPhaseMedium_dBubbleEnthalpy_dPressure_(sat, mediumName, libraryName, substanceName)
+  external "C" dhldp=  TwoPhaseMedium_dBubbleEnthalpy_dPressure_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -791,7 +791,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     dhvdp := sat.dhvdp;
     /*  // If special definition in "C"
-  external "C" dhvdp=  TwoPhaseMedium_dDewEnthalpy_dPressure_(sat, mediumName, libraryName, substanceName)
+  external "C" dhvdp=  TwoPhaseMedium_dDewEnthalpy_dPressure_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -804,7 +804,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     dl := sat.dl;
     /*  // If special definition in "C"
-  external "C" dl=  TwoPhaseMedium_bubbleDensity_(sat, mediumName, libraryName, substanceName)
+  external "C" dl=  TwoPhaseMedium_bubbleDensity_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -816,7 +816,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     dv := sat.dv;
     /*  // If special definition in "C"
-  external "C" dv=  TwoPhaseMedium_dewDensity_(sat, mediumName, libraryName, substanceName)
+  external "C" dv=  TwoPhaseMedium_dewDensity_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -829,7 +829,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     hl := sat.hl;
     /*  // If special definition in "C"
-  external "C" hl=  TwoPhaseMedium_bubbleEnthalpy_(sat, mediumName, libraryName, substanceName)
+  external "C" hl=  TwoPhaseMedium_bubbleEnthalpy_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -842,7 +842,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     hv := sat.hv;
     /*  // If special definition in "C"
-  external "C" hv=  TwoPhaseMedium_dewEnthalpy_(sat, mediumName, libraryName, substanceName)
+  external "C" hv=  TwoPhaseMedium_dewEnthalpy_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -854,7 +854,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     p :=saturationPressure_sat(setSat_T(T));
     /*  // If special definition in "C"
-  external "C" p=  TwoPhaseMedium_saturationPressure_(T, mediumName, libraryName, substanceName)
+  external "C" p=  TwoPhaseMedium_saturationPressure_C_impl(T, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
     annotation(Inline = false,
@@ -884,7 +884,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     sigma := sat.sigma;
     /*  //If special definition in "C"
-  external "C" sigma=  TwoPhaseMedium_surfaceTension_(sat, mediumName, libraryName, substanceName)
+  external "C" sigma=  TwoPhaseMedium_surfaceTension_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -897,7 +897,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     sl := specificEntropy(setBubbleState(sat));
     /*  //If special definition in "C"
-  external "C" sl=  TwoPhaseMedium_bubbleEntropy_(sat, mediumName, libraryName, substanceName)
+  external "C" sl=  TwoPhaseMedium_bubbleEntropy_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
@@ -910,7 +910,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   algorithm
     sv := specificEntropy(setDewState(sat));
     /*  //If special definition in "C"
-  external "C" sv=  TwoPhaseMedium_dewEntropy_(sat, mediumName, libraryName, substanceName)
+  external "C" sv=  TwoPhaseMedium_dewEntropy_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
 
