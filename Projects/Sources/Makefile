@@ -1,7 +1,7 @@
 # quick and dirty makefile for OpenModelica
 # Adrian.Pop@liu.se
 
-CFLAGS = -O2
+CFLAGS = -O2 -loleaut32
 SOURCES=FluidProp_IF.cpp basesolver.cpp errorhandling.cpp externalmedialib.cpp fluidpropsolver.cpp solvermap.cpp testsolver.cpp
 
 all:
