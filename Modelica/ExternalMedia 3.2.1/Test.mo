@@ -1030,7 +1030,6 @@ package Test "Test models"
         p = 4e5 + 0*time;
         state = Medium.setState_pT(p, T);
         d = Medium.density(state);
-        annotation (experiment, experimentSetupOutput);
       end TestSupercriticalHelium;
 
       model TestSaturatedHelium
@@ -1063,7 +1062,6 @@ package Test "Test models"
         p = 5e5;
         state = Medium.setState_pT(p, T);
         d = Medium.density(state);
-        annotation (experiment, experimentSetupOutput);
       end TypicalHeliumProperties;
     end TestHelium;
 
@@ -1133,7 +1131,6 @@ package Test "Test models"
         p = 4e5 + 0*time;
         state = Medium.setState_pT(p, T);
         d = Medium.density(state);
-        annotation (experiment, experimentSetupOutput);
       end TestSupercriticalHelium;
 
       model TestSaturatedHelium
@@ -1166,7 +1163,6 @@ package Test "Test models"
         p = 5e5;
         state = Medium.setState_pT(p, T);
         d = Medium.density(state);
-        annotation (experiment, experimentSetupOutput);
       end TypicalHeliumProperties;
     end TestHeliumHardCodedProperties;
   end TestOMC;

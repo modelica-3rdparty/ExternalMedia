@@ -51,7 +51,8 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     Modelica.SIunits.Compressibility kappa "compressibility";
     ThermalConductivity lambda "thermal conductivity";
     AbsolutePressure p "pressure";
-    FixedPhase phase(min=0, max=2) "phase flag: 2 for two-phase, 1 for one-phase";
+    FixedPhase phase(min=0, max=2)
+      "phase flag: 2 for two-phase, 1 for one-phase";
     SpecificEntropy s "specific entropy";
   end ThermodynamicState;
 
@@ -170,25 +171,25 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     MM := fluidConstants[1].molarMass;
   end molarMass;
 
-  replaceable partial function getMolarMass
+  replaceable function getMolarMass
     output MolarMass MM "molar mass";
     external "C" MM=  TwoPhaseMedium_getMolarMass_(mediumName, libraryName, substanceName)
       annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end getMolarMass;
 
-  replaceable partial function getCriticalTemperature
+  replaceable function getCriticalTemperature
     output Temperature Tc "Critical temperature";
     external "C" Tc=  TwoPhaseMedium_getCriticalTemperature_(mediumName, libraryName, substanceName)
       annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end getCriticalTemperature;
 
-  replaceable partial function getCriticalPressure
+  replaceable function getCriticalPressure
     output AbsolutePressure pc "Critical temperature";
     external "C" pc=  TwoPhaseMedium_getCriticalPressure_(mediumName, libraryName, substanceName)
       annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end getCriticalPressure;
 
-  replaceable partial function getCriticalMolarVolume
+  replaceable function getCriticalMolarVolume
     output MolarVolume vc "Critical molar volume";
     external "C" vc=  TwoPhaseMedium_getCriticalMolarVolume_(mediumName, libraryName, substanceName)
       annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
