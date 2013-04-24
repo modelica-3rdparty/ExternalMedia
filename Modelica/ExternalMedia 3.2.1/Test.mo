@@ -549,22 +549,19 @@ package Test "Test models"
         "Comparison between Modelica IF97 and FluidProp IF95 models - liquid"
         extends GenericModels.CompareModelicaFluidProp(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
-
           redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF95,
-
           pmin=1e5,
           pmax=1e5,
           hmin=1e5,
           hmax=4e5);
+
       end CompareModelicaFluidProp_liquid;
 
       model CompareModelicaFluidProp_twophase
         "Comparison between Modelica IF97 and FluidProp IF95 models - liquid"
         extends GenericModels.CompareModelicaFluidProp(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
-
           redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF95,
-
           pmin=60e5,
           pmax=60e5,
           hmin=1000e3,
@@ -576,9 +573,7 @@ package Test "Test models"
         "Comparison between Modelica IF97 and FluidProp IF95 models - liquid"
         extends GenericModels.CompareModelicaFluidProp(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
-
           redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF95,
-
           pmin=60e5,
           pmax=60e5,
           hmin=2800e3,
@@ -653,22 +648,19 @@ package Test "Test models"
         "Comparison between Modelica IF97 and FluidProp IF97 models - liquid"
         extends GenericModels.CompareModelicaFluidProp(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
-
           redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF97,
-
           pmin=1e5,
           pmax=1e5,
           hmin=1e5,
           hmax=4e5);
+
       end CompareModelicaFluidProp_liquid;
 
       model CompareModelicaFluidProp_twophase
         "Comparison between Modelica IF97 and FluidProp IF97 models - liquid"
         extends GenericModels.CompareModelicaFluidProp(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
-
           redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF97,
-
           pmin=60e5,
           pmax=60e5,
           hmin=1000e3,
@@ -680,9 +672,7 @@ package Test "Test models"
         "Comparison between Modelica IF97 and FluidProp IF97 models - liquid"
         extends GenericModels.CompareModelicaFluidProp(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
-
           redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF97,
-
           pmin=60e5,
           pmax=60e5,
           hmin=2800e3,
@@ -757,22 +747,19 @@ package Test "Test models"
         "Comparison between Modelica IF97 and FluidProp TPSI models - liquid"
         extends GenericModels.CompareModelicaFluidProp(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
-
           redeclare package FluidPropMedium = ExternalMedia.Examples.WaterTPSI,
-
           pmin=1e5,
           pmax=1e5,
           hmin=1e5,
           hmax=4e5);
+
       end CompareModelicaFluidProp_liquid;
 
       model CompareModelicaFluidProp_twophase
         "Comparison between Modelica IF97 and FluidProp TPSI models - liquid"
         extends GenericModels.CompareModelicaFluidProp(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
-
           redeclare package FluidPropMedium = ExternalMedia.Examples.WaterTPSI,
-
           pmin=60e5,
           pmax=60e5,
           hmin=1000e3,
@@ -784,9 +771,7 @@ package Test "Test models"
         "Comparison between Modelica IF97 and FluidProp TPSI models - liquid"
         extends GenericModels.CompareModelicaFluidProp(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
-
           redeclare package FluidPropMedium = ExternalMedia.Examples.WaterTPSI,
-
           pmin=60e5,
           pmax=60e5,
           hmin=2800e3,
@@ -1003,7 +988,6 @@ package Test "Test models"
           libraryName="FluidProp.RefProp",
           substanceNames={"He"},
           ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.ph,
-
           AbsolutePressure(
             min=500,
             max=44e5,
@@ -1037,10 +1021,10 @@ package Test "Test models"
         package Medium = Helium;
         Medium.ThermodynamicState state;
         Medium.Temperature T;
-        Medium.Temperature Tcrit=Medium.fluidConstants.criticalTemperature[1];
+        Medium.Temperature Tcrit=Medium.fluidConstants[1].criticalTemperature;
         Medium.AbsolutePressure p;
         Modelica.SIunits.Density d;
-        Medium.AbsolutePressure pcrit=Medium.fluidConstants.criticalPressure[1];
+        Medium.AbsolutePressure pcrit=Medium.fluidConstants[1].criticalPressure;
       equation
         T = 300 - 297.5*time;
         p = 4e5 + 0*time;
@@ -1107,7 +1091,6 @@ package Test "Test models"
                     normalBoilingPoint=380.0,
                     dipoleMoment=2.0),
           ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.ph,
-
           AbsolutePressure(
             min=500,
             max=44e5,
@@ -1141,10 +1124,10 @@ package Test "Test models"
         package Medium = Helium;
         Medium.ThermodynamicState state;
         Medium.Temperature T;
-        Medium.Temperature Tcrit=Medium.fluidConstants.criticalTemperature[1];
+        Medium.Temperature Tcrit=Medium.fluidConstants[1].criticalTemperature;
         Medium.AbsolutePressure p;
         Modelica.SIunits.Density d;
-        Medium.AbsolutePressure pcrit=Medium.fluidConstants.criticalPressure[1];
+        Medium.AbsolutePressure pcrit=Medium.fluidConstants[1].criticalPressure;
       equation
         T = 300 - 297.5*time;
         p = 4e5 + 0*time;
