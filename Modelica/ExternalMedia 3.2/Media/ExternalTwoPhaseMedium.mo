@@ -354,7 +354,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
                Inline = false, LateInline = true);
   end density_pT;
 
-  replaceable partial function density_pT_der "Total derivative of density_pT"
+  replaceable function density_pT_der "Total derivative of density_pT"
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input Temperature T "Temperature";
@@ -362,7 +362,13 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     input Real p_der;
     input Real T_der;
     output Real d_der;
-    // To be implemented
+  algorithm 
+    d_der:=density_derp_T(setState_pT(p, T))*p_der +
+           density_derT_p(setState_pT(p, T))*T_der;
+    /*  // If special definition in "C"
+    external "C" d_der=  TwoPhaseMedium_density_pT_der_C_impl(state, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    */
     annotation(Inline = true);
   end density_pT_der;
 
