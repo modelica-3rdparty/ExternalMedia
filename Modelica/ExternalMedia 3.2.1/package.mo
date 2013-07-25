@@ -60,7 +60,7 @@ package ExternalMedia
   futher developing the library.</p>
 
 <p>Licensed by the Modelica Association under the Modelica License 2</p>
-<p>Copyright &copy; 2006-2012 Politecnico di Milano, TU Braunschweig, Politecnico di Torino</p>
+<p>Copyright &copy; 2006-2013 Politecnico di Milano, TU Braunschweig, Politecnico di Torino</p>
 <p>Main contributors: Francesco Casella, Christoph Richter, Roberto Bonifetto</p>
 <p>
 <i>This Modelica package is <u>free</u> software and the use is completely at <u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see <a href=\"http://www.modelica.org/licenses/ModelicaLicense2\"> http://www.modelica.org/licenses/ModelicaLicense2</a>.</i>
