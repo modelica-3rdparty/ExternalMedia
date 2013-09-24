@@ -243,7 +243,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
   end setState_ps;
 
-  replaceable partial function setSat_p_state
+  replaceable function setSat_p_state
     "Return saturation properties from the state"
     extends Modelica.Icons.Function;
     input ThermodynamicState state;
@@ -363,7 +363,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     input Real p_der;
     input Real T_der;
     output Real d_der;
-  algorithm 
+  algorithm
     d_der:=density_derp_T(setState_pT(p, T))*p_der +
            density_derT_p(setState_pT(p, T))*T_der;
     /*  // If special definition in "C"
