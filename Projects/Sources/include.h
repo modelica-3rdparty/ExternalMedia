@@ -44,6 +44,14 @@
 */
 #define FLUIDPROP 1
 
+// Selection of used external fluid property computation packages.
+//! CoolProp solver
+/*!
+  Set this preprocessor variable to 1 to include the interface to the
+  CoolProp solver developed and maintained by Ian Bell et al. and the University of Liege
+*/
+#define COOLPROP 1
+
 // Selection of build type for this project
 //! Build project into a DLL
 /*!

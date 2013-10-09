@@ -6,6 +6,10 @@
 #include "fluidpropsolver.h"
 #endif // FLUIDPROP == 1
 
+#if (COOLPROP == 1)
+#include "coolpropsolver.h"
+#endif // COOLPROP == 1
+
 //! Get a specific solver
 /*!
   This function returns the solver for the specified library name, substance name
@@ -32,6 +36,13 @@ BaseSolver *SolverMap::getSolver(const string &mediumName, const string &library
 	else if (libraryName.find("FluidProp") == 0)
 	  _solvers[solverKeyString] = new FluidPropSolver(mediumName, libraryName, substanceName);
 #endif // FLUIDPROP == 1
+
+#if (COOLPROP == 1)
+	// CoolProp solver
+	else if (libraryName.find("CoolProp") == 0)
+	  _solvers[solverKeyString] = new CoolPropSolver(mediumName, libraryName, substanceName);
+#endif // COOLPROP == 1
+
 	else {
 	  // Generate error message
 	  char error[100];

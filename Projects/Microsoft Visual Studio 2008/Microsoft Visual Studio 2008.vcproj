@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="ExternalMediaLib"
 	ProjectGUID="{E5E8CFA2-9107-41F1-B39A-C3C1A8EC2889}"
 	RootNamespace="MicrosoftVisualStudio2008"
@@ -115,6 +115,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				WholeProgramOptimization="false"
+				AdditionalIncludeDirectories="..\..\externals\coolprop\trunk\CoolProp;..\..\externals\coolprop\trunk\wrappers\Modelica\src"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;MICROSOFTVISUALSTUDIO2008_EXPORTS;_CRT_SECURE_NO_DEPRECATE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -251,6 +252,106 @@
 			</File>
 			<File
 				RelativePath="..\Sources\testsolver.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="CoolProp"
+			>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\AllFluids.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\Brine.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\CoolProp.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\CoolPropDLL.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\CoolPropTools.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\CPState.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\CriticalSplineConstants.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\FluidClass.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\Helmholtz.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\HumidAirProp.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\Ice.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\IncompBase.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\IncompLiquid.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\IncompSolution.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\MatrixMath.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\Mixtures.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\PengRobinson.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\REFPROP.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\Solvers.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\Spline.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\TTSE.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\CoolProp\Units.cpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="CoolPropSolver"
+			>
+			<File
+				RelativePath="..\..\externals\coolprop\trunk\wrappers\Modelica\src\coolpropsolver.cpp"
 				>
 			</File>
 		</Filter>
