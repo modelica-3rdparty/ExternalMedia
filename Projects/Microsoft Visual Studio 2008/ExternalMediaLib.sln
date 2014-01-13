@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExternalMediaLib", "Microsoft Visual Studio 2008.vcproj", "{E5E8CFA2-9107-41F1-B39A-C3C1A8EC2889}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExternalMediaLib", "ExternalMediaLib.vcproj", "{E5E8CFA2-9107-41F1-B39A-C3C1A8EC2889}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
