@@ -17,7 +17,7 @@ local working copy.
 BUIDING THE LIBRARY FOR OPENMODELICA USING GCC ON WINDOWS
 
 - Get the OMDEV environment from the SVN repository:
-  https://openmodelica.ida.liu.se/svn/OpenModelica/installers/windows/OMDev
+  https://openmodelica.org/svn/OpenModelicaExternal/trunk/tools/windows/OMDev
   user: anonymous
   pass: none
 - Start C:\OMDev\tools\msys\msys.bat (from the MinGW)
