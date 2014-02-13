@@ -33,7 +33,8 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   constant InputChoice inputChoice=InputChoice.ph
     "Default choice of input variables for property computations";
 
-  redeclare replaceable record extends ThermodynamicState
+  redeclare replaceable record ThermodynamicState
+    // Fields in ASCII lexicographical order to work in Dymola
     PrandtlNumber Pr "prandtl number";
     Temperature T "temperature";
     VelocityOfSound a "velocity of sound";
@@ -56,7 +57,8 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     SpecificEntropy s "specific entropy";
   end ThermodynamicState;
 
-  redeclare record extends SaturationProperties
+  redeclare record SaturationProperties
+    // Fields in ASCII lexicographical order to work in Dymola
     Temperature Tsat "saturation temperature";
     Real dTp "derivative of Ts wrt pressure";
     DerDensityByPressure ddldp "derivative of dls wrt pressure";
