@@ -1,6 +1,21 @@
 within ExternalMedia;
 package Test "Test models"
   package TestMedium "Test cases for TestMedium"
+    model TestState "Test case using TestMedium with a single state record"
+      replaceable package Medium = Media.TestMedium;
+      Medium.ThermodynamicState state;
+    equation
+      state = Medium.setState_ph(1e5 + 1e5*time, 1e5);
+    end TestState;
+
+    model TestSat
+      "Test case using TestMedium with a single saturation properties record"
+      replaceable package Medium = Media.TestMedium;
+      Medium.SaturationProperties sat;
+    equation
+      sat = Medium.setSat_p(1e5 + 1e5*time);
+    end TestSat;
+
     model TestStatesSat "Test case using TestMedium with state + sat records"
       replaceable package Medium = Media.TestMedium;
       Medium.BaseProperties baseProperties1;
