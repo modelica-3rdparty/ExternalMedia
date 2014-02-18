@@ -5,7 +5,7 @@ package Test "Test models"
       replaceable package Medium = Media.TestMedium;
       Medium.ThermodynamicState state;
     equation
-      state = Medium.setState_ph(1e5 + 1e5*time, 1e5);
+      state = Medium.setState_ph(1e5, 1e5 + 1e5*time);
     end TestState;
 
     model TestSat
