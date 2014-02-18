@@ -1,13 +1,16 @@
 within ExternalMedia.Media;
 package ExternalTwoPhaseMedium "Generic external two phase medium package"
-
   extends Modelica.Media.Interfaces.PartialTwoPhaseMedium(
-    mediumName = "ExternalMedium",
     singleState = false,
     onePhase = false,
     smoothModel = false,
     fluidConstants = {externalFluidConstants});
   import ExternalMedia.Common.InputChoice;
+
+  // mediumName is declared here instead of in the extends clause
+  // to break a circular dependency in redeclaration that OpenModelica
+  // cannot yet handle
+  constant String mediumName="unusablePartialMedium" "Name of the medium";
 
   constant String libraryName = "UnusableExternalMedium"
     "Name of the external fluid property computation library";
