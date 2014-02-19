@@ -29,3 +29,7 @@ This will build the static gcc library and copy it and the externalmedia.h
 header files in the Resource directories of the Modelica packages, so it can
 be used right away by just loading the Modelica package in OMC
 
+Due to a bug in OMC (https://trac.openmodelica.org/OpenModelica/ticket/2565#comment:7)
+it is currently necessary to also copy the include and library files in the OMC installation
+directories. To accomplish this, run make-gcc-workaround instead of make-gcc
+

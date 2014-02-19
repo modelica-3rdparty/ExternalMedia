@@ -15,8 +15,15 @@ OpenModelica Under Windows
 - Pick the 3.2.1 version (the 3.2 version is not 100% Modelica
   compliant)
 - Open the package.mo file
+- Until this bug is fixed:
+  https://trac.openmodelica.org/OpenModelica/ticket/2412
+  you also need to manually copy 
+  ExternalMedia 3.2.1/Resources/Library/libExternalMediaLib.a
+  to the lib/omc/ directory of your OpenModelica installation directory, and
+  ExternalMedia 3.2.1/Resources/Include/externalmedia.h
+  to the include/omc/c directory of your OpenModelica installation directory
 
-------------------------
+-----------------------
 If you are interested in using ExternalMedia with other Modelica
 tools and/or other operating systems, please contact the main
 developer francesco.casella@polimi.it
