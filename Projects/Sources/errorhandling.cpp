@@ -14,7 +14,7 @@
 
 #if (DYMOLA == 1) || (OPENMODELICA == 1)
 #if (BUILD_DLL == 0)
-// This implementation uses the Dymola log and error window to report errors
+// This implementation uses the native Modelica tool log and error window to report errors
 void errorMessage(char *errorMessage){
 	ModelicaError(errorMessage);
 }
@@ -32,7 +32,7 @@ void errorMessage(char *errorMessage){
 
 void warningMessage(char *warningMessage){
 	strcat(warningMessage, "\n");
-	printf(warningMessage);
+	printf("%s",warningMessage);
 }
 #endif
 #else
