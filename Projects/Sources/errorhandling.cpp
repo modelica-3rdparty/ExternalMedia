@@ -46,6 +46,6 @@ void errorMessage(char *errorMessage){
 
 void warningMessage(char *warningMessage){
 	strcat(warningMessage, "\n");
-	printf(warningMessage);
+	printf("%s",warningMessage);
 }
 #endif
