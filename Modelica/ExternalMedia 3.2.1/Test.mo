@@ -1,6 +1,11 @@
 within ExternalMedia;
 package Test "Test models"
   package TestMedium "Test cases for TestMedium"
+    model TestConstants "Test case using TestMedium with package constants"
+      replaceable package Medium = Media.TestMedium;
+      Medium.Temperature Tc=Medium.fluidConstants[1].criticalTemperature;
+    end TestConstants;
+
     model TestState "Test case using TestMedium with a single state record"
       replaceable package Medium = Media.TestMedium;
       Medium.ThermodynamicState state;
