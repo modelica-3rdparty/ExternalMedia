@@ -38,7 +38,6 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
 
   redeclare replaceable record ThermodynamicState
     // Fields in ASCII lexicographical order to work in Dymola
-    PrandtlNumber Pr "prandtl number";
     Temperature T "temperature";
     VelocityOfSound a "velocity of sound";
     Modelica.SIunits.CubicExpansionCoefficient beta

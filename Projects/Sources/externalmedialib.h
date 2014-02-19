@@ -29,12 +29,10 @@
 
 typedef struct {
 
-	//! Prandtl number
-    double Pr;
 	//! Temperature
-	double T;
+    double T;
 	//! Velocity of sound
-	double a;
+    double a;
 	//! Isobaric expansion coefficient
     double beta;
 	//! Specific heat capacity cp

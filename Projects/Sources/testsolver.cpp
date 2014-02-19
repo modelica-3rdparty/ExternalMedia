@@ -58,12 +58,15 @@ void TestSolver::setState_ph(double &p, double &h, int &phase, ExternalThermodyn
 		properties->phase = (h > hl && h < hv) ? 2 : 1;
 	} else
 		properties->phase = phase;
+        properties->a = 1500;
 	properties->beta = 2.4e-4;
 	properties->cp = 4200;
 	properties->cv = 4150;
 	properties->ddhp = -(1.0 + p/21000e5)/4200.0;
 	properties->ddph = (1000.0 - h/4200.0)/21000e5;
 	properties->kappa = 4.5e-10;
+	properties->eta = 9e-4 - (properties->T-300)*1e-5;
+	properties->lambda = 0.60 + (properties->T-300)*1.6e-3;
 }
 
 void TestSolver::setState_pT(double &p, double &T, ExternalThermodynamicState *const properties){
@@ -73,12 +76,15 @@ void TestSolver::setState_pT(double &p, double &T, ExternalThermodynamicState *c
 	properties->d = (1000.0 - properties->h/4200.0)*(1 + p/21000e5);
 	properties->s = 4200.0 * log(properties->T/273.15);
 	properties->phase = 1; // with pT input, always one-phase conditions!
+        properties->a = 1500;
 	properties->beta = 2.4e-4;
 	properties->cp = 4200;
 	properties->cv = 4150;
 	properties->ddph = (1000.0 - properties->h/4200.0)/21000e5;
 	properties->ddhp = -(1.0 + p/21000e5)/4200.0;
 	properties->kappa = 4.5e-10;
+	properties->eta = 9e-4 - (T-300)*1e-5;
+	properties->lambda = 0.60 + (T-300)*1.6e-3;
 }
 
 // Note: the phase input is currently not supported
@@ -96,12 +102,15 @@ void TestSolver::setState_dT(double &d, double &T, int &phase, ExternalThermodyn
 		properties->phase = (h > hl && h < hv) ? 2 : 1;
 	} else
 		properties->phase = phase;
+        properties->a = 1500;
 	properties->beta = 2.4e-4;
 	properties->cp = 4200;
 	properties->cv = 4150;
 	properties->ddph = (1000.0 - properties->h/4200.0)/21000e5;
 	properties->ddhp = -(1.0 + properties->p/21000e5)/4200.0;
 	properties->kappa = 4.5e-10;
+	properties->eta = 9e-4 - (T-300)*1e-5;
+	properties->lambda = 0.60 + (T-300)*1.6e-3;
 }
 
 // Note: the phase input is currently not supported
@@ -118,11 +127,14 @@ void TestSolver::setState_ps(double &p, double &s, int &phase, ExternalThermodyn
 		properties->phase = (h > hl && h < hv) ? 2 : 1;
 	} else
 		properties->phase = phase;
+        properties->a = 1500;
 	properties->beta = 2.4e-4;
 	properties->cp = 4200;
 	properties->cv = 4150;
 	properties->ddph = (1000.0 - properties->h/4200.0)/21000e5;
 	properties->ddhp = -(1.0+p/21000e5)/4200.0;
 	properties->kappa = 4.5e-10;
+	properties->eta = 9e-4 - (properties->T-300)*1e-5;
+	properties->lambda = 0.60 + (properties->T-300)*1.6e-3;
 }
 
