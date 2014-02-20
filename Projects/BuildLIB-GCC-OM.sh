@@ -1,4 +1,5 @@
 #!/bin/bash
+
 GCC_OPTS="-O2 -loleaut32 -DCOOLPROP=1"
 CP=../externals/coolprop/trunk
 CPinc=${CP}/CoolProp
@@ -21,4 +22,6 @@ cp libExternalMediaLib.a "../Modelica/ExternalMedia 3.2/Resources/Library"
 cp Sources/externalmedialib.h "../Modelica/ExternalMedia 3.2/Resources/Include"
 cp libExternalMediaLib.a "../Modelica/ExternalMedia 3.2.1/Resources/Library"
 cp Sources/externalmedialib.h "../Modelica/ExternalMedia 3.2.1/Resources/Include"
+cp Sources/externalmedialib.h "$OPENMODELICAHOME/include/omc/c"
+cp libExternalMediaLib.a "$OPENMODELICAHOME/lib/omc"
 echo "All done"
