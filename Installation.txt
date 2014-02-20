@@ -1,9 +1,23 @@
+INSTALLATION INSTRUCTIONS FOR THE ExternalMedia LIBRARY
+
+The provided version of ExternalMedia is compatible with Modelica
+Standard Library 3.2.1.
+
+You can also use it with Modelica Standard Library 3.2, provided you 
+change the uses annotation in the package.mo file of the Modelica package
+root directory to uses(Modelica(version = "3.2")).
+
+Previous versions of the Modelica Standard Library are no longer supported.
+
+For installation, check out the content of the Modelica directory 
+library from the Modelica SVN or GitHub repositories, then follow
+the tool- and OS- specific instructions below.
+
+---------------------------------------------------------------------------
 Dymola under Windows
 
-- Pick the 3.2 or 3.2.1 version depending on the version of
-  the Modelica Standard Library you want to use
-- Go to the Resources/Library directory
-- Rename ExternalMediaLib.vs20XX.lib to ExternalMediaLib.lib,
+- Go to the ExternalMedia 3.2.1/Resources/Library/win32 directory
+- Copy the ExternalMediaLib.Dymola-VS20XX.lib to ExternalMediaLib.lib,
   according to the version of VisualStudio you use with your
   Dymola installation
 
@@ -12,9 +26,8 @@ You can now load the library, by opening the package.mo file
 ------------------------
 OpenModelica Under Windows
 
-- Pick the 3.2.1 version (the 3.2 version is not 100% Modelica
-  compliant)
-- Open the package.mo file
+- Go to the ExternalMedia 3.2.1/Resources/Library/win32 directory
+- Copy the libExternalMediaLib.OMC-gcc.a to libExternalMediaLib.a,
 - Until this bug is fixed:
   https://trac.openmodelica.org/OpenModelica/ticket/2412
   you also need to manually copy 
@@ -22,6 +35,7 @@ OpenModelica Under Windows
   to the lib/omc/ directory of your OpenModelica installation directory, and
   ExternalMedia 3.2.1/Resources/Include/externalmedia.h
   to the include/omc/c directory of your OpenModelica installation directory
+- Open the package.mo file
 
 -----------------------
 If you are interested in using ExternalMedia with other Modelica
