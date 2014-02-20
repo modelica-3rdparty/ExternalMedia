@@ -20,6 +20,8 @@ BUIDING THE LIBRARY FOR OPENMODELICA USING GCC ON WINDOWS
   https://openmodelica.org/svn/OpenModelicaExternal/trunk/tools/windows/OMDev
   user: anonymous
   pass: none
+- Install OMDEV in the C:\OMDev path
+- set #include COOLPROP 0 in include.h (CoolProp is not fully supported yet)
 - Start C:\OMDev\tools\msys\msys.bat (from the MinGW)
 - $ mount d:/Path_to_your_ExternalMediaLibrary_working_copy /ExternalMediaLibrary
 - $ cd /ExternalMediaLibrary/Projects
