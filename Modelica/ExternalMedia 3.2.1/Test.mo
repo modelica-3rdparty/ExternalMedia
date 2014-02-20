@@ -893,7 +893,7 @@ package Test "Test models"
       end TestBasePropertiesTranscritical;
     end CO2StanMix;
 
-    package CO2RefProp "Test suite for the StanMix CO2 medium model"
+    package CO2RefProp "Test suite for the REFPROP CO2 medium model"
 
       model TestStatesSupercritical
         "Test case with state records, supercritical conditions"
@@ -984,6 +984,99 @@ package Test "Test models"
         h2 = 7.0e5;
       end TestBasePropertiesTranscritical;
     end CO2RefProp;
+    
+    package CO2CoolProp "Test suite for the CoolProp CO2 medium model"
+
+      model TestStatesSupercritical
+        "Test case with state records, supercritical conditions"
+        extends GenericModels.TestStates(redeclare package Medium =
+              ExternalMedia.Examples.CO2CoolProp);
+      equation
+        p1 = 8e6;
+        h1 = 1.0e5 + 6e5*time;
+        p2 = 8e6;
+        T2 = 280 + 50*time;
+      end TestStatesSupercritical;
+
+      model TestStatesTranscritical
+        "Test case with state records, transcritical conditions"
+        extends GenericModels.TestStates(redeclare package Medium =
+              ExternalMedia.Examples.CO2CoolProp);
+      equation
+        p1 = 1e6 + time*10e6;
+        h1 = 1.0e5;
+        p2 = 1e6 + time*10e6;
+        T2 = 330;
+      end TestStatesTranscritical;
+
+      model TestStatesSatSubcritical
+        "Test case state + sat records, subcritical conditions"
+        extends GenericModels.TestStatesSat(redeclare package Medium =
+              ExternalMedia.Examples.CO2CoolProp);
+      equation
+        p1 = 1e6;
+        h1 = 1.0e5 + 6e5*time;
+        p2 = 1e6;
+        T2 = 250 + 50*time;
+      end TestStatesSatSubcritical;
+
+      model TestBasePropertiesExplicit
+        "Test case using BaseProperties and explicit equations"
+        extends GenericModels.TestBasePropertiesExplicit(redeclare package
+            Medium = ExternalMedia.Examples.CO2CoolProp);
+
+      equation
+        p1 = 8e6;
+        h1 = 1.0e5 + 6e5*time;
+        p2 = 1e6;
+        h2 = 1.0e5 + 6e5*time;
+      end TestBasePropertiesExplicit;
+
+      model TestBasePropertiesImplicit
+        "Test case using BaseProperties and implicit equations"
+        extends GenericModels.TestBasePropertiesImplicit(redeclare package
+            Medium = ExternalMedia.Examples.CO2CoolProp, hstart=1e5);
+      equation
+        p1 = 8e6;
+        T1 = 280 + 50*time;
+        p2 = 1e6;
+        T2 = 280 + 50*time;
+      end TestBasePropertiesImplicit;
+
+      model TestBasePropertiesDynamic
+        "Test case using BaseProperties and dynamic equations"
+        extends GenericModels.TestBasePropertiesDynamic(
+          redeclare package Medium = ExternalMedia.Examples.CO2CoolProp,
+          Tstart=300,
+          hstart=4e5,
+          pstart=1e6,
+          Kv0=1.00801e-4,
+          V=0.1);
+      equation
+        // Inlet equations
+        win = 1;
+        hin = 5e5;
+
+        // Input variables
+        Kv = if time < 50 then Kv0 else Kv0*1.1;
+        Q = if time < 1 then 0 else 1e4;
+        annotation (experiment(StopTime=80, Tolerance=1e-007),
+            experimentSetupOutput(equdistant=false));
+      end TestBasePropertiesDynamic;
+
+      model TestBasePropertiesTranscritical
+        "Test case using BaseProperties and explicit equations"
+        extends GenericModels.TestBasePropertiesExplicit(redeclare package
+            Medium = ExternalMedia.Examples.CO2CoolProp);
+
+      equation
+        p1 = 1e6 + time*10e6;
+        h1 = 1.0e5;
+        p2 = 1e6 + time*10e6;
+        h2 = 7.0e5;
+      end TestBasePropertiesTranscritical;
+    end CO2CoolProp;
+    
   end FluidProp;
 
   package WrongMedium "Test cases with wrong medium models"
