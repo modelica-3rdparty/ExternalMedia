@@ -23,5 +23,7 @@ ranlib libExternalMediaLib.a
 
 echo "Copying files to External Media 3.2.1"
 cp libExternalMediaLib.a "../Modelica/ExternalMedia 3.2.1/Resources/Library/linux32/libExternalMediaLib.OMC-gcc.a"
+cp libExternalMediaLib.a "../Modelica/ExternalMedia 3.2.1/Resources/Library/linux32/libExternalMediaLib.a"
+rm libExternalMediaLib.a
 cp Sources/externalmedialib.h "../Modelica/ExternalMedia 3.2.1/Resources/Include"
 echo "All done"
