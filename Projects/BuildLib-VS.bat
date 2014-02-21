@@ -28,3 +28,5 @@ cl %C_OPTS% /c %INCLUDES% Sources/*.cpp
 REM ********** CoolProp sources *********
 cl %C_OPTS% /c %INCLUDES% %CP%/CoolProp/*.cpp
 
+lib *.obj /OUT:ExternalMediaLib.lib
+erase *.obj
