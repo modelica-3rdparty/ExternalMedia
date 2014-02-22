@@ -1079,6 +1079,27 @@ package Test "Test models for the different solvers"
         p2 = 1e6 + time*10e6;
         h2 = 7.0e5;
       end TestBasePropertiesTranscritical;
+
+      model TestStatesSupercritical2
+        "Test case with state records, supercritical conditions"
+        replaceable package Medium = ExternalMedia.Examples.CO2CoolProp (
+              substanceNames = {"CO2|debug=10"});
+
+        Medium.AbsolutePressure p1;
+        Medium.SpecificEnthalpy h1;
+        Medium.AbsolutePressure p2;
+        Medium.Temperature T2;
+
+        Medium.ThermodynamicState state1;
+
+      equation
+       // state1 = Medium.setState_ph(p1, h1);
+        state1 = Medium.setState_pT(p2, T2);
+        p1 = 8e6;
+        h1 = 1.0e5 + 6e5*time;
+        p2 = 8e6;
+        T2 = 280 + 50*time;
+      end TestStatesSupercritical2;
     end CO2;
   end CoolProp;
 
