@@ -7,14 +7,15 @@
 GCC_OPTS="-O2 -loleaut32 -DCOOLPROP=1"
 CP=../externals/coolprop/trunk
 CPinc=${CP}/CoolProp
-INCLUDES="-I${CPinc} -I${CP}/wrappers/Modelica/src"
+INCLUDES="-I${CPinc}"
+
+echo "Getting coolpropsolver.cpp from CoolProp"
+cp ${CP}/wrappers/Modelica/src/coolpropsolver.cpp Sources
+cp ${CP}/wrappers/Modelica/src/coolpropsolver.h Sources
 
 echo "Compiling sources"
-
-#  ****** compile all the sources from CoolProp for OpenModelica ************
-gcc ${GCC_OPTS} -c ${INCLUDES} ${CP}/wrappers/Modelica/src/coolpropsolver.cpp
+#  ****** compile all the OpenModelica files ************
 gcc ${GCC_OPTS} -c ${INCLUDES} Sources/*.cpp
-
 #  ********** CoolProp sources *********
 gcc ${GCC_OPTS} -c ${INCLUDES} ${CP}/CoolProp/*.cpp
 

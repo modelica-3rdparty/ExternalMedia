@@ -16,17 +16,20 @@ REM ~ /MD : Multi-threaded DLL runtime library
 REM ~ /Ehsc : Explicitly enable exception handling
 
 set C_OPTS=/Ox /c /MP3 /fp:fast /DCOOLPROP=1 /MD /EHsc
-set CP=../externals/coolprop/trunk
-set CPinc=%CP%/CoolProp
-set INCLUDES=-I%CPinc% -I%CP%/wrappers/Modelica/src
+set CP=..\externals\coolprop\trunk
+set CPinc=%CP%\CoolProp
+set INCLUDES=-I%CPinc%
+
+echo "Copying coolpropsolver.cpp/h to Sources"
+copy "%CP%\wrappers\Modelica\src\coolpropsolver.cpp" Sources
+copy "%CP%\wrappers\Modelica\src\coolpropsolver.h" Sources
 
 echo "Compiling sources"
-REM ****** compile all the sources from CoolProp for OpenModelica ************
-cl %C_OPTS% /c %INCLUDES% %CP%/wrappers/Modelica/src/coolpropsolver.cpp
-cl %C_OPTS% /c %INCLUDES% Sources/*.cpp
+REM ****** compile all the sources for OpenModelica ************
+cl %C_OPTS% /c %INCLUDES% Sources\*.cpp
 
 REM ********** CoolProp sources *********
-cl %C_OPTS% /c %INCLUDES% %CP%/CoolProp/*.cpp
+cl %C_OPTS% /c %INCLUDES% %CP%\CoolProp\*.cpp
 
 lib *.obj /OUT:ExternalMediaLib.lib
 erase *.obj
