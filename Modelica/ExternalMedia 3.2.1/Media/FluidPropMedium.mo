@@ -1,5 +1,5 @@
 within ExternalMedia.Media;
-package FluidPropMedium "FluidProp medium package"
+package FluidPropMedium "Medium package accessing the FluidProp solver"
 
   extends ExternalTwoPhaseMedium;
 
@@ -46,6 +46,6 @@ package FluidPropMedium "FluidProp medium package"
     input SaturationProperties sat "saturation property record";
     output SurfaceTension sigma "Surface tension sigma in the two phase region";
   algorithm
-    assert(false, "FluidProp interface does not provide surface tension");
+    assert(false, "The FluidProp solver does not provide surface tension");
   end surfaceTension;
 end FluidPropMedium;

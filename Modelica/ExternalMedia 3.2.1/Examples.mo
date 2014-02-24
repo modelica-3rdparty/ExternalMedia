@@ -40,9 +40,9 @@ package Examples "Examples of external medium models"
       ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.ph,
       SpecificEnthalpy(start = 2e5));
   end CO2RefProp;
-  
+
   package CO2CoolProp "CoolProp model of CO2"
-    extends ExternalMedia.Media.FluidPropMedium(
+    extends ExternalMedia.Media.CoolPropMedium(
       mediumName = "CarbonDioxide",
       libraryName = "CoolProp",
       substanceNames = {"CO2"},
