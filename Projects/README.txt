@@ -21,8 +21,7 @@ BUIDING THE LIBRARY FOR OPENMODELICA USING GCC ON WINDOWS
   user: anonymous
   pass: none
 - Install OMDEV in the C:\OMDev path
-- set #include COOLPROP 0 in include.h (CoolProp is not fully supported yet)
-- Start C:\OMDev\tools\msys\msys.bat (from the MinGW)
+- Start C:\OMDev\tools\msys\msys.bat (You should get a command window pop up that looks like the emulation of a unix prompt - because it is)
 - $ mount d:/Path_to_your_ExternalMediaLibrary_working_copy /ExternalMediaLibrary
 - $ cd /ExternalMediaLibrary/Projects
 - $ make-gcc
