@@ -1,7 +1,9 @@
-package ExternalMedia
+within ;
+package ExternalMedia 
+  extends Modelica.Icons.Package;
   import SI = Modelica.SIunits;
-  annotation(uses(Modelica(version = "3.2.1")), Documentation(info = "<html>
-
+  annotation(uses(Modelica(version="3.2.1")),
+  Documentation(info = "<html>
   <p>The ExternalMedia library provides a framework for interfacing
   external codes computing fluid properties to Modelica.Media-compatible
   component models. The two main requirements are: maximizing the efficiency

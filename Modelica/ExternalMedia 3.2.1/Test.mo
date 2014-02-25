@@ -1,12 +1,17 @@
 within ExternalMedia;
 package Test "Test models for the different solvers"
+  extends Modelica.Icons.ExamplesPackage;
+
   package TestMedium "Test cases for TestMedium"
+    extends Modelica.Icons.ExamplesPackage;
     model TestConstants "Test case using TestMedium with package constants"
+      extends Modelica.Icons.Example;
       replaceable package Medium = Media.TestMedium;
       Medium.Temperature Tc=Medium.fluidConstants[1].criticalTemperature;
     end TestConstants;
 
     model TestState "Test case using TestMedium with a single state record"
+      extends Modelica.Icons.Example;
       replaceable package Medium = Media.TestMedium;
       Medium.ThermodynamicState state;
     equation
@@ -15,6 +20,7 @@ package Test "Test models for the different solvers"
 
     model TestSat
       "Test case using TestMedium with a single saturation properties record"
+      extends Modelica.Icons.Example;
       replaceable package Medium = Media.TestMedium;
       Medium.SaturationProperties sat;
     equation
@@ -22,6 +28,7 @@ package Test "Test models for the different solvers"
     end TestSat;
 
     model TestStatesSat "Test case using TestMedium with state + sat records"
+      extends Modelica.Icons.Example;
       replaceable package Medium = Media.TestMedium;
       Medium.BaseProperties baseProperties1;
       Medium.BaseProperties baseProperties2;
@@ -63,6 +70,7 @@ package Test "Test models for the different solvers"
 
     model TestBasePropertiesExplicit
       "Test case using TestMedium and BaseProperties with explicit equations"
+      extends Modelica.Icons.Example;
       replaceable package Medium = Media.TestMedium;
       ExternalMedia.Test.TestMedium.GenericModels.CompleteBaseProperties
         medium1(redeclare package Medium = Medium)
@@ -80,6 +88,7 @@ package Test "Test models for the different solvers"
     model TestBasePropertiesImplicit
       "Test case using TestMedium and BaseProperties with implicit equations"
       replaceable package Medium = Media.TestMedium;
+      extends Modelica.Icons.Example;
       ExternalMedia.Test.TestMedium.GenericModels.CompleteBaseProperties
         medium1(redeclare package Medium = Medium, baseProperties(h(start=1e5)))
         "Constant pressure, varying enthalpy";
@@ -95,6 +104,7 @@ package Test "Test models for the different solvers"
 
     model TestBasePropertiesDynamic
       "Test case using TestMedium and dynamic equations"
+      extends Modelica.Icons.Example;
       replaceable package Medium = Media.TestMedium;
       parameter SI.Volume V=1 "Storage Volume";
       parameter Real p_atm=101325 "Atmospheric pressure";
@@ -143,7 +153,7 @@ package Test "Test models for the different solvers"
 
     package GenericModels
       "Contains generic models to use for thorough medium model testing"
-
+      extends Modelica.Icons.BasesPackage;
       model CompleteFluidConstants
         "Compute all available medium fluid constants"
         replaceable package Medium =
@@ -242,8 +252,10 @@ package Test "Test models for the different solvers"
   end TestMedium;
 
   package FluidProp "Test cases for FluidPropMedium"
+    extends Modelica.Icons.ExamplesPackage;
 
     partial package GenericModels "Generic models for FluidProp media tests"
+      extends Modelica.Icons.BasesPackage;
       model CompleteFluidConstants
         "Compute all available medium fluid constants"
         replaceable package Medium =
@@ -504,17 +516,20 @@ package Test "Test models for the different solvers"
     end GenericModels;
 
     package WaterIF95 "Test suite for the FluidProp-Refprop IF95 medium model"
-      model TestStates "Test case with state records"
-        extends GenericModels.TestStates(redeclare package Medium =
+      extends Modelica.Icons.ExamplesPackage;
+       model TestStates "Test case with state records"
+         extends Modelica.Icons.Example;
+         extends GenericModels.TestStates(redeclare package Medium =
               ExternalMedia.Examples.WaterIF95);
-      equation
+       equation
         p1 = 1e5;
         h1 = 1e5 + 2e5*time;
         p2 = 1e5;
         T2 = 300 + 50*time;
-      end TestStates;
+       end TestStates;
 
       model TestStatesSat "Test case with state + sat records"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestStatesSat(redeclare package Medium =
               ExternalMedia.Examples.WaterIF95);
       equation
@@ -526,6 +541,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesExplicit
         "Test case using BaseProperties and explicit equations"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesExplicit(redeclare package
             Medium = ExternalMedia.Examples.WaterIF95);
 
@@ -538,6 +554,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesImplicit
         "Test case using BaseProperties and implicit equations"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesImplicit(redeclare package
             Medium = ExternalMedia.Examples.WaterIF95, hstart=1e5);
       equation
@@ -549,6 +566,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesDynamic
         "Test case using BaseProperties and dynamic equations"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesDynamic(
           redeclare package Medium = ExternalMedia.Examples.WaterIF95,
           Tstart=300,
@@ -567,6 +585,7 @@ package Test "Test models for the different solvers"
 
       model CompareModelicaFluidProp_liquid
         "Comparison between Modelica IF97 and FluidProp IF95 models - liquid"
+        extends Modelica.Icons.Example;
         extends GenericModels.CompareModelicaFluidProp(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
           redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF95,
@@ -579,6 +598,7 @@ package Test "Test models for the different solvers"
 
       model CompareModelicaFluidProp_twophase
         "Comparison between Modelica IF97 and FluidProp IF95 models - liquid"
+        extends Modelica.Icons.Example;
         extends GenericModels.CompareModelicaFluidProp(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
           redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF95,
@@ -591,6 +611,7 @@ package Test "Test models for the different solvers"
 
       model CompareModelicaFluidProp_vapour
         "Comparison between Modelica IF97 and FluidProp IF95 models - liquid"
+        extends Modelica.Icons.Example;
         extends GenericModels.CompareModelicaFluidProp(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
           redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF95,
@@ -603,7 +624,9 @@ package Test "Test models for the different solvers"
     end WaterIF95;
 
     package WaterIF97 "Test suite for the FluidProp IF97 medium model"
+      extends Modelica.Icons.ExamplesPackage;
       model TestStates "Test case with state records"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestStates(redeclare package Medium =
               ExternalMedia.Examples.WaterIF95);
       equation
@@ -614,6 +637,7 @@ package Test "Test models for the different solvers"
       end TestStates;
 
       model TestStatesSat "Test case with state + sat records"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestStatesSat(redeclare package Medium =
               ExternalMedia.Examples.WaterIF95);
       equation
@@ -625,6 +649,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesExplicit
         "Test case using BaseProperties and explicit equations"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesExplicit(redeclare package
             Medium = ExternalMedia.Examples.WaterIF95);
 
@@ -637,6 +662,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesImplicit
         "Test case using BaseProperties and implicit equations"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesImplicit(redeclare package
             Medium = ExternalMedia.Examples.WaterIF95, hstart=1e5);
       equation
@@ -648,6 +674,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesDynamic
         "Test case using BaseProperties and dynamic equations"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesDynamic(
           redeclare package Medium = ExternalMedia.Examples.WaterIF95,
           Tstart=300,
@@ -666,6 +693,7 @@ package Test "Test models for the different solvers"
 
       model CompareModelicaFluidProp_liquid
         "Comparison between Modelica IF97 and FluidProp IF97 models - liquid"
+        extends Modelica.Icons.Example;
         extends GenericModels.CompareModelicaFluidProp(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
           redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF97,
@@ -678,6 +706,7 @@ package Test "Test models for the different solvers"
 
       model CompareModelicaFluidProp_twophase
         "Comparison between Modelica IF97 and FluidProp IF97 models - liquid"
+        extends Modelica.Icons.Example;
         extends GenericModels.CompareModelicaFluidProp(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
           redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF97,
@@ -690,6 +719,7 @@ package Test "Test models for the different solvers"
 
       model CompareModelicaFluidProp_vapour
         "Comparison between Modelica IF97 and FluidProp IF97 models - liquid"
+        extends Modelica.Icons.Example;
         extends GenericModels.CompareModelicaFluidProp(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
           redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF97,
@@ -702,7 +732,9 @@ package Test "Test models for the different solvers"
     end WaterIF97;
 
     package WaterTPSI "Test suite for the FluidProp TPSI water medium model"
+      extends Modelica.Icons.ExamplesPackage;
       model TestStates "Test case with state records"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestStates(redeclare package Medium =
               ExternalMedia.Examples.WaterTPSI);
       equation
@@ -713,6 +745,7 @@ package Test "Test models for the different solvers"
       end TestStates;
 
       model TestStatesSat "Test case with state + sat records"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestStatesSat(redeclare package Medium =
               ExternalMedia.Examples.WaterTPSI);
       equation
@@ -724,6 +757,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesExplicit
         "Test case using BaseProperties and explicit equations"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesExplicit(redeclare package
             Medium = ExternalMedia.Examples.WaterTPSI);
 
@@ -736,6 +770,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesImplicit
         "Test case using BaseProperties and implicit equations"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesImplicit(redeclare package
             Medium = ExternalMedia.Examples.WaterTPSI, hstart=1e5);
       equation
@@ -747,6 +782,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesDynamic
         "Test case using BaseProperties and dynamic equations"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesDynamic(
           redeclare package Medium = ExternalMedia.Examples.WaterTPSI,
           Tstart=300,
@@ -765,6 +801,7 @@ package Test "Test models for the different solvers"
 
       model CompareModelicaFluidProp_liquid
         "Comparison between Modelica IF97 and FluidProp TPSI models - liquid"
+        extends Modelica.Icons.Example;
         extends GenericModels.CompareModelicaFluidProp(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
           redeclare package FluidPropMedium = ExternalMedia.Examples.WaterTPSI,
@@ -777,6 +814,7 @@ package Test "Test models for the different solvers"
 
       model CompareModelicaFluidProp_twophase
         "Comparison between Modelica IF97 and FluidProp TPSI models - liquid"
+        extends Modelica.Icons.Example;
         extends GenericModels.CompareModelicaFluidProp(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
           redeclare package FluidPropMedium = ExternalMedia.Examples.WaterTPSI,
@@ -789,6 +827,7 @@ package Test "Test models for the different solvers"
 
       model CompareModelicaFluidProp_vapour
         "Comparison between Modelica IF97 and FluidProp TPSI models - liquid"
+        extends Modelica.Icons.Example;
         extends GenericModels.CompareModelicaFluidProp(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
           redeclare package FluidPropMedium = ExternalMedia.Examples.WaterTPSI,
@@ -802,9 +841,11 @@ package Test "Test models for the different solvers"
     end WaterTPSI;
 
     package CO2StanMix "Test suite for the StanMix CO2 medium model"
+      extends Modelica.Icons.ExamplesPackage;
 
       model TestStatesSupercritical
         "Test case with state records, supercritical conditions"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestStates(redeclare package Medium =
               ExternalMedia.Examples.CO2StanMix);
       equation
@@ -816,6 +857,7 @@ package Test "Test models for the different solvers"
 
       model TestStatesTranscritical
         "Test case with state records, transcritical conditions"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestStates(redeclare package Medium =
               ExternalMedia.Examples.CO2StanMix);
       equation
@@ -827,6 +869,7 @@ package Test "Test models for the different solvers"
 
       model TestStatesSatSubcritical
         "Test case with state + sat records, subcritical conditions"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestStatesSat(redeclare package Medium =
               ExternalMedia.Examples.CO2StanMix);
       equation
@@ -838,6 +881,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesExplicit
         "Test case using BaseProperties and explicit equations"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesExplicit(redeclare package
             Medium = ExternalMedia.Examples.CO2StanMix);
 
@@ -850,6 +894,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesImplicit
         "Test case using BaseProperties and implicit equations"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesImplicit(redeclare package
             Medium = ExternalMedia.Examples.CO2StanMix, hstart=0);
       equation
@@ -861,6 +906,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesDynamic
         "Test case using BaseProperties and dynamic equations"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesDynamic(
           redeclare package Medium = ExternalMedia.Examples.CO2StanMix,
           Tstart=300,
@@ -882,6 +928,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesTranscritical
         "Test case using BaseProperties and explicit equations"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesExplicit(redeclare package
             Medium = ExternalMedia.Examples.CO2StanMix);
 
@@ -894,9 +941,11 @@ package Test "Test models for the different solvers"
     end CO2StanMix;
 
     package CO2RefProp "Test suite for the REFPROP CO2 medium model"
+      extends Modelica.Icons.ExamplesPackage;
 
       model TestStatesSupercritical
         "Test case with state records, supercritical conditions"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestStates(redeclare package Medium =
               ExternalMedia.Examples.CO2RefProp);
       equation
@@ -908,6 +957,7 @@ package Test "Test models for the different solvers"
 
       model TestStatesTranscritical
         "Test case with state records, transcritical conditions"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestStates(redeclare package Medium =
               ExternalMedia.Examples.CO2RefProp);
       equation
@@ -919,6 +969,7 @@ package Test "Test models for the different solvers"
 
       model TestStatesSatSubcritical
         "Test case state + sat records, subcritical conditions"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestStatesSat(redeclare package Medium =
               ExternalMedia.Examples.CO2RefProp);
       equation
@@ -930,6 +981,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesExplicit
         "Test case using BaseProperties and explicit equations"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesExplicit(redeclare package
             Medium = ExternalMedia.Examples.CO2RefProp);
 
@@ -942,6 +994,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesImplicit
         "Test case using BaseProperties and implicit equations"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesImplicit(redeclare package
             Medium = ExternalMedia.Examples.CO2RefProp, hstart=1e5);
       equation
@@ -953,6 +1006,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesDynamic
         "Test case using BaseProperties and dynamic equations"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesDynamic(
           redeclare package Medium = ExternalMedia.Examples.CO2RefProp,
           Tstart=300,
@@ -974,6 +1028,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesTranscritical
         "Test case using BaseProperties and explicit equations"
+        extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesExplicit(redeclare package
             Medium = ExternalMedia.Examples.CO2RefProp);
 
@@ -985,14 +1040,15 @@ package Test "Test models for the different solvers"
       end TestBasePropertiesTranscritical;
     end CO2RefProp;
 
-
   end FluidProp;
 
   package CoolProp "Test cases for CoolProp"
+    extends Modelica.Icons.ExamplesPackage;
     package CO2 "Test suite for the CoolProp CO2 medium model"
-
+       extends Modelica.Icons.ExamplesPackage;
       model TestStatesSupercritical
         "Test case with state records, supercritical conditions"
+        extends Modelica.Icons.Example;
         extends FluidProp.GenericModels.TestStates(redeclare package Medium =
               ExternalMedia.Examples.CO2CoolProp);
       equation
@@ -1004,6 +1060,7 @@ package Test "Test models for the different solvers"
 
       model TestStatesTranscritical
         "Test case with state records, transcritical conditions"
+        extends Modelica.Icons.Example;
         extends FluidProp.GenericModels.TestStates(redeclare package Medium =
               ExternalMedia.Examples.CO2CoolProp);
       equation
@@ -1015,6 +1072,7 @@ package Test "Test models for the different solvers"
 
       model TestStatesSatSubcritical
         "Test case state + sat records, subcritical conditions"
+        extends Modelica.Icons.Example;
         extends FluidProp.GenericModels.TestStatesSat(redeclare package Medium
             = ExternalMedia.Examples.CO2CoolProp);
       equation
@@ -1026,6 +1084,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesExplicit
         "Test case using BaseProperties and explicit equations"
+        extends Modelica.Icons.Example;
         extends FluidProp.GenericModels.TestBasePropertiesExplicit(redeclare
             package Medium = ExternalMedia.Examples.CO2CoolProp);
 
@@ -1038,6 +1097,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesImplicit
         "Test case using BaseProperties and implicit equations"
+        extends Modelica.Icons.Example;
         extends FluidProp.GenericModels.TestBasePropertiesImplicit(redeclare
             package Medium = ExternalMedia.Examples.CO2CoolProp, hstart=1e5);
       equation
@@ -1049,6 +1109,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesDynamic
         "Test case using BaseProperties and dynamic equations"
+        extends Modelica.Icons.Example;
         extends FluidProp.GenericModels.TestBasePropertiesDynamic(
           redeclare package Medium = ExternalMedia.Examples.CO2CoolProp,
           Tstart=300,
@@ -1070,6 +1131,7 @@ package Test "Test models for the different solvers"
 
       model TestBasePropertiesTranscritical
         "Test case using BaseProperties and explicit equations"
+        extends Modelica.Icons.Example;
         extends FluidProp.GenericModels.TestBasePropertiesExplicit(redeclare
             package Medium = ExternalMedia.Examples.CO2CoolProp);
 
@@ -1080,8 +1142,9 @@ package Test "Test models for the different solvers"
         h2 = 7.0e5;
       end TestBasePropertiesTranscritical;
 
-      model TestStatesSupercritical2
-        "Test case with state records, supercritical conditions"
+      model TestStatesSupercriticalDebugInfo
+        "Test case with state records, supercritical conditions, debug info turned on"
+        extends Modelica.Icons.Example;
         replaceable package Medium = ExternalMedia.Examples.CO2CoolProp (
               substanceNames = {"CO2|debug=10"});
 
@@ -1099,14 +1162,16 @@ package Test "Test models for the different solvers"
         h1 = 1.0e5 + 6e5*time;
         p2 = 8e6;
         T2 = 280 + 50*time;
-      end TestStatesSupercritical2;
+      end TestStatesSupercriticalDebugInfo;
     end CO2;
   end CoolProp;
 
   package WrongMedium "Test cases with wrong medium models"
+    extends Modelica.Icons.ExamplesPackage;
 
     model TestWrongMedium
       "Test the error reporting messages for unsupported external media"
+      extends Modelica.Icons.Example;
       package Medium = Media.ExternalTwoPhaseMedium;
       Medium.BaseProperties medium;
     equation
@@ -1116,9 +1181,10 @@ package Test "Test models for the different solvers"
   end WrongMedium;
 
   package TestOMC "Test cases for OpenModelica implementation"
+    extends Modelica.Icons.ExamplesPackage;
     package TestHelium
       "Test for NIST Helium model using ExternalMedia and FluidProp"
-
+      extends Modelica.Icons.ExamplesPackage;
       package Helium "Helium model from NIST RefProp database"
         extends ExternalMedia.Media.ExternalTwoPhaseMedium(
           mediumName="Helium",
@@ -1155,6 +1221,7 @@ package Test "Test models for the different solvers"
       end Helium;
 
       model TestSupercriticalHelium
+        extends Modelica.Icons.Example;
         package Medium = Helium;
         Medium.ThermodynamicState state;
         Medium.Temperature T;
@@ -1170,6 +1237,7 @@ package Test "Test models for the different solvers"
       end TestSupercriticalHelium;
 
       model TestSaturatedHelium
+        extends Modelica.Icons.Example;
         package Medium = Helium;
         Medium.SaturationProperties sat;
         Medium.Temperature T;
@@ -1185,6 +1253,7 @@ package Test "Test models for the different solvers"
       end TestSaturatedHelium;
 
       model TypicalHeliumProperties
+        extends Modelica.Icons.Example;
         package Medium = Helium;
         Medium.ThermodynamicState state;
         Medium.Temperature T;
@@ -1204,7 +1273,7 @@ package Test "Test models for the different solvers"
 
     package TestHeliumHardCodedProperties
       "Test for NIST Helium model using ExternalMedia and FluidProp, hard-coded fluid properties package constants"
-
+      extends Modelica.Icons.ExamplesPackage;
       package Helium "Helium model from NIST RefProp database"
         extends ExternalMedia.Media.ExternalTwoPhaseMedium(
           mediumName="Helium",
@@ -1256,6 +1325,7 @@ package Test "Test models for the different solvers"
       end Helium;
 
       model TestSupercriticalHelium
+        extends Modelica.Icons.Example;
         package Medium = Helium;
         Medium.ThermodynamicState state;
         Medium.Temperature T;
@@ -1271,6 +1341,7 @@ package Test "Test models for the different solvers"
       end TestSupercriticalHelium;
 
       model TestSaturatedHelium
+        extends Modelica.Icons.Example;
         package Medium = Helium;
         Medium.SaturationProperties sat;
         Medium.Temperature T;
@@ -1286,6 +1357,7 @@ package Test "Test models for the different solvers"
       end TestSaturatedHelium;
 
       model TypicalHeliumProperties
+        extends Modelica.Icons.Example;
         package Medium = Helium;
         Medium.ThermodynamicState state;
         Medium.Temperature T;
