@@ -19,7 +19,7 @@ package UserGuide "User's Guide"
 <p>Copyright &copy; 2006-2013 Politecnico di Milano, TU Braunschweig, Politecnico di Torino</p>
 <p>Main contributors: Francesco Casella, Christoph Richter, Roberto Bonifetto</p>
 <p><i>This Modelica package is <u>free</u> software and the use is completely at <u>your own risk</u>; it can be redistributed and/or modified under the terms of the Modelica License 2. For license conditions (including the disclaimer of warranty) see <a href=\"http://www.modelica.org/licenses/ModelicaLicense2\">http://www.modelica.org/licenses/ModelicaLicense2</a>.</i> </p>
-</html>"),   DocumentationClass=true);
+</html>"));
   end Overview;
 
   package Usage "Using the ExternalMedia Library"
@@ -27,7 +27,7 @@ package UserGuide "User's Guide"
     class FluidProp "FluidProp medium models"
       extends Modelica.Icons.Information;
       annotation (Documentation(info="<html>
-<p>Pure (or pseudo-pure) medium models from all the libraries in FluidProp can be accessed by extending the <a href=\"modelica://ExternalMedia.Media.FluidPropMedium\">ExternalMedia.Media.FluidPropMedium</a> package.</p>
+<p>Pure (or pseudo-pure) medium models from all the libraries in FluidProp can be accessed by extending the <a href=\"modelica://ExternalMedia.Media.FluidPropMedium\">ExternalMedia.Media.FluidPropMedium</a> package. You need to download and install FluidProp on your computer for these models to work: ExternalMedia accesses them through a COM interface.</p>
 <p>Set libraryName to &QUOT;FluidProp.RefProp&QUOT;, &QUOT;FluidProp.StanMix&QUOT;, &QUOT;FluidProp.TPSI&QUOT;, &QUOT;FluidProp.IF97&QUOT;, or &QUOT;FluidProp.GasMix&QUOT; (only single-component), depending on the specific library you need to use. Set substanceNames to a single-element string array containing the name of the specific medium, as specified by the FluidProp documentation. Set mediumName to a string that describes the medium (this only used for documentation purposes but has no effect in selecting the medium model).</p>
 <p>See <a href=\"modelica://ExternalMedia.Examples\">ExternalMedia.Examples</a> for examples.</p>
 <p>Please note that the medium models IF97 and GasMix are already available natively in Modelica.Media as <a href=\"modelica://Modelica.Media.Water.StandardWater\">Water.StandardWater</a> and <a href=\"modelica://Modelica.Media.IdealGases.MixtureGases\">IdealGases.MixtureGases</a>, and are included here for comparison purposes. It is recommended to use the Modelica.Media models instead, since they are much faster to compute. </p>
@@ -52,4 +52,5 @@ package UserGuide "User's Guide"
 <p><a href=\"mailto:francesco.casella@polimi.it\">francesco.casella@polimi.it</a></p>
 </html>"));
   end Contact;
+  annotation(DocumentationClass = true);
 end UserGuide;
