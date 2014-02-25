@@ -1,7 +1,7 @@
 within ExternalMedia.Media;
 package CoolPropMedium "Medium package accessing the CoolProp solver"
 
-  extends ExternalTwoPhaseMedium;
+  extends BaseClasses.ExternalTwoPhaseMedium;
 
   redeclare replaceable function setBubbleState
     "Set the thermodynamic state on the bubble line"

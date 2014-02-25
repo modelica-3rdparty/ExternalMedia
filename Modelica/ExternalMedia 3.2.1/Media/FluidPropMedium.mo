@@ -1,7 +1,7 @@
 within ExternalMedia.Media;
 package FluidPropMedium "Medium package accessing the FluidProp solver"
 
-  extends ExternalTwoPhaseMedium;
+  extends BaseClasses.ExternalTwoPhaseMedium;
 
   redeclare replaceable function setBubbleState
     "Set the thermodynamic state on the bubble line"
