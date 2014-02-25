@@ -4,16 +4,14 @@ The `ExternalMedia` library provides a framework for interfacing external codes 
 
 ## Library description
 
-The two main requirements are: maximizing the efficiency of the code and minimizing the amount of extra code required to use your own external code within the framework.
+The ExternalMedia library provides a framework for interfacing external codes computing fluid properties to Modelica.Media-compatible component models.
 
-The ExternalMedia library provides a framework for interfacing external codes computing fluid properties to Modelica.Media-compatible component models. The two main requirements are: maximizing the efficiency of the code and minimizing the amount of extra code required to use your own external code within the framework.
+The current version of the library supports pure and pseudo-pure fluids models, possibly two-phase, compliant with the Modelica.Media.Interfaces.PartialTwoPhaseMedium interface.
 
-The current version of the library supports pure fluids models, possibly two-phase, compliant with the Modelica.Media.Interfaces.PartialTwoPhaseMedium interface.
+The library includes a pre-compiled interface to the FluidProp software, http://www.fluidprop.com, and built-in access to CoolProp, http://coolprop.org.
 
-The releases of the library available on the Modelica website include a pre-compiled interface to the FluidProp tool, http://www.fluidprop.com. FluidProp features many built-in fluid models, and can optionally be used to access the whole NIST RefProp database, thus giving easy access to a wide range of fluid models with state-of-the-art accuracy. Make sure you download the Modelica package corresponding to the version of Microsoft Visual Studio that you use to compile the Modelica models, in order to avoid linker errors.
-
-Before using the library, download and install the latest version of FluidProp from http://www.fluidprop.com. If you want to use the RefProp fluid models, you need to get the full version of FluidProp, which has an extra license fee.
-
+As of February 2014, the library has been tested with Dymola and OpenModelica under Windows. Support for more tools and operating systems might
+be added in the future
 
 ## Current release
 
