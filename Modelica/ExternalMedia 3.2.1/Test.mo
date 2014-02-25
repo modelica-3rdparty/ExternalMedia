@@ -1172,7 +1172,7 @@ package Test "Test models for the different solvers"
     model TestWrongMedium
       "Test the error reporting messages for unsupported external media"
       extends Modelica.Icons.Example;
-      package Medium = Media.ExternalTwoPhaseMedium;
+      package Medium = Media.BaseClasses.ExternalTwoPhaseMedium;
       Medium.BaseProperties medium;
     equation
       medium.p = 1e5;
@@ -1186,7 +1186,7 @@ package Test "Test models for the different solvers"
       "Test for NIST Helium model using ExternalMedia and FluidProp"
       extends Modelica.Icons.ExamplesPackage;
       package Helium "Helium model from NIST RefProp database"
-        extends ExternalMedia.Media.ExternalTwoPhaseMedium(
+        extends ExternalMedia.Media.BaseClasses.ExternalTwoPhaseMedium(
           mediumName="Helium",
           libraryName="FluidProp.RefProp",
           substanceNames={"He"},
@@ -1275,7 +1275,7 @@ package Test "Test models for the different solvers"
       "Test for NIST Helium model using ExternalMedia and FluidProp, hard-coded fluid properties package constants"
       extends Modelica.Icons.ExamplesPackage;
       package Helium "Helium model from NIST RefProp database"
-        extends ExternalMedia.Media.ExternalTwoPhaseMedium(
+        extends ExternalMedia.Media.BaseClasses.ExternalTwoPhaseMedium(
           mediumName="Helium",
           libraryName="FluidProp.RefProp",
           substanceNames={"He"},
