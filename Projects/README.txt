@@ -1,18 +1,27 @@
 This directory contains the C/C++ source files in the Sources directory
-and the project files for different versions of Microsoft Visual Studio.
+and script files to build the library using different Modelica tools,
+operating systems, and C/C++ compilers.
 
 BUILDING THE LIBRARY FOR DYMOLA USING MICROSOFT VISUAL STUDIO ON WINDOWS
 
-Open the .sln file for the version of Visual Studio you use with Dymola, change
-the source code if necessary, and build the static library.
+Run the BuildLib-Dymola-VS20XX.bat script corresponding to the version
+of Visual Studio that Dymola uses to compile the simulation executable.
+This can be done from the Windows console (cmd.exe), or just by
+double-clicking on the .bat file from the file explorer.
 
-Once built, run the appropriate make-vs-20xx.bat file. This will copy the 
-externalmedialib.h file in the Resources/Include directory, and the
-compiled library in the Resources/Library directory, both as ExternalMediaLib.lib,
-so the Modelica packages can be used right away with the newly built library,
-and as ExternalMediaLib.vs20xx.lib, to be used by third parties. Note that
-the ExternalMediaLib.lib file is not stored in the SVN repository, only on your
-local working copy.
+The scripts build the static library, copies it twice to the Resources/Library
+directory of the Modelica library, once with a version- and tool-specific name,
+for archival on the SVN server, and once with the appropriate name ExternalMediaLib.lib,
+which is loaded by the Modelica tool. Note that this latter file is not stored
+as such on the SVN repo, because there are different versions of it depending
+the compiler used. Finally, it copies the externalmedia.h header file into the 
+Resources/Include directory. In this way, the library can be used right away
+by loading the main package.mo file immediately after running the compile script.
+
+For library maintenance, it is suggested that the Visual Studio binary libraries
+are updated on the SVN server when major changes or bugfixes are applied to the
+source code, so that other users can benefit without the need of recompiling them
+
 
 BUIDING THE LIBRARY FOR OPENMODELICA USING GCC ON WINDOWS
 
@@ -21,16 +30,16 @@ BUIDING THE LIBRARY FOR OPENMODELICA USING GCC ON WINDOWS
   user: anonymous
   pass: none
 - Install OMDEV in the C:\OMDev path
-- Start C:\OMDev\tools\msys\msys.bat (You should get a command window pop up that looks like the emulation of a unix prompt - because it is)
+- Start C:\OMDev\tools\msys\msys.bat (You should get a command window pop up
+  that looks like the emulation of a unix prompt - because it is)
 - $ mount d:/Path_to_your_ExternalMediaLibrary_working_copy /ExternalMediaLibrary
 - $ cd /ExternalMediaLibrary/Projects
-- $ make-gcc
+- $ BuildLib-OMC-gcc-windows.sh
  
 This will build the static gcc library and copy it and the externalmedia.h
 header files in the Resource directories of the Modelica packages, so it can
 be used right away by just loading the Modelica package in OMC
 
 Due to a bug in OMC (https://trac.openmodelica.org/OpenModelica/ticket/2565#comment:7)
-it is currently necessary to also copy the include and library files in the OMC installation
-directories. To accomplish this, run make-gcc-workaround instead of make-gcc
-
+the script also copies the include and library files in the OMC installation
+directories. 
