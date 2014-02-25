@@ -13,6 +13,9 @@ For installation, check out the content of the Modelica directory
 library from the Modelica SVN or GitHub repositories, then follow
 the tool- and OS- specific instructions below.
 
+If you want to experiment with the code and recompile the static libraries,
+check the Projects/CompilationHowTo.txt file.
+
 ---------------------------------------------------------------------------
 Dymola under Windows
 
@@ -28,16 +31,11 @@ OpenModelica Under Windows
 
 - Go to the ExternalMedia 3.2.1/Resources/Library/win32 directory
 - Copy the libExternalMediaLib.OMC-gcc.a to libExternalMediaLib.a,
-- Until this bug is fixed:
-  https://trac.openmodelica.org/OpenModelica/ticket/2412
-  you also need to manually copy 
-  ExternalMedia 3.2.1/Resources/Library/libExternalMediaLib.a
-  to the lib/omc/ directory of your OpenModelica installation directory, and
-  ExternalMedia 3.2.1/Resources/Include/externalmedia.h
-  to the include/omc/c directory of your OpenModelica installation directory
-- Open the package.mo file
+
+You can now load the library, by opening the package.mo file
 
 -----------------------
 If you are interested in using ExternalMedia with other Modelica
-tools and/or other operating systems, please contact the main
+tools and/or other operating systems and/or other external codes
+for fluid property computation, please contact the main
 developer francesco.casella@polimi.it
