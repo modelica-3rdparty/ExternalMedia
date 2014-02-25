@@ -17,6 +17,8 @@ be added in the future
 
 Currently there is no offical release available. However you can download the [latest development version](../../archive/master.zip) at any time.
 
+See the Installation.txt file for installation instructions.
+
 ## License
 
 This Modelica package is free software and the use is completely at your own risk;
