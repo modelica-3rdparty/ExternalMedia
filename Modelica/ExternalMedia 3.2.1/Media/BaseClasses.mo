@@ -8,17 +8,14 @@ package BaseClasses "Base classes for external media packages"
       smoothModel = false,
       fluidConstants = {externalFluidConstants});
     import ExternalMedia.Common.InputChoice;
-
     // mediumName is declared here instead of in the extends clause
     // to break a circular dependency in redeclaration that OpenModelica
     // cannot yet handle
     constant String mediumName="unusablePartialMedium" "Name of the medium";
-
     constant String libraryName = "UnusableExternalMedium"
       "Name of the external fluid property computation library";
     final constant String substanceName = substanceNames[1]
       "Only one substance can be specified";
-
     constant FluidConstants externalFluidConstants = FluidConstants(
       iupacName=  "unknown",
       casRegistryNumber=  "unknown",
@@ -34,10 +31,8 @@ package BaseClasses "Base classes for external media packages"
       meltingPoint=  280,
       normalBoilingPoint=  380.0,
       dipoleMoment=  2.0);
-
     constant InputChoice inputChoice=InputChoice.ph
       "Default choice of input variables for property computations";
-
     redeclare replaceable record ThermodynamicState
       // Fields in ASCII lexicographical order to work in Dymola
       Temperature T "temperature";
@@ -318,7 +313,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" d_der=  TwoPhaseMedium_density_ph_der_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end density_ph_der;
 
@@ -470,7 +464,6 @@ package BaseClasses "Base classes for external media packages"
     end specificEnthalpy_ps;
 
     redeclare function extends prandtlNumber
-
       /*  // If special definition in "C"
   external "C" T=  TwoPhaseMedium_prandtlNumber_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
@@ -487,7 +480,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" T=  TwoPhaseMedium_temperature_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end temperature;
 
@@ -500,7 +492,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" a=  TwoPhaseMedium_velocityOfSound_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end velocityOfSound;
 
@@ -513,7 +504,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" beta=  TwoPhaseMedium_isobaricExpansionCoefficient_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end isobaricExpansionCoefficient;
 
@@ -526,7 +516,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" cp=  TwoPhaseMedium_specificHeatCapacityCp_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end specificHeatCapacityCp;
 
@@ -539,7 +528,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" cv=  TwoPhaseMedium_specificHeatCapacityCv_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end specificHeatCapacityCv;
 
@@ -551,7 +539,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" d=  TwoPhaseMedium_density_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end density;
 
@@ -564,7 +551,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" ddhp=  TwoPhaseMedium_density_derh_p_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end density_derh_p;
 
@@ -577,7 +563,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" ddph=  TwoPhaseMedium_density_derp_h_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end density_derp_h;
 
@@ -600,7 +585,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" eta=  TwoPhaseMedium_dynamicViscosity_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end dynamicViscosity;
 
@@ -613,7 +597,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" h=  TwoPhaseMedium_specificEnthalpy_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end specificEnthalpy;
 
@@ -626,7 +609,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" kappa=  TwoPhaseMedium_isothermalCompressibility_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end isothermalCompressibility;
 
@@ -639,7 +621,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" lambda=  TwoPhaseMedium_thermalConductivity_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end thermalConductivity;
 
@@ -652,7 +633,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" p=  TwoPhaseMedium_pressure_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end pressure;
 
@@ -665,7 +645,6 @@ package BaseClasses "Base classes for external media packages"
     external "C" s=  TwoPhaseMedium_specificEntropy_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end specificEntropy;
 
@@ -739,7 +718,6 @@ package BaseClasses "Base classes for external media packages"
     end saturationTemperature;
 
     redeclare function extends saturationTemperature_sat
-
       annotation(Inline = true);
     end saturationTemperature_sat;
 
@@ -761,7 +739,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" dTp=  TwoPhaseMedium_saturationTemperature_derp_sat_C_impl(sat.psat, sat.Tsat, sat.uniqueID, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end saturationTemperature_derp_sat;
 
@@ -774,7 +751,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" ddldp=  TwoPhaseMedium_dBubbleDensity_dPressure_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end dBubbleDensity_dPressure;
 
@@ -787,7 +763,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" ddvdp=  TwoPhaseMedium_dDewDensity_dPressure_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end dDewDensity_dPressure;
 
@@ -800,7 +775,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" dhldp=  TwoPhaseMedium_dBubbleEnthalpy_dPressure_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end dBubbleEnthalpy_dPressure;
 
@@ -813,7 +787,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" dhvdp=  TwoPhaseMedium_dDewEnthalpy_dPressure_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end dDewEnthalpy_dPressure;
 
@@ -826,7 +799,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" dl=  TwoPhaseMedium_bubbleDensity_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end bubbleDensity;
 
@@ -839,7 +811,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" dv=  TwoPhaseMedium_dewDensity_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end dewDensity;
 
@@ -852,7 +823,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" hl=  TwoPhaseMedium_bubbleEnthalpy_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end bubbleEnthalpy;
 
@@ -865,7 +835,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" hv=  TwoPhaseMedium_dewEnthalpy_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end dewEnthalpy;
 
@@ -895,7 +864,6 @@ package BaseClasses "Base classes for external media packages"
     end saturationPressure_der;
 
     redeclare function extends saturationPressure_sat
-
       annotation(Inline = true);
     end saturationPressure_sat;
 
@@ -908,7 +876,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" sigma=  TwoPhaseMedium_surfaceTension_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end surfaceTension;
 
@@ -921,7 +888,6 @@ package BaseClasses "Base classes for external media packages"
   external "C" sl=  TwoPhaseMedium_bubbleEntropy_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end bubbleEntropy;
 
@@ -934,9 +900,7 @@ package BaseClasses "Base classes for external media packages"
   external "C" sv=  TwoPhaseMedium_dewEntropy_C_impl(sat, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
 */
-
       annotation(Inline = true);
     end dewEntropy;
-
   end ExternalTwoPhaseMedium;
 end BaseClasses;

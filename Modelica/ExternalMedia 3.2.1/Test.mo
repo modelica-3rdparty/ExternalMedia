@@ -1050,7 +1050,7 @@ package Test "Test models for the different solvers"
         "Test case with state records, supercritical conditions"
         extends Modelica.Icons.Example;
         extends FluidProp.GenericModels.TestStates(redeclare package Medium =
-              ExternalMedia.Examples.CO2CoolProp);
+              ExternalMedia.Examples.CO2CoolProp(substanceNames={"CO2|calc_transport=0|enable_TTSE=0"}));
       equation
         p1 = 8e6;
         h1 = 1.0e5 + 6e5*time;

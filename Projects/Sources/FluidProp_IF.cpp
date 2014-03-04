@@ -27,6 +27,8 @@
 
 #include "FluidProp_IF.h"
 
+#if defined(__ISWINDOWS__)
+
 
 // {F30D147D-1F7C-4092-B481-ADE326A2ECD5}
 //
@@ -985,6 +987,8 @@ void TFluidProp::SetRefState( double T_ref, double P_ref, string* ErrorMsg)
    delete[] lpszErrorMsg;
    SysFreeString(BSTR_Error);
 }
+
+#endif
 
 //==================================================================================== EOF ===//
 

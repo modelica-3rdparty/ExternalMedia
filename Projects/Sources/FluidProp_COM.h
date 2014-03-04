@@ -21,6 +21,8 @@
 #ifndef FluidProp_COM_h
 #define FluidProp_COM_h
 
+#if defined(__ISWINDOWS__)
+
 #ifndef   comutil_h
 #include <comutil.h>
 #endif
@@ -173,6 +175,7 @@ interface IFluidProp_COM : public IDispatch
 
 };
 
+#endif
 
 #endif
 

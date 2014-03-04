@@ -75,6 +75,27 @@
  *                 End of user option selection
  *            Do not change anything below this line
  ********************************************************************/
+/*! Detect the platform in order to avoid the DLL commands from 
+ * making g++ choke. Code taken from CoolProp...
+ */
+#if defined(_WIN32) || defined(__WIN32__) || defined(_WIN64) || defined(__WIN64__)
+#  define __ISWINDOWS__
+#elif __APPLE__
+#  define __ISAPPLE__
+#elif __linux
+#  define __ISLINUX__
+#endif
+
+/*! 
+ *  Portable definitions of the EXPORT macro, 
+ */
+#ifndef EXPORT
+#  if defined(__ISWINDOWS__)
+#    define EXPORT __declspec(dllexport)
+#  else
+#    define EXPORT
+#  endif
+#endif
 
 // General purpose includes
 #include <map>

@@ -31,7 +31,7 @@ BaseSolver *SolverMap::getSolver(const string &mediumName, const string &library
 	// Test solver for compiler setup debugging
 	if (libraryName.compare("TestMedium") == 0)
 	  _solvers[solverKeyString] = new TestSolver(mediumName, libraryName, substanceName);
-#if (FLUIDPROP == 1)
+#if (FLUIDPROP == 1 && defined(__ISWINDOWS__))
 	// FluidProp solver
 	else if (libraryName.find("FluidProp") == 0)
 	  _solvers[solverKeyString] = new FluidPropSolver(mediumName, libraryName, substanceName);

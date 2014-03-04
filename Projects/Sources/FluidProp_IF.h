@@ -24,6 +24,8 @@
 #ifndef FluidProp_IF_h
 #define FluidProp_IF_h
 
+#if defined(__ISWINDOWS__)
+
 #pragma comment(lib, "comsuppw.lib")
 
 #include <string>
@@ -116,7 +118,7 @@ class TFluidProp
       IFluidProp_COM* FluidProp_COM;   		// Pointer to FluidProp interface
 };
 
-
+#endif
 #endif
 
 

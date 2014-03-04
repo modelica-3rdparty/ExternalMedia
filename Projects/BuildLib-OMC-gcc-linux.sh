@@ -5,7 +5,7 @@
 # The C++ files for CoolProp will still be compiled
 
 GCC_OPTS="-O2 -loleaut32 -DCOOLPROP=1"
-CP=../externals/coolprop/trunk
+CP=../externals/coolprop/branches/ExternalMedia
 CPinc=${CP}/CoolProp
 INCLUDES="-I${CPinc}"
 
