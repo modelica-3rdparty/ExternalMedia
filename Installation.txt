@@ -1,4 +1,4 @@
-INSTALLATION INSTRUCTIONS FOR THE ExternalMedia LIBRARY
+# INSTALLATION INSTRUCTIONS FOR THE ExternalMedia LIBRARY
 
 The provided version of ExternalMedia is compatible with Modelica
 Standard Library 3.2.1.
@@ -16,8 +16,8 @@ the tool- and OS- specific instructions below.
 If you want to experiment with the code and recompile the static libraries,
 check the Projects/CompilationHowTo.txt file.
 
----------------------------------------------------------------------------
-Dymola under Windows
+
+## Dymola under Windows
 
 - Go to the ExternalMedia 3.2.1/Resources/Library/win32 directory
 - Copy the ExternalMediaLib.Dymola-VS20XX.lib to ExternalMediaLib.lib,
@@ -26,16 +26,27 @@ Dymola under Windows
 
 You can now load the library, by opening the package.mo file
 
-------------------------
-OpenModelica Under Windows
+## OpenModelica under Windows
 
 - Go to the ExternalMedia 3.2.1/Resources/Library/win32 directory
 - Copy the libExternalMediaLib.OMC-gcc.a to libExternalMediaLib.a,
 
 You can now load the library, by opening the package.mo file
 
------------------------
+
+## For Linux users
+
+You have to compile your own library file to use ExternalMedia on Linux.
+It has been tested with Dymola, but should also work with OpenModelica
+since they use the same compiler under Linux. 
+
+Please follow the developer instructions in `Projects/CompilationHowTo.txt`
+
+
+## For developers and other platforms
+
 If you are interested in using ExternalMedia with other Modelica
 tools and/or other operating systems and/or other external codes
 for fluid property computation, please contact the main
 developer francesco.casella@polimi.it
+

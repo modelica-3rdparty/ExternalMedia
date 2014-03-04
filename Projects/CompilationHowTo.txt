@@ -1,8 +1,11 @@
+# For developers and Linux users
+
 This directory contains the C/C++ source files in the Sources directory
 and script files to build the library using different Modelica tools,
 operating systems, and C/C++ compilers.
 
-BUILDING THE LIBRARY FOR DYMOLA USING MICROSOFT VISUAL STUDIO ON WINDOWS
+
+## BUILDING THE LIBRARY FOR DYMOLA USING MICROSOFT VISUAL STUDIO ON WINDOWS
 
 Run the BuildLib-Dymola-VS20XX.bat script corresponding to the version
 of Visual Studio that Dymola uses to compile the simulation executable.
@@ -23,7 +26,7 @@ are updated on the SVN server when major changes or bugfixes are applied to the
 source code, so that other users can benefit without the need of recompiling them
 
 
-BUIDING THE LIBRARY FOR OPENMODELICA USING GCC ON WINDOWS
+## BUIDING THE LIBRARY FOR OPENMODELICA USING GCC ON WINDOWS
 
 - Get the OMDEV environment from the SVN repository:
   https://openmodelica.org/svn/OpenModelicaExternal/trunk/tools/windows/OMDev
@@ -40,3 +43,15 @@ This will build the static gcc library and copy it and the externalmedia.h
 header files in the Resource directories of the Modelica packages, so it can
 be used right away by just loading the Modelica package in OMC
 
+
+## For Dymola users on Linux systems
+
+This procedure has not been tested with OpenModelica. Please report any errors
+in order to help us to improve the Linux support of ExternalMedia. 
+
+Please compile the source code using the `makefile-linux` from the console:
+- Go to the `Projects`directory: `cd Projects`
+- Compile the files: `make -f makefile-linux header library`
+- Install the files: `make -f makefile-linux install`
+
+You can now load the library, by opening the package.mo file
