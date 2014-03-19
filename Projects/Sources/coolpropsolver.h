@@ -1,41 +1,39 @@
-#ifndef BASESOLVER_H_
-#define BASESOLVER_H_
+#ifndef COOLPROPSOLVER_H_
+#define COOLPROPSOLVER_H_
 
-#include "include.h"
-#include "fluidconstants.h"
-#include "externalmedialib.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "basesolver.h"
 
-struct FluidConstants;
+#if (COOLPROP == 1)
 
-//! Base solver class.
+//! CoolProp solver class
 /*!
-  This is the base class for all external solver objects
-  (e.g. TestSolver, FluidPropSolver). A solver object
-  encapsulates the interface to external fluid property
-  computation routines
+  This class defines a solver that calls out to the open-source CoolProp property database.
 
-  Francesco Casella, Christoph Richter, Roberto Bonifetto
-  2006-2012
-  Copyright Politecnico di Milano, TU Braunschweig, Politecnico
-  di Torino
+  libraryName = "CoolProp";
+
+  Ian Bell (ian.h.bell@gmail.com)
+  2012-2013
+  University of Liege, Liege, Belgium
 */
-class BaseSolver{
+class CoolPropSolver : public BaseSolver{
+protected:
+	class CoolPropStateClassSI *state;
+	bool enable_TTSE, calc_transport, extend_twophase;
+	int debug_level;
+	double twophase_derivsmoothing_xend;
+	double rho_smoothing_xend;
+	long fluidType;
+
+	virtual void  preStateChange(void);
+	virtual void postStateChange(ExternalThermodynamicState *const properties);
+
 public:
-	BaseSolver(const string &mediumName, const string &libraryName, const string &substanceName);
-	virtual ~BaseSolver();
-
-	double molarMass() const;
-	double criticalTemperature() const;
-	double criticalPressure() const;
-	double criticalMolarVolume() const;
-	double criticalDensity() const;
-	double criticalEnthalpy() const;
-	double criticalEntropy() const;
-
+	CoolPropSolver(const std::string &mediumName, const std::string &libraryName, const std::string &substanceName);
+	~CoolPropSolver(){};
 	virtual void setFluidConstants();
+
+	virtual void setSat_p(double &p, ExternalSaturationProperties *const properties);
+	virtual void setSat_T(double &T, ExternalSaturationProperties *const properties);
 
 	virtual void setState_ph(double &p, double &h, int &phase, ExternalThermodynamicState *const properties);
 	virtual void setState_pT(double &p, double &T, ExternalThermodynamicState *const properties);
@@ -62,14 +60,6 @@ public:
 	virtual double d_der(ExternalThermodynamicState *const properties);
 	virtual double isentropicEnthalpy(double &p, ExternalThermodynamicState *const properties);
 
-	virtual void setSat_p(double &p, ExternalSaturationProperties *const properties);
-	virtual void setSat_T(double &T, ExternalSaturationProperties *const properties);
-
-	virtual void setBubbleState(ExternalSaturationProperties *const properties, int phase,
-		                    ExternalThermodynamicState *const bubbleProperties);
-   	virtual void setDewState(ExternalSaturationProperties *const properties, int phase,
-	                         ExternalThermodynamicState *const bubbleProperties);
-
 	virtual double dTp(ExternalSaturationProperties *const properties);
 	virtual double ddldp(ExternalSaturationProperties *const properties);
 	virtual double ddvdp(ExternalSaturationProperties *const properties);
@@ -83,21 +73,11 @@ public:
 	virtual double sl(ExternalSaturationProperties *const properties);
 	virtual double sv(ExternalSaturationProperties *const properties);
 
-	virtual bool computeDerivatives(ExternalThermodynamicState *const properties);
-
 	virtual double psat(ExternalSaturationProperties *const properties);
 	virtual double Tsat(ExternalSaturationProperties *const properties);
 
-	//! Medium name
-	string mediumName;
-	//! Library name
-	string libraryName;
-	//! Substance name
-	string substanceName;
-
-protected:
-	//! Fluid constants
-	FluidConstants _fluidConstants; 
 };
 
-#endif // BASESOLVER_H_
+#endif // COOLPROP == 1
+
+#endif // COOLPROPSOLVER_H_

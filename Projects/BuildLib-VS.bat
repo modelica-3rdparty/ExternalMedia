@@ -20,9 +20,9 @@ set CP=..\externals\coolprop\branches\ExternalMedia
 set CPinc=%CP%\CoolProp
 set INCLUDES=-I%CPinc%
 
-echo "Copying coolpropsolver.cpp/h to Sources"
-copy "%CP%\wrappers\Modelica\src\coolpropsolver.cpp" Sources
-copy "%CP%\wrappers\Modelica\src\coolpropsolver.h" Sources
+REM echo "Copying coolpropsolver.cpp/h to Sources"
+REM copy "%CP%\wrappers\Modelica\src\coolpropsolver.cpp" Sources
+REM copy "%CP%\wrappers\Modelica\src\coolpropsolver.h" Sources
 
 echo "Compiling sources"
 REM ****** compile all the sources for OpenModelica ************

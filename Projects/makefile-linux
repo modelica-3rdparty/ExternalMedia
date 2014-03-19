@@ -198,8 +198,8 @@ $(BINDIR)/$(LIBRARY).a: $(COOLOBJ_FILES) $(EXMEOBJ_FILES) #$(SRCDIR)/$(LIBFILE).
 
 .PHONY         : coolprop-svn
 coolprop-svn   : 
-	$(SVN) up $(COOLPROPDIR)
-	$(CP) $(foreach i,$(COOLSOL_FILES),$(COOLPROPDIR)/../wrappers/Modelica/src/$(i)) $(SRCDIR)
+	#$(SVN) up $(COOLPROPDIR)/..
+	#$(CP) $(foreach i,$(COOLSOL_FILES),$(COOLPROPDIR)/../wrappers/Modelica/src/$(i)) $(SRCDIR)
 
 .PHONY         : coolprop-obj
 coolprop-obj   : coolprop-svn $(COOLOBJ_FILES)
@@ -210,12 +210,12 @@ coolprop-obj   : coolprop-svn $(COOLOBJ_FILES)
 ###########################################################
 .PHONY: clean
 clean:
-	$(RM) **.o **.obj **.mod
-	($(CD) $(SRCDIR) && $(RM) $(COOLSOL_FILES))
+	$(RM) $(BINDIR)/*solver.o  $(BINDIR)/*solver.obj $(BINDIR)/*xternal*
+	#($(CD) $(SRCDIR) && $(RM) $(COOLSOL_FILES))
 
 .PHONY: very-clean
 very-clean: clean
-	$(RM) $(BINDIR)/* **.so **.a **.dylib **.lib
+	$(RM) $(BINDIR)/* **.so **.a **.dylib **.lib **.o **.obj **.mod
 
 $(BINDIR)/%.o : %.cpp
 	$(CPPC) $(CPPFLAGS) -o $(BINDIR)/$*.o $(CPPINCLUDES) -c $<

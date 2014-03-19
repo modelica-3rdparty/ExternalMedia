@@ -1,6 +1,8 @@
 within ExternalMedia.Media;
 package CoolPropMedium "Medium package accessing the CoolProp solver"
-  extends BaseClasses.ExternalTwoPhaseMedium(final libraryName="CoolProp");
+  extends BaseClasses.ExternalTwoPhaseMedium(
+    final libraryName = "CoolProp",
+    final substanceName = ExternalMedia.Common.CheckCoolPropOptions(substanceNames[1],debug=false));
 
   redeclare replaceable function isentropicEnthalpy
     input AbsolutePressure p_downstream "downstream pressure";

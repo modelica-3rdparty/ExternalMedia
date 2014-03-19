@@ -9,9 +9,9 @@ CP=../externals/coolprop/branches/ExternalMedia
 CPinc=${CP}/CoolProp
 INCLUDES="-I${CPinc}"
 
-echo "Getting coolpropsolver.cpp from CoolProp"
-cp ${CP}/wrappers/Modelica/src/coolpropsolver.cpp Sources
-cp ${CP}/wrappers/Modelica/src/coolpropsolver.h Sources
+# echo "Getting coolpropsolver.cpp from CoolProp"
+# cp ${CP}/wrappers/Modelica/src/coolpropsolver.cpp Sources
+# cp ${CP}/wrappers/Modelica/src/coolpropsolver.h Sources
 
 echo "Compiling sources"
 #  ****** compile all the OpenModelica files ************

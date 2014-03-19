@@ -34,6 +34,6 @@ algorithm
     end if;
   end if;
   if noEvent(debug) then
-    assert(false, result+" --- "+substanceName, level=  AssertionLevel.warning);
+    Modelica.Utilities.Streams.print(result+" --- "+substanceName);
   end if;
 end XtoName;

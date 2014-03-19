@@ -47,6 +47,15 @@ package Examples "Examples of external medium models"
       mediumName = "CarbonDioxide",
       substanceNames = {"CO2"},
       ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.ph,
-      SpecificEnthalpy(start = 2e5));
+      SpecificEnthalpy(start=2e5));
   end CO2CoolProp;
+
+  package WaterCoolProp "CoolProp model of water"
+    extends ExternalMedia.Media.CoolPropMedium(
+      mediumName = "Water",
+      substanceNames = {"water"},
+      ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.ph,
+      AbsolutePressure(start=10e5),
+      SpecificEnthalpy(start=2e5));
+  end WaterCoolProp;
 end Examples;
