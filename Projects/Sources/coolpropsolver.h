@@ -7,33 +7,49 @@
 
 //! CoolProp solver class
 /*!
-  This class defines a solver that calls out to the open-source CoolProp property database.
+  This class defines a solver that calls out to the open-source CoolProp
+  property database and is partly inspired by the fluidpropsolver that
+  was part of the first ExternalMedia release.
+
 
   libraryName = "CoolProp";
 
   Ian Bell (ian.h.bell@gmail.com)
-  2012-2013
-  University of Liege, Liege, Belgium
+  University of Liege,
+  Liege, Belgium
+
+  Jorrit Wronski (jowr@mek.dtu.dk)
+  Technical University of Denmark,
+  Kgs. Lyngby, Denmark
+
+  2012-2014
 */
 class CoolPropSolver : public BaseSolver{
+
 protected:
 	class CoolPropStateClassSI *state;
-	bool enable_TTSE, calc_transport, extend_twophase;
+	bool enable_TTSE, enable_BICUBIC, calc_transport, extend_twophase;
 	int debug_level;
 	double twophase_derivsmoothing_xend;
 	double rho_smoothing_xend;
 	long fluidType;
+	double _p_eps   ; // relative tolerance margin for subcritical pressure conditions
+	double _delta_h ; // delta_h for one-phase/two-phase discrimination
+	ExternalSaturationProperties _satPropsClose2Crit; // saturation properties close to  critical conditions
 
 	virtual void  preStateChange(void);
 	virtual void postStateChange(ExternalThermodynamicState *const properties);
 
 public:
 	CoolPropSolver(const std::string &mediumName, const std::string &libraryName, const std::string &substanceName);
-	~CoolPropSolver(){};
+	~CoolPropSolver();
 	virtual void setFluidConstants();
 
 	virtual void setSat_p(double &p, ExternalSaturationProperties *const properties);
 	virtual void setSat_T(double &T, ExternalSaturationProperties *const properties);
+
+	virtual void setBubbleState(ExternalSaturationProperties *const properties, int phase, ExternalThermodynamicState *const bubbleProperties);
+	virtual void setDewState   (ExternalSaturationProperties *const properties, int phase, ExternalThermodynamicState *const bubbleProperties);
 
 	virtual void setState_ph(double &p, double &h, int &phase, ExternalThermodynamicState *const properties);
 	virtual void setState_pT(double &p, double &T, ExternalThermodynamicState *const properties);
