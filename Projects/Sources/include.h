@@ -48,11 +48,9 @@
 //! CoolProp solver
 /*!
   Set this preprocessor variable to 1 to include the interface to the
-  CoolProp solver developed and maintained by Ian Bell et al. and the University of Liege
+  CoolProp solver developed and maintained by Ian Bell et al.
 */
-#ifndef COOLPROP
-    #define COOLPROP 0
-#endif
+#define COOLPROP 1
 
 // Selection of build type for this project
 //! Build project into a DLL
@@ -87,13 +85,15 @@
 #endif
 
 /*! 
- *  Portable definitions of the EXPORT macro, 
+Portable definitions of the EXPORT macro
  */
 #ifndef EXPORT
-#  if defined(__ISWINDOWS__)
-#    define EXPORT __declspec(dllexport)
-#  else
+#  if defined(__ISLINUX__)
 #    define EXPORT
+#  elif defined(__ISAPPLE__)
+#    define EXPORT
+#  else
+#    define EXPORT __declspec(dllexport)
 #  endif
 #endif
 

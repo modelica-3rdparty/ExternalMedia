@@ -19,10 +19,10 @@
 
 // Constants for input choices (see ExternalMedia.Common.InputChoices)
 #define CHOICE_dT 1
-#define CHOICE_ph 2
-#define CHOICE_ps 3
-#define CHOICE_pT 4
-#define CHOICE_hs 5
+#define CHOICE_hs 2
+#define CHOICE_ph 3
+#define CHOICE_ps 4
+#define CHOICE_pT 5
 
 /*! Detect the platform in order to avoid the DLL commands from 
  * making g++ choke. Code taken from CoolProp...
@@ -36,13 +36,15 @@
 #endif
 
 /*! 
-Portable definitions of the EXPORT macro, 
+Portable definitions of the EXPORT macro
  */
 #ifndef EXPORT
-#  if defined(__ISWINDOWS__)
-#    define EXPORT __declspec(dllexport)
-#  else
+#  if defined(__ISLINUX__)
 #    define EXPORT
+#  elif defined(__ISAPPLE__)
+#    define EXPORT
+#  else
+#    define EXPORT __declspec(dllexport)
 #  endif
 #endif
 
@@ -142,6 +144,7 @@ extern "C" {
 	EXPORT void TwoPhaseMedium_setState_pT_C_impl(double p, double T, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
 	EXPORT void TwoPhaseMedium_setState_dT_C_impl(double d, double T, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
 	EXPORT void TwoPhaseMedium_setState_ps_C_impl(double p, double s, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXPORT void TwoPhaseMedium_setState_hs_C_impl(double h, double s, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
 
 	EXPORT double TwoPhaseMedium_prandtlNumber_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
 	EXPORT double TwoPhaseMedium_temperature_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);

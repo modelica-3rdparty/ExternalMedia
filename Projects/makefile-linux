@@ -51,6 +51,8 @@ SVN   := svn
 # Emulate Gnu make utilities
 lc    = $(subst A,a,$(subst B,b,$(subst C,c,$(subst D,d,$(subst E,e,$(subst F,f,$(subst G,g,$(subst H,h,$(subst I,i,$(subst J,j,$(subst K,k,$(subst L,l,$(subst M,m,$(subst N,n,$(subst O,o,$(subst P,p,$(subst Q,q,$(subst R,r,$(subst S,s,$(subst T,t,$(subst U,u,$(subst V,v,$(subst W,w,$(subst X,x,$(subst Y,y,$(subst Z,z,$1))))))))))))))))))))))))))
 
+USERNAME   :=$(shell whoami)
+
 # used for the output
 MAJORVERSION     :=3
 MINORVERSION     :=2
@@ -62,7 +64,7 @@ THETEST          :=ExternalMediaLibTest
 COOLPROPDIR      :=../externals/coolprop/branches/ExternalMedia/CoolProp
 
 LIBS       =
-OPTFLAGS   =-O2 -funroll-loops -ffast-math -loleaut32 -DCOOLPROP=1 # optimisation, remove for debugging
+OPTFLAGS   =-O2 -funroll-loops -ffast-math #-loleaut32 #-DCOOLPROP=1 # optimisation, remove for debugging
 
 
 ###########################################################
@@ -110,9 +112,13 @@ install_dynamic : header library
 	$(CP) $(BINDIR)/$(LIBRARY).so $(LIBINST)/$(LIBRARY).so.$(MAJORVERSION).$(MINORVERSION)
 	$(CH) $(HEADINST)/$(HEADERFILE)$(HEADEREXTENSION)
 	$(CH) $(LIBINST)/$(LIBRARY).so.$(MAJORVERSION).$(MINORVERSION)
+ifeq ($(USERNAME),root)
 	$(LD) -l $(LIBINST)/$(LIBRARY).so.$(MAJORVERSION).$(MINORVERSION)
+endif
 	$(LN) $(LIBINST)/$(LIBRARY).so.$(MAJORVERSION) $(LIBINST)/$(LIBRARY).so
+ifeq ($(USERNAME),root)
 	$(LD) 
+endif 
 
 .PHONY     : install_static
 install_static : header library
@@ -121,7 +127,9 @@ install_static : header library
 	$(CP) $(BINDIR)/$(LIBRARY).a  $(LIBINST)/$(LIBRARY).a 
 	$(CH) $(HEADINST)/$(HEADERFILE)$(HEADEREXTENSION)
 	$(CH) $(LIBINST)/$(LIBRARY).a 
+ifeq ($(USERNAME),root)
 	$(LD) 
+endif 
 
 .PHONY     : uninstall
 uninstall  : 
@@ -141,8 +149,16 @@ all        : header library
 EXMECPP_FILES   = $(wildcard $(SRCDIR)/*.cpp)
 EXMEOBJ_FILES   = $(addprefix $(BINDIR)/,$(notdir $(EXMECPP_FILES:.cpp=.o)))
 # Files do not change here, := assignments work. 
+USE_FLUIDPROP  := $(shell grep FLUIDPROP $(SRCDIR)/include.h | cut -d " " -f3)
+USE_COOLPROP   := $(shell grep COOLPROP $(SRCDIR)/include.h | cut -d " " -f3)
+
+ifeq ($(USE_COOLPROP),1)
 COOLCPP_FILES  := $(wildcard $(COOLPROPDIR)/*.cpp)
 COOLOBJ_FILES  := $(addprefix $(BINDIR)/,$(notdir $(COOLCPP_FILES:.cpp=.o)))
+else
+COOLCPP_FILES  :=  
+COOLOBJ_FILES  :=  
+endif
 COOLSOL_FILES  := coolpropsolver.cpp coolpropsolver.h
 
 # Define search path for prerequisite files and g++ include 
@@ -218,12 +234,15 @@ $(BINDIR)/%.o : %.cpp
 .PHONY : print-flags
 print-flags:
 	@printf "\nBuild settings:\n\
+	  USERNAME     :$(USERNAME)\n\
 	  MAJORVERSION :$(MAJORVERSION)\n\
 	  MINORVERSION :$(MINORVERSION)\n\
 	  LIBRARY      :$(LIBRARY)\n\
 	  LIBFLAGS     :$(LIBFLAGS)\n\
 	  OPTFLAGS     :$(OPTFLAGS)\n\
 	  CPPFLAGS     :$(CPPFLAGS)\n\
-	  CPPINCLUDES  :$(CPPINCLUDES)\n\n\
+	  CPPINCLUDES  :$(CPPINCLUDES)\n\
+	  USE_FLUIDPROP:$(USE_FLUIDPROP)\n\
+	  USE_COOLPROP :$(USE_COOLPROP)\n\n\
 	  EXMEOBJ_FILES:\n$(EXMEOBJ_FILES)\n\
 	  COOLOBJ_FILES:\n$(COOLOBJ_FILES)\n\n"

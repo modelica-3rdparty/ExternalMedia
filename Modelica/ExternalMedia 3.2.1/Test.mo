@@ -1,7 +1,6 @@
 within ExternalMedia;
 package Test "Test models for the different solvers"
   extends Modelica.Icons.ExamplesPackage;
-
   package TestMedium "Test cases for TestMedium"
     extends Modelica.Icons.ExamplesPackage;
     model TestConstants "Test case using TestMedium with package constants"
@@ -36,10 +35,8 @@ package Test "Test models for the different solvers"
       Medium.ThermodynamicState state2;
       Medium.SaturationProperties sat1;
       Medium.SaturationProperties sat2;
-
       Medium.Temperature Ts;
       Medium.AbsolutePressure ps;
-
       GenericModels.CompleteThermodynamicState completeState1(redeclare package
           Medium = Medium, state=state1);
       GenericModels.CompleteThermodynamicState completeState2(redeclare package
@@ -57,13 +54,10 @@ package Test "Test models for the different solvers"
       baseProperties1.h = 1e5;
       baseProperties2.p = 1e5;
       baseProperties2.h = 1e5 + 2e5*time;
-
       state1 = Medium.setState_ph(1e5 + 1e5*time, 1e5);
       state2 = Medium.setState_pT(1e5, 300 + 50*time);
-
       sat1 = Medium.setSat_p(1e5 + 1e5*time);
       sat2 = Medium.setSat_T(300 + 50*time);
-
       Ts = Medium.saturationTemperature(1e5 + 1e5*time);
       ps = Medium.saturationPressure(300 + 50*time);
     end TestStatesSat;
@@ -125,25 +119,20 @@ package Test "Test models for the different solvers"
       U = medium.u*M;
       der(M) = win - wout;
       der(U) = win*hin - wout*hout + Q;
-
       // Inlet pump equations
       medium.p - p_atm = 2e5 - (1e5/100^2)*win^2;
       hin = 1e5;
-
       // Outlet valve equation
       wout = Kv*sqrt(medium.d*(medium.p - p_atm));
       hout = medium.h;
-
       // Input variables
       Kv = if time < 50 then Kv0 else Kv0*1.1;
       Q = if time < 1 then 0 else 1e7;
     initial equation
       // Initial conditions
-
       // Fixed initial states
       // medium.p = 2e5;
       // medium.h = 1e5;
-
       // Steady state equations
       der(medium.p) = 0;
       der(medium.h) = 0;
@@ -158,7 +147,6 @@ package Test "Test models for the different solvers"
         "Compute all available medium fluid constants"
         replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-
         // Fluid constants
         Medium.Temperature Tc=Medium.fluidConstants[1].criticalTemperature;
         Medium.AbsolutePressure pc=Medium.fluidConstants[1].criticalPressure;
@@ -170,10 +158,8 @@ package Test "Test models for the different solvers"
         "Compute all available two-phase medium properties from a ThermodynamicState model"
         replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-
         // ThermodynamicState record
         input Medium.ThermodynamicState state;
-
         // Medium properties
         Medium.AbsolutePressure p=Medium.pressure(state);
         Medium.SpecificEnthalpy h=Medium.specificEnthalpy(state);
@@ -195,10 +181,8 @@ package Test "Test models for the different solvers"
         "Compute all available saturation properties from a SaturationProperties record"
         replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-
         // SaturationProperties record
         input Medium.SaturationProperties sat;
-
         // Saturation properties
         Medium.Temperature Ts=Medium.saturationTemperature_sat(sat);
         Medium.Density dl=Medium.bubbleDensity(sat);
@@ -216,10 +200,8 @@ package Test "Test models for the different solvers"
         "Compute all available properties for dewpoint and bubble point states corresponding to a sat record"
         replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-
         // SaturationProperties record
         input Medium.SaturationProperties sat;
-
         CompleteThermodynamicState dewStateOnePhase(state=Medium.setDewState(
               sat, 1), redeclare package Medium = Medium);
         CompleteThermodynamicState dewStateTwoPhase(state=Medium.setDewState(
@@ -234,10 +216,8 @@ package Test "Test models for the different solvers"
         "Compute all available two-phase medium properties from a BaseProperties model"
         replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-
         // BaseProperties object
         Medium.BaseProperties baseProperties;
-
         // All the complete properties
         CompleteThermodynamicState completeState(redeclare package Medium =
               Medium, state=baseProperties.state);
@@ -253,14 +233,12 @@ package Test "Test models for the different solvers"
 
   package FluidProp "Test cases for FluidPropMedium"
     extends Modelica.Icons.ExamplesPackage;
-
     partial package GenericModels "Generic models for FluidProp media tests"
       extends Modelica.Icons.BasesPackage;
       model CompleteFluidConstants
         "Compute all available medium fluid constants"
         replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-
         // Fluid constants
         Medium.Temperature Tc=Medium.fluidConstants[1].criticalTemperature;
         Medium.AbsolutePressure pc=Medium.fluidConstants[1].criticalPressure;
@@ -272,10 +250,8 @@ package Test "Test models for the different solvers"
         "Compute all available two-phase medium properties from a ThermodynamicState model"
         replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-
         // ThermodynamicState record
         input Medium.ThermodynamicState state;
-
         // Medium properties
         Medium.AbsolutePressure p=Medium.pressure(state);
         Medium.SpecificEnthalpy h=Medium.specificEnthalpy(state);
@@ -298,10 +274,8 @@ package Test "Test models for the different solvers"
         "Compute all available saturation properties from a SaturationProperties record"
         replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-
         // SaturationProperties record
         input Medium.SaturationProperties sat;
-
         // Saturation properties
         Medium.Temperature Ts=Medium.saturationTemperature_sat(sat);
         Medium.Density dl=Medium.bubbleDensity(sat);
@@ -319,10 +293,8 @@ package Test "Test models for the different solvers"
         "Compute all available properties for dewpoint and bubble point states corresponding to a sat record"
         replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-
         // SaturationProperties record
         input Medium.SaturationProperties sat;
-
         CompleteThermodynamicState dewStateOnePhase(state=Medium.setDewState(
               sat, 1), redeclare package Medium = Medium);
         CompleteThermodynamicState dewStateTwoPhase(state=Medium.setDewState(
@@ -337,10 +309,8 @@ package Test "Test models for the different solvers"
         "Compute all available two-phase medium properties from a BaseProperties model"
         replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-
         // BaseProperties object
         Medium.BaseProperties baseProperties;
-
         // All the complete properties
         CompleteThermodynamicState completeState(redeclare package Medium =
               Medium, state=baseProperties.state);
@@ -353,15 +323,12 @@ package Test "Test models for the different solvers"
       partial model TestStates "Test case with state"
         replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-
         Medium.AbsolutePressure p1;
         Medium.SpecificEnthalpy h1;
         Medium.AbsolutePressure p2;
         Medium.Temperature T2;
-
         Medium.ThermodynamicState state1;
         Medium.ThermodynamicState state2;
-
         CompleteThermodynamicState completeState1(redeclare package Medium =
               Medium, state=state1);
         CompleteThermodynamicState completeState2(redeclare package Medium =
@@ -374,20 +341,16 @@ package Test "Test models for the different solvers"
       partial model TestStatesSat "Test case with state + sat records"
         replaceable package Medium =
             Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-
         Medium.AbsolutePressure p1;
         Medium.SpecificEnthalpy h1;
         Medium.AbsolutePressure p2;
         Medium.Temperature T2;
-
         Medium.ThermodynamicState state1;
         Medium.ThermodynamicState state2;
         Medium.SaturationProperties sat1;
         Medium.SaturationProperties sat2;
-
         Medium.Temperature Ts;
         Medium.AbsolutePressure ps;
-
         CompleteThermodynamicState completeState1(redeclare package Medium =
               Medium, state=state1);
         CompleteThermodynamicState completeState2(redeclare package Medium =
@@ -405,7 +368,6 @@ package Test "Test models for the different solvers"
         state2 = Medium.setState_pT(p2, T2);
         sat1 = Medium.setSat_p(p1);
         sat2 = Medium.setSat_T(T2);
-
         Ts = Medium.saturationTemperature(p1);
         ps = Medium.saturationPressure(T2);
       end TestStatesSat;
@@ -480,11 +442,9 @@ package Test "Test models for the different solvers"
         U = medium.u*M;
         der(M) = win - wout;
         der(U) = win*hin - wout*hout + Q;
-
         // Outlet valve equation
         wout = Kv*sqrt(medium.d*(medium.p - p_atm));
         hout = medium.h;
-
       initial equation
         // Steady state equations
         der(medium.p) = 0;
@@ -544,7 +504,6 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesExplicit(redeclare package
             Medium = ExternalMedia.Examples.WaterIF95);
-
       equation
         p1 = 1e5 + 1e5*time;
         h1 = 1e5;
@@ -575,7 +534,6 @@ package Test "Test models for the different solvers"
         // Inlet pump equations
         medium.p - p_atm = 2e5 - (1e5/100^2)*win^2;
         hin = 1e5;
-
         // Input variables
         Kv = if time < 50 then Kv0 else Kv0*1.1;
         Q = if time < 1 then 0 else 1e7;
@@ -593,7 +551,6 @@ package Test "Test models for the different solvers"
           pmax=1e5,
           hmin=1e5,
           hmax=4e5);
-
       end CompareModelicaFluidProp_liquid;
 
       model CompareModelicaFluidProp_twophase
@@ -606,7 +563,6 @@ package Test "Test models for the different solvers"
           pmax=60e5,
           hmin=1000e3,
           hmax=2000e3);
-
       end CompareModelicaFluidProp_twophase;
 
       model CompareModelicaFluidProp_vapour
@@ -619,7 +575,6 @@ package Test "Test models for the different solvers"
           pmax=60e5,
           hmin=2800e3,
           hmax=3200e3);
-
       end CompareModelicaFluidProp_vapour;
     end WaterIF95;
 
@@ -652,7 +607,6 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesExplicit(redeclare package
             Medium = ExternalMedia.Examples.WaterIF95);
-
       equation
         p1 = 1e5 + 1e5*time;
         h1 = 1e5;
@@ -683,7 +637,6 @@ package Test "Test models for the different solvers"
         // Inlet pump equations
         medium.p - p_atm = 2e5 - (1e5/100^2)*win^2;
         hin = 1e5;
-
         // Input variables
         Kv = if time < 50 then Kv0 else Kv0*1.1;
         Q = if time < 1 then 0 else 1e7;
@@ -701,7 +654,6 @@ package Test "Test models for the different solvers"
           pmax=1e5,
           hmin=1e5,
           hmax=4e5);
-
       end CompareModelicaFluidProp_liquid;
 
       model CompareModelicaFluidProp_twophase
@@ -714,7 +666,6 @@ package Test "Test models for the different solvers"
           pmax=60e5,
           hmin=1000e3,
           hmax=2000e3);
-
       end CompareModelicaFluidProp_twophase;
 
       model CompareModelicaFluidProp_vapour
@@ -727,7 +678,6 @@ package Test "Test models for the different solvers"
           pmax=60e5,
           hmin=2800e3,
           hmax=3200e3);
-
       end CompareModelicaFluidProp_vapour;
     end WaterIF97;
 
@@ -760,7 +710,6 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesExplicit(redeclare package
             Medium = ExternalMedia.Examples.WaterTPSI);
-
       equation
         p1 = 1e5 + 1e5*time;
         h1 = 1e5;
@@ -791,7 +740,6 @@ package Test "Test models for the different solvers"
         // Inlet pump equations
         medium.p - p_atm = 2e5 - (1e5/100^2)*win^2;
         hin = 1e5;
-
         // Input variables
         Kv = if time < 50 then Kv0 else Kv0*1.1;
         Q = if time < 1 then 0 else 1e7;
@@ -809,7 +757,6 @@ package Test "Test models for the different solvers"
           pmax=1e5,
           hmin=1e5,
           hmax=4e5);
-
       end CompareModelicaFluidProp_liquid;
 
       model CompareModelicaFluidProp_twophase
@@ -822,7 +769,6 @@ package Test "Test models for the different solvers"
           pmax=60e5,
           hmin=1000e3,
           hmax=2000e3);
-
       end CompareModelicaFluidProp_twophase;
 
       model CompareModelicaFluidProp_vapour
@@ -835,14 +781,11 @@ package Test "Test models for the different solvers"
           pmax=60e5,
           hmin=2800e3,
           hmax=3200e3);
-
       end CompareModelicaFluidProp_vapour;
-
     end WaterTPSI;
 
     package CO2StanMix "Test suite for the StanMix CO2 medium model"
       extends Modelica.Icons.ExamplesPackage;
-
       model TestStatesSupercritical
         "Test case with state records, supercritical conditions"
         extends Modelica.Icons.Example;
@@ -884,7 +827,6 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesExplicit(redeclare package
             Medium = ExternalMedia.Examples.CO2StanMix);
-
       equation
         p1 = 8e6;
         h1 = -4.2e5 + 6e5*time;
@@ -918,7 +860,6 @@ package Test "Test models for the different solvers"
         // Inlet equations
         win = 1;
         hin = 0;
-
         // Input variables
         Kv = if time < 50 then Kv0 else Kv0*1.1;
         Q = if time < 1 then 0 else 1e4;
@@ -931,7 +872,6 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesExplicit(redeclare package
             Medium = ExternalMedia.Examples.CO2StanMix);
-
       equation
         p1 = 1e6 + time*10e6;
         h1 = -4.2e5 + 0*time;
@@ -942,7 +882,6 @@ package Test "Test models for the different solvers"
 
     package CO2RefProp "Test suite for the REFPROP CO2 medium model"
       extends Modelica.Icons.ExamplesPackage;
-
       model TestStatesSupercritical
         "Test case with state records, supercritical conditions"
         extends Modelica.Icons.Example;
@@ -984,7 +923,6 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesExplicit(redeclare package
             Medium = ExternalMedia.Examples.CO2RefProp);
-
       equation
         p1 = 8e6;
         h1 = 1.0e5 + 6e5*time;
@@ -1018,7 +956,6 @@ package Test "Test models for the different solvers"
         // Inlet equations
         win = 1;
         hin = 5e5;
-
         // Input variables
         Kv = if time < 50 then Kv0 else Kv0*1.1;
         Q = if time < 1 then 0 else 1e4;
@@ -1031,7 +968,6 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesExplicit(redeclare package
             Medium = ExternalMedia.Examples.CO2RefProp);
-
       equation
         p1 = 1e6 + time*10e6;
         h1 = 1.0e5;
@@ -1039,7 +975,6 @@ package Test "Test models for the different solvers"
         h2 = 7.0e5;
       end TestBasePropertiesTranscritical;
     end CO2RefProp;
-
   end FluidProp;
 
   package CoolProp "Test cases for CoolProp"
@@ -1087,7 +1022,6 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends FluidProp.GenericModels.TestBasePropertiesExplicit(redeclare
             package Medium = ExternalMedia.Examples.CO2CoolProp);
-
       equation
         p1 = 8e6;
         h1 = 1.0e5 + 6e5*time;
@@ -1121,7 +1055,6 @@ package Test "Test models for the different solvers"
         // Inlet equations
         win = 1;
         hin = 5e5;
-
         // Input variables
         Kv = if time < 50 then Kv0 else Kv0*1.1;
         Q = if time < 1 then 0 else 1e4;
@@ -1129,12 +1062,32 @@ package Test "Test models for the different solvers"
             experimentSetupOutput(equdistant=false));
       end TestBasePropertiesDynamic;
 
+      model TestBasePropertiesDynamicLong
+        "Test case using BaseProperties and dynamic equations"
+        extends Modelica.Icons.Example;
+        extends FluidProp.GenericModels.TestBasePropertiesDynamic(
+          redeclare package Medium = ExternalMedia.Examples.CO2CoolProp,
+          Tstart=300,
+          hstart=4e5,
+          pstart=1e6,
+          Kv0=1.00801e-4,
+          V=0.1);
+      equation
+        // Inlet equations
+        win = 1;
+        hin = 5e5+sin(time)*1e2;
+        // Input variables
+        Kv = if time < 50 then Kv0 else Kv0*1.1;
+        Q = if time < 1 then 0 else 1e4;
+        annotation (experiment(StopTime=800, Tolerance=1e-007),
+            experimentSetupOutput(equdistant=false));
+      end TestBasePropertiesDynamicLong;
+
       model TestBasePropertiesTranscritical
         "Test case using BaseProperties and explicit equations"
         extends Modelica.Icons.Example;
         extends FluidProp.GenericModels.TestBasePropertiesExplicit(redeclare
             package Medium = ExternalMedia.Examples.CO2CoolProp);
-
       equation
         p1 = 1e6 + time*10e6;
         h1 = 1.0e5;
@@ -1147,14 +1100,11 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         replaceable package Medium = ExternalMedia.Examples.CO2CoolProp (
               substanceNames = {"CO2|debug=10"});
-
         Medium.AbsolutePressure p1;
         Medium.SpecificEnthalpy h1;
         Medium.AbsolutePressure p2;
         Medium.Temperature T2;
-
         Medium.ThermodynamicState state1;
-
       equation
        // state1 = Medium.setState_ph(p1, h1);
         state1 = Medium.setState_pT(p2, T2);
@@ -1164,11 +1114,61 @@ package Test "Test models for the different solvers"
         T2 = 280 + 50*time;
       end TestStatesSupercriticalDebugInfo;
     end CO2;
+
+    model Pentane_hs
+    package wf
+      extends ExternalMedia.Media.CoolPropMedium(
+        mediumName = "Pentane",
+        substanceNames = {"n-Pentane"},
+        inputChoice=ExternalMedia.Common.InputChoice.hs);
+    end wf;
+      wf.BaseProperties fluid "Properties of the two-phase fluid";
+      Modelica.SIunits.SpecificEnthalpy h;
+      Modelica.SIunits.Pressure p;
+      Modelica.SIunits.SpecificEntropy s;
+      Modelica.SIunits.DerDensityByEnthalpy drdh
+        "Derivative of average density by enthalpy";
+      Modelica.SIunits.DerDensityByPressure drdp
+        "Derivative of average density by pressure";
+    equation
+      //p = 1E5;
+      h = 0 + time*1E6;
+      s = 1500;  //600 + time*2000;
+      fluid.p = p;
+      fluid.s = s;
+      fluid.h = h;
+      drdp = wf.density_derp_h(fluid.state);
+      drdh = wf.density_derh_p(fluid.state);
+    end Pentane_hs;
+
+    model Pentane_hs_state
+    package wf
+      extends ExternalMedia.Media.CoolPropMedium(
+        mediumName = "Pentane",
+        substanceNames = {"n-Pentane"},
+        inputChoice=ExternalMedia.Common.InputChoice.hs);
+    end wf;
+      wf.ThermodynamicState fluid "Properties of the two-phase fluid";
+      Modelica.SIunits.SpecificEnthalpy h;
+      Modelica.SIunits.Pressure p;
+      Modelica.SIunits.SpecificEntropy s;
+      Modelica.SIunits.DerDensityByEnthalpy drdh
+        "Derivative of average density by enthalpy";
+      Modelica.SIunits.DerDensityByPressure drdp
+        "Derivative of average density by pressure";
+    equation
+      //p = 1E5;
+      h = 0 + time*1E6;
+      s = 600 + time*2000;
+      fluid = wf.setState_hs(h,s);
+      fluid.p = p;
+      drdp = wf.density_derp_h(fluid);
+      drdh = wf.density_derh_p(fluid);
+    end Pentane_hs_state;
   end CoolProp;
 
   package WrongMedium "Test cases with wrong medium models"
     extends Modelica.Icons.ExamplesPackage;
-
     model TestWrongMedium
       "Test the error reporting messages for unsupported external media"
       extends Modelica.Icons.Example;
@@ -1217,7 +1217,6 @@ package Test "Test models for the different solvers"
             nominal=10,
             start=5,
             displayUnit="K"));
-
       end Helium;
 
       model TestSupercriticalHelium
@@ -1321,7 +1320,6 @@ package Test "Test models for the different solvers"
             nominal=10,
             start=5,
             displayUnit="K"));
-
       end Helium;
 
       model TestSupercriticalHelium
@@ -1375,4 +1373,50 @@ package Test "Test models for the different solvers"
       end TypicalHeliumProperties;
     end TestHeliumHardCodedProperties;
   end TestOMC;
+
+  model incompressibleCoolPropMedium
+  //Definition of the two fluid packages:
+  package LiBr_CP "Lithium bromide solution properties from CoolProp"
+    extends ExternalMedia.Media.IncompressibleCoolPropMedium(
+    mediumName="LiBr",
+    substanceNames={"LiBr|calc_transport=1"},
+    ThermoStates=Modelica.Media.Interfaces.PartialMedium.Choices.IndependentVariables.pTX);
+  end LiBr_CP;
+
+  package DowQ_CP "DowthermQ properties from CoolProp"
+    extends ExternalMedia.Media.IncompressibleCoolPropMedium(
+    mediumName="DowQ",
+    substanceNames={"DowQ|calc_transport=1"},
+    ThermoStates=Modelica.Media.Interfaces.PartialMedium.Choices.IndependentVariables.pT);
+  end DowQ_CP;
+    replaceable package Solution =
+    LiBr_CP(substanceNames={"LiBr|calc_transport=1|debug=10","dummyToMakeBasePropertiesWork"})
+    constrainedby Modelica.Media.Interfaces.PartialMedium "Medium model";
+    Solution.ThermodynamicState state_var;
+    Solution.ThermodynamicState state_con;
+    Solution.Temperature T;
+    Solution.AbsolutePressure p;
+    Solution.MassFraction[1] X_var;
+    Solution.MassFraction[1] X_con;
+    Solution.BaseProperties varProps;
+   replaceable package Liquid =
+    DowQ_CP(substanceNames={"DowQ|calc_transport=1|debug=10"})
+    constrainedby Modelica.Media.Interfaces.PartialMedium "Medium model";
+    Liquid.ThermodynamicState state_liq;
+    Liquid.BaseProperties liqProps;
+  equation
+    p         = 10E5;
+    T         = 273.15 + 15.0 + time * 50.0;
+    X_var[1]  =   0.00 +  0.1 + time *  0.5;
+    X_con[1]  =   0.00 +  0.1;
+    state_var = Solution.setState_pTX(p,T,X_var);
+    state_con = Solution.setState_pTX(p,T,X_con);
+    state_liq = Liquid.setState_pT(p,T);
+    // And now we do some testing with the BaseProperties
+    varProps.T = T;
+    varProps.p = p;
+    varProps.Xi = X_var;
+    liqProps.T = T;
+    liqProps.p = p;
+  end incompressibleCoolPropMedium;
 end Test;

@@ -21,7 +21,7 @@
 #ifndef FluidProp_COM_h
 #define FluidProp_COM_h
 
-#if defined(__ISWINDOWS__)
+#if (FLUIDPROP == 1)
 
 #ifndef   comutil_h
 #include <comutil.h>

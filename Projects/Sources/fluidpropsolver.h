@@ -37,7 +37,7 @@
 
 #include "basesolver.h"
 
-#if (FLUIDPROP == 1 && defined(__ISWINDOWS__))
+#if (FLUIDPROP == 1)
 
 #include "FluidProp_IF.h"
 
@@ -65,6 +65,6 @@ protected:
 	bool isError(string ErrorMsg);
 };
 
-#endif // FLUIDPROP == 1 && if defined(__ISWINDOWS__)
+#endif // FLUIDPROP == 1
 
 #endif /*FLUIDPROPSOLVER_H_*/

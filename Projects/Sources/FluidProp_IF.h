@@ -24,7 +24,7 @@
 #ifndef FluidProp_IF_h
 #define FluidProp_IF_h
 
-#if defined(__ISWINDOWS__)
+#if (FLUIDPROP == 1)
 
 #pragma comment(lib, "comsuppw.lib")
 
@@ -119,6 +119,5 @@ class TFluidProp
 };
 
 #endif
+
 #endif
-
-

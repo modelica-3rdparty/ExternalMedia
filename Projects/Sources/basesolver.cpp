@@ -134,6 +134,23 @@ void BaseSolver::setState_ps(double &p, double &s, int &phase, ExternalThermodyn
 	errorMessage((char*)"Internal error: setState_ps() not implemented in the Solver object");
 }
 
+//! Set state from h, s, and phase
+/*!
+  This function sets the thermodynamic state record for the given specific enthalpy
+  p, the specific entropy s and the specified phase. The computed values are
+  written to the ExternalThermodynamicState property struct.
+
+  Must be re-implemented in the specific solver
+  @param h Specific enthalpy
+  @param s Specific entropy
+  @param phase Phase (2 for two-phase, 1 for one-phase, 0 if not known)
+  @param properties ExternalThermodynamicState property struct
+*/
+void BaseSolver::setState_hs(double &h, double &s, int &phase, ExternalThermodynamicState *const properties){
+    // Base function returns an error if called - should be redeclared by the solver object
+	errorMessage((char*)"Internal error: setState_hs() not implemented in the Solver object");
+}
+
 //! Compute Prandtl number
 /*!
   This function returns the Prandtl number

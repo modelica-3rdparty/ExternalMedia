@@ -7,7 +7,7 @@
 
 #include "fluidpropsolver.h"
 
-#if (FLUIDPROP == 1 && defined(__ISWINDOWS__))
+#if (FLUIDPROP == 1)
 #define _AFXDLL
 
 ExternalSaturationProperties satPropClose2Crit; // saturation properties close to  critical conditions
@@ -482,4 +482,4 @@ bool FluidPropSolver::isError(string ErrorMsg)
       return true;
 }
 
-#endif // FLUIDPROP == 1 && if defined(__ISWINDOWS__)
+#endif // FLUIDPROP == 1

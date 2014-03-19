@@ -1,7 +1,6 @@
 within ExternalMedia;
 package Examples "Examples of external medium models"
   extends Modelica.Icons.Package;
-
   package WaterIF95 "RefProp water model"
     extends ExternalMedia.Media.FluidPropMedium(
       mediumName = "Water",
