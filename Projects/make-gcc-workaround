@@ -7,4 +7,3 @@ cp externalmedialib.h "../../Modelica/ExternalMedia 3.2.1/Resources/Include"
 cp externalmedialib.h "$OPENMODELICAHOME/include/omc/c"
 cp libExternalMediaLib.a "$OPENMODELICAHOME/lib/omc"
 make clean
-

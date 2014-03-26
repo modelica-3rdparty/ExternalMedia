@@ -6,8 +6,10 @@
  ********************************************************************/
 
 #include "fluidpropsolver.h"
+#include "include.h"
 
 #if (FLUIDPROP == 1)
+
 #define _AFXDLL
 
 ExternalSaturationProperties satPropClose2Crit; // saturation properties close to  critical conditions

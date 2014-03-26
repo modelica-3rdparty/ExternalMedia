@@ -24,6 +24,7 @@
 #ifndef FluidProp_IF_h
 #define FluidProp_IF_h
 
+#include "include.h"
 #if (FLUIDPROP == 1)
 
 #pragma comment(lib, "comsuppw.lib")

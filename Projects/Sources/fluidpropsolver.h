@@ -36,6 +36,7 @@
 #define FLUIDPROPSOLVER_H_
 
 #include "basesolver.h"
+#include "include.h"
 
 #if (FLUIDPROP == 1)
 

@@ -61,7 +61,7 @@ THENAME          :=ExternalMediaLib
 LIBRARYEXTENSION :=.a
 THETEST          :=ExternalMediaLibTest
 
-COOLPROPDIR      :=../externals/coolprop/branches/ExternalMedia/CoolProp
+COOLPROPDIR      :=../externals/coolprop/trunk/CoolProp
 
 LIBS       =
 OPTFLAGS   =-O2 -funroll-loops -ffast-math #-loleaut32 #-DCOOLPROP=1 # optimisation, remove for debugging

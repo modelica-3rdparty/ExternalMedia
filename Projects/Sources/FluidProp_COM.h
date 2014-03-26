@@ -21,6 +21,7 @@
 #ifndef FluidProp_COM_h
 #define FluidProp_COM_h
 
+#include "include.h"
 #if (FLUIDPROP == 1)
 
 #ifndef   comutil_h

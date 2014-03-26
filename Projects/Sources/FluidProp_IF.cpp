@@ -27,6 +27,7 @@
 
 #include "FluidProp_IF.h"
 
+#include "include.h"
 #if (FLUIDPROP == 1)
 
 // {F30D147D-1F7C-4092-B481-ADE326A2ECD5}
