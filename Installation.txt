@@ -23,9 +23,9 @@ interface only works with FluidProp up to version 2.5.
 ## Dymola under Windows
 
 - Go to the Modelica/ExternalMedia 3.2.1/Resources/Library/win32 directory
-- Copy the ExternalMediaLib.Dymola-VS20XX.lib to ExternalMediaLib.lib in the
-  same directory, according to the version of VisualStudio you use with your
-  Dymola installation
+- Copy the ExternalMediaLib.Dymola-VS20XX.lib file to a new file named
+  ExternalMediaLib.lib in the same directory, according to the version
+  of VisualStudio you use with your Dymola installation
 
 You can now load the library, by opening the Modelica/ExternalMedia 3.2.1/package.mo
 file
@@ -33,8 +33,8 @@ file
 ## OpenModelica under Windows
 
 - Go to the Modelica/ExternalMedia 3.2.1/Resources/Library/win32 directory
-- Copy the libExternalMediaLib.OMC-gcc.a to libExternalMediaLib.a in the same
-  directory
+- Copy the libExternalMediaLib.OMC-gcc.a file to a new file named 
+  libExternalMediaLib.a in the same directory
 
 You can now load the library, by opening the Modelica/ExternalMedia 3.2.1/package.mo
 file
