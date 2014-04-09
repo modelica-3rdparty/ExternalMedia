@@ -9,7 +9,7 @@ package FluidPropMedium "Medium package accessing the FluidProp solver"
     output ThermodynamicState state "complete thermodynamic state info";
     // Standard definition
     external "C" TwoPhaseMedium_setBubbleState_C_impl(sat, phase, state, mediumName, libraryName, substanceName)
-      annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+      annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
     annotation(Inline = true);
   end setBubbleState;
 
@@ -21,7 +21,7 @@ package FluidPropMedium "Medium package accessing the FluidProp solver"
     output ThermodynamicState state "complete thermodynamic state info";
     // Standard definition
     external "C" TwoPhaseMedium_setDewState_C_impl(sat, phase, state, mediumName, libraryName, substanceName)
-      annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+      annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
     annotation(Inline = true);
   end setDewState;
 

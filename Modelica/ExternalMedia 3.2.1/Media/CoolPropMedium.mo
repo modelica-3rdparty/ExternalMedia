@@ -31,7 +31,7 @@ package CoolPropMedium "Medium package accessing the CoolProp solver"
         mediumName,
         libraryName,
         substanceName)
-      annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+      annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
     annotation (Inline=true);
   end setBubbleState;
 
@@ -49,7 +49,7 @@ package CoolPropMedium "Medium package accessing the CoolProp solver"
         mediumName,
         libraryName,
         substanceName)
-      annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+      annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
     annotation (Inline=true);
   end setDewState;
 

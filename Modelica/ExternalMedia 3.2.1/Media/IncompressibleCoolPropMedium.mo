@@ -119,7 +119,7 @@ import ExternalMedia.Common.InputChoiceIncompressible;
     input String name "name and mass fractions";
     output ThermodynamicState state;
   external "C" TwoPhaseMedium_setState_ph_C_impl(p, h, phase, state, mediumName, libraryName, name)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end setState_ph_library;
 
   replaceable function setState_pT
@@ -158,7 +158,7 @@ import ExternalMedia.Common.InputChoiceIncompressible;
     input String name "name and mass fractions";
     output ThermodynamicState state;
   external "C" TwoPhaseMedium_setState_pT_C_impl(p, T, state, mediumName, libraryName, name)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end setState_pT_library;
 
   redeclare replaceable function setState_psX
@@ -173,7 +173,7 @@ import ExternalMedia.Common.InputChoiceIncompressible;
     String in1 = ExternalMedia.Common.XtoName(substanceName,X);
     //assert(false, "Incompressibles only support pT and ph as inputs!", level=AssertionLevel.error);
   external "C" TwoPhaseMedium_setState_ps_C_impl(p, s, phase, state, mediumName, libraryName, in1)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end setState_psX;
 
   redeclare function density_phX "returns density for given p and h"
@@ -410,7 +410,7 @@ import ExternalMedia.Common.InputChoiceIncompressible;
     p := state.p;
     /*  // If special definition in "C"
   external "C" p=  TwoPhaseMedium_pressure_(state, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
 */
     annotation(Inline = true);
   end pressure;
@@ -442,7 +442,7 @@ import ExternalMedia.Common.InputChoiceIncompressible;
   redeclare function extends prandtlNumber
     /*  // If special definition in "C"
   external "C" T=  TwoPhaseMedium_prandtlNumber_(state, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
 */
     annotation(Inline = true);
   end prandtlNumber;
@@ -454,7 +454,7 @@ import ExternalMedia.Common.InputChoiceIncompressible;
     a := state.a;
     /*  // If special definition in "C"
   external "C" a=  TwoPhaseMedium_velocityOfSound_(state, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
 */
     annotation(Inline = true);
   end velocityOfSound;
@@ -466,7 +466,7 @@ import ExternalMedia.Common.InputChoiceIncompressible;
     cp := state.cp;
     /*  // If special definition in "C"
   external "C" cp=  TwoPhaseMedium_specificHeatCapacityCp_(state, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
 */
     annotation(Inline = true);
   end specificHeatCapacityCp;
@@ -478,7 +478,7 @@ import ExternalMedia.Common.InputChoiceIncompressible;
     cv := state.cv;
     /*  // If special definition in "C"
   external "C" cv=  TwoPhaseMedium_specificHeatCapacityCv_(state, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
 */
     annotation(Inline = true);
   end specificHeatCapacityCv;
@@ -490,7 +490,7 @@ import ExternalMedia.Common.InputChoiceIncompressible;
     eta := state.eta;
     /*  // If special definition in "C"
   external "C" eta=  TwoPhaseMedium_dynamicViscosity_(state, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
 */
     annotation(Inline = true);
   end dynamicViscosity;
@@ -502,7 +502,7 @@ import ExternalMedia.Common.InputChoiceIncompressible;
     lambda := state.lambda;
     /*  // If special definition in "C"
   external "C" lambda=  TwoPhaseMedium_thermalConductivity_(state, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib");
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
 */
     annotation(Inline = true);
   end thermalConductivity;
