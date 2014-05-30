@@ -19,6 +19,10 @@
 #include <iostream>
 #include "FluidProp_IF.h"
 
+#if defined(__MINGW32__)
+#include <olectl.h>
+#endif
+
 // Conversion of a binary string BSTR to a string.
 static inline string ConvertBSTRToString(BSTR BString)
 {
