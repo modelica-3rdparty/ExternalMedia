@@ -367,7 +367,7 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestStates(
                                          redeclare package Medium =
-              ExternalMedia.Examples.WaterIF95);
+              ExternalMedia.Examples.WaterIF97);
       equation
         p1 = 1e5;
         h1 = 1e5 + 2e5*time;
@@ -380,7 +380,7 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestStatesSat(
                                             redeclare package Medium =
-              ExternalMedia.Examples.WaterIF95);
+              ExternalMedia.Examples.WaterIF97);
       equation
         p1 = 1e5;
         h1 = 1e5 + 2e5*time;
@@ -394,7 +394,7 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestBasePropertiesExplicit(
                                                          redeclare package
-            Medium = ExternalMedia.Examples.WaterIF95);
+            Medium = ExternalMedia.Examples.WaterIF97);
       equation
         p1 = 1e5 + 1e5*time;
         h1 = 1e5;
@@ -408,7 +408,7 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestBasePropertiesImplicit(
                                                          redeclare package
-            Medium = ExternalMedia.Examples.WaterIF95, hstart=1e5);
+            Medium = ExternalMedia.Examples.WaterIF97, hstart=1e5);
       equation
         p1 = 1e5 + 1e5*time;
         T1 = 300 + 25*time;
@@ -421,7 +421,7 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestBasePropertiesDynamic(
-          redeclare package Medium = ExternalMedia.Examples.WaterIF95,
+          redeclare package Medium = ExternalMedia.Examples.WaterIF97,
           Tstart=300,
           Kv0=1.00801e-2);
       equation
