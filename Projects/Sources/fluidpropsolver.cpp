@@ -2,7 +2,7 @@
  * Implementation of class FluidProp solver
  *
  * Francesco Casella, Christoph Richter, Roberto Bonifetto
- * 2006 - 2012
+ * 2006 - 2014
  ********************************************************************/
 
 #include "fluidpropsolver.h"
@@ -26,7 +26,8 @@ FluidPropSolver::FluidPropSolver(const string &mediumName,
     double Conc[20];
 
     // Build FluidProp object with the libraryName and substanceName info
-	Comp[0] = substanceName.c_str();
+    Comp[0] = substanceName.c_str();
+    Conc[0] = 1.0;
     FluidProp.SetFluid(libraryName.substr(libraryName.find(".")+1), 1, Comp, Conc, &ErrorMsg);
 	if (isError(ErrorMsg))  // An error occurred
 	{
