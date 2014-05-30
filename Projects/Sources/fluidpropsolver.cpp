@@ -124,6 +124,11 @@ void FluidPropSolver::setFluidConstants(){
 						  dh_vap_dP_, dT_sat_dP_, &ErrorMsg);
     if (!isError(ErrorMsg))
       break; // computation succeeded
+    if (licenseError(ErrorMsg)){
+    	char error[300];
+    	sprintf(error, "%s", ErrorMsg.c_str());
+    	errorMessage(error); // a license error has been generated
+    }
   }
   // Fill in the satPropClose2Crit record
   satPropClose2Crit.Tsat = T_sat_;		// saturation temperature
@@ -483,6 +488,15 @@ bool FluidPropSolver::isError(string ErrorMsg)
 	  return false;
   else
       return true;
+}
+
+//! Check if FluidProp returned a license error
+bool FluidPropSolver::licenseError(string ErrorMsg)
+{
+  if (ErrorMsg.find("license") != std::string::npos)
+  	  return true;
+  else
+  	  return false;
 }
 
 #endif // FLUIDPROP == 1
