@@ -16,8 +16,8 @@ the tool- and OS- specific instructions below.
 If you want to experiment with the code and recompile the static libraries,
 check the Projects/CompilationHowTo.txt file.
 
-Please note that, due to a bug which is currently under investigation, the FluiProp
-interface only works with FluidProp up to version 2.5.
+The library works with FluidProp version 3.0 and later. It might work with
+previous versions of that software, but compatibility is no longer guaranteed.
 
 
 ## Dymola under Windows
