@@ -19,6 +19,8 @@
 #ifndef FluidProp_IF_h
 #define FluidProp_IF_h
 
+#include "include.h"
+#if (FLUIDPROP == 1)
 
 #pragma comment(lib, "comsuppw.lib")
 
@@ -26,6 +28,8 @@
 using std::string;
 
 #include "FluidProp_COM.h"
+
+#endif // FLUIDPROP == 1
 
 
 // The TFluidProp class
@@ -120,11 +124,13 @@ class TFluidProp
       double* GibbsEnergy_Deriv( string InputSpec, double Input1, double Input2, string* ErrorMsg);
       double* FugaCoef_Deriv   ( string InputSpec, double Input1, double Input2, string* ErrorMsg);
 
+#if (FLUIDPROP == 1)
    private:
 
       IClassFactory*  ClassFactory ;      // Pointer to class factory
       IFluidProp_COM* FluidProp_COM;      // Pointer to FluidProp interface
-};
 
+#endif // FLUIDPROP == 1
+};
 
 #endif // FluidProp_IF_h

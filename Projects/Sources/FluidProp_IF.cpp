@@ -19,6 +19,8 @@
 #include <iostream>
 #include "FluidProp_IF.h"
 
+#if (FLUIDPROP == 1)
+
 #if defined(__MINGW32__)
 #include <olectl.h>
 #endif
@@ -1143,6 +1145,6 @@ double* TFluidProp::FugaCoef_Deriv( string InputSpec, double Input1, double Inpu
 
    return Output;
 }
-
+#endif // FLUIDPROP == 1
 
 //==================================================================================== EOF ===//
