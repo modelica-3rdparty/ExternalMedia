@@ -9,7 +9,7 @@ It is compatible with Modelica Standard Libarary v 3.2 and 3.2.1
 
 The current version of the library supports pure and pseudo-pure fluids models, possibly two-phase, compliant with the Modelica.Media.Interfaces.PartialTwoPhaseMedium interface.
 
-The library includes a pre-compiled interface to the FluidProp software, http://www.asimptote.nl/software/fluidprop, and built-in access to CoolProp, http://coolprop.org.
+The library includes a pre-compiled interface to the [FluidProp](http://www.asimptote.nl/software/fluidprop) software and built-in access to [CoolProp](http://www.coolprop.org).
 If you use the FluidProp software, you need to have the proper licenses to access the media of your interest and to compute the property derivatives.
 
 You can modify the library to add an interface to your own solver; if your solver is open-source, please contact the developers, we might add it to the official
