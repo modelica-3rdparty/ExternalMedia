@@ -5,7 +5,7 @@ The `ExternalMedia` library provides a framework for interfacing external codes 
 ## Library description
 
 The ExternalMedia library provides a framework for interfacing external codes computing fluid properties to Modelica.Media-compatible component models.
-It is compatible with Modelica Standard Libarary v 3.2 and 3.2.1
+It is compatible with Modelica Standard Library v 3.2 and 3.2.1
 
 The current version of the library supports pure and pseudo-pure fluids models, possibly two-phase, compliant with the Modelica.Media.Interfaces.PartialTwoPhaseMedium interface.
 
@@ -15,8 +15,8 @@ If you use the FluidProp software, you need to have the proper licenses to acces
 You can modify the library to add an interface to your own solver; if your solver is open-source, please contact the developers, we might add it to the official
 ExternalMedia library.
 
-As of June 2014, the library has been tested with Dymola and OpenModelica under Windows. Support for more tools and operating systems might
-be added in the future
+As of June 2014, the library has been tested with Dymola and OpenModelica under Windows as well as with Dymola on 32bit Linux. Support for more tools and operating systems might
+be added in the future.
 
 ## Current release
 
