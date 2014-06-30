@@ -17,13 +17,14 @@
 //============================================================================//
 
 #include <iostream>
+#include "include.h"
 #include "FluidProp_IF.h"
-
-#if (FLUIDPROP == 1)
 
 #if defined(__MINGW32__)
 #include <olectl.h>
 #endif
+
+#if defined(__ISWINDOWS__)
 
 // Conversion of a binary string BSTR to a string.
 static inline string ConvertBSTRToString(BSTR BString)
@@ -1145,6 +1146,6 @@ double* TFluidProp::FugaCoef_Deriv( string InputSpec, double Input1, double Inpu
 
    return Output;
 }
-#endif // FLUIDPROP == 1
+#endif // __ISWINDOWS__
 
 //==================================================================================== EOF ===//
