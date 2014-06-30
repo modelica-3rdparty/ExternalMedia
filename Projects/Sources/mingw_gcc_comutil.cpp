@@ -33,4 +33,4 @@ namespace _com_util
  return bstr;
  }
 }
-#endif
+#endif //defined(__MINGW32__)

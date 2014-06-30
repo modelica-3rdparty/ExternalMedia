@@ -97,6 +97,19 @@ Portable definitions of the EXPORT macro
 #  endif
 #endif
 
+/*!
+Overwrite FluidProp inclusion if not on Windows
+ */
+#if defined(__ISLINUX__)
+#  undef FLUIDPROP
+#  define FLUIDPROP 0
+#elif defined(__ISAPPLE__)
+#  undef FLUIDPROP
+#  define FLUIDPROP 0
+#endif
+
+
+
 // General purpose includes
 #include <map>
 using std::map;

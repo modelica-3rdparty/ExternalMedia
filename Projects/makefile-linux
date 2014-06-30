@@ -143,14 +143,22 @@ all        : header library
 ############################################################
 ##  Compile sources to static files
 ############################################################
-# We cannot use := assignment for the ExternalMedia sources, 
-# the variable has to be evaluate at runtine to catch the 
-# copy operation of coolpropsolver.cpp
-EXMECPP_FILES   = $(wildcard $(SRCDIR)/*.cpp)
-EXMEOBJ_FILES   = $(addprefix $(BINDIR)/,$(notdir $(EXMECPP_FILES:.cpp=.o)))
+EXMECPP_FILES  := $(wildcard $(SRCDIR)/*.cpp)
+EXMEOBJ_FILES  := $(addprefix $(BINDIR)/,$(notdir $(EXMECPP_FILES:.cpp=.o)))
 # Files do not change here, := assignments work. 
-USE_FLUIDPROP  := $(shell grep FLUIDPROP $(SRCDIR)/include.h | cut -d " " -f3)
-USE_COOLPROP   := $(shell grep COOLPROP $(SRCDIR)/include.h | cut -d " " -f3)
+USE_FLUIDPROP  := $(shell grep FLUIDPROP $(SRCDIR)/include.h | head -n 1 | cut -d " " -f3)
+USE_FLUIDPROP  := 0
+USE_COOLPROP   := $(shell grep COOLPROP $(SRCDIR)/include.h | head -n 1 | cut -d " " -f3)
+
+
+ifeq ($(USE_FLUIDPROP),1)
+
+else
+# Remove the FluidProp files, they are not available for Linux
+EXMEOBJ_FILES  := $(filter-out $(BINDIR)/FluidProp_IF.o, $(EXMEOBJ_FILES))
+EXMEOBJ_FILES  := $(filter-out $(BINDIR)/fluidpropsolver.o, $(EXMEOBJ_FILES))
+endif
+
 
 ifeq ($(USE_COOLPROP),1)
 COOLCPP_FILES  := $(wildcard $(COOLPROPDIR)/*.cpp)
@@ -158,8 +166,8 @@ COOLOBJ_FILES  := $(addprefix $(BINDIR)/,$(notdir $(COOLCPP_FILES:.cpp=.o)))
 else
 COOLCPP_FILES  :=  
 COOLOBJ_FILES  :=  
+EXMEOBJ_FILES  := $(filter-out $(BINDIR)/coolpropsolver.o, $(EXMEOBJ_FILES))
 endif
-COOLSOL_FILES  := coolpropsolver.cpp coolpropsolver.h
 
 # Define search path for prerequisite files and g++ include 
 # parameters to be used later.
@@ -186,23 +194,15 @@ $(BINDIR)/$(HEADERFILE)$(HEADEREXTENSION): $(SRCDIR)/$(HEADERFILE)$(HEADEREXTENS
 	$(CP) $(SRCDIR)/$(HEADERFILE)$(HEADEREXTENSION) $(BINDIR)
 
 .PHONY     : library
-library    : coolprop-obj $(BINDIR)/$(LIBRARY)$(LIBRARYEXTENSION)
+library    : $(COOLOBJ_FILES) $(BINDIR)/$(LIBRARY)$(LIBRARYEXTENSION)
 
-$(BINDIR)/$(LIBRARY).so: coolprop-obj $(EXMEOBJ_FILES) #$(SRCDIR)/$(LIBFILE).o
+$(BINDIR)/$(LIBRARY).so: $(COOLOBJ_FILES) $(EXMEOBJ_FILES) #$(SRCDIR)/$(LIBFILE).o
 	$(MK) $(BINDIR)
 	$(CPPC) $(LIBFLAGS) $(CPPFLAGS) -o $(BINDIR)/$(LIBRARY).so $(EXMEOBJ_FILES) #$(SRCDIR)/$(LIBFILE).o
 
 $(BINDIR)/$(LIBRARY).a: $(COOLOBJ_FILES) $(EXMEOBJ_FILES) #$(SRCDIR)/$(LIBFILE).o
 	$(MK) $(BINDIR)
 	$(AR) $(BINDIR)/$(LIBRARY).a $^
-
-.PHONY         : coolprop-svn
-coolprop-svn   : 
-	#$(SVN) up $(COOLPROPDIR)/..
-	#$(CP) $(foreach i,$(COOLSOL_FILES),$(COOLPROPDIR)/../wrappers/Modelica/src/$(i)) $(SRCDIR)
-
-.PHONY         : coolprop-obj
-coolprop-obj   : coolprop-svn $(COOLOBJ_FILES)
 
 
 ###########################################################
@@ -211,7 +211,6 @@ coolprop-obj   : coolprop-svn $(COOLOBJ_FILES)
 .PHONY: clean
 clean:
 	$(RM) $(BINDIR)/*solver.o  $(BINDIR)/*solver.obj $(BINDIR)/*xternal*
-	#($(CD) $(SRCDIR) && $(RM) $(COOLSOL_FILES))
 
 .PHONY: very-clean
 very-clean: clean

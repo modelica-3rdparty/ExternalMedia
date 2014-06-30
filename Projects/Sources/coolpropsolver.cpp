@@ -1,7 +1,5 @@
 #include "coolpropsolver.h"
 
-#if (COOLPROP == 1)
-
 #include "CoolPropTools.h"
 #include "CoolProp.h"
 #include "CPState.h"
@@ -764,5 +762,3 @@ double CoolPropSolver::Tsat(ExternalSaturationProperties *const properties){
 	return NAN;
 }
 
-
-#endif // COOLPROP == 1

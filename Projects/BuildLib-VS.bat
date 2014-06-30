@@ -16,15 +16,24 @@ set CP=..\externals\coolprop\trunk
 set CPinc=%CP%\CoolProp
 set INCLUDES=-I%CPinc%
 
-REM echo "Copying coolpropsolver.cpp/h to Sources"
-REM copy "%CP%\wrappers\Modelica\src\coolpropsolver.cpp" Sources
-REM copy "%CP%\wrappers\Modelica\src\coolpropsolver.h" Sources
+echo ' ' 
+echo "Detecting supported solvers"
+setlocal EnableDelayedExpansion
+set i=0
+for /f "delims=" %%a in ('FINDSTR FLUIDPROP Sources\include.h') do (
+  set line[!i!]=%%a
+  set /A i=i+1
+  )
+for /f "tokens=3" %%a in ("%line[0]%") do set FLUIDP=%%a
+echo "FluidProp support set to: %FLUIDP%"
 
-for /f "delims=" %%a in ('FINDSTR FLUIDPROP Sources\include.h') do set line=%%a
-for /f "tokens=3" %%a in ("%line%") do set FLUIDP=%%a
-
-for /f "delims=" %%a in ('FINDSTR COOLPROP Sources\include.h') do set line=%%a
-for /f "tokens=3" %%a in ("%line%") do set COOLP=%%a
+set i=0
+for /f "delims=" %%a in ('FINDSTR COOLPROP Sources\include.h') do (
+  set line[!i!]=%%a
+  set /A i=i+1
+  )
+for /f "tokens=3" %%a in ("%line[0]%") do set COOLP=%%a
+echo " CoolProp support set to: %COOLP%"
 
 
 REM echo "Compiling sources"
@@ -36,3 +45,5 @@ if "%COOLP%"=="1" cl %C_OPTS% /c %INCLUDES% %CP%\CoolProp\*.cpp
 
 lib *.obj /OUT:ExternalMediaLib.lib
 erase *.obj
+
+:End

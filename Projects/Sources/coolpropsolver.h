@@ -3,8 +3,6 @@
 
 #include "basesolver.h"
 
-#if (COOLPROP == 1)
-
 //! CoolProp solver class
 /*!
   This class defines a solver that calls out to the open-source CoolProp
@@ -93,7 +91,5 @@ public:
 	virtual double Tsat(ExternalSaturationProperties *const properties);
 
 };
-
-#endif // COOLPROP == 1
 
 #endif // COOLPROPSOLVER_H_

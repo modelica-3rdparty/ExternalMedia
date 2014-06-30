@@ -38,8 +38,6 @@
 #include "include.h"
 #include "basesolver.h"
 
-#if (FLUIDPROP == 1)
-
 #include "FluidProp_IF.h"
 
 class FluidPropSolver : public BaseSolver{
@@ -67,6 +65,6 @@ protected:
 	bool licenseError(string ErrorMsg);
 };
 
-#endif // FLUIDPROP == 1
+
 
 #endif /*FLUIDPROPSOLVER_H_*/

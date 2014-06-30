@@ -8,9 +8,6 @@
 #include "include.h"
 #include "fluidpropsolver.h"
 #include <iostream>
-#include <exception>
-
-#if (FLUIDPROP == 1)
 
 #define _AFXDLL
 
@@ -23,15 +20,6 @@ FluidPropSolver::FluidPropSolver(const string &mediumName,
 								 const string &libraryName,
 								 const string &substanceName)
 	: BaseSolver(mediumName, libraryName, substanceName){
-
-#if !defined(__ISWINDOWS__)
-	std::string msg("FluidProp is only available on Windows, please avoid using it or disable it completely in the \"include.h\" file.");
-	char error[300];
-	sprintf(error, "FluidProp error: %s\n", msg.c_str());
-	errorMessage(error);
-	std::cout << msg.c_str() << std::endl;
-	//throw std::exception()
-#endif
 
 	string ErrorMsg;
 	string Comp[20];
@@ -511,4 +499,3 @@ bool FluidPropSolver::licenseError(string ErrorMsg)
   	  return false;
 }
 
-#endif // FLUIDPROP == 1

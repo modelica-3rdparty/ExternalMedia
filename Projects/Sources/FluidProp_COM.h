@@ -17,10 +17,8 @@
 
 #ifndef FluidProp_COM_h
 #define FluidProp_COM_h
+
 #include "include.h"
-
-#if defined(__ISWINDOWS__)
-
 #include <comutil.h>
 
 
@@ -211,7 +209,5 @@ interface IFluidProp_COM : public IDispatch
      virtual void __stdcall PCP_SAFT_Prho_mseT( ) = 0;    // C++ interface not yet implemented
      virtual void __stdcall CalcProp          ( ) = 0;    // C++ interface not yet implemented
 };
-
-#endif //defined(__ISWINDOWS__)
 
 #endif // FluidProp_COM_h
