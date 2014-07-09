@@ -5,7 +5,7 @@ partial package IncompressibleCoolPropMedium
     mediumName =  "ExternalMedium",
     singleState = true,
     reducedX =    true);
-import ExternalMedia.Common.InputChoiceIncompressible;
+  import ExternalMedia.Common.InputChoiceIncompressible;
   constant String libraryName = "CoolProp"
     "Name of the external fluid property computation library";
   constant String substanceName = substanceNames[1]
@@ -16,7 +16,7 @@ import ExternalMedia.Common.InputChoiceIncompressible;
     AbsolutePressure criticalPressure "critical pressure";
     MolarVolume criticalMolarVolume "critical molar Volume";
   end FluidConstants;
-  constant InputChoiceIncompressible inputChoice=InputChoiceIncompressible.pTX
+  constant InputChoiceIncompressibleMixture inputChoice=InputChoiceIncompressible.pTX
     "Default choice of input variables for property computations, incompressibles are in p,T";
   redeclare replaceable record ThermodynamicState
     Integer phase(min=0,max=2,start=0); //Only single phase

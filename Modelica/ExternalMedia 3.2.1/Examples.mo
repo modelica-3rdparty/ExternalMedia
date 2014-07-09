@@ -58,4 +58,19 @@ package Examples "Examples of external medium models"
       AbsolutePressure(start=10e5),
       SpecificEnthalpy(start=2e5));
   end WaterCoolProp;
+
+  package DowQCoolProp "DowthermQ properties from CoolProp"
+    extends CoolProp2Modelica.Interfaces.IncompressibleCoolPropMedium(
+      mediumName="DowQ",
+      substanceNames={"DowQ|calc_transport=1"},
+      ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pT);
+  end DowQCoolProp;
+
+  package LiBrAQCoolProp "Lithium bromide solution properties from CoolProp"
+    extends ExternalMedia.Media.IncompressibleCoolPropMedium(
+      mediumName="LiBr",
+      substanceNames={"LiBr|calc_transport=1","dummyToMakeBasePropertiesWork"},
+      ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX);
+  end LiBrAQCoolProp;
+
 end Examples;
