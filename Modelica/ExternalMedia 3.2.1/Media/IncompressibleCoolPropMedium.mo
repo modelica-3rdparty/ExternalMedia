@@ -8,7 +8,7 @@ partial package IncompressibleCoolPropMedium
   import ExternalMedia.Common.InputChoiceIncompressible;
   constant String libraryName = "CoolProp"
     "Name of the external fluid property computation library";
-  constant String substanceName = substanceNames[1]
+  constant String substanceName = ExternalMedia.Common.CheckCoolPropOptions(substanceNames[1],debug=false)
     "Only one substance can be specified, predefined mixture in CoolProp";
   redeclare record extends FluidConstants "external fluid constants"
     MolarMass molarMass "molecular mass";
@@ -16,11 +16,10 @@ partial package IncompressibleCoolPropMedium
     AbsolutePressure criticalPressure "critical pressure";
     MolarVolume criticalMolarVolume "critical molar Volume";
   end FluidConstants;
-  constant InputChoiceIncompressibleMixture inputChoice=InputChoiceIncompressible.pTX
+  constant InputChoiceIncompressible inputChoice=InputChoiceIncompressible.pTX
     "Default choice of input variables for property computations, incompressibles are in p,T";
   redeclare replaceable record ThermodynamicState
-    Integer phase(min=0,max=2,start=0); //Only single phase
-    PrandtlNumber Pr "prandtl number";
+    // Fields in ASCII lexicographical order to work in Dymola
     Temperature T "temperature";
     VelocityOfSound a "velocity of sound";
     Modelica.SIunits.CubicExpansionCoefficient beta
@@ -37,19 +36,25 @@ partial package IncompressibleCoolPropMedium
     Modelica.SIunits.Compressibility kappa "compressibility";
     ThermalConductivity lambda "thermal conductivity";
     AbsolutePressure p "pressure";
+    FixedPhase phase(min=0, max=2)
+      "phase flag: 2 for two-phase, 1 for one-phase";
     SpecificEntropy s "specific entropy";
   end ThermodynamicState;
 
   redeclare replaceable model extends BaseProperties(
     p(stateSelect = if preferredMediumStates and
                        (basePropertiesInputChoice == InputChoiceIncompressible.phX or
-                        basePropertiesInputChoice == InputChoiceIncompressible.pTX) then
+                        basePropertiesInputChoice == InputChoiceIncompressible.pTX or
+                        basePropertiesInputChoice == InputChoiceIncompressible.ph or
+                        basePropertiesInputChoice == InputChoiceIncompressible.pT) then
                             StateSelect.prefer else StateSelect.default),
     T(stateSelect = if preferredMediumStates and
-                       (basePropertiesInputChoice == InputChoiceIncompressible.pTX) then
+                       (basePropertiesInputChoice == InputChoiceIncompressible.pTX or
+                        basePropertiesInputChoice == InputChoiceIncompressible.pT) then
                          StateSelect.prefer else StateSelect.default),
     h(stateSelect = if preferredMediumStates and
-                       basePropertiesInputChoice == InputChoiceIncompressible.phX then
+                       (basePropertiesInputChoice == InputChoiceIncompressible.phX or
+                        basePropertiesInputChoice == InputChoiceIncompressible.ph) then
                          StateSelect.prefer else StateSelect.default))
     import ExternalMedia.Common.InputChoiceIncompressible;
     parameter InputChoiceIncompressible basePropertiesInputChoice=inputChoice
@@ -62,14 +67,16 @@ partial package IncompressibleCoolPropMedium
     //SaturationProperties sat "saturation property record";
   equation
     phaseInput = 1 "Force one-phase property computation";
-    R  = 0 "Gas constant (of mixture if applicable)";
-    MM = 0 "Molar mass (of mixture or single fluid)";
-    if (basePropertiesInputChoice == InputChoiceIncompressible.phX) then
+    R  = Modelica.Constants.small "Gas constant (of mixture if applicable)";
+    MM = 0.001 "Molar mass (of mixture or single fluid)";
+    if (basePropertiesInputChoice == InputChoiceIncompressible.phX or
+        basePropertiesInputChoice == InputChoiceIncompressible.ph) then
       state = setState_phX(p, h, Xi, phaseInput);
       d = density_phX(p, h, Xi, phaseInput);
       s = specificEntropy_phX(p, h, Xi, phaseInput);
       T = temperature_phX(p, h, Xi, phaseInput);
-    elseif (basePropertiesInputChoice == InputChoiceIncompressible.pTX) then
+    elseif (basePropertiesInputChoice == InputChoiceIncompressible.pTX or
+            basePropertiesInputChoice == InputChoiceIncompressible.pT) then
       state = setState_pTX(p, T, Xi, phaseInput);
       d = density_pTX(p, T, Xi, phaseInput);
       h = specificEnthalpy_pTX(p, T, Xi, phaseInput);

@@ -1,6 +1,6 @@
 #include "coolpropsolver.h"
-
 #include "CoolPropTools.h"
+#include "CoolPropDLL.h"
 #include "CoolProp.h"
 #include "CPState.h"
 #include <iostream>
@@ -110,8 +110,11 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 			else if (!param_val[0].compare("debug"))
 			{
 				debug_level = (int)strtol(param_val[1].c_str(),NULL,0);
-				if (debug_level<0 || debug_level > 1000)
+				if (debug_level<0 || debug_level > 1000) {
 					errorMessage((char*)format("I don't know how to handle this debug level [%s]",param_val[0].c_str()).c_str());
+				} else {
+					//set_debug_level(debug_level);
+				}
 			}
 			else
 			{
@@ -145,8 +148,7 @@ void CoolPropSolver::setFluidConstants(){
 		_fluidConstants.Tc = PropsSI((char *)"Tcrit"   ,(char *)"T",0,(char *)"P",0,(char *)substanceName.c_str());
 		_fluidConstants.MM = PropsSI((char *)"molemass",(char *)"T",0,(char *)"P",0,(char *)substanceName.c_str());
 		/* TODO: Fix this dirty, dirty workaround */
-		if (_fluidConstants.MM > 1.0)
-		  _fluidConstants.MM *= 1e-3;
+		if (_fluidConstants.MM > 1.0) _fluidConstants.MM *= 1e-3;
 		_fluidConstants.dc = PropsSI((char *)"rhocrit" ,(char *)"T",0,(char *)"P",0,(char *)substanceName.c_str());
 		// Now we fill the close to crit record
 		if (debug_level > 5) std::cout << format("Setting near-critical saturation conditions for fluid %s \n",substanceName.c_str());
@@ -158,7 +160,7 @@ void CoolPropSolver::setFluidConstants(){
 		if (debug_level > 5) std::cout << format("Setting constants for incompressible fluid %s \n",substanceName.c_str());
 		_fluidConstants.pc = NAN;
 		_fluidConstants.Tc = NAN;
-		_fluidConstants.MM = NAN;
+		_fluidConstants.MM = NAN;// throws a warning in Modelica
 		_fluidConstants.dc = NAN;
 	}
 }
@@ -288,6 +290,12 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
 			errorMessage((char*)"Invalid fluid type!");
 			break;
 	}
+	if (debug_level > 50) std::cout << format("At the end of %s \n","postStateChange");
+	if (debug_level > 50) std::cout << format("Setting pressure to %f \n",properties->p);
+	if (debug_level > 50) std::cout << format("Setting temperature to %f \n",properties->T);
+	if (debug_level > 50) std::cout << format("Setting density to %f \n",properties->d);
+	if (debug_level > 50) std::cout << format("Setting enthalpy to %f \n",properties->h);
+	if (debug_level > 50) std::cout << format("Setting entropy to %f \n",properties->s);
 }
 
 
@@ -469,6 +477,12 @@ void CoolPropSolver::setState_pT(double &p, double &T, ExternalThermodynamicStat
 	{
 		errorMessage((char*)e.what());
 	}
+	if (debug_level > 50) std::cout << format("At the end of %s \n","setState_pT");
+	if (debug_level > 50) std::cout << format("Setting pressure to %f \n",properties->p);
+	if (debug_level > 50) std::cout << format("Setting temperature to %f \n",properties->T);
+	if (debug_level > 50) std::cout << format("Setting density to %f \n",properties->d);
+	if (debug_level > 50) std::cout << format("Setting enthalpy to %f \n",properties->h);
+	if (debug_level > 50) std::cout << format("Setting entropy to %f \n",properties->s);
 }
 
 // Note: the phase input is currently not supported

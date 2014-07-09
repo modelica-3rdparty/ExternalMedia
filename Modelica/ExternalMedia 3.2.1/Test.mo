@@ -1004,43 +1004,66 @@ package Test "Test models for the different solvers"
                            extends Modelica.Icons.ExamplesPackage;
       model incompressibleCoolPropMedium
                                          extends Modelica.Icons.Example;
-      //Definition of the two fluid packages:
-      package LiBr_CP "Lithium bromide solution properties from CoolProp"
-        extends ExternalMedia.Media.IncompressibleCoolPropMedium(
-        mediumName="LiBr",
-        substanceNames={"LiBr|calc_transport=1|debug=10","dummyToMakeBasePropertiesWork"},
-        ThermoStates=Modelica.Media.Interfaces.PartialMedium.Choices.IndependentVariables.pTX);
-      end LiBr_CP;
 
       package DowQ_CP "DowthermQ properties from CoolProp"
         extends ExternalMedia.Media.IncompressibleCoolPropMedium(
         mediumName="DowQ",
-        substanceNames={"DowQ|calc_transport=1|debug=10"},
+        substanceNames={"DowQ|calc_transport=1|debug=1000"},
         ThermoStates=Modelica.Media.Interfaces.PartialMedium.Choices.IndependentVariables.pT);
       end DowQ_CP;
 
-        replaceable package Solution = DowQ_CP constrainedby
+      //replaceable package Fluid = ExternalMedia.Examples.WaterCoolProp (
+      //  ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.pTX) constrainedby
+      //    Modelica.Media.Interfaces.PartialMedium "Medium model";
+
+      replaceable package Fluid =  DowQ_CP constrainedby
           Modelica.Media.Interfaces.PartialMedium "Medium model";
-        Solution.ThermodynamicState state_var;
-        Solution.ThermodynamicState state_con;
-        Solution.Temperature T;
-        Solution.AbsolutePressure p;
-        Solution.MassFraction[1] X_var;
-        Solution.MassFraction[1] X_con;
-        Solution.BaseProperties varProps;
+        Fluid.ThermodynamicState state;
+        Fluid.Temperature T;
+        Fluid.AbsolutePressure p;
+        Fluid.BaseProperties props;
+
+      equation
+        p     = 10E5;
+        T     = 273.15 + 15.0 + time * 50.0;
+        state = Fluid.setState_pT(p,T);
+        // And now we do some testing with the BaseProperties
+        props.T = T;
+        props.p = p;
+      end incompressibleCoolPropMedium;
+
+      model incompressibleCoolPropMixture
+                                         extends Modelica.Icons.Example;
+
+      package LiBr_CP "Lithium bromide solution properties from CoolProp"
+        extends ExternalMedia.Media.IncompressibleCoolPropMedium(
+        mediumName="LiBr",
+        substanceNames={"LiBr|calc_transport=1|debug=1000","dummyToMakeBasePropertiesWork"},
+        ThermoStates=Modelica.Media.Interfaces.PartialMedium.Choices.IndependentVariables.pTX);
+      end LiBr_CP;
+
+      replaceable package Fluid = LiBr_CP constrainedby
+          Modelica.Media.Interfaces.PartialMedium "Medium model";
+        Fluid.ThermodynamicState state_var;
+        Fluid.ThermodynamicState state_con;
+        Fluid.Temperature T;
+        Fluid.AbsolutePressure p;
+        Fluid.MassFraction[1] X_var;
+        Fluid.MassFraction[1] X_con;
+        Fluid.BaseProperties varProps;
 
       equation
         p         = 10E5;
         T         = 273.15 + 15.0 + time * 50.0;
         X_var[1]  =   0.00 +  0.1 + time *  0.5;
         X_con[1]  =   0.00 +  0.1;
-        state_var = Solution.setState_pTX(p,T,X_var);
-        state_con = Solution.setState_pTX(p,T,X_con);
+        state_var = Fluid.setState_pTX(p,T,X_var);
+        state_con = Fluid.setState_pTX(p,T,X_con);
         // And now we do some testing with the BaseProperties
         varProps.T = T;
         varProps.p = p;
         varProps.Xi = X_var;
-      end incompressibleCoolPropMedium;
+      end incompressibleCoolPropMixture;
     end Incompressible;
   end CoolProp;
 
@@ -1250,7 +1273,6 @@ package Test "Test models for the different solvers"
       end TypicalHeliumProperties;
     end TestHeliumHardCodedProperties;
   end TestOMC;
-
 
   package GenericModels "Generic models for FluidProp media tests"
     extends Modelica.Icons.BasesPackage;
