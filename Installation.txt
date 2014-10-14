@@ -46,7 +46,13 @@ You have to compile your own library file to use ExternalMedia on Linux.
 It has been tested with Dymola, but should also work with OpenModelica
 since they use the same compiler under Linux. 
 
+Please note that you have to add the dl library to the compilation if you 
+would like to use NIST REFPROP through the CoolProp interface. For Dymola, 
+you can add "-ldl" to the compilation options in the dsbuild.sh file in 
+/opt/dymola/insert.
+
 Please follow the developer instructions in `Projects/CompilationHowTo.txt`
+to create your own version of ExternalMedia. 
 
 
 ## For developers and other platforms

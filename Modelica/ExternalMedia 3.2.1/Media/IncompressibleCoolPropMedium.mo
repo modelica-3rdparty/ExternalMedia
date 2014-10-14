@@ -18,28 +18,8 @@ partial package IncompressibleCoolPropMedium
   end FluidConstants;
   constant InputChoiceIncompressible inputChoice=InputChoiceIncompressible.pTX
     "Default choice of input variables for property computations, incompressibles are in p,T";
-  redeclare replaceable record ThermodynamicState
-    // Fields in ASCII lexicographical order to work in Dymola
-    Temperature T "temperature";
-    VelocityOfSound a "velocity of sound";
-    Modelica.SIunits.CubicExpansionCoefficient beta
-      "isobaric expansion coefficient";
-    SpecificHeatCapacity cp "specific heat capacity cp";
-    SpecificHeatCapacity cv "specific heat capacity cv";
-    Density d "density";
-    DerDensityByEnthalpy ddhp
-      "derivative of density wrt enthalpy at constant pressure";
-    DerDensityByPressure ddph
-      "derivative of density wrt pressure at constant enthalpy";
-    DynamicViscosity eta "dynamic viscosity";
-    SpecificEnthalpy h "specific enthalpy";
-    Modelica.SIunits.Compressibility kappa "compressibility";
-    ThermalConductivity lambda "thermal conductivity";
-    AbsolutePressure p "pressure";
-    FixedPhase phase(min=0, max=2)
-      "phase flag: 2 for two-phase, 1 for one-phase";
-    SpecificEntropy s "specific entropy";
-  end ThermodynamicState;
+  redeclare replaceable record ThermodynamicState =
+  ExternalMedia.Media.BaseClasses.ExternalTwoPhaseMedium.ThermodynamicState;
 
   redeclare replaceable model extends BaseProperties(
     p(stateSelect = if preferredMediumStates and
