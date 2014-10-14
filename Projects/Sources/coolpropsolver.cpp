@@ -113,6 +113,7 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 				if (debug_level<0 || debug_level > 1000) {
 					errorMessage((char*)format("I don't know how to handle this debug level [%s]",param_val[0].c_str()).c_str());
 				} else {
+					// TODO: Fix this segmentation fault!
 					//set_debug_level(debug_level);
 				}
 			}
@@ -216,13 +217,13 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
 				properties->cp = state->cp();
 				properties->cv = state->cv();
 				properties->a = state->speed_sound();
-				if (state->TwoPhase && state->Q() >= 0 && state->Q() <= twophase_derivsmoothing_xend)
+				if (state->TwoPhase && state->Q() >= 0 && state->Q() <= twophase_derivsmoothing_xend && twophase_derivsmoothing_xend > 0.0)
 				{
 					// Use the smoothed derivatives between a quality of 0 and twophase_derivsmoothing_xend
 					properties->ddhp = state->drhodh_constp_smoothed(twophase_derivsmoothing_xend); // [1/kPa -- > 1/Pa]
 					properties->ddph = state->drhodp_consth_smoothed(twophase_derivsmoothing_xend); // [1/(kJ/kg) -- > 1/(J/kg)]
 				}
-				else if (state->TwoPhase && state->Q() >= 0 && state->Q() <= rho_smoothing_xend)
+				else if (state->TwoPhase && state->Q() >= 0 && state->Q() <= rho_smoothing_xend && twophase_derivsmoothing_xend > 0.0)
 				{
 					// Use the smoothed density between a quality of 0 and rho_smoothing_xend
 					double rho_spline;
@@ -477,12 +478,6 @@ void CoolPropSolver::setState_pT(double &p, double &T, ExternalThermodynamicStat
 	{
 		errorMessage((char*)e.what());
 	}
-	if (debug_level > 50) std::cout << format("At the end of %s \n","setState_pT");
-	if (debug_level > 50) std::cout << format("Setting pressure to %f \n",properties->p);
-	if (debug_level > 50) std::cout << format("Setting temperature to %f \n",properties->T);
-	if (debug_level > 50) std::cout << format("Setting density to %f \n",properties->d);
-	if (debug_level > 50) std::cout << format("Setting enthalpy to %f \n",properties->h);
-	if (debug_level > 50) std::cout << format("Setting entropy to %f \n",properties->s);
 }
 
 // Note: the phase input is currently not supported
