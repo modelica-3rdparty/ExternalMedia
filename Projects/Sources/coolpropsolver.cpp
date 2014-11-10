@@ -30,7 +30,7 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 	rho_smoothing_xend = 0;
 
 	// Initialise the saturation and near-critical variables
-	_p_eps   = 1e-5; // relative tolerance margin for subcritical pressure conditions
+	_p_eps   = 1e-3; // relative tolerance margin for subcritical pressure conditions
 	_delta_h = 1e-1; // delta_h for one-phase/two-phase discrimination
 
 	if (name_options.size()>1)
