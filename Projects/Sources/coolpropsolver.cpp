@@ -546,6 +546,47 @@ void CoolPropSolver::setState_hs(double &h, double &s, int &phase, ExternalTherm
 	}
 }
 
+double CoolPropSolver::partialDeriv_state(const string &of, const string &wrt, const string &cst, ExternalThermodynamicState *const properties){
+	if (debug_level > 5)
+		std::cout << format("partialDeriv_state(of=%s,wrt=%s,cst=%s,state)\n",of.c_str(),wrt.c_str(),cst.c_str());
+
+	long derivTerm = makeDerivString(of,wrt,cst);
+	double res = NAN;
+
+	try{
+		//res = DerivTerms(derivTerm, properties->d, properties->T, this->substanceName);
+		state->update(iT,properties->T,iD,properties->d);
+		// Get the output value
+		res = state->keyed_output(derivTerm);
+	} catch(std::exception &e) {
+		errorMessage((char*)e.what());
+	}
+	return res;
+}
+
+long CoolPropSolver::makeDerivString(const string &of, const string &wrt, const string &cst){
+	std::string derivTerm;
+	     if (!of.compare("d")){ derivTerm = "drho"; }
+	else if (!of.compare("p")){ derivTerm = "dp"; }
+	else {
+		errorMessage((char*) format("Internal error: Derivatives of %s are not defined in the Solver object.",of.c_str()).c_str());
+	}
+	if      (!wrt.compare("p")){ derivTerm.append("dp"); }
+	else if (!wrt.compare("h")){ derivTerm.append("dh"); }
+	else if (!wrt.compare("T")){ derivTerm.append("dT"); }
+	else {
+		errorMessage((char*) format("Internal error: Derivatives with respect to %s are not defined in the Solver object.",wrt.c_str()).c_str());
+	}
+	if      (!cst.compare("p")){ derivTerm.append("|p"); }
+	else if (!cst.compare("h")){ derivTerm.append("|h"); }
+	else if (!cst.compare("d")){ derivTerm.append("|rho"); }
+	else {
+		errorMessage((char*) format("Internal error: Derivatives at constant %s are not defined in the Solver object.",cst.c_str()).c_str());
+	}
+	long iOutput = get_param_index(derivTerm);
+	return iOutput;
+}
+
 
 double CoolPropSolver::Pr(ExternalThermodynamicState *const properties){
     // Base function returns an error if called - should be redeclared by the solver object

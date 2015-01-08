@@ -37,6 +37,7 @@ protected:
 
 	virtual void  preStateChange(void);
 	virtual void postStateChange(ExternalThermodynamicState *const properties);
+	long makeDerivString(const string &of, const string &wrt, const string &cst);
 
 public:
 	CoolPropSolver(const std::string &mediumName, const std::string &libraryName, const std::string &substanceName);
@@ -54,6 +55,8 @@ public:
 	virtual void setState_dT(double &d, double &T, int &phase, ExternalThermodynamicState *const properties);
 	virtual void setState_ps(double &p, double &s, int &phase, ExternalThermodynamicState *const properties);
 	virtual void setState_hs(double &h, double &s, int &phase, ExternalThermodynamicState *const properties);
+
+	virtual double partialDeriv_state(const string &of, const string &wrt, const string &cst, ExternalThermodynamicState *const properties);
 
 	virtual double Pr(ExternalThermodynamicState *const properties);
 	virtual double T(ExternalThermodynamicState *const properties);

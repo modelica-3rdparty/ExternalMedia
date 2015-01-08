@@ -142,6 +142,24 @@ void TwoPhaseMedium_setState_hs_C_impl(double h, double s, int phase, ExternalTh
     solver->setState_hs(h, s, phase, state);
 }
 
+//! Compute partial derivative from a populated state record
+/*!
+  This function computes the derivative of the specified input.
+  @param of Property to differentiate
+  @param wrt Property to differentiate in
+  @param cst Property to remain constant
+  @param state Pointer to input values in state record
+  @param mediumName Medium name
+  @param libraryName Library name
+  @param substanceName Substance name
+*/
+double TwoPhaseMedium_partialDeriv_state_C_impl(const char *of, const char *wrt, const char *cst,
+		ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName){
+	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
+    return solver->partialDeriv_state(of, wrt, cst, state);
+}
+
+
 //! Return Prandtl number of specified medium
 /*! Note: This function is not used by the default implementation of ExternalTwoPhaseMedium class.
     It might be used by external medium models customized solvers redeclaring the default functions

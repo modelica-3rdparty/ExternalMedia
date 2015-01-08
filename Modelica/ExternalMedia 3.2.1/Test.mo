@@ -1100,9 +1100,8 @@ package Test "Test models for the different solvers"
       p = 10E5;
       sat_std = fluid_std.setSat_p(p);
       h_start = fluid_std.bubbleEnthalpy(sat_std);
-      h_end = h_start;
-      //h_end = fluid_std.dewEnthalpy(sat_std);
-      h_delta = 1e3;
+      h_end = fluid_std.dewEnthalpy(sat_std);
+      h_delta = 3e3;
       h = (h_start - h_delta) + (h_end-h_start+2*h_delta)*time/t;
       state_std = fluid_std.setState_ph(p,h);
       state_spl = fluid_spl.setState_ph(p,h);

@@ -43,6 +43,8 @@ public:
 	virtual void setState_ps(double &p, double &s, int &phase, ExternalThermodynamicState *const properties);
 	virtual void setState_hs(double &h, double &s, int &phase, ExternalThermodynamicState *const properties);
 
+	virtual double partialDeriv_state(const string &of, const string &wrt, const string &cst, ExternalThermodynamicState *const properties);
+
 	virtual double Pr(ExternalThermodynamicState *const properties);
 	virtual double T(ExternalThermodynamicState *const properties);
 	virtual double a(ExternalThermodynamicState *const properties);
@@ -97,7 +99,7 @@ public:
 
 protected:
 	//! Fluid constants
-	FluidConstants _fluidConstants; 
+	FluidConstants _fluidConstants;
 };
 
 #endif // BASESOLVER_H_

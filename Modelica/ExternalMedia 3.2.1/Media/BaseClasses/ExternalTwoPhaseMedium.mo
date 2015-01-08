@@ -267,6 +267,18 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end setState_hs;
 
+  replaceable function partialDeriv_state
+    "Return partial derivative from a thermodynamic state record"
+    extends Modelica.Icons.Function;
+    input String of "The property to differentiate";
+    input String wrt "Differentiate with respect to this";
+    input String cst "Keep this constant";
+    input ThermodynamicState  state;
+    output Real partialDerivative;
+    external "C" partialDerivative=  TwoPhaseMedium_partialDeriv_state_C_impl(of, wrt, cst, state, mediumName, libraryName, substanceName)
+    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
+  end partialDeriv_state;
+
   redeclare function extends setState_phX
   algorithm
     // The composition is an empty vector
