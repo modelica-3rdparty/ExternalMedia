@@ -54,6 +54,9 @@ you can add "-ldl" to the compilation options in the dsbuild.sh file in
 Please follow the developer instructions in `Projects/CompilationHowTo.txt`
 to create your own version of ExternalMedia. 
 
+Note: Replace 'CPPC=g++' with 'CPPC=g++ -m32' in the 'makefile-linux' file,
+ if the Dymola Linux compiler is 32bit.
+
 
 ## For developers and other platforms
 
