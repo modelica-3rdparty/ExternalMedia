@@ -1,7 +1,7 @@
 # ============================================================================
 # Name        : Makefile
-# Author      : Jorrit Wronski (jowr@mek.dtu.dk) 
-# Version     : 1.0
+# Author      : Jorrit Wronski (jowr@ipu.dk) 
+# Version     : 1.1
 # Copyright   : Use and modify at your own risk.
 # Description : Makefile for ExternalMedia and CoolProp
 # ============================================================================
@@ -10,6 +10,11 @@
 # 2) make install
 # ============================================================================
 # 
+# Changelog:
+# ==========
+# 2014-06-30 - v1.0: Initial release that includes CoolProp v4.2.5
+# 2015-07-15 - v1.1: Updated external CoolProp dependency to v5.1.1 
+#
 ###########################################################
 #  Setting the directories for library, header and 
 #  binary files created in this makefile, change these 
@@ -27,11 +32,10 @@ SRCDIR     :=./Sources
 # LIBINST    =/usr/local/lib
 # HEADINST   =/usr/local/include
 # For relative path installation
-LIBINST     ="../Modelica/ExternalMedia $(FULLVERSION)/Resources/Library/linux32"
+LIBINST     ="../Modelica/ExternalMedia $(FULLVERSION)/Resources/Library/$(SYSDIR)"
 HEADINST    ="../Modelica/ExternalMedia $(FULLVERSION)/Resources/Include"
 #
 BINDIR     :=./build/LinuxGCC
-
 
 # ============================================================================
 # ============ No customisation is necessary beyond this point ===============
@@ -61,7 +65,22 @@ THENAME          :=ExternalMediaLib
 LIBRARYEXTENSION :=.a
 THETEST          :=ExternalMediaLibTest
 
-COOLPROPDIR      :=../externals/coolprop/trunk/CoolProp
+COOLPROPDIR      :=../externals/coolprop.git
+COOLPROPTMP      :=../externals/coolprop.build.gcc
+
+ifeq ($(OS),Windows_NT)
+  SYSDIR      :=win32
+  COOLPROPCMP :=MinGW Makefiles
+else
+  UNAME_S := $(shell uname -s)
+  ifeq ($(UNAME_S),Linux)
+    SYSDIR      :=linux32
+    COOLPROPCMP :=Unix Makefiles
+  else
+    SYSDIR      :=mac64
+    COOLPROPCMP :=Unix Makefiles
+  endif
+endi
 
 LIBS       =
 OPTFLAGS   =-O2 -funroll-loops -ffast-math #-loleaut32 #-DCOOLPROP=1 # optimisation, remove for debugging
@@ -161,8 +180,7 @@ endif
 
 
 ifeq ($(USE_COOLPROP),1)
-COOLCPP_FILES  := $(wildcard $(COOLPROPDIR)/*.cpp)
-COOLOBJ_FILES  := $(addprefix $(BINDIR)/,$(notdir $(COOLCPP_FILES:.cpp=.o)))
+
 else
 COOLCPP_FILES  :=  
 COOLOBJ_FILES  :=  
@@ -172,15 +190,13 @@ endif
 # Define search path for prerequisite files and g++ include 
 # parameters to be used later.
 INC_LIST:=# 0
-INC_LIST+=$(COOLPROPDIR) #                  1
-INC_LIST+=$(COOLPROPDIR)/purefluids #       2
-INC_LIST+=$(COOLPROPDIR)/pseudopurefluids # 3
-INC_LIST+=$(SRCDIR) #                       4
+INC_LIST+=$(COOLPROPDIR)/include #          1
+INC_LIST+=$(SRCDIR) #                       2
 
 CPPINCLUDES:=$(foreach i,$(INC_LIST), -I$(i))
-VPAINCLUDES:=$(foreach i,$(INC_LIST),$(i):)
-
-vpath %.cpp $(VPAINCLUDES)
+#VPAINCLUDES:=$(foreach i,$(INC_LIST),$(i):)
+#
+#vpath %.cpp $(VPAINCLUDES)
 
 
 ##########################################################
@@ -194,15 +210,36 @@ $(BINDIR)/$(HEADERFILE)$(HEADEREXTENSION): $(SRCDIR)/$(HEADERFILE)$(HEADEREXTENS
 	$(CP) $(SRCDIR)/$(HEADERFILE)$(HEADEREXTENSION) $(BINDIR)
 
 .PHONY     : library
-library    : $(COOLOBJ_FILES) $(BINDIR)/$(LIBRARY)$(LIBRARYEXTENSION)
+library    : $(BINDIR)/$(LIBRARY)$(LIBRARYEXTENSION)
 
-$(BINDIR)/$(LIBRARY).so: $(COOLOBJ_FILES) $(EXMEOBJ_FILES) #$(SRCDIR)/$(LIBFILE).o
+$(BINDIR)/$(LIBRARY).so: coolprop $(EXMEOBJ_FILES) #$(SRCDIR)/$(LIBFILE).o
 	$(MK) $(BINDIR)
 	$(CPPC) $(LIBFLAGS) $(CPPFLAGS) -o $(BINDIR)/$(LIBRARY).so $(EXMEOBJ_FILES) #$(SRCDIR)/$(LIBFILE).o
 
-$(BINDIR)/$(LIBRARY).a: $(COOLOBJ_FILES) $(EXMEOBJ_FILES) #$(SRCDIR)/$(LIBFILE).o
+$(BINDIR)/$(LIBRARY).a: coolprop $(EXMEOBJ_FILES) #$(SRCDIR)/$(LIBFILE).o
 	$(MK) $(BINDIR)
-	$(AR) $(BINDIR)/$(LIBRARY).a $^
+	$(AR) $(BINDIR)/$(LIBRARY).a $(BINDIR)/*.o $^
+
+.PHONY: coolprop
+ifeq ($(USE_COOLPROP),1)
+  coolprop:
+    if [ -d "$(COOLPROPDIR)" ] ; then \
+      pushd "$(COOLPROPDIR)" ; \
+      git pull ; \
+      popd ; \
+    else ; \
+      git clone --recursive https://github.com/CoolProp/CoolProp.git "$(COOLPROPDIR)" ; \
+    fi
+    $(MK) "$(COOLPROPTMP)"
+    pushd "$(COOLPROPTMP)" ; \
+    cmake "$(COOLPROPDIR)" -DCOOLPROP_OBJECT_LIBRARY=ON -DCOOLPROP_RELEASE=ON -G "$(COOLPROPCMP)" ; \
+    cmake --build . --config Release ; \
+    popd
+    $(CP) "$(COOLPROPTMP)/CoolProp.dir/Release/"*.o $(BINDIR)/
+else
+  coolprop:
+    @echo "Not using CoolProp"
+endif
 
 
 ###########################################################
@@ -215,6 +252,7 @@ clean:
 .PHONY: very-clean
 very-clean: clean
 	$(RM) $(BINDIR)/* **.so **.a **.dylib **.lib **.o **.obj **.mod
+    $(RM) -rf "$(COOLPROPTMP)"
 
 $(BINDIR)/%.o : %.cpp
 	$(CPPC) $(CPPFLAGS) -o $(BINDIR)/$*.o $(CPPINCLUDES) -c $<
@@ -243,5 +281,4 @@ print-flags:
 	  CPPINCLUDES  :$(CPPINCLUDES)\n\
 	  USE_FLUIDPROP:$(USE_FLUIDPROP)\n\
 	  USE_COOLPROP :$(USE_COOLPROP)\n\n\
-	  EXMEOBJ_FILES:\n$(EXMEOBJ_FILES)\n\
-	  COOLOBJ_FILES:\n$(COOLOBJ_FILES)\n\n"
+	  EXMEOBJ_FILES:\n$(EXMEOBJ_FILES)\n\n"

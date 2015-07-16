@@ -25,8 +25,23 @@ For library maintenance, it is suggested that the Visual Studio binary libraries
 are updated on the SVN server when major changes or bugfixes are applied to the
 source code, so that other users can benefit without the need of recompiling them
 
+## Getting the CoolProp code and its dependencies
 
-## BUIDING THE LIBRARY FOR OPENMODELICA USING GCC ON WINDOWS
+Earlier versions of ExternalMedia included CoolProp as an external repository and 
+the checkout of the code from the SVN automatically downloaded CoolProp. This is no 
+longer possible since CoolProp 5 has external dependencies itself and there is no 
+way to connect the git submodules to ExternalMedia's SVN structure. 
+
+Before you start, be sure to have all the requirements for CoolProp installed. Follow 
+the instructions on the 
+[CoolProp homepage](http://coolprop.sourceforge.net/coolprop/wrappers/index.html#common-wrapper-prerequisites)
+before you proceed with the compilation. As soon as you have all tools in place, 
+you can start out by compiling a collection of binary object files from the CoolProp
+library. Make sure that you can access **cmake**, **git** and **python** from the command 
+line, the rest should be handled by the build script.
+
+
+## BUIDING THE LIBRARY FOR OPENMODELICA USING GCC ON WINDOWS AND LINUX
 
 - Get the OMDEV environment from the SVN repository:
   https://openmodelica.org/svn/OpenModelicaExternal/trunk/tools/windows/OMDev
@@ -37,12 +52,11 @@ source code, so that other users can benefit without the need of recompiling the
   that looks like the emulation of a unix prompt - because it is)
 - $ mount d:/Path_to_your_ExternalMediaLibrary_working_copy /ExternalMediaLibrary
 - $ cd /ExternalMediaLibrary/Projects
-- $ BuildLib-OMC-gcc-windows.sh
+- $ ./BuildLib-OMC-gcc.sh
  
 This will build the static gcc library and copy it and the externalmedia.h
 header files in the Resource directories of the Modelica packages, so it can
 be used right away by just loading the Modelica package in OMC
-
 
 ## For Dymola users on Linux systems
 
@@ -50,7 +64,7 @@ This procedure has not been tested with OpenModelica. Please report any errors
 in order to help us to improve the Linux support of ExternalMedia. 
 
 Please compile the source code using the `makefile-linux` from the console:
-- Go to the `Projects`directory: `cd Projects`
+- Go to the `Projects` directory: `cd Projects`
 - Compile the files: `make -f makefile-linux header library`
 - Install the files: `make -f makefile-linux install`
 
