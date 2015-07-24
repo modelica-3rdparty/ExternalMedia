@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
+#include "crossplatform_shared_ptr.h"
 
 //double _p_eps   ; // relative tolerance margin for subcritical pressure conditions
 //double _T_eps   ; // relative tolerance margin for supercritical temperature conditions
@@ -151,10 +152,12 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 	this->substanceName = name_options[0];
 
 	// Check if incompressible
-	isCompressible = (backend.find("INCOMP") != std::string::npos);
+	isCompressible = (backend.find("INCOMP") == std::string::npos);
 	
 	// Create the state class
 	CoolProp::AbstractState *state = CoolProp::AbstractState::factory(backend, name_options[0]);
+	this->state = state;
+
 	this->setFluidConstants();
 }
 
@@ -182,7 +185,7 @@ void CoolPropSolver::setFluidConstants(){
 		if (debug_level > 5) std::cout << format("Setting constants for incompressible fluid %s \n",substanceName.c_str());
 		_fluidConstants.pc = NAN;
 		_fluidConstants.Tc = NAN;
-		_fluidConstants.MM = state->molar_mass();
+		_fluidConstants.MM = state->molar_mass(); //NAN
 		_fluidConstants.dc = NAN;
 	}
 }
