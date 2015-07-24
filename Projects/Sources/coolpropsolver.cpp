@@ -626,7 +626,7 @@ long CoolPropSolver::makeDerivString(const string &of, const string &wrt, const 
 	else {
 		errorMessage((char*) format("Internal error: Derivatives at constant %s are not defined in the Solver object.",cst.c_str()).c_str());
 	}
-	long iOutput = get_param_index(derivTerm.c_str());
+	long iOutput = CoolProp::get_parameter_index(derivTerm.c_str());
 	return iOutput;
 }
 
