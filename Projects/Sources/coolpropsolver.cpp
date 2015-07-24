@@ -6,7 +6,6 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-#include "crossplatform_shared_ptr.h"
 
 //double _p_eps   ; // relative tolerance margin for subcritical pressure conditions
 //double _T_eps   ; // relative tolerance margin for supercritical temperature conditions
@@ -148,7 +147,7 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 	}
 
 	// Handle the name
-	if (debug_level > 5) std::cout << "Check passed, reducing " << substanceName << " to " << name_options[0] << ", with " << backend << " backend."<< std::endl;
+	if (debug_level > 5) std::cout << "Check passed, reducing " << substanceName << " to fluid " << name_options[0] << ", with " << backend << " backend."<< std::endl;
 	this->substanceName = name_options[0];
 
 	// Check if incompressible
