@@ -54,7 +54,8 @@ if "%COOLP%"=="1" (
   REM echo "Builds in %CP_TMP%"
   if exist "%CP_SRC%" (
     pushd "%CP_SRC%"
-    git pull
+    git pull origin master
+    git submodule foreach git pull origin master
     popd 
   ) else (
     git clone --recursive https://github.com/CoolProp/CoolProp.git "%CP_SRC%"
