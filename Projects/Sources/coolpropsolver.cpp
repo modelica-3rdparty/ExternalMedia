@@ -248,13 +248,9 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
 			else if ((state->phase() == CoolProp::iphase_twophase) && state->Q() >= 0 && state->Q() <= rho_smoothing_xend && rho_smoothing_xend > 0.0)
 			{
 				// Use the smoothed density between a quality of 0 and rho_smoothing_xend
-				double rho_spline;
-				double dsplinedh;
-				double dsplinedp;
-				this->rho_smoothed(rho_smoothing_xend, rho_spline, dsplinedh, dsplinedp) ;
-				properties->ddhp = dsplinedh;
-				properties->ddph = dsplinedp;
-				properties->d = rho_spline;
+				properties->ddhp =  state->first_two_phase_deriv_splined(CoolProp::iDmass, CoolProp::iHmass, CoolProp::iP, rho_smoothing_xend);;
+				properties->ddph = state->first_two_phase_deriv_splined(CoolProp::iDmass, CoolProp::iP, CoolProp::iHmass, rho_smoothing_xend);;
+				properties->d = state->first_two_phase_deriv_splined(CoolProp::iDmass, CoolProp::iDmass, CoolProp::iDmass, rho_smoothing_xend);
 			}
 			else
 			{
@@ -855,17 +851,4 @@ double CoolPropSolver::Tsat(ExternalSaturationProperties *const properties){
 	errorMessage((char*)"Internal error: Tsat() not implemented in the Solver object");
 	//throw NotImplementedError((char*)"Internal error: Tsat() not implemented in the Solver object");
 	return NAN;
-}
-
-void CoolPropSolver::rho_smoothed(double xend, double &rho_spline, double &dsplinedh, double &dsplinedp){
-	if (!isCompressible){throw CoolProp::ValueError("function invalid for incompressibles");} // Is this necessary? This function should only be called for compressible fluids
-	
-	/* TODO:                                            *
-	 * Fill the function with smoothed values!          *
-	 * Temporary workaround with the non smoothed values*/
-
-	// Computing the final useful values:
-	rho_spline = state->rhomass();
-	dsplinedp = state->first_two_phase_deriv_splined(CoolProp::iDmass, CoolProp::iHmass, CoolProp::iP, xend);
-	dsplinedh = state->first_two_phase_deriv_splined(CoolProp::iDmass, CoolProp::iP, CoolProp::iHmass, xend);
 }
