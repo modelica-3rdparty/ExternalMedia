@@ -21,7 +21,7 @@ set CP_SRC=!CD!\coolprop.git
 set CP_TMP=!CD!\coolprop.build.msvc
 popd 
 set CP_INC=%CP_SRC%\include
-set INCLUDES=-I "%CP_INC%"
+set INCLUDES=-I "%CP_INC%" -I "%CP_SRC%\externals\msgpack-c\include"
 set CP_COMP=%~1
 
 

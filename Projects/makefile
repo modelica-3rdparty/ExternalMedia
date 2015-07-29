@@ -190,8 +190,9 @@ endif
 # Define search path for prerequisite files and g++ include 
 # parameters to be used later.
 INC_LIST:=# 0
-INC_LIST+=$(COOLPROPDIR)/include #          1
-INC_LIST+=$(SRCDIR) #                       2
+INC_LIST+=$(COOLPROPDIR)/include #                     1
+INC_LIST+=$(SRCDIR) #                                  2
+INC_LIST+=$(COOLPROPDIR)/externals/msgpack-c/include # 3
 
 CPPINCLUDES:=$(foreach i,$(INC_LIST), -I$(i))
 #VPAINCLUDES:=$(foreach i,$(INC_LIST),$(i):)
@@ -225,7 +226,8 @@ ifeq ($(USE_COOLPROP),1)
   coolprop:
     if [ -d "$(COOLPROPDIR)" ] ; then \
       pushd "$(COOLPROPDIR)" ; \
-      git pull ; \
+      git pull origin master ; \
+      git submodule foreach git pull origin master ; \
       popd ; \
     else ; \
       git clone --recursive https://github.com/CoolProp/CoolProp.git "$(COOLPROPDIR)" ; \
