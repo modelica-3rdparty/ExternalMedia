@@ -305,12 +305,15 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
 				errorMessage((char*)e.what());
 			}
 	}
-	if (debug_level > 50) std::cout << format("At the end of %s \n","postStateChange");
-	if (debug_level > 50) std::cout << format("Setting pressure to %f \n",properties->p);
-	if (debug_level > 50) std::cout << format("Setting temperature to %f \n",properties->T);
-	if (debug_level > 50) std::cout << format("Setting density to %f \n",properties->d);
-	if (debug_level > 50) std::cout << format("Setting enthalpy to %f \n",properties->h);
-	if (debug_level > 50) std::cout << format("Setting entropy to %f \n",properties->s);
+	if (debug_level > 50)
+	{
+		std::cout << format("At the end of %s \n","postStateChange");
+		std::cout << format("Setting pressure to %f \n",properties->p);
+		std::cout << format("Setting temperature to %f \n",properties->T);
+		std::cout << format("Setting density to %f \n",properties->d);
+		std::cout << format("Setting enthalpy to %f \n",properties->h);
+		std::cout << format("Setting entropy to %f \n",properties->s);
+	}
 }
 
 
