@@ -30,8 +30,8 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 	rho_smoothing_xend = 0;
 
 	//Check if a backend has been added to the fluid name (ex: REFPROP::Propane)
-	std::string backend, fluid;
-    CoolProp::extract_backend(name_options[0], backend, fluid);
+	std::string backend;
+    CoolProp::extract_backend(name_options[0], backend, this->substanceName);
 
 	if (backend == "?") // If no backend found in the fluid name
 	{
@@ -147,14 +147,13 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 	}
 
 	// Handle the name
-	if (debug_level > 5) std::cout << "Check passed, reducing " << substanceName << " to fluid " << fluid << ", with " << backend << " backend."<< std::endl;
-	this->substanceName = fluid;
+	if (debug_level > 5) std::cout << "Check passed, reducing " << substanceName << " to fluid " << this->substanceName << ", with " << backend << " backend."<< std::endl;
 
 	// Check if incompressible
 	isCompressible = (backend.find("INCOMP") == std::string::npos);
 
 	// Create the state class
-	this->state = CoolProp::AbstractState::factory(backend, fluid);
+	this->state = CoolProp::AbstractState::factory(backend, this->substanceName);
 
 	this->setFluidConstants();
 }
