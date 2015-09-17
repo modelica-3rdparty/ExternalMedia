@@ -147,15 +147,14 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 	}
 
 	// Handle the name
-	if (debug_level > 5) std::cout << "Check passed, reducing " << substanceName << " to fluid " << name_options[0] << ", with " << backend << " backend."<< std::endl;
-	this->substanceName = name_options[0];
+	if (debug_level > 5) std::cout << "Check passed, reducing " << substanceName << " to fluid " << fluid << ", with " << backend << " backend."<< std::endl;
+	this->substanceName = fluid;
 
 	// Check if incompressible
 	isCompressible = (backend.find("INCOMP") == std::string::npos);
-	
+
 	// Create the state class
-	CoolProp::AbstractState *state = CoolProp::AbstractState::factory(backend, name_options[0]);
-	this->state = state;
+	this->state = CoolProp::AbstractState::factory(backend, fluid);
 
 	this->setFluidConstants();
 }
@@ -189,35 +188,6 @@ void CoolPropSolver::setFluidConstants(){
 	}
 }
 
-/* Already done when creating the AbstractState
-void CoolPropSolver::preStateChange(void) {
-	/// Some common code to avoid pitfalls from incompressibles
-	if ((fluidType==FLUID_TYPE_PURE)||(fluidType==FLUID_TYPE_PSEUDOPURE)||(fluidType==FLUID_TYPE_REFPROP)){
-		try {
-			if (enable_TTSE)
-				state->enable_TTSE_LUT();
-			else
-				state->disable_TTSE_LUT();
-
-			if (enable_BICUBIC)
-			{
-				state->enable_TTSE_LUT();
-				state->pFluid->TTSESinglePhase.set_mode(TTSE_MODE_BICUBIC);
-			}
-
-			if (extend_twophase)
-				state->enable_EXTTP();
-			else
-				state->disable_EXTTP();
-		}
-		catch(std::exception &e)
-		{
-			errorMessage((char*)e.what());
-			std::cout << format("Exception from state object: %s \n",(char*)e.what());
-		}
-	}
-}
-*/
 
 void CoolPropSolver::postStateChange(ExternalThermodynamicState *const properties) {
 	/// Some common code to avoid pitfalls from incompressibles
@@ -236,7 +206,6 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
 			else{
 				properties->phase = 1;
 			}
-			properties->cp = state->cpmass();
 			properties->cv = state->cvmass();
 			properties->a = state->speed_sound();
 			if ((state->phase() == CoolProp::iphase_twophase) && state->Q() >= 0 && state->Q() <= twophase_derivsmoothing_xend && twophase_derivsmoothing_xend > 0.0)
@@ -257,16 +226,71 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
 				properties->ddhp = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iHmass, CoolProp::iP);
 				properties->ddph = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iP, CoolProp::iHmass);
 			}
-			properties->kappa = state->isothermal_compressibility();
-			properties->beta = state->isobaric_expansion_coefficient();
 
-			if (calc_transport)
+			// When two phases and EXTTP activated, interpolate some non phisical values from the saturated ones
+			// TODO:
+			// use state->saturated_liquid_keyed_output(CoolProp::iCpmass) and state->saturated_vapor_keyed_output(CoolProp::iCpmass)
+			// to have the saturated values instead of updating new states.
+			// Needs to be implemented in the tabular backend befor, see https://github.com/CoolProp/CoolProp/issues/814
+			if ((extend_twophase) && (properties->phase ==2))
 			{
-				properties->eta = state->viscosity();
-				properties->lambda = state->conductivity(); //[kW/m/K --> W/m/K]
-			} else {
-				properties->eta    = NAN;
-				properties->lambda = NAN;
+				// Temporary varriables
+				double cp_L, kappa_L, beta_L, eta_L, lambda_L, cp_V, kappa_V, beta_V, eta_V, lambda_V;
+
+				// Liquid saturation values: Q=0
+				state->update(CoolProp::PQ_INPUTS,properties->p,0);
+
+				cp_L = state->cpmass();
+				kappa_L = state->isothermal_compressibility();
+				beta_L = state->isobaric_expansion_coefficient();
+				if (calc_transport)
+				{
+					eta_L = state->viscosity();
+					lambda_L = state->conductivity();
+				}
+	
+				// Vapour saturation values: Q=1
+				state->update(CoolProp::PQ_INPUTS,properties->p,1);
+
+				cp_V = state->cpmass();
+				kappa_V = state->isothermal_compressibility();
+				beta_V = state->isobaric_expansion_coefficient();
+				if (calc_transport)
+				{
+					eta_V = state->viscosity();
+					lambda_V = state->conductivity();
+				}
+	
+				// Interpolation
+				properties->cp = interp_linear(state->Q(), cp_L, cp_V);
+				properties->kappa = interp_linear(state->Q(), kappa_L, kappa_V);
+				properties->beta = interp_linear(state->Q(), beta_L, beta_V);
+
+				if (calc_transport)
+				{
+					properties->eta = interp_recip(state->Q(), eta_L, eta_V);
+					properties->lambda = interp_linear(state->Q(), lambda_L, lambda_V); //[kW/m/K --> W/m/K]
+				} else {
+					properties->eta    = NAN;
+					properties->lambda = NAN;
+				}
+
+				// Reset the state (to be sure not using the Q=1 state later):
+				state->clear();
+			}
+			else{
+				properties->cp = state->cpmass();
+				properties->kappa = state->isothermal_compressibility();
+				properties->beta = state->isobaric_expansion_coefficient();
+
+				if (calc_transport)
+				{
+					properties->eta = state->viscosity();
+					properties->lambda = state->conductivity(); //[kW/m/K --> W/m/K]
+				} else {
+					properties->eta    = NAN;
+					properties->lambda = NAN;
+				}
 			}
 		}
 		catch(std::exception &e)
@@ -854,4 +878,12 @@ double CoolPropSolver::Tsat(ExternalSaturationProperties *const properties){
 	errorMessage((char*)"Internal error: Tsat() not implemented in the Solver object");
 	//throw NotImplementedError((char*)"Internal error: Tsat() not implemented in the Solver object");
 	return NAN;
+}
+
+/// Interpolation routines
+double CoolPropSolver::interp_linear(double Q, double valueL, double valueV) {
+	return valueL+Q*(valueV-valueL);
+}
+double CoolPropSolver::interp_recip(double Q, double valueL, double valueV){
+	return 1.0 / interp_linear(Q, 1.0/valueL, 1.0/valueV);
 }
