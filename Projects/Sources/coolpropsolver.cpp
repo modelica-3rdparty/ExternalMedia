@@ -365,12 +365,17 @@ void CoolPropSolver::setSat_p(double &p, ExternalSaturationProperties *const pro
 		  ** properties->dl = state->saturation_ancillary(CoolProp::iDmass,0,CoolProp::iT,T);                      **
 		  ** properties->dl = state->saturation_ancillary(CoolProp::iDmolar,0,CoolProp::iT,T)/state->molar_mass(); */
 
+		  /* Use of                                                      **
+		  ** state->saturated_liquid_keyed_output(CoolProp::iDmass)      **
+		  ** state->saturated_vapor_keyed_output(CoolProp::iDmass)       **
+		  ** would be interesting but this doesn't solve the derivatives */
+
 		  /* TODO:                                                                                                  **
 		  ** Uncoment the `specify_phase` when issue 656 is solved: https://github.com/CoolProp/CoolProp/issues/656 **
 		  ** This will allow for a full state update and a speed enhancement                                        */
-		  
+
 		  // At bubble line:
-		  // state->specify_phase(CoolProp::iphase_liquid);
+		  state->specify_phase(CoolProp::iphase_liquid);
 		  state->update(CoolProp::PQ_INPUTS,p,0);
 		  //! Saturation temperature
 		  properties->Tsat = state->T(); // At bubble line! (mather for pseudo-pure fluids)
@@ -392,7 +397,7 @@ void CoolPropSolver::setSat_p(double &p, ExternalSaturationProperties *const pro
 		  properties->sl = state->smass();
 
 		  // At dew line:
-		  // state->specify_phase(CoolProp::iphase_gas);
+		  state->specify_phase(CoolProp::iphase_gas);
 		  state->update(CoolProp::PQ_INPUTS,p,1);
 		  //! Derivative of dvs wrt pressure
 		  properties->ddvdp = state->first_saturation_deriv(CoolProp::iDmass, CoolProp::iP);
@@ -405,6 +410,9 @@ void CoolPropSolver::setSat_p(double &p, ExternalSaturationProperties *const pro
 		  //! Specific entropy at dew line (for pressure ps)
 		  properties->sv = state->smass();
 		  // state->specify_phase(CoolProp::iphase_not_imposed);
+
+		  // Reset the state (to be sure a new one is created before computing new values):
+		  state->clear();
 
 	  } catch(std::exception &e) {
 		errorMessage((char*)e.what());
