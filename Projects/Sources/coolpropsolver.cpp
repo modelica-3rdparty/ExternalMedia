@@ -226,14 +226,12 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
 				properties->ddph = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iP, CoolProp::iHmass);
 			}
 
-			// When two phases and EXTTP activated, interpolate some non phisical values from the saturated ones
-			// TODO:
-			// use state->saturated_liquid_keyed_output(CoolProp::iCpmass) and state->saturated_vapor_keyed_output(CoolProp::iCpmass)
-			// to have the saturated values instead of updating new states.
-			// Needs to be implemented in the tabular backend befor, see https://github.com/CoolProp/CoolProp/issues/814
+			// When two phases and EXTTP activated, interpolate some values from the saturated ones.
+			// Theses values have generally no physical meaning in this area.
 			if ((extend_twophase) && (properties->phase ==2))
 			{
-				/*// Temporary varriables
+				/* Old way creating two more states.
+				// Temporary varriables
 				double cp_L, kappa_L, beta_L, eta_L, lambda_L, cp_V, kappa_V, beta_V, eta_V, lambda_V;
 
 				// Liquid saturation values: Q=0
@@ -274,7 +272,7 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
 					properties->lambda = NAN;
 				}
 
-				// Reset the state (to be sure not using the Q=1 state later):
+				// Reset the state (to be sure not using the Q=1 state later): // was from the old way
 				//state->clear();
 			}
 			else{
