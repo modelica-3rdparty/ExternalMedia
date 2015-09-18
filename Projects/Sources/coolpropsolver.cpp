@@ -233,7 +233,7 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
 			// Needs to be implemented in the tabular backend befor, see https://github.com/CoolProp/CoolProp/issues/814
 			if ((extend_twophase) && (properties->phase ==2))
 			{
-				// Temporary varriables
+				/*// Temporary varriables
 				double cp_L, kappa_L, beta_L, eta_L, lambda_L, cp_V, kappa_V, beta_V, eta_V, lambda_V;
 
 				// Liquid saturation values: Q=0
@@ -258,24 +258,24 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
 				{
 					eta_V = state->viscosity();
 					lambda_V = state->conductivity();
-				}
+				}*/
 	
 				// Interpolation
-				properties->cp = interp_linear(state->Q(), cp_L, cp_V);
-				properties->kappa = interp_linear(state->Q(), kappa_L, kappa_V);
-				properties->beta = interp_linear(state->Q(), beta_L, beta_V);
+				properties->cp = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iCpmass), state->saturated_vapor_keyed_output(CoolProp::iCpmass));
+				properties->kappa = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iisothermal_compressibility), state->saturated_vapor_keyed_output(CoolProp::iisothermal_compressibility));
+				properties->beta = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iisobaric_expansion_coefficient), state->saturated_vapor_keyed_output(CoolProp::iisobaric_expansion_coefficient));
 
 				if (calc_transport)
 				{
-					properties->eta = interp_recip(state->Q(), eta_L, eta_V);
-					properties->lambda = interp_linear(state->Q(), lambda_L, lambda_V); //[kW/m/K --> W/m/K]
+					properties->eta = interp_recip(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iviscosity), state->saturated_vapor_keyed_output(CoolProp::iviscosity));
+					properties->lambda = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iconductivity), state->saturated_vapor_keyed_output(CoolProp::iconductivity));
 				} else {
 					properties->eta    = NAN;
 					properties->lambda = NAN;
 				}
 
 				// Reset the state (to be sure not using the Q=1 state later):
-				state->clear();
+				//state->clear();
 			}
 			else{
 				properties->cp = state->cpmass();
