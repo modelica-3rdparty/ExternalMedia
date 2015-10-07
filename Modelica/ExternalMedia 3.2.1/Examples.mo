@@ -59,6 +59,15 @@ package Examples "Examples of external medium models"
       SpecificEnthalpy(start=2e5));
   end WaterCoolProp;
 
+  package WaterCoolPropTabular "CoolProp model of water using tabulated data"
+    extends ExternalMedia.Media.CoolPropMedium(
+      mediumName = "Water",
+      substanceNames = {"water|enable_BICUBIC=1"},
+      ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.ph,
+      AbsolutePressure(start=10e5),
+      SpecificEnthalpy(start=2e5));
+  end WaterCoolPropTabular;
+
   package DowQCoolProp "DowthermQ properties from CoolProp"
     extends ExternalMedia.Media.IncompressibleCoolPropMedium(
       mediumName="DowQ",

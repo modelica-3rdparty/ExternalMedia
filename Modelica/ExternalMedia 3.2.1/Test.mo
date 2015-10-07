@@ -1071,14 +1071,14 @@ package Test "Test models for the different solvers"
     package fluid_std
       extends ExternalMedia.Media.CoolPropMedium(
         mediumName = "Pentane",
-        substanceNames = {"n-Pentane|rho_smoothing_xend=0.0"},
+        substanceNames = {"n-Pentane|rho_smoothing_xend=0.0|calc_transport=0"},
         inputChoice=ExternalMedia.Common.InputChoice.ph);
     end fluid_std;
 
     package fluid_spl
       extends ExternalMedia.Media.CoolPropMedium(
         mediumName = "Pentane",
-        substanceNames = {"n-Pentane|rho_smoothing_xend=0.2"},
+        substanceNames = {"n-Pentane|rho_smoothing_xend=0.2|calc_transport=0"},
         inputChoice=ExternalMedia.Common.InputChoice.ph);
     end fluid_spl;
 
@@ -1773,7 +1773,8 @@ package Test "Test models for the different solvers"
 
     GenericModels.TestRunnerTwoPhase      testRunnerTwoPhaseWater1(
       hstart=4e5,
-      redeclare package TwoPhaseMedium = ExternalMedia.Examples.WaterCoolProp,
+      redeclare package TwoPhaseMedium =
+          ExternalMedia.Examples.WaterCoolPropTabular,
       p_start=100000)
       annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
   end WaterComparison;

@@ -30,9 +30,15 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 	rho_smoothing_xend = 0;
 
 	//Check if a backend has been added to the fluid name (ex: REFPROP::Propane)
-	std::string backend;
+    std::string backend;
     CoolProp::extract_backend(name_options[0], backend, this->substanceName);
-
+    
+    // Set the default composition
+    std::vector<double> fractions(1, 1.0);
+    const std::vector<double> *fractions_ptr = NULL;
+    this->substanceName = CoolProp::extract_fractions(this->substanceName, fractions);
+    fractions_ptr = &fractions;
+    
 	if (backend == "?") // If no backend found in the fluid name
 	{
 		if (library_options.size() > 1)	//Check if an option has been added to libraryName (should be the case for all incompressible)
@@ -154,7 +160,21 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 
 	// Create the state class
 	this->state = CoolProp::AbstractState::factory(backend, this->substanceName);
+    if (this->state->using_mole_fractions()){
+        // Skip predefined mixtures and pure fluids
+        if (this->state->get_mole_fractions().empty()){
+            this->state->set_mole_fractions(*fractions_ptr);
+        }
+    } else if (this->state->using_mass_fractions()){
+        this->state->set_mass_fractions(*fractions_ptr);
+    } else if (this->state->using_volu_fractions()){
+        this->state->set_volu_fractions(*fractions_ptr);
+    } else {
+        if (debug_level > 5) std::cout << format("%s:%d: CoolPropSolver could not set composition, defaulting to mole fractions.\n",__FILE__,__LINE__);
+        this->state->set_mole_fractions(*fractions_ptr);
+    }
 
+    // ... all is set, start using the state class.
 	this->setFluidConstants();
 }
 
@@ -182,7 +202,7 @@ void CoolPropSolver::setFluidConstants(){
 		if (debug_level > 5) std::cout << format("Setting constants for incompressible fluid %s \n",substanceName.c_str());
 		_fluidConstants.pc = NAN;
 		_fluidConstants.Tc = NAN;
-		_fluidConstants.MM = state->molar_mass(); //NAN
+		_fluidConstants.MM = NAN; //state->molar_mass(); //NAN
 		_fluidConstants.dc = NAN;
 	}
 }
@@ -308,8 +328,8 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
 				properties->cp = state->cpmass();
 				properties->cv = state->cvmass();
 				properties->a     = NAN;
-				properties->ddhp = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iHmass, CoolProp::iP);
-				properties->ddph = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iP, CoolProp::iHmass);
+				properties->ddhp = NAN; //state->first_partial_deriv(CoolProp::iDmass, CoolProp::iHmass, CoolProp::iP);
+				properties->ddph = NAN; //state->first_partial_deriv(CoolProp::iDmass, CoolProp::iP, CoolProp::iHmass);
 				properties->kappa = NAN;
 				properties->beta  = NAN;
 				if (calc_transport)
