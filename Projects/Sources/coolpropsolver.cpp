@@ -328,8 +328,8 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
 				properties->cp = state->cpmass();
 				properties->cv = state->cvmass();
 				properties->a     = NAN;
-				properties->ddhp = NAN; //state->first_partial_deriv(CoolProp::iDmass, CoolProp::iHmass, CoolProp::iP);
-				properties->ddph = NAN; //state->first_partial_deriv(CoolProp::iDmass, CoolProp::iP, CoolProp::iHmass);
+				properties->ddhp = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iHmass, CoolProp::iP);
+				properties->ddph = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iP, CoolProp::iHmass);
 				properties->kappa = NAN;
 				properties->beta  = NAN;
 				if (calc_transport)
