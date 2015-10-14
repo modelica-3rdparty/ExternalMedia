@@ -21,6 +21,7 @@
 #  variables to install the library for Dymola or OpenModelica
 ###########################################################
 SRCDIR     :=./Sources
+ROOTDIR    := $(abspath $(lastword $(MAKEFILE_LIST)))
 # For Dymola integration
 # DYMDIR     =/opt/dymola
 # LIBINST    =$(DYMDIR)/bin/lib
@@ -32,10 +33,10 @@ SRCDIR     :=./Sources
 # LIBINST    =/usr/local/lib
 # HEADINST   =/usr/local/include
 # For relative path installation
-LIBINST     ="../Modelica/ExternalMedia $(FULLVERSION)/Resources/Library/$(SYSDIR)"
-HEADINST    ="../Modelica/ExternalMedia $(FULLVERSION)/Resources/Include"
+LIBINST     =$(abspath "$(ROOTDIR)/../Modelica/ExternalMedia $(FULLVERSION)/Resources/Library/$(SYSDIR)")
+HEADINST    =$(abspath "$(ROOTDIR)/../Modelica/ExternalMedia $(FULLVERSION)/Resources/Include")
 #
-BINDIR     :=./build/LinuxGCC
+#BINDIR     :=./build/LinuxGCC
 
 # ============================================================================
 # ============ No customisation is necessary beyond this point ===============
@@ -71,19 +72,22 @@ COOLPROPTMP      :=../externals/coolprop.build.gcc
 ifeq ($(OS),Windows_NT)
   SYSDIR      :=win32
   COOLPROPCMP :=MinGW Makefiles
+  BINDIR      :=./build/MinGW
 else
   UNAME_S := $(shell uname -s)
   ifeq ($(UNAME_S),Linux)
     SYSDIR      :=linux32
     COOLPROPCMP :=Unix Makefiles
+    BINDIR      :=./build/Linux
   else
     SYSDIR      :=mac64
     COOLPROPCMP :=Unix Makefiles
+    BINDIR      :=./build/Darwin
   endif
-endi
+endif
 
 LIBS       =
-OPTFLAGS   =-O2 -funroll-loops -ffast-math #-loleaut32 #-DCOOLPROP=1 # optimisation, remove for debugging
+OPTFLAGS   =-O3 -funroll-loops -ffast-math #-loleaut32 #-DCOOLPROP=1 # optimisation, remove for debugging
 
 
 ###########################################################
@@ -223,24 +227,19 @@ $(BINDIR)/$(LIBRARY).a: coolprop $(EXMEOBJ_FILES) #$(SRCDIR)/$(LIBFILE).o
 
 .PHONY: coolprop
 ifeq ($(USE_COOLPROP),1)
-  coolprop:
-    if [ -d "$(COOLPROPDIR)" ] ; then \
-      pushd "$(COOLPROPDIR)" ; \
-      git pull origin master ; \
-      git submodule foreach git pull origin master ; \
-      popd ; \
-    else ; \
-      git clone --recursive https://github.com/CoolProp/CoolProp.git "$(COOLPROPDIR)" ; \
-    fi
-    $(MK) "$(COOLPROPTMP)"
-    pushd "$(COOLPROPTMP)" ; \
-    cmake "$(COOLPROPDIR)" -DCOOLPROP_OBJECT_LIBRARY=ON -DCOOLPROP_RELEASE=ON -G "$(COOLPROPCMP)" ; \
+coolprop:
+	if [ ! -d "$(COOLPROPDIR)" ]; then git clone --recursive https://github.com/CoolProp/CoolProp.git "$(COOLPROPDIR)" ; fi
+	pushd "$(COOLPROPDIR)" ; git pull origin master ; popd 
+	pushd "$(COOLPROPDIR)" ; git submodule foreach git pull origin master ; popd 
+	$(MK) "$(COOLPROPTMP)"
+	pushd "$(COOLPROPTMP)" ; \
+    cmake "../$(COOLPROPDIR)" -DCOOLPROP_OBJECT_LIBRARY=ON -DCOOLPROP_RELEASE=ON -G "$(COOLPROPCMP)" ; \
     cmake --build . --config Release ; \
-    popd
-    $(CP) "$(COOLPROPTMP)/CoolProp.dir/Release/"*.o $(BINDIR)/
+    popd 
+	$(CP) "$(COOLPROPTMP)/CoolProp.dir/Release/"*.o $(BINDIR)/
 else
-  coolprop:
-    @echo "Not using CoolProp"
+coolprop:
+	@echo "Not using CoolProp"
 endif
 
 
@@ -254,7 +253,7 @@ clean:
 .PHONY: very-clean
 very-clean: clean
 	$(RM) $(BINDIR)/* **.so **.a **.dylib **.lib **.o **.obj **.mod
-    $(RM) -rf "$(COOLPROPTMP)"
+	$(RM) -rf "$(COOLPROPTMP)"
 
 $(BINDIR)/%.o : %.cpp
 	$(CPPC) $(CPPFLAGS) -o $(BINDIR)/$*.o $(CPPINCLUDES) -c $<

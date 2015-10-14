@@ -65,7 +65,7 @@ in order to help us to improve the Linux support of ExternalMedia.
 
 Please compile the source code using the `makefile-linux` from the console:
 - Go to the `Projects` directory: `cd Projects`
-- Compile the files: `make -f makefile-linux header library`
-- Install the files: `make -f makefile-linux install`
+- Compile the files: `make -f makefile header library`
+- Install the files: `make -f makefile install`
 
 You can now load the library, by opening the package.mo file
