@@ -3,6 +3,7 @@
 
 #include "basesolver.h"
 #include "AbstractState.h"
+#include "crossplatform_shared_ptr.h"
 
 //! CoolProp solver class
 /*!
@@ -26,7 +27,8 @@
 class CoolPropSolver : public BaseSolver{
 
 protected:
-	class CoolProp::AbstractState *state;
+	//class CoolProp::AbstractState *state;
+	shared_ptr<CoolProp::AbstractState> state;
 	bool enable_TTSE, enable_BICUBIC, calc_transport, extend_twophase, isCompressible;
 	int debug_level;
 	double twophase_derivsmoothing_xend;

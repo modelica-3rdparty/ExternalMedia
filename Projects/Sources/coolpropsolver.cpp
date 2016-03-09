@@ -159,7 +159,8 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 	isCompressible = (backend.find("INCOMP") == std::string::npos);
 
 	// Create the state class
-	this->state = CoolProp::AbstractState::factory(backend, this->substanceName);
+	//this->state = CoolProp::AbstractState::factory(backend, this->substanceName);
+	this->state.reset(CoolProp::AbstractState::factory(backend, this->substanceName));
     if (this->state->using_mole_fractions()){
         // Skip predefined mixtures and pure fluids
         if (this->state->get_mole_fractions().empty()){
@@ -180,7 +181,7 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 
 
 CoolPropSolver::~CoolPropSolver(){
-	delete state;
+	//delete state;
 };
 
 
