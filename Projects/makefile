@@ -230,7 +230,8 @@ ifeq ($(USE_COOLPROP),1)
 coolprop:
 	if [ ! -d "$(COOLPROPDIR)" ]; then git clone --recursive https://github.com/CoolProp/CoolProp.git "$(COOLPROPDIR)" ; fi
 	pushd "$(COOLPROPDIR)" ; git pull origin master ; popd 
-	pushd "$(COOLPROPDIR)" ; git submodule foreach git pull origin master ; popd 
+	pushd "$(COOLPROPDIR)" ; git submodule init ; popd 
+	pushd "$(COOLPROPDIR)" ; git submodule update ; popd 
 	$(MK) "$(COOLPROPTMP)"
 	pushd "$(COOLPROPTMP)" ; \
     cmake "../$(COOLPROPDIR)" -DCOOLPROP_OBJECT_LIBRARY=ON -DCOOLPROP_RELEASE=ON -G "$(COOLPROPCMP)" ; \
