@@ -55,7 +55,9 @@ if "%COOLP%"=="1" (
   if exist "%CP_SRC%" (
     pushd "%CP_SRC%"
     git pull origin master
-    git submodule foreach git pull origin master
+    git submodule init
+    git submodule update
+    :: git submodule foreach git pull origin master
     popd 
   ) else (
     git clone --recursive https://github.com/CoolProp/CoolProp.git "%CP_SRC%"

@@ -36,7 +36,9 @@ gcc ${GCC_OPTS} -c ${INCLUDES} Sources/*.cpp
 #  ********** CoolProp sources *********
 if [ -d "$CP_SRC" ]; then 
     pushd "$CP_SRC"
-    git pull
+    git pull origin master
+    git submodule init
+    git submodule update
     popd
 else
     git clone --recursive https://github.com/CoolProp/CoolProp.git "$CP_SRC"
