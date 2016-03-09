@@ -66,7 +66,9 @@
   This value is used as not a number value. It can be changed by
   the user if there is a more appropriate value.
 */
-#define NAN 0xffffffff
+#ifndef NAN
+#  define NAN 0xffffffff
+#endif
 #define ISNAN(x) (x == NAN)
 
 /********************************************************************
