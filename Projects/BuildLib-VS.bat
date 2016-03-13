@@ -12,7 +12,7 @@ REM ~ /fp:fast :
 REM ~ /MD : Multi-threaded DLL runtime library
 REM ~ /Ehsc : Explicitly enable exception handling
 
-set C_OPTS=/Ox /c /MP3 /fp:fast /MD /EHsc
+set C_OPTS=/Ox /c /MP3 /fp:fast /MD /EHsc /DNOMINMAX
 
 set EXTERNALS="..\externals"
 if not exist "%EXTERNALS%" (mkdir "%EXTERNALS%")
