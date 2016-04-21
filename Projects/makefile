@@ -66,8 +66,8 @@ THENAME          :=ExternalMediaLib
 LIBRARYEXTENSION :=.a
 THETEST          :=ExternalMediaLibTest
 
-COOLPROPDIR      :=../externals/coolprop.git
-COOLPROPTMP      :=../externals/coolprop.build.gcc
+COOLPROPDIR      :=../externals/CoolProp.git
+COOLPROPTMP      :=../externals/CoolProp.build.gcc
 
 ifeq ($(OS),Windows_NT)
   SYSDIR      :=win32
