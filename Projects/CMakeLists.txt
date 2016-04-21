@@ -83,13 +83,17 @@ include_directories (${INCLUDE_DIRS})
 file (GLOB_RECURSE LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/*.cpp")
 LIST (APPEND LIB_SOURCES $<TARGET_OBJECTS:CoolProp>)
 
-add_executable (main ${CMAKE_SOURCE_DIR}/Tests/coolprop_comparisons.cpp ${LIB_SOURCES})
-add_dependencies (main CoolProp)
-
 add_library (${LIBRARY_NAME} STATIC ${LIB_SOURCES})
 set_property (TARGET ${LIBRARY_NAME} PROPERTY VERSION ${APP_VERSION})
 add_dependencies (${LIBRARY_NAME} CoolProp)
-#
-#add_library (${LIBRARY_NAME}_embedded SHARED ${LOW_SOURCES})
-#set_property (TARGET ${LIBRARY_NAME}_embedded PROPERTY VERSION ${APP_VERSION})
-#add_dependencies (${LIBRARY_NAME} version)
+INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/${CMAKE_SYSTEM_NAME}" )
+INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/${LIBRARY_HEADER}" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia ${APP_VERSION}/Resources/Include" )
+
+
+#######################################
+#          TEST DEFINITIONS           #
+#######################################
+# Customise this part to use your own CPP files
+add_executable (main ${CMAKE_CURRENT_SOURCE_DIR}/Tests/coolprop_comparisons.cpp ${LIB_SOURCES})
+add_dependencies (main CoolProp)
+

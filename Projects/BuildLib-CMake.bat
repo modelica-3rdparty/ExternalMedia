@@ -69,7 +69,7 @@ if "%COOLP%"=="1" (
 pushd "%BUILD_DIR%"
 :: cmake .. -G "%CMake_generator%" 
 cmake .. 
-cmake --build . --config Release
+cmake --build . --config Release --target install
 popd 
 
 :End
