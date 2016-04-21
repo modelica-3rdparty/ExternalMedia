@@ -17,8 +17,8 @@ set C_OPTS=/Ox /c /MP3 /fp:fast /MD /EHsc /DNOMINMAX
 set EXTERNALS="..\externals"
 if not exist "%EXTERNALS%" (mkdir "%EXTERNALS%")
 pushd "%EXTERNALS%"
-set CP_SRC=!CD!\coolprop.git
-set CP_TMP=!CD!\coolprop.build.msvc
+set CP_SRC=!CD!\CoolProp.git
+set CP_TMP=!CD!\CoolProp.build.msvc
 popd 
 set CP_INC=%CP_SRC%\include
 set INCLUDES=-I "%CP_SRC%" -I "%CP_INC%" -I "%CP_SRC%\externals\msgpack-c\include"
