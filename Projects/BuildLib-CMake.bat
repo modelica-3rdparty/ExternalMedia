@@ -33,15 +33,15 @@ pushd "%BUILD_DIR%"
 set BUILD_DIR=!CD!
 popd 
 
-echo " " 
-echo "********* Detecting supported property libraries ***********"
+echo 
+echo ********* Detecting supported property libraries ***********
 set i=0
 for /f "delims=" %%a in ('FINDSTR FLUIDPROP Sources\include.h') do (
   set line[!i!]=%%a
   set /A i=i+1
   )
 for /f "tokens=3" %%a in ("%line[0]%") do set FLUIDP=%%a
-echo "FluidProp support set to: %FLUIDP%"
+echo FluidProp support set to: %FLUIDP%
 
 set i=0
 for /f "delims=" %%a in ('FINDSTR COOLPROP Sources\include.h') do (
@@ -49,11 +49,11 @@ for /f "delims=" %%a in ('FINDSTR COOLPROP Sources\include.h') do (
   set /A i=i+1
   )
 for /f "tokens=3" %%a in ("%line[0]%") do set COOLP=%%a
-echo " CoolProp support set to: %COOLP%"
+echo  CoolProp support set to: %COOLP%
 
 if "%COOLP%"=="1" (
-  echo "******************** CoolProp ******************************"
-  echo "Sources are located in %CP_SRC%"
+  echo ******************** CoolProp ******************************
+  echo Sources are located in %CP_SRC%
   if exist "%CP_SRC%" (
     pushd "%CP_SRC%"
     git pull origin master
@@ -68,7 +68,7 @@ if "%COOLP%"=="1" (
 
 pushd "%BUILD_DIR%"
 :: cmake .. -G "%CMake_generator%" 
-cmake .. -G "%CMake_generator%" 
+cmake .. 
 cmake --build . --config Release
 popd 
 
