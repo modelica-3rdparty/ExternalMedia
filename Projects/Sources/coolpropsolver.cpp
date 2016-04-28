@@ -434,6 +434,7 @@ void CoolPropSolver::setSat_p(double &p, ExternalSaturationProperties *const pro
 
 		  // Reset the state (to be sure a new one is created before computing new values):
 		  state->clear();
+          state->unspecify_phase();
 
 	  } catch(std::exception &e) {
 		errorMessage((char*)e.what());
