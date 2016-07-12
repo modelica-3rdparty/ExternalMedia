@@ -39,8 +39,8 @@ protected:
 
 	virtual void postStateChange(ExternalThermodynamicState *const properties);
 	long makeDerivString(const string &of, const string &wrt, const string &cst);
-	double CoolPropSolver::interp_linear(double Q, double valueL, double valueV);
-	double CoolPropSolver::interp_recip(double Q, double valueL, double valueV);
+	double interp_linear(double Q, double valueL, double valueV);
+	double interp_recip(double Q, double valueL, double valueV);
 
 public:
 	CoolPropSolver(const std::string &mediumName, const std::string &libraryName, const std::string &substanceName);
