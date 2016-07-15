@@ -6,7 +6,10 @@
 #endif
 //#define _SECURE_SCL 0
 #include <stdlib.h>
+#if defined(__ISWINDOWS__)
 #include <crtdbg.h>
+#include <conio.h>
+#endif
 
 #include "CoolProp.h"
 #include "math.h"
@@ -15,7 +18,6 @@
 #include <stdio.h>
 #include <iostream>
 #include <vector>
-#include <conio.h>
 #include "Solvers.h"
 #include "AbstractState.h"
 #include "externalmedialib.h"
