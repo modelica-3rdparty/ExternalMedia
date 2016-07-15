@@ -81,6 +81,10 @@ list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git
 list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/Sources")
 include_directories (${INCLUDE_DIRS})
 file (GLOB_RECURSE LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/*.cpp")
+if (NOT FLUIDP)
+    list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/FluidProp*.cpp")
+    list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/fluidpropsolver.cpp")
+endif()
 LIST (APPEND LIB_SOURCES $<TARGET_OBJECTS:CoolProp>)
 
 add_library (${LIBRARY_NAME} STATIC ${LIB_SOURCES})
