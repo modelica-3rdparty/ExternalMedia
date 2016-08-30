@@ -31,7 +31,7 @@ if (MSVC)
 #    set (CMAKE_C_FLAGS_DEBUG     "${CMAKE_C_FLAGS_DEBUG} /MTd")
     ADD_DEFINITIONS (-D_CRT_SECURE_NO_WARNINGS)
 endif()
-ADD_DEFINITIONS (-DMODELICA_ERRORS=0)
+ADD_DEFINITIONS (-DMODELICA_ERRORS=0 -DNOMINMAX)
 # Workaround for missing ModelicaMessage and ModelicaError objects
 set  (INCLUDE_DIRS "")
 
