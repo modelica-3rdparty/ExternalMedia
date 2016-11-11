@@ -210,152 +210,127 @@ void CoolPropSolver::setFluidConstants(){
 
 
 void CoolPropSolver::postStateChange(ExternalThermodynamicState *const properties) {
-	/// Some common code to avoid pitfalls from incompressibles
-	if (isCompressible)
-	{
-		try{
-			// Set the values in the output structure
-			properties->p = state->p();
-			properties->T = state->T();
-			properties->d = state->rhomass();
-			properties->h = state->hmass();
-			properties->s = state->smass();
-			if (state->phase() == CoolProp::iphase_twophase){
-				properties->phase = 2;
-			}
-			else{
-				properties->phase = 1;
-			}
-			properties->cv = state->cvmass();
-			properties->a = state->speed_sound();
-			if ((state->phase() == CoolProp::iphase_twophase) && state->Q() >= 0 && state->Q() <= twophase_derivsmoothing_xend && twophase_derivsmoothing_xend > 0.0)
-			{
-				// Use the smoothed derivatives between a quality of 0 and twophase_derivsmoothing_xend
-				properties->ddhp = state->first_two_phase_deriv_splined(CoolProp::iDmass, CoolProp::iHmass, CoolProp::iP, twophase_derivsmoothing_xend); // [1/kPa -- > 1/Pa]
-				properties->ddph = state->first_two_phase_deriv_splined(CoolProp::iDmass, CoolProp::iP, CoolProp::iHmass, twophase_derivsmoothing_xend); // [1/(kJ/kg) -- > 1/(J/kg)]
-			}
-			else if ((state->phase() == CoolProp::iphase_twophase) && state->Q() >= 0 && state->Q() <= rho_smoothing_xend && rho_smoothing_xend > 0.0)
-			{
-				// Use the smoothed density between a quality of 0 and rho_smoothing_xend
-				properties->ddhp =  state->first_two_phase_deriv_splined(CoolProp::iDmass, CoolProp::iHmass, CoolProp::iP, rho_smoothing_xend);
-				properties->ddph = state->first_two_phase_deriv_splined(CoolProp::iDmass, CoolProp::iP, CoolProp::iHmass, rho_smoothing_xend);
-				properties->d = state->first_two_phase_deriv_splined(CoolProp::iDmass, CoolProp::iDmass, CoolProp::iDmass, rho_smoothing_xend);
-			}
-			else
-			{
-				properties->ddhp = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iHmass, CoolProp::iP);
-				properties->ddph = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iP, CoolProp::iHmass);
-			}
+    /// Some common code to avoid pitfalls from incompressibles
+    if (isCompressible)
+    {
+        try{
+            // Set the values in the output structure
+            properties->p = state->p();
+            properties->T = state->T();
+            properties->d = state->rhomass();
+            properties->h = state->hmass();
+            properties->s = state->smass();
+            if (state->phase() == CoolProp::iphase_twophase){
+                properties->phase = 2;
+            }
+            else{
+                properties->phase = 1;
+            }
+            properties->cv = state->cvmass();
+            properties->a = state->speed_sound();
+            if ((state->phase() == CoolProp::iphase_twophase) && state->Q() >= 0 && state->Q() <= twophase_derivsmoothing_xend && twophase_derivsmoothing_xend > 0.0)
+            {
+                // Use the smoothed derivatives between a quality of 0 and twophase_derivsmoothing_xend
+                properties->ddhp = state->first_two_phase_deriv_splined(CoolProp::iDmass, CoolProp::iHmass, CoolProp::iP, twophase_derivsmoothing_xend); // [1/kPa -- > 1/Pa]
+                properties->ddph = state->first_two_phase_deriv_splined(CoolProp::iDmass, CoolProp::iP, CoolProp::iHmass, twophase_derivsmoothing_xend); // [1/(kJ/kg) -- > 1/(J/kg)]
+            }
+            else if ((state->phase() == CoolProp::iphase_twophase) && state->Q() >= 0 && state->Q() <= rho_smoothing_xend && rho_smoothing_xend > 0.0)
+            {
+                // Use the smoothed density between a quality of 0 and rho_smoothing_xend
+                properties->ddhp =  state->first_two_phase_deriv_splined(CoolProp::iDmass, CoolProp::iHmass, CoolProp::iP, rho_smoothing_xend);
+                properties->ddph = state->first_two_phase_deriv_splined(CoolProp::iDmass, CoolProp::iP, CoolProp::iHmass, rho_smoothing_xend);
+                properties->d = state->first_two_phase_deriv_splined(CoolProp::iDmass, CoolProp::iDmass, CoolProp::iDmass, rho_smoothing_xend);
+            }
+            else if (state->phase() == CoolProp::iphase_twophase)
+            {
+                properties->ddhp = state->first_two_phase_deriv(CoolProp::iDmass, CoolProp::iHmass, CoolProp::iP);
+                properties->ddph = state->first_two_phase_deriv(CoolProp::iDmass, CoolProp::iP, CoolProp::iHmass);
+            }
+            else
+            {
+                properties->ddhp = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iHmass, CoolProp::iP);
+                properties->ddph = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iP, CoolProp::iHmass);
+            }
 
-			// When two phases and EXTTP activated, interpolate some values from the saturated ones.
-			// Theses values have generally no physical meaning in this area.
-			if ((extend_twophase) && (properties->phase ==2))
-			{
-				/* Old way creating two more states.
-				// Temporary varriables
-				double cp_L, kappa_L, beta_L, eta_L, lambda_L, cp_V, kappa_V, beta_V, eta_V, lambda_V;
+            // When two phases and EXTTP activated, interpolate some values from the saturated ones.
+            // Theses values have generally no physical meaning in this area.
+            if ((extend_twophase) && (properties->phase ==2))
+            {
+                // Interpolation
+                properties->cp = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iCpmass), state->saturated_vapor_keyed_output(CoolProp::iCpmass));
+                properties->kappa = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iisothermal_compressibility), state->saturated_vapor_keyed_output(CoolProp::iisothermal_compressibility));
+                properties->beta = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iisobaric_expansion_coefficient), state->saturated_vapor_keyed_output(CoolProp::iisobaric_expansion_coefficient));
 
-				// Liquid saturation values: Q=0
-				state->update(CoolProp::PQ_INPUTS,properties->p,0);
+                if (calc_transport)
+                {
+                    properties->eta = interp_recip(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iviscosity), state->saturated_vapor_keyed_output(CoolProp::iviscosity));
+                    properties->lambda = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iconductivity), state->saturated_vapor_keyed_output(CoolProp::iconductivity));
+                } else {
+                    properties->eta    = NAN;
+                    properties->lambda = NAN;
+                }
 
-				cp_L = state->cpmass();
-				kappa_L = state->isothermal_compressibility();
-				beta_L = state->isobaric_expansion_coefficient();
-				if (calc_transport)
-				{
-					eta_L = state->viscosity();
-					lambda_L = state->conductivity();
-				}
-	
-				// Vapour saturation values: Q=1
-				state->update(CoolProp::PQ_INPUTS,properties->p,1);
+            }
+            else{
+                properties->cp = state->cpmass();
+                properties->kappa = state->isothermal_compressibility();
+                properties->beta = state->isobaric_expansion_coefficient();
 
-				cp_V = state->cpmass();
-				kappa_V = state->isothermal_compressibility();
-				beta_V = state->isobaric_expansion_coefficient();
-				if (calc_transport)
-				{
-					eta_V = state->viscosity();
-					lambda_V = state->conductivity();
-				}*/
-	
-				// Interpolation
-				properties->cp = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iCpmass), state->saturated_vapor_keyed_output(CoolProp::iCpmass));
-				properties->kappa = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iisothermal_compressibility), state->saturated_vapor_keyed_output(CoolProp::iisothermal_compressibility));
-				properties->beta = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iisobaric_expansion_coefficient), state->saturated_vapor_keyed_output(CoolProp::iisobaric_expansion_coefficient));
-
-				if (calc_transport)
-				{
-					properties->eta = interp_recip(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iviscosity), state->saturated_vapor_keyed_output(CoolProp::iviscosity));
-					properties->lambda = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iconductivity), state->saturated_vapor_keyed_output(CoolProp::iconductivity));
-				} else {
-					properties->eta    = NAN;
-					properties->lambda = NAN;
-				}
-
-				// Reset the state (to be sure not using the Q=1 state later): // was from the old way
-				//state->clear();
-			}
-			else{
-				properties->cp = state->cpmass();
-				properties->kappa = state->isothermal_compressibility();
-				properties->beta = state->isobaric_expansion_coefficient();
-
-				if (calc_transport)
-				{
-					properties->eta = state->viscosity();
-					properties->lambda = state->conductivity(); //[kW/m/K --> W/m/K]
-				} else {
-					properties->eta    = NAN;
-					properties->lambda = NAN;
-				}
-			}
-		}
-		catch(std::exception &e)
-		{
-			errorMessage((char*)e.what());
-		}
-	}
-	else // incompressible
-	{
-			try{
-				// Set the values in the output structure
-				properties->p = state->p();
-				properties->T = state->T();
-				properties->d = state->rhomass();
-				properties->h = state->hmass();
-				properties->s = state->smass();
-				properties->phase = 1;
-				properties->cp = state->cpmass();
-				properties->cv = state->cvmass();
-				properties->a     = NAN;
-				properties->ddhp = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iHmass, CoolProp::iP);
-				properties->ddph = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iP, CoolProp::iHmass);
-				properties->kappa = NAN;
-				properties->beta  = NAN;
-				if (calc_transport)
-				{
-					properties->eta = state->viscosity();
-					properties->lambda = state->conductivity(); //[kW/m/K --> W/m/K]
-				} else {
-					properties->eta    = NAN;
-					properties->lambda = NAN;
-				}
-			}
-			catch(std::exception &e)
-			{
-				errorMessage((char*)e.what());
-			}
-	}
-	if (debug_level > 50)
-	{
-		std::cout << format("At the end of %s \n","postStateChange");
-		std::cout << format("Setting pressure to %f \n",properties->p);
-		std::cout << format("Setting temperature to %f \n",properties->T);
-		std::cout << format("Setting density to %f \n",properties->d);
-		std::cout << format("Setting enthalpy to %f \n",properties->h);
-		std::cout << format("Setting entropy to %f \n",properties->s);
-	}
+                if (calc_transport)
+                {
+                    properties->eta = state->viscosity();
+                    properties->lambda = state->conductivity(); //[kW/m/K --> W/m/K]
+                } else {
+                    properties->eta    = NAN;
+                    properties->lambda = NAN;
+                }
+            }
+        }
+        catch(std::exception &e)
+        {
+            errorMessage((char*)e.what());
+        }
+    }
+    else // incompressible
+    {
+        try{
+            // Set the values in the output structure
+            properties->p = state->p();
+            properties->T = state->T();
+            properties->d = state->rhomass();
+            properties->h = state->hmass();
+            properties->s = state->smass();
+            properties->phase = 1;
+            properties->cp = state->cpmass();
+            properties->cv = state->cvmass();
+            properties->a     = NAN;
+            properties->ddhp = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iHmass, CoolProp::iP);
+            properties->ddph = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iP, CoolProp::iHmass);
+            properties->kappa = NAN;
+            properties->beta  = NAN;
+            if (calc_transport)
+            {
+                properties->eta = state->viscosity();
+                properties->lambda = state->conductivity(); //[kW/m/K --> W/m/K]
+            } else {
+                properties->eta    = NAN;
+                properties->lambda = NAN;
+            }
+        }
+        catch(std::exception &e)
+        {
+            errorMessage((char*)e.what());
+        }
+    }
+    if (debug_level > 50)
+    {
+        std::cout << format("At the end of %s \n","postStateChange");
+        std::cout << format("Setting pressure to %f \n",properties->p);
+        std::cout << format("Setting temperature to %f \n",properties->T);
+        std::cout << format("Setting density to %f \n",properties->d);
+        std::cout << format("Setting enthalpy to %f \n",properties->h);
+        std::cout << format("Setting entropy to %f \n",properties->s);
+    }
 }
 
 
