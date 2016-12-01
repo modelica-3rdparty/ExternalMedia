@@ -226,8 +226,6 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
             else{
                 properties->phase = 1;
             }
-            properties->cv = state->cvmass();
-            properties->a = state->speed_sound();
             if ((state->phase() == CoolProp::iphase_twophase) && state->Q() >= 0 && state->Q() <= twophase_derivsmoothing_xend && twophase_derivsmoothing_xend > 0.0)
             {
                 // Use the smoothed derivatives between a quality of 0 and twophase_derivsmoothing_xend
@@ -251,27 +249,45 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
                 properties->ddhp = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iHmass, CoolProp::iP);
                 properties->ddph = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iP, CoolProp::iHmass);
             }
-
             // When two phases and EXTTP activated, interpolate some values from the saturated ones.
             // Theses values have generally no physical meaning in this area.
-            if ((extend_twophase) && (properties->phase ==2))
-            {
-                // Interpolation
-                properties->cp = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iCpmass), state->saturated_vapor_keyed_output(CoolProp::iCpmass));
-                properties->kappa = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iisothermal_compressibility), state->saturated_vapor_keyed_output(CoolProp::iisothermal_compressibility));
-                properties->beta = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iisobaric_expansion_coefficient), state->saturated_vapor_keyed_output(CoolProp::iisobaric_expansion_coefficient));
-
-                if (calc_transport)
+            if (state->phase() == CoolProp::iphase_twophase){
+                if (extend_twophase)
                 {
-                    properties->eta = interp_recip(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iviscosity), state->saturated_vapor_keyed_output(CoolProp::iviscosity));
-                    properties->lambda = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iconductivity), state->saturated_vapor_keyed_output(CoolProp::iconductivity));
-                } else {
-                    properties->eta    = NAN;
+                    // Interpolation
+                    properties->cv = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iCvmass), state->saturated_vapor_keyed_output(CoolProp::iCvmass));
+                    properties->a = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::ispeed_sound), state->saturated_vapor_keyed_output(CoolProp::ispeed_sound));
+                    properties->cp = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iCpmass), state->saturated_vapor_keyed_output(CoolProp::iCpmass));
+                    //properties->kappa = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iisothermal_compressibility), state->saturated_vapor_keyed_output(CoolProp::iisothermal_compressibility));
+                    //properties->beta = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iisobaric_expansion_coefficient), state->saturated_vapor_keyed_output(CoolProp::iisobaric_expansion_coefficient));
+                    properties->kappa = NAN;
+                    properties->beta = NAN;
+
+                    if (calc_transport)
+                    {
+                        properties->eta = interp_recip(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iviscosity), state->saturated_vapor_keyed_output(CoolProp::iviscosity));
+                        properties->lambda = interp_linear(state->Q(), state->saturated_liquid_keyed_output(CoolProp::iconductivity), state->saturated_vapor_keyed_output(CoolProp::iconductivity));
+                    }
+                    else {
+                        properties->eta = NAN;
+                        properties->lambda = NAN;
+                    }
+
+                }
+                else {
+                    // No interpolation
+                    properties->cv = NAN;
+                    properties->a = NAN;
+                    properties->cp = NAN;
+                    properties->kappa = NAN;
+                    properties->beta = NAN;
+                    properties->eta = NAN;
                     properties->lambda = NAN;
                 }
-
-            }
+            } 
             else{
+				properties->cv = state->cvmass();
+				properties->a = state->speed_sound();
                 properties->cp = state->cpmass();
                 properties->kappa = state->isothermal_compressibility();
                 properties->beta = state->isobaric_expansion_coefficient();

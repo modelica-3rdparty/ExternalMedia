@@ -86,7 +86,7 @@ ExternalThermodynamicState state;	// Defined in the externalmedia headers
 int main()
 {	
 	// Dirrect CoolProp usage:
-	std::cout << "1.1) CoolProp AbstractState water" << std::endl;
+	std::cout << "\n1.1) CoolProp AbstractState water" << std::endl;
 	shared_ptr<CoolProp::AbstractState> Water(CoolProp::AbstractState::factory("HEOS","Water"));
     Water->update(CoolProp::PQ_INPUTS, 101325, 0); // SI units
 	//std::cout << "sat Cp: " << Water->saturated_liquid_keyed_output(CoolProp::iCpmass) << std::endl;
@@ -97,18 +97,18 @@ int main()
     std::cout << "h': " << Water->hmass() << " J/kg" << std::endl;
     std::cout << "h': " << Water->hmolar() << " J/mol" << std::endl;
     std::cout << "s': " << Water->smass() << " J/kg/K" << std::endl;
-    std::cout << "s': " << Water->smolar() << " J/mol/K\n" << std::endl;
+    std::cout << "s': " << Water->smolar() << " J/mol/K" << std::endl;
 
-	std::cout << "1.2) CoolProp AbstractState R407c" << std::endl;
+	std::cout << "\n1.2) CoolProp AbstractState R407c" << std::endl;
 	shared_ptr<CoolProp::AbstractState> R407c(CoolProp::AbstractState::factory("HEOS", "R407c"));
 	R407c->update(CoolProp::PQ_INPUTS, 700000, 0.5);
 	double dl = R407c->saturated_liquid_keyed_output(CoolProp::iDmass);
 	double dv = R407c->saturated_vapor_keyed_output(CoolProp::iDmass);
 	std::cout << "Liquid: " << dl << "kg/m^3" << std::endl;
-	std::cout << "Vapour: " << dv << "kg/m^3\n" << std::endl;
+	std::cout << "Vapour: " << dv << "kg/m^3" << std::endl;
 	
 	// Test of PropsSI
-	std::cout << "2.1) CoolProp PropsSI Helium" << std::endl;
+	std::cout << "\n2.1) CoolProp PropsSI Helium" << std::endl;
 	std::cout << "T: " << CoolProp::PropsSI("T","H",7430.890839,"S",1324.077157,"Helium") << std::endl;
 	std::cout << "P: " << CoolProp::PropsSI("P","H",7430.890839,"S",1324.077157,"Helium") << std::endl;
 
@@ -120,7 +120,7 @@ int main()
 
 	// Fluid constants by ExternalMedia
 	// Uses the function `printFluidConstants` defined at the beginning of this file
-	std::cout << "3.1) ExternalMedia Fluid Constants" << std::endl;
+	std::cout << "\n3.1) ExternalMedia Fluid Constants" << std::endl;
 	printFluidConstants("Water", "CoolProp", "Water");
 	printFluidConstants("Water", "CoolProp", "Water|debug=10");
 	printFluidConstants("R245fa", "CoolProp", "R245fa");
