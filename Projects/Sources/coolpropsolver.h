@@ -2,6 +2,8 @@
 #define COOLPROPSOLVER_H_
 
 #include "basesolver.h"
+#include "AbstractState.h"
+#include "crossplatform_shared_ptr.h"
 
 //! CoolProp solver class
 /*!
@@ -25,19 +27,20 @@
 class CoolPropSolver : public BaseSolver{
 
 protected:
-	class CoolPropStateClassSI *state;
-	bool enable_TTSE, enable_BICUBIC, calc_transport, extend_twophase;
+	//class CoolProp::AbstractState *state;
+	shared_ptr<CoolProp::AbstractState> state;
+	bool enable_TTSE, enable_BICUBIC, calc_transport, extend_twophase, isCompressible;
 	int debug_level;
 	double twophase_derivsmoothing_xend;
 	double rho_smoothing_xend;
-	long fluidType;
 	double _p_eps   ; // relative tolerance margin for subcritical pressure conditions
 	double _delta_h ; // delta_h for one-phase/two-phase discrimination
 	ExternalSaturationProperties _satPropsClose2Crit; // saturation properties close to  critical conditions
 
-	virtual void  preStateChange(void);
 	virtual void postStateChange(ExternalThermodynamicState *const properties);
 	long makeDerivString(const string &of, const string &wrt, const string &cst);
+	double interp_linear(double Q, double valueL, double valueV);
+	double interp_recip(double Q, double valueL, double valueV);
 
 public:
 	CoolPropSolver(const std::string &mediumName, const std::string &libraryName, const std::string &substanceName);

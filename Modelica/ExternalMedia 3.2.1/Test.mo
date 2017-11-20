@@ -1070,20 +1070,28 @@ package Test "Test models for the different solvers"
       extends Modelica.Icons.Example;
     package fluid_std
       extends ExternalMedia.Media.CoolPropMedium(
-        mediumName = "Pentane",
-        substanceNames = {"n-Pentane|rho_smoothing_xend=0.0"},
+        mediumName = "Water",
+        substanceNames = {"Water|rho_smoothing_xend=0.0|calc_transport=0"},
         inputChoice=ExternalMedia.Common.InputChoice.ph);
     end fluid_std;
 
     package fluid_spl
       extends ExternalMedia.Media.CoolPropMedium(
-        mediumName = "Pentane",
-        substanceNames = {"n-Pentane|rho_smoothing_xend=0.2"},
+        mediumName = "Water",
+        substanceNames = {"Water|rho_smoothing_xend=0.1|calc_transport=0"},
         inputChoice=ExternalMedia.Common.InputChoice.ph);
     end fluid_spl;
 
+    package fluid_tbl
+      extends ExternalMedia.Media.CoolPropMedium(
+        mediumName = "Water",
+        substanceNames = {"Water|rho_smoothing_xend=0.1|calc_transport=0|enable_TTSE=1"},
+        inputChoice=ExternalMedia.Common.InputChoice.ph);
+    end fluid_tbl;
+
     fluid_std.ThermodynamicState state_std "Properties of the two-phase fluid";
     fluid_spl.ThermodynamicState state_spl "Properties of the two-phase fluid";
+    fluid_tbl.ThermodynamicState state_tbl "Properties of the two-phase fluid";
 
     Modelica.SIunits.AbsolutePressure p;
     Modelica.SIunits.SpecificEnthalpy h;
@@ -1096,6 +1104,8 @@ package Test "Test models for the different solvers"
 
     Modelica.SIunits.Time t = 1;
 
+    Real x_std, x_spl, x_tbl;
+
     equation
       p = 10E5;
       sat_std = fluid_std.setSat_p(p);
@@ -1105,6 +1115,10 @@ package Test "Test models for the different solvers"
       h = (h_start - h_delta) + (h_end-h_start+2*h_delta)*time/t;
       state_std = fluid_std.setState_ph(p,h);
       state_spl = fluid_spl.setState_ph(p,h);
+      state_tbl = fluid_tbl.setState_ph(p,h);
+      x_std = fluid_std.vapourQuality(state_std);
+      x_spl = fluid_spl.vapourQuality(state_spl);
+      x_tbl = fluid_spl.vapourQuality(state_tbl);
     end RhoSmoothing;
   end CoolProp;
 
@@ -1773,7 +1787,8 @@ package Test "Test models for the different solvers"
 
     GenericModels.TestRunnerTwoPhase      testRunnerTwoPhaseWater1(
       hstart=4e5,
-      redeclare package TwoPhaseMedium = ExternalMedia.Examples.WaterCoolProp,
+      redeclare package TwoPhaseMedium =
+          ExternalMedia.Examples.WaterCoolPropTabular,
       p_start=100000)
       annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
   end WaterComparison;
