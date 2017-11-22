@@ -66,8 +66,13 @@
   This value is used as not a number value. It can be changed by
   the user if there is a more appropriate value.
 */
+#include <math.h>
+#ifndef NAN
 #define NAN 0xffffffff
+#endif
+#ifndef ISNAN
 #define ISNAN(x) (x == NAN)
+#endif
 
 /********************************************************************
  *                 End of user option selection

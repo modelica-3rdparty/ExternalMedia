@@ -1,8 +1,0 @@
-cd Sources
-make
-cp libExternalMediaLib.a "../../Modelica/ExternalMedia 3.2/Resources/Library"
-cp externalmedialib.h "../../Modelica/ExternalMedia 3.2/Resources/Include"
-cp libExternalMediaLib.a "../../Modelica/ExternalMedia 3.2.1/Resources/Library"
-cp externalmedialib.h "../../Modelica/ExternalMedia 3.2.1/Resources/Include"
-make clean
-

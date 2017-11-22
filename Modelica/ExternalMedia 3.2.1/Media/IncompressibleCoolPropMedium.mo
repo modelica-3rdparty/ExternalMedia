@@ -6,7 +6,7 @@ partial package IncompressibleCoolPropMedium
     singleState = true,
     reducedX =    true);
   import ExternalMedia.Common.InputChoiceIncompressible;
-  constant String libraryName = "CoolProp"
+  constant String libraryName = "CoolProp|INCOMP"
     "Name of the external fluid property computation library";
   constant String substanceName = ExternalMedia.Common.CheckCoolPropOptions(substanceNames[1],debug=false)
     "Only one substance can be specified, predefined mixture in CoolProp";

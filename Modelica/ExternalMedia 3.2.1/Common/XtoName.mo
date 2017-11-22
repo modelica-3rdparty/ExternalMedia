@@ -30,7 +30,7 @@ algorithm
     if noEvent(noEvent(composition[1]<=0) or noEvent(composition[1]>=1)) then
       result := substanceName;
     else
-      result := name + "-" + String(composition[1]) + rest;
+      result := name + "[" + String(composition[1]) + "]" + rest;
     end if;
   end if;
   if noEvent(debug) then
