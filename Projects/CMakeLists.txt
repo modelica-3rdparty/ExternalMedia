@@ -100,19 +100,19 @@ INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/${LIBRARY_HEADER}" DESTINATIO
 #     EXTERNAL PROJECT SETTINGS       #
 #######################################
 
-## Use the temporary directory to build submodules / external projects
-if(WIN32)
-  set(TMPDIR "$ENV{TEMP}")
-else()
-  set(TMPDIR "$ENV{TMPDIR}")
-endif()
-if(NOT TMPDIR)
-  message(FATAL_ERROR "The temporary directory could not be identified.")
-endif()
-if(NOT EXISTS "${TMPDIR}")
-  message(FATAL_ERROR "The temporary directory \"${TMPDIR}\" does not exists.")
-endif()
-file(TO_CMAKE_PATH "${TMPDIR}" TMPDIR)
+### Use the temporary directory to build submodules / external projects
+#if(WIN32)
+#  set(TMPDIR "$ENV{TEMP}")
+#else()
+#  set(TMPDIR "$ENV{TMPDIR}")
+#endif()
+#if(NOT TMPDIR)
+#  message(FATAL_ERROR "The temporary directory could not be identified.")
+#endif()
+#if(NOT EXISTS "${TMPDIR}")
+#  message(FATAL_ERROR "The temporary directory \"${TMPDIR}\" does not exists.")
+#endif()
+#file(TO_CMAKE_PATH "${TMPDIR}" TMPDIR)
 
 # Shorthand function to locate libraries
 function(find_files BASE_PATH FILE_PATTERNS OUTPUT_VAR)
