@@ -90,7 +90,7 @@ endif()
 
 add_library (${LIBRARY_NAME} ${LIB_SOURCES})
 set_property (TARGET ${LIBRARY_NAME} PROPERTY VERSION ${APP_VERSION})
-target_include_directories(${LIBRARY_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Sources")
+target_include_directories(${LIBRARY_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/Sources")
 
 INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/${CMAKE_SYSTEM_NAME}" )
 INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/${LIBRARY_HEADER}" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia ${APP_VERSION}/Resources/Include" )
@@ -229,14 +229,14 @@ if(ENABLE_COOLPROP)
   set_property(TARGET CoolPropLib PROPERTY IMPORTED_LOCATION_DEBUG   ${COOLPROP_INSTALL_DIR}/${COOLPROP_PATH_SUFFIX}/${COOLPROP_LIBRARY_DBG})
   add_dependencies(CoolPropLib coolprop-download)
 
-  target_link_libraries(${LIBRARY_NAME} PRIVATE CoolPropLib)
-  target_include_directories(${LIBRARY_NAME} PRIVATE ${COOLPROP_INCLUDES})
+  target_link_libraries(${LIBRARY_NAME} PUBLIC CoolPropLib)
+  target_include_directories(${LIBRARY_NAME} PUBLIC ${COOLPROP_INCLUDES})
 
   # Customise this part to use your own CPP files
   add_executable (coolprop_comparisons ${CMAKE_CURRENT_SOURCE_DIR}/Tests/coolprop_comparisons.cpp)
   target_link_libraries(coolprop_comparisons PRIVATE ${LIBRARY_NAME})
-  target_include_directories(coolprop_comparisons PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Sources)
-  target_link_libraries(coolprop_comparisons PRIVATE CoolPropLib)
-  target_include_directories(coolprop_comparisons PRIVATE ${COOLPROP_INCLUDES})
+  #target_include_directories(coolprop_comparisons PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Sources)
+  #target_link_libraries(coolprop_comparisons PRIVATE CoolPropLib)
+  #target_include_directories(coolprop_comparisons PRIVATE ${COOLPROP_INCLUDES})
 
 endif()

@@ -1,0 +1,22 @@
+
+platform:
+  - x64
+#  - x86
+ 
+configuration:
+#  - Release
+  - Debug
+
+install:
+  - git submodule update --init --recursive
+
+before_build:
+  - mkdir build
+  - pushd build
+  - cmake ../Projects
+  - popd
+
+build:
+  - cmake --build build --config %CONFIGURATION% --target coolprop-download
+  - cmake --build build --config %CONFIGURATION% --target ExternalMediaLib
+  - cmake --build build --config %CONFIGURATION% --target coolprop_comparisons
