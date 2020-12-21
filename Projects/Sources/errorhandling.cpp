@@ -17,7 +17,7 @@
 #define MODELICA_ERRORS 1
 #endif
 // The Dymola specific implementation does currently not work for dynamic link libraries
-#if ((DYMOLA == 1) || (OPENMODELICA == 1)) && (BUILD_DLL == 0) && (MODELICA_ERRORS == 1)
+#if ((DYMOLA == 1) || (OPEN_MODELICA == 1)) && (BUILD_DLL == 0) && (MODELICA_ERRORS == 1)
 extern "C" {
 #include "ModelicaUtilities.h"
 }

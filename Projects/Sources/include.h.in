@@ -26,7 +26,7 @@
   compiler that is going to be used with the compiled library.
   \sa OPEN_MODELICA
 */
-#define DYMOLA 1
+#define DYMOLA @ENABLE_DYMOLA_DEFINE@
 
 //! Modelica compiler is OpenModelica
 /*!
@@ -34,7 +34,7 @@
   compiler that is going to be used with the compiled library.
   \sa DYMOLA
 */
-#define OPEN_MODELICA 0
+#define OPEN_MODELICA @ENABLE_OPEN_MODELICA_DEFINE@
 
 // Selection of used external fluid property computation packages.
 //! FluidProp solver
@@ -42,7 +42,7 @@
   Set this preprocessor variable to 1 to include the interface to the
   FluidProp solver developed and maintained by Francesco Casella.
 */
-#define FLUIDPROP 1
+#define FLUIDPROP @ENABLE_FLUIDPROP_DEFINE@
 
 // Selection of used external fluid property computation packages.
 //! CoolProp solver
@@ -50,7 +50,7 @@
   Set this preprocessor variable to 1 to include the interface to the
   CoolProp solver developed and maintained by Ian Bell et al.
 */
-#define COOLPROP 1
+#define COOLPROP @ENABLE_COOLPROP_DEFINE@
 
 // Selection of build type for this project
 //! Build project into a DLL
@@ -59,7 +59,7 @@
   dynamic link library. This setting influences the error reporting
   mechanism as well as the export statement.
 */
-#define BUILD_DLL 0
+#define BUILD_DLL @BUILD_SHARED_LIBS_DEFINE@
 
 //! Not a number
 /*!
