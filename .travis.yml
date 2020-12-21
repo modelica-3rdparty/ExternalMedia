@@ -59,3 +59,4 @@ before_script:
 script:
   - cmake --build build --config Release --target coolprop-download
   - cmake --build build --config Release --target ExternalMediaLib
+  - cmake --build build --config Release --target coolprop_comparisons
