@@ -46,7 +46,7 @@ language:
 #      osx_image: xcode10
 
 before_script:
-  - cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release
+  - cmake -B ./build -S ./Projects -DCMAKE_BUILD_TYPE=Release
 script:     
   - cmake --build build --config Release --target coolprop-download
   - cmake --build build --config Release --target ExternalMediaLib
