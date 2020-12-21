@@ -158,14 +158,14 @@ if(ENABLE_COOLPROP)
   ExternalProject_Add(coolprop-download
     GIT_REPOSITORY    https://github.com/coolprop/coolprop.git
     GIT_TAG           v6.4.1
-  #  SOURCE_DIR        "${TMPDIR}/coolprop-src"
-  #  BINARY_DIR        "${TMPDIR}/coolprop-build"
-  #  INSTALL_DIR       "${CMAKE_BINARY_DIR}/coolprop-download-prefix"
+    SOURCE_DIR        "${CMAKE_BINARY_DIR}/coolprop-download-src"
+    BINARY_DIR        "${CMAKE_BINARY_DIR}/coolprop-download-build"
+    INSTALL_DIR       "${CMAKE_BINARY_DIR}/coolprop-download-prefix"
   #  INSTALL_COMMAND   ${CMAKE_COMMAND} -E copy_directory "${TMPDIR}/coolprop-src/install_root/" "${CMAKE_BINARY_DIR}/coolprop-download-prefix"
     CMAKE_ARGS ${COMMON_EXTERNAL_PROJECT_ARGS}
      -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}
-     -DCOOLPROP_STATIC_LIBRARY:BOOL=${ADD_COOLRPOP_STATIC}
-     -DCOOLPROP_SHARED_LIBRARY:BOOL=${ADD_COOLRPOP_SHARED}
+     -DCOOLPROP_STATIC_LIBRARY:BOOL=${ADD_COOLPROP_STATIC}
+     -DCOOLPROP_SHARED_LIBRARY:BOOL=${ADD_COOLPROP_SHARED}
      -DCOOLPROP_INSTALL_PREFIX:PATH=<INSTALL_DIR>
   )
 
