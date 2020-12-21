@@ -52,7 +52,7 @@ language:
 #  - cmake --build ./build --config Release --target ExternalMediaLib
 
 before_script:
-  - mkdir -p build
+  - mkdir build
   - pushd build
   - cmake ../Projects -DCMAKE_BUILD_TYPE=Release
   - popd
