@@ -29,26 +29,24 @@ language:
 #    - g++-6
 #    - clang-3.7
 
-matrix:
-  include:
-    - os: windows
-
-    - os: linux
-      compiler: gcc
-    - os: linux
-      compiler: clang
-
-    - os: osx
-      osx_image: xcode12
-    - os: osx
-      osx_image: xcode11
-    - os: osx
-      osx_image: xcode10
+#matrix:
+#  include:
+#    - os: windows
+#
+#    - os: linux
+#      compiler: gcc
+#    - os: linux
+#      compiler: clang
+#
+#    - os: osx
+#      osx_image: xcode12
+#    - os: osx
+#      osx_image: xcode11
+#    - os: osx
+#      osx_image: xcode10
 
 before_script:
-  - cmake --version
-  - echo "$CXX" && "$CXX" -v
-  - cmake -Bbuild -SProjects -DCMAKE_BUILD_TYPE=Release
+  - cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release
 script:     
   - cmake --build build --config Release --target coolprop-download
   - cmake --build build --config Release --target ExternalMediaLib
