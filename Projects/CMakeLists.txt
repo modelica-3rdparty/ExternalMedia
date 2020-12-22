@@ -24,6 +24,13 @@ set (LIBRARY_HEADER "externalmedialib.h")
 option(ENABLE_DYMOLA "Build a library that is compatible with the Dymola software" ON)
 option(ENABLE_OPEN_MODELICA "Build a library that is compatible with the Open Modelica environment" ON)
 
+# Use the Modelica Standard Library headers
+if(ENABLE_DYMOLA OR ENABLE_OPEN_MODELICA)
+  set(ENABLE_MSL_HEADERS ON)
+else()
+  set(ENABLE_MSL_HEADERS OFF)
+endif()
+
 option(ADD_FLUIDPROP_STATIC "NOT SUPPORTED: Link the static FluidProp library to ExternalMedia" OFF)
 option(ADD_FLUIDPROP_SHARED "Link the shared FluidProp library to ExternalMedia, requires FluidProp to be available in the system PATH" OFF)
 option(ADD_COOLPROP_STATIC "Link the static CoolProp library to ExternalMedia" ON)
@@ -44,7 +51,7 @@ else()
 endif()
 
 macro(set_define BASE_VAR)
-  if(BASE_VAR)
+  if(${BASE_VAR})
     set(${BASE_VAR}_DEFINE 1)
   else()
     set(${BASE_VAR}_DEFINE 0)
@@ -91,9 +98,22 @@ endif()
 add_library (${LIBRARY_NAME} ${LIB_SOURCES})
 set_property (TARGET ${LIBRARY_NAME} PROPERTY VERSION ${APP_VERSION})
 target_include_directories(${LIBRARY_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/Sources")
+if(ENABLE_MSL_HEADERS)
+  target_include_directories(${LIBRARY_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/ModelicaStandardLibrary")
+  target_compile_definitions(${LIBRARY_NAME} PRIVATE -DMODELICA_ERRORS=1)
+else()
+  target_compile_definitions(${LIBRARY_NAME} PRIVATE -DMODELICA_ERRORS=0)
+endif()
 
 INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/${CMAKE_SYSTEM_NAME}" )
 INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/${LIBRARY_HEADER}" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia ${APP_VERSION}/Resources/Include" )
+
+IF (MSVC)
+  # Add postfix for debugging
+  set_property(TARGET ${LIBRARY_NAME} PROPERTY DEBUG_POSTFIX d)
+  set_property(TARGET ${LIBRARY_NAME} PROPERTY RELEASE_POSTFIX )
+  #modify_msvc_flags("/MD") # Note that the default is not used if ${COOLPROP_MSVC_REL} or ${COOLPROP_MSVC_DBG} is set
+ENDIF (MSVC)
 
 
 #######################################
@@ -204,10 +224,16 @@ if(ENABLE_COOLPROP)
     set(COOLPROP_LIBRARY_SUFFIX ${CMAKE_SHARED_LIBRARY_SUFFIX})
     set(COOLPROP_INSTALL_DIR ${COOLPROP_INSTALL_DIR}/shared_library)
   endif()
+  
+  if(MSVC)
+    set(COOLPROP_RELEASE_POSTFIX )
+    set(COOLPROP_DEBUG_POSTFIX d)
+  endif(MSVC)
 
   set(COOLPROP_LIBRARY_NAME CoolProp)
-  set(COOLPROP_LIBRARY_REL ${COOLPROP_LIBRARY_PREFIX}${COOLPROP_LIBRARY_NAME}${CMAKE_RELEASE_POSTFIX}${COOLPROP_LIBRARY_SUFFIX})
-  set(COOLPROP_LIBRARY_DBG ${COOLPROP_LIBRARY_PREFIX}${COOLPROP_LIBRARY_NAME}${CMAKE_DEBUG_POSTFIX}${COOLPROP_LIBRARY_SUFFIX})
+  set(COOLPROP_LIBRARY_REL "${COOLPROP_LIBRARY_PREFIX}${COOLPROP_LIBRARY_NAME}${COOLPROP_RELEASE_POSTFIX}${COOLPROP_LIBRARY_SUFFIX}")
+  set(COOLPROP_LIBRARY_DBG "${COOLPROP_LIBRARY_PREFIX}${COOLPROP_LIBRARY_NAME}${COOLPROP_DEBUG_POSTFIX}${COOLPROP_LIBRARY_SUFFIX}")
+  message(STATUS "Linking ExternalMedia to ${COOLPROP_LIBRARY_REL} / ${COOLPROP_LIBRARY_DBG}")
 
   if(ADD_COOLPROP_STATIC)
     add_library(CoolPropLib STATIC IMPORTED GLOBAL)
@@ -229,17 +255,21 @@ if(ENABLE_COOLPROP)
     list(APPEND COOLPROP_INCLUDES "${COOLPROP_INSTALL_DIR}")
   endif()
   set_property(TARGET CoolPropLib PROPERTY IMPORTED_LOCATION_RELEASE ${COOLPROP_INSTALL_DIR}/${COOLPROP_PATH_SUFFIX}/${COOLPROP_LIBRARY_REL})
-  set_property(TARGET CoolPropLib PROPERTY IMPORTED_LOCATION_DEBUG   ${COOLPROP_INSTALL_DIR}/${COOLPROP_PATH_SUFFIX}/${COOLPROP_LIBRARY_DBG})
+  set_property(TARGET CoolPropLib PROPERTY IMPORTED_LOCATION_DEBUG ${COOLPROP_INSTALL_DIR}/${COOLPROP_PATH_SUFFIX}/${COOLPROP_LIBRARY_DBG})
   add_dependencies(CoolPropLib coolprop-download)
 
   target_link_libraries(${LIBRARY_NAME} PUBLIC CoolPropLib)
   target_include_directories(${LIBRARY_NAME} PUBLIC ${COOLPROP_INCLUDES})
 
-  # Customise this part to use your own CPP files
-  add_executable (coolprop_comparisons ${CMAKE_CURRENT_SOURCE_DIR}/Tests/coolprop_comparisons.cpp)
-  target_link_libraries(coolprop_comparisons PRIVATE ${LIBRARY_NAME})
-  #target_include_directories(coolprop_comparisons PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Sources)
-  #target_link_libraries(coolprop_comparisons PRIVATE CoolPropLib)
-  #target_include_directories(coolprop_comparisons PRIVATE ${COOLPROP_INCLUDES})
+  ## This links the final ExternalMedia library, gives conflicts due to the MSL headers
+  #add_executable (coolprop_comparisons ${CMAKE_CURRENT_SOURCE_DIR}/Tests/coolprop_comparisons.cpp)
+  #target_link_libraries(coolprop_comparisons PRIVATE ${LIBRARY_NAME})
+  
+  # This links the final ExternalMedia sources, avoids conflicts with the MSL headers
+  add_executable (coolprop_comparisons ${CMAKE_CURRENT_SOURCE_DIR}/Tests/coolprop_comparisons.cpp ${LIB_SOURCES})
+  target_compile_definitions(coolprop_comparisons PRIVATE -DMODELICA_ERRORS=0)
+  target_include_directories(coolprop_comparisons PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Sources)
+  target_link_libraries(coolprop_comparisons PRIVATE CoolPropLib)
+  target_include_directories(coolprop_comparisons PRIVATE ${COOLPROP_INCLUDES})
 
 endif()
