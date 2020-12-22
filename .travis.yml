@@ -47,12 +47,37 @@ language:
 
 matrix:
   include:
+    - os: windows
+    - os: linux
+      dist: focal
+      compiler: gcc
+    - os: linux
+      dist: focal
+      compiler: clang
     - os: linux
       dist: bionic
       compiler: gcc
     - os: linux
       dist: bionic
       compiler: clang
+    - os: linux
+      dist: xenial
+      compiler: gcc
+    - os: linux
+      dist: xenial
+      compiler: clang
+    - os: linux
+      dist: trusty
+      compiler: gcc
+    - os: linux
+      dist: trusty
+      compiler: clang
+    - os: osx
+      osx_image: xcode12
+    - os: osx
+      osx_image: xcode11
+    - os: osx
+      osx_image: xcode10
 
 #before_script:
 #  - cmake -B ./build -S ./Projects -DCMAKE_BUILD_TYPE=Release
