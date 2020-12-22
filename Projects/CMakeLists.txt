@@ -6,16 +6,16 @@ include(ExternalProject)
 #######################################
 
 # Project name
-project ("ExternalMedia")
+project("ExternalMedia")
 
 # Project version
-set (VERSION_MAJOR 3)
-set (VERSION_MINOR 3)
-set (VERSION_PATCH 0)
-set (APP_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
-message (STATUS "ExternalMedia library version: ${APP_VERSION}")
-set (LIBRARY_NAME "ExternalMediaLib")
-set (LIBRARY_HEADER "externalmedialib.h")
+set(VERSION_MAJOR 3)
+set(VERSION_MINOR 3)
+set(VERSION_PATCH 0)
+set(APP_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
+message(STATUS "ExternalMedia library version: ${APP_VERSION}")
+set(LIBRARY_NAME "ExternalMediaLib")
+set(LIBRARY_HEADER "externalmedialib.h")
 
 
 #######################################
@@ -106,7 +106,29 @@ else()
   target_compile_definitions(${LIBRARY_NAME} PRIVATE -DMODELICA_ERRORS=0)
 endif()
 
-INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/${CMAKE_SYSTEM_NAME}" )
+if(WIN32)
+  if(CMAKE_SIZEOF_VOID_P MATCHES "8")
+    set(MODELICA_PLATFORM "win64")
+  else()
+    set(MODELICA_PLATFORM "win32")
+  endif()
+elseif(APPLE)
+  if(CMAKE_SIZEOF_VOID_P MATCHES "8")
+    set(MODELICA_PLATFORM "linux64")
+  else()
+    set(MODELICA_PLATFORM "linux32")
+  endif()
+elseif(UNIX)
+  if(CMAKE_SIZEOF_VOID_P MATCHES "8")
+    set(MODELICA_PLATFORM "linux64")
+  else()
+    set(MODELICA_PLATFORM "linux32")
+  endif()
+else()
+  message(FATAL_ERROR "Could not determine the MODELICA_PLATFORM, aborting.")
+endif()
+
+INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/${MODELICA_PLATFORM}" )
 INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/${LIBRARY_HEADER}" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia ${APP_VERSION}/Resources/Include" )
 
 if(MSVC AND OFF)

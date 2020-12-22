@@ -19,3 +19,4 @@ before_build:
 build:
   - cmake --build build --config %CONFIGURATION% --target ExternalMediaLib
   - cmake --build build --config %CONFIGURATION% --target coolprop_comparisons
+  - cmake --build build --config %CONFIGURATION% --target install
