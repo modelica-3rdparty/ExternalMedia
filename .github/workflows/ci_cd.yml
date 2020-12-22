@@ -11,7 +11,7 @@ jobs:
   upload-release:
 
     runs-on: ubuntu-latest
-    needs: [build-macos, build-linux, build-windows]
+    needs: [build-linux, build-windows]
 
     steps:
     - uses: actions/checkout@v2
@@ -29,6 +29,19 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: uploads
+    - name: unzip artifacts
+      id: unzip-artifacts
+      run: |
+        ls -lh ./*
+        mkdir binaries
+        unzip -v ./uploads/*.zip ./binaries
+        ls -lh ./*
+        zip -r binaries binaries
+    - name: upload all artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        path: binaries.zip
+      
     #- name: upload macos
     #  id: upload-macos 
     #  uses: actions/upload-release-asset@v1.0.1
@@ -60,49 +73,49 @@ jobs:
     #    asset_name: windows.zip
     #    asset_content_type: application/zip                        
 
-  build-macos:
-    runs-on: macOS-latest
+  # build-macos:
+    # runs-on: macOS-latest
 
-    steps:
+    # steps:
 
-    - uses: actions/checkout@v2
+    # - uses: actions/checkout@v2
 
-    - name: Create Build Environment
-      run: |
-        cmake --version
-        cmake -E make_directory ${{runner.workspace}}/build
+    # - name: Create Build Environment
+      # run: |
+        # cmake --version
+        # cmake -E make_directory ${{runner.workspace}}/build
 
-    - name: Configure CMake
-      working-directory: ${{runner.workspace}}/build
-      # Note the current convention is to use the -S and -B options here to specify source 
-      # and build directories, but this is only available with CMake 3.13 and higher.  
-      # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-      run: cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release
+    # - name: Configure CMake
+      # working-directory: ${{runner.workspace}}/build
+      # # Note the current convention is to use the -S and -B options here to specify source 
+      # # and build directories, but this is only available with CMake 3.13 and higher.  
+      # # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
+      # run: cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release
 
-    - name: Build
-      working-directory: ${{runner.workspace}}/build
-      run: cmake --build .
+    # - name: Build
+      # working-directory: ${{runner.workspace}}/build
+      # run: cmake --build .
 
-    - name: Install
-      working-directory: ${{runner.workspace}}/build
-      run: cmake --build . --target install
+    # - name: Install
+      # working-directory: ${{runner.workspace}}/build
+      # run: cmake --build . --target install
 
-    - name: zip macos artifacts
-      run: |
-        zip -r macos Modelica
-    - name: upload macos artifacts
-      uses: actions/upload-artifact@v1
-      with:
-        name: uploads
-        path: macos.zip
+    # - name: zip macos artifacts
+      # run: |
+        # zip -r macos Modelica
+    # - name: upload macos artifacts
+      # uses: actions/upload-artifact@v1
+      # with:
+        # name: uploads
+        # path: macos.zip
 
 
   build-linux:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        cxx_compiler: [gcc, clang]
+    #strategy:
+    #  matrix:
+    #    cxx_compiler: [gcc, clang]
 
     steps:
 
@@ -114,13 +127,13 @@ jobs:
         cmake -E make_directory ${{runner.workspace}}/build
 
     - name: Configure CMake
-      env:
-        CXX_COMPILER: ${{ matrix.cxx_compiler }}
+      #env:
+      #  CXX_COMPILER: ${{ matrix.cxx_compiler }}
       working-directory: ${{runner.workspace}}/build
       # Note the current convention is to use the -S and -B options here to specify source 
       # and build directories, but this is only available with CMake 3.13 and higher.  
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-      run: cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=${CXX_COMPILER}
+      run: cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release
 
     - name: Build
       working-directory: ${{runner.workspace}}/build
