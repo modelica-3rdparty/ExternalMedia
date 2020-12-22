@@ -257,7 +257,7 @@ if(ENABLE_COOLPROP)
   set_property(TARGET CoolPropLib PROPERTY IMPORTED_LOCATION_DEBUG ${COOLPROP_INSTALL_DIR}/${COOLPROP_PATH_SUFFIX}/${COOLPROP_LIBRARY_DBG})
   add_dependencies(CoolPropLib coolprop-download)
 
-  target_link_libraries(${LIBRARY_NAME} PUBLIC CoolPropLib)
+  target_link_libraries(${LIBRARY_NAME} PUBLIC CoolPropLib ${CMAKE_DL_LIBS})
   target_include_directories(${LIBRARY_NAME} PUBLIC ${COOLPROP_INCLUDES})
 
   ## This links the final ExternalMedia library, gives conflicts due to the MSL headers
@@ -268,7 +268,7 @@ if(ENABLE_COOLPROP)
   add_executable (coolprop_comparisons ${CMAKE_CURRENT_SOURCE_DIR}/Tests/coolprop_comparisons.cpp ${LIB_SOURCES})
   target_compile_definitions(coolprop_comparisons PRIVATE -DMODELICA_ERRORS=0)
   target_include_directories(coolprop_comparisons PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Sources)
-  target_link_libraries(coolprop_comparisons PRIVATE CoolPropLib)
+  target_link_libraries(coolprop_comparisons PRIVATE CoolPropLib ${CMAKE_DL_LIBS})
   target_include_directories(coolprop_comparisons PRIVATE ${COOLPROP_INCLUDES})
 
 endif()
