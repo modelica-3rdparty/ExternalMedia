@@ -112,7 +112,7 @@ if(MSVC AND OFF)
   # Add postfix for debugging, this breaks the Modelica code, use it carefully
   set_property(TARGET ${LIBRARY_NAME} PROPERTY DEBUG_POSTFIX d)
   set_property(TARGET ${LIBRARY_NAME} PROPERTY RELEASE_POSTFIX )
-endif(MSVC)
+endif()
 
 
 #######################################
