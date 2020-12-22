@@ -25,22 +25,23 @@ jobs:
     #    release_name: Release ${{ github.ref }}
     #    draft: false
     #    prerelease: false
-    - name: download artifacts
-      uses: actions/download-artifact@v1
-      with:
-        name: uploads
-    - name: unzip artifacts
-      id: unzip-artifacts
-      run: |
-        ls -lh ./*
-        mkdir binaries
-        unzip -v ./uploads/*.zip ./binaries
-        ls -lh ./*
-        zip -r binaries binaries
-    - name: upload all artifacts
-      uses: actions/upload-artifact@v1
-      with:
-        path: binaries.zip
+
+    #- name: download artifacts
+    #  uses: actions/download-artifact@v1
+    #  with:
+    #    name: uploads
+    #- name: unzip artifacts
+    #  id: unzip-artifacts
+    #  run: |
+    #    ls -lh ./*
+    #    mkdir binaries
+    #    unzip -v ./uploads/*.zip ./binaries
+    #    ls -lh ./*
+    #    zip -r binaries binaries
+    #- name: upload all artifacts
+    #  uses: actions/upload-artifact@v1
+    #  with:
+    #    path: binaries.zip
       
     #- name: upload macos
     #  id: upload-macos 
@@ -134,7 +135,7 @@ jobs:
       # and build directories, but this is only available with CMake 3.13 and higher.  
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
       run: cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release
-
+        
     - name: Build
       working-directory: ${{runner.workspace}}/build
       run: cmake --build .
@@ -151,6 +152,11 @@ jobs:
       with:
         name: uploads
         path: linux.zip
+    - name: upload linux artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: binaries
+        path: Modelica
 
 
   build-windows:
@@ -193,3 +199,8 @@ jobs:
       with:
         name: uploads
         path: windows.zip
+    - name: upload windows artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: binaries
+        path: Modelica
