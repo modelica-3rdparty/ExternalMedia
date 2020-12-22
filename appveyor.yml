@@ -17,6 +17,5 @@ before_build:
   - popd
 
 build:
-  - cmake --build build --config %CONFIGURATION% --target coolprop-download
   - cmake --build build --config %CONFIGURATION% --target ExternalMediaLib
   - cmake --build build --config %CONFIGURATION% --target coolprop_comparisons

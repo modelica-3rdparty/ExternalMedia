@@ -66,6 +66,5 @@ before_script:
   - cmake ../Projects -DCMAKE_BUILD_TYPE=Release
   - popd
 script:
-  - cmake --build build --config Release --target coolprop-download
   - cmake --build build --config Release --target ExternalMediaLib
   - cmake --build build --config Release --target coolprop_comparisons
