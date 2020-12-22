@@ -1,0 +1,184 @@
+name: CMake CI/CD
+
+#on:
+#  push:
+#    tags:
+#      - 'v*'
+
+on: [push]
+
+jobs:
+  upload-release:
+
+    runs-on: ubuntu-latest
+    needs: [build-macos, build-linux, build-windows]
+
+    steps:
+    - uses: actions/checkout@v2
+    #- name: create release
+    #  id: create_release
+    #  uses: actions/create-release@master
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.TOKEN }}
+    #  with:
+    #    tag_name: ${{ github.ref }}
+    #    release_name: Release ${{ github.ref }}
+    #    draft: false
+    #    prerelease: false
+    - name: download artifacts
+      uses: actions/download-artifact@v1
+      with:
+        name: uploads
+    #- name: upload macos
+    #  id: upload-macos 
+    #  uses: actions/upload-release-asset@v1.0.1
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  with:
+    #    upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #    asset_path: ./uploads/macos.zip
+    #    asset_name: macos.zip
+    #    asset_content_type: application/zip  
+    #- name: upload linux
+    #  id: upload-linux
+    #  uses: actions/upload-release-asset@v1.0.1
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  with:
+    #    upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #    asset_path: ./uploads/linux.zip
+    #    asset_name: linux.zip
+    #    asset_content_type: application/zip   
+    #- name: upload windows
+    #  id: upload-windows
+    #  uses: actions/upload-release-asset@v1.0.1
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  with:
+    #    upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #    asset_path: ./uploads/windows.zip
+    #    asset_name: windows.zip
+    #    asset_content_type: application/zip                        
+
+  build-macos:
+    runs-on: macOS-latest
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Create Build Environment
+      run: |
+        cmake --version
+        cmake -E make_directory ${{runner.workspace}}/build
+
+    - name: Configure CMake
+      working-directory: ${{runner.workspace}}/build
+      # Note the current convention is to use the -S and -B options here to specify source 
+      # and build directories, but this is only available with CMake 3.13 and higher.  
+      # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
+      run: cmake $GITHUB_WORKSPACE/Projects -DCMAKE_BUILD_TYPE=Release
+
+    - name: Build
+      working-directory: ${{runner.workspace}}/build
+      run: cmake --build .
+
+    - name: Install
+      working-directory: ${{runner.workspace}}/build
+      run: cmake --build . --target install
+
+    - name: zip macos artifacts
+      run: |
+        zip -r macos Modelica
+    - name: upload macos artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: uploads
+        path: macos.zip
+
+
+  build-linux:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        cxx_compiler: [gcc, clang]
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Create Build Environment
+      run: |
+        cmake --version
+        cmake -E make_directory ${{runner.workspace}}/build
+
+    - name: Configure CMake
+      env:
+        CXX_COMPILER: ${{ matrix.cxx_compiler }}
+      working-directory: ${{runner.workspace}}/build
+      # Note the current convention is to use the -S and -B options here to specify source 
+      # and build directories, but this is only available with CMake 3.13 and higher.  
+      # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
+      run: cmake $GITHUB_WORKSPACE/Projects -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=${CXX_COMPILER}
+
+    - name: Build
+      working-directory: ${{runner.workspace}}/build
+      run: cmake --build .
+
+    - name: Install
+      working-directory: ${{runner.workspace}}/build
+      run: cmake --build . --target install
+
+    - name: zip linux artifacts
+      run: |
+        zip -r linux Modelica
+    - name: upload linux artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: uploads
+        path: linux.zip
+
+
+  build-windows:
+    runs-on: ${{ matrix.platform }}
+
+    strategy:
+      matrix:
+        platform: [windows-2019, windows-2016]
+        arch: [Win32, Win64]
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Create Build Environment
+      run: |
+        cmake --version
+        cmake -E make_directory ${{runner.workspace}}/build
+
+    - name: Configure CMake
+      env:
+        ARCH: ${{ matrix.arch }}
+      working-directory: ${{runner.workspace}}/build
+      # Note the current convention is to use the -S and -B options here to specify source 
+      # and build directories, but this is only available with CMake 3.13 and higher.  
+      # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
+      run: cmake %GITHUB_WORKSPACE%/Projects -DCMAKE_BUILD_TYPE=Release -A %ARCH%
+
+    - name: Build
+      working-directory: ${{runner.workspace}}/build
+      run: cmake --build .
+
+    - name: Install
+      working-directory: ${{runner.workspace}}/build
+      run: cmake --build . --target install
+
+    - name: zip windows artifact
+      run: |
+        powershell Compress-Archive Modelica windows.zip 
+    - name: upload windows artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: uploads
+        path: windows.zip
