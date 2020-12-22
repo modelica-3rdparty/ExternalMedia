@@ -131,11 +131,11 @@ endif()
 INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/${MODELICA_PLATFORM}" )
 INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/${LIBRARY_HEADER}" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia ${APP_VERSION}/Resources/Include" )
 
-if(MSVC AND OFF)
-  # Add postfix for debugging, this breaks the Modelica code, use it carefully
-  set_property(TARGET ${LIBRARY_NAME} PROPERTY DEBUG_POSTFIX d)
-  set_property(TARGET ${LIBRARY_NAME} PROPERTY RELEASE_POSTFIX )
-endif()
+#if(MSVC)
+# Add postfix for debugging, this breaks the Modelica code, use it carefully
+set_property(TARGET ${LIBRARY_NAME} PROPERTY DEBUG_POSTFIX d)
+set_property(TARGET ${LIBRARY_NAME} PROPERTY RELEASE_POSTFIX )
+#endif()
 
 
 #######################################
