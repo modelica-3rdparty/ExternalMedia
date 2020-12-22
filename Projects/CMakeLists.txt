@@ -161,9 +161,11 @@ if(ENABLE_COOLPROP)
     SOURCE_DIR        "${CMAKE_BINARY_DIR}/coolprop-download-src"
     BINARY_DIR        "${CMAKE_BINARY_DIR}/coolprop-download-build"
     INSTALL_DIR       "${CMAKE_BINARY_DIR}/coolprop-download-prefix"
+    BUILD_COMMAND     "${CMAKE_COMMAND}" --build <BINARY_DIR> --config $<CONFIG>
   #  INSTALL_COMMAND   ${CMAKE_COMMAND} -E copy_directory "${TMPDIR}/coolprop-src/install_root/" "${CMAKE_BINARY_DIR}/coolprop-download-prefix"
     CMAKE_ARGS ${COMMON_EXTERNAL_PROJECT_ARGS}
-     -DCMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}
+     -DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH}
+     -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
      -DCOOLPROP_STATIC_LIBRARY:BOOL=${ADD_COOLPROP_STATIC}
      -DCOOLPROP_SHARED_LIBRARY:BOOL=${ADD_COOLPROP_SHARED}
      -DCOOLPROP_DEBUG:BOOL=$<CONFIG:Debug>
@@ -185,7 +187,8 @@ if(ENABLE_COOLPROP)
     COMMENT "Cleaning the generated files for the CoolProp builds"
   )
 
-  if(CMAKE_CL_64)
+  #if(CMAKE_CL_64)
+  if(CMAKE_SIZEOF_VOID_P MATCHES "8")
     set(COOLPROP_BITNESS "64")
   else()
     set(COOLPROP_BITNESS "32")
