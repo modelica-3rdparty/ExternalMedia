@@ -164,17 +164,15 @@ jobs:
       # Note the current convention is to use the -S and -B options here to specify source 
       # and build directories, but this is only available with CMake 3.13 and higher.  
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-      run: |
-        echo "${env:GITHUB_WORKSPACE}"
-        echo "${env:ARCH}"
+      run: cmake "${env:GITHUB_WORKSPACE}"/Projects -A"${env:ARCH}"
 
     - name: Build
       working-directory: ${{runner.workspace}}/build
-      run: cmake --build .
+      run: cmake --build . --config Release
 
     - name: Install
       working-directory: ${{runner.workspace}}/build
-      run: cmake --build . --target install
+      run: cmake --build . --target install --config Release
 
     - name: zip windows artifact
       run: |
