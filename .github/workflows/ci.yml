@@ -27,8 +27,8 @@ jobs:
     - name: Configure with CMake
       working-directory: ${{runner.workspace}}/build
       run: |
-       cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDP=1 -DCOOLP=1 || true
-       cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDP=1 -DCOOLP=1
+       cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDP=0 -DCOOLP=1 || true
+       cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDP=0 -DCOOLP=1
     - name: Build with CMake
       working-directory: ${{runner.workspace}}/build
       run: cmake --build . --target ExternalMediaLib
@@ -53,8 +53,8 @@ jobs:
     - name: Configure with CMake
       working-directory: ${{runner.workspace}}/build
       run: |
-        cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDP=1 -DCOOLP=1 || true
-        cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDP=1 -DCOOLP=1
+        cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDP=0 -DCOOLP=1 || true
+        cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDP=0 -DCOOLP=1
     - name: Build with CMake
       working-directory: ${{runner.workspace}}/build
       run: cmake --build . --target ExternalMediaLib
