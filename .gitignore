@@ -21,3 +21,4 @@ dymosim.exp
 dymosim.lib
 /.svn/
 /externals/
+/build/

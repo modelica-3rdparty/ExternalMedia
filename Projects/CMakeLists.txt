@@ -42,10 +42,16 @@ set(INCLUDE_DIRS "")
 
 if(COOLP)
   if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
-    file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/5.1.1/source/CoolProp_sources.zip/download ${CMAKE_BINARY_DIR}/coolprop.zip)
+    file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/5.1.1/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
     file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/coolprop-tmp")
+    # Use CMake to unzip
+    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/coolprop-tmp")
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E tar xjf "${CMAKE_BINARY_DIR}/coolprop.zip"
+      WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/coolprop-tmp"
+    )
     #file(ARCHIVE_EXTRACT INPUT ${CMAKE_BINARY_DIR}/coolprop.zip)
-    execute_process(COMMAND unzip ${CMAKE_BINARY_DIR}/coolprop.zip -d "${CMAKE_BINARY_DIR}/coolprop-tmp")
+    #execute_process(COMMAND unzip ${CMAKE_BINARY_DIR}/coolprop.zip -d "${CMAKE_BINARY_DIR}/coolprop-tmp")
     #execute_process(COMMAND sed -i '421s;^;\#;' "${CMAKE_BINARY_DIR}/coolprop-tmp/CoolProp.sources/CMakeLists.txt")
     file(MAKE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../externals")
     file(RENAME "${CMAKE_BINARY_DIR}/coolprop-tmp/CoolProp.sources" "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
@@ -103,7 +109,9 @@ if (NOT FLUIDP)
     list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/FluidProp_COM.cpp")
     list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/fluidpropsolver.cpp")
 endif()
+if(COOLP)
 LIST (APPEND LIB_SOURCES $<TARGET_OBJECTS:CoolProp>)
+endif()
 
 add_library (${LIBRARY_NAME} STATIC ${LIB_SOURCES})
 set_property (TARGET ${LIBRARY_NAME} PROPERTY VERSION ${APP_VERSION})
