@@ -32,13 +32,13 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 	//Check if a backend has been added to the fluid name (ex: REFPROP::Propane)
     std::string backend;
     CoolProp::extract_backend(name_options[0], backend, this->substanceName);
-    
+
     // Set the default composition
     std::vector<double> fractions(1, 1.0);
     const std::vector<double> *fractions_ptr = NULL;
     this->substanceName = CoolProp::extract_fractions(this->substanceName, fractions);
     fractions_ptr = &fractions;
-    
+
 	if (backend == "?") // If no backend found in the fluid name
 	{
 		if (library_options.size() > 1)	//Check if an option has been added to libraryName (should be the case for all incompressible)
@@ -284,7 +284,7 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
                     properties->eta = NAN;
                     properties->lambda = NAN;
                 }
-            } 
+            }
             else{
 				properties->cv = state->cvmass();
 				properties->a = state->speed_sound();
@@ -382,10 +382,6 @@ void CoolPropSolver::setSat_p(double &p, ExternalSaturationProperties *const pro
 		  ** state->saturated_vapor_keyed_output(CoolProp::iDmass)       **
 		  ** would be interesting but this doesn't solve the derivatives */
 
-		  /* TODO:                                                                                                  **
-		  ** Uncoment the `specify_phase` when issue 656 is solved: https://github.com/CoolProp/CoolProp/issues/656 **
-		  ** This will allow for a full state update and a speed enhancement                                        */
-
 		  // At bubble line:
 		  state->specify_phase(CoolProp::iphase_liquid);
 		  state->update(CoolProp::PQ_INPUTS,p,0);
@@ -460,7 +456,7 @@ void CoolPropSolver::setSat_T(double &T, ExternalSaturationProperties *const pro
 		  // Ancillary equations - fast but not 100% consistent with the rest
 		  //properties->dl = state->saturation_ancillary(CoolProp::iDmass,0,CoolProp::iT,T);
 		  //properties->dl = state->saturation_ancillary(CoolProp::iDmolar,0,CoolProp::iT,T)/state->molar_mass();
-		  
+
 		  // At bubble line:
 		  state->specify_phase(CoolProp::iphase_liquid);
 		  state->update(CoolProp::QT_INPUTS,0,T);
