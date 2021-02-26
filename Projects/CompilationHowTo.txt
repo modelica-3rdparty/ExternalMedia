@@ -4,68 +4,36 @@ This directory contains the C/C++ source files in the Sources directory
 and script files to build the library using different Modelica tools,
 operating systems, and C/C++ compilers.
 
+Instructions below build the static gcc library and copy it and the
+externalmedia.h header files in the Resource directories of the
+Modelica packages, so it can be used right away by just loading the
+package in you Modelica software.
 
-## BUILDING THE LIBRARY FOR DYMOLA USING MICROSOFT VISUAL STUDIO ON WINDOWS
+## Dymola and Visual Studio
 
-Run the BuildLib-Dymola-VS20XX.bat script corresponding to the version
-of Visual Studio that Dymola uses to compile the simulation executable.
-This can be done from the Windows console (cmd.exe), or just by
-double-clicking on the .bat file from the file explorer.
+Open the `BuildLib-CMake.bat` file and select the CMake generator that matches
+your Modelica compiler. Please note that you also have to select whether you
+run 32bit or 64bit. After editing the file, you can launch the compilation by
+double-clicking on `BuildLib-CMake.bat`.
 
-The scripts build the static library, copies it twice to the Resources/Library
-directory of the Modelica library, once with a version- and tool-specific name,
-for archival on the SVN server, and once with the appropriate name ExternalMediaLib.lib,
-which is loaded by the Modelica tool. Note that this latter file is not stored
-as such on the SVN repo, because there are different versions of it depending
-the compiler used. Finally, it copies the externalmedia.h header file into the 
-Resources/Include directory. In this way, the library can be used right away
-by loading the main package.mo file immediately after running the compile script.
-
-For library maintenance, it is suggested that the Visual Studio binary libraries
-are updated on the SVN server when major changes or bugfixes are applied to the
-source code, so that other users can benefit without the need of recompiling them
-
-## Getting the CoolProp code and its dependencies
-
-Earlier versions of ExternalMedia included CoolProp as an external repository and 
-the checkout of the code from the SVN automatically downloaded CoolProp. This is no 
-longer possible since CoolProp 5 has external dependencies itself and there is no 
-way to connect the git submodules to ExternalMedia's SVN structure. 
-
-Before you start, be sure to have all the requirements for CoolProp installed. Follow 
-the instructions on the 
-[CoolProp homepage](http://coolprop.sourceforge.net/coolprop/wrappers/index.html#common-wrapper-prerequisites)
-before you proceed with the compilation. As soon as you have all tools in place, 
-you can start out by compiling a collection of binary object files from the CoolProp
-library. Make sure that you can access **cmake**, **git** and **python** from the command 
-line, the rest should be handled by the build script.
-
-
-## BUIDING THE LIBRARY FOR OPENMODELICA USING GCC ON WINDOWS AND LINUX
+## OpenModelica on Windows
 
 - Get the OMDEV environment from the SVN repository:
   https://openmodelica.org/svn/OpenModelicaExternal/trunk/tools/windows/OMDev
   user: anonymous
   pass: none
 - Install OMDEV in the C:\OMDev path
-- Start C:\OMDev\tools\msys\msys.bat (You should get a command window pop up
-  that looks like the emulation of a unix prompt - because it is)
+- Start either C:\OMDev\tools\msys\mingw64_shell.bat (for 64bit installations) 
+  or C:\OMDev\tools\msys\mingw32_shell.bat (for 32bit installations)
 - $ mount d:/Path_to_your_ExternalMediaLibrary_working_copy /ExternalMediaLibrary
 - $ cd /ExternalMediaLibrary/Projects
-- $ ./BuildLib-OMC-gcc.sh
- 
-This will build the static gcc library and copy it and the externalmedia.h
-header files in the Resource directories of the Modelica packages, so it can
-be used right away by just loading the Modelica package in OMC
+- $ ./BuildLib-CMake.sh
 
-## For Dymola users on Linux systems
+## Linux users (Dymola and OpenModelica)
 
 This procedure has not been tested with OpenModelica. Please report any errors
 in order to help us to improve the Linux support of ExternalMedia. 
 
-Please compile the source code using the `makefile-linux` from the console:
+ - Open a command prompt and go to the ExternalMedia folder
 - Go to the `Projects` directory: `cd Projects`
-- Compile the files: `make -f makefile header library`
-- Install the files: `make -f makefile install`
-
-You can now load the library, by opening the package.mo file
+- Install the files: `./BuildLib-CMake.sh`

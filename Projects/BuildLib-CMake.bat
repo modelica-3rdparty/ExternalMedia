@@ -7,26 +7,6 @@ REM    requires that you know the name of your CMake generator, if
 REM    you have more than one development environment installed.
 REM   ******************* README *********************************
 
-:: For Windows builds in 32bit
-::set CMake_generator="Visual Studio 9 2008"
-::set CMake_generator="Visual Studio 10 2010"
-::set CMake_generator="Visual Studio 11 2012"
-::set CMake_generator="Visual Studio 12 2013"
-::set CMake_generator="Visual Studio 14 2015"
-
-:: For Windows builds in 64bit
-::set CMake_generator="Visual Studio 9 2008 Win64"
-::set CMake_generator="Visual Studio 10 2010 Win64"
-::set CMake_generator="Visual Studio 11 2012 Win64"
-::set CMake_generator="Visual Studio 12 2013 Win64"
-::set CMake_generator="Visual Studio 14 2015 Win64"
-
-set EXTERNALS="..\externals"
-if not exist "%EXTERNALS%" (mkdir "%EXTERNALS%")
-pushd "%EXTERNALS%"
-set CP_SRC=!CD!\CoolProp.git
-popd 
-
 set BUILD_DIR="build"
 if not exist "%BUILD_DIR%" (mkdir "%BUILD_DIR%")
 pushd "%BUILD_DIR%"
@@ -51,24 +31,27 @@ for /f "delims=" %%a in ('FINDSTR COOLPROP Sources\include.h') do (
 for /f "tokens=3" %%a in ("%line[0]%") do set COOLP=%%a
 echo  CoolProp support set to: %COOLP%
 
-if "%COOLP%"=="1" (
-  echo ******************** CoolProp ******************************
-  echo Sources are located in %CP_SRC%
-  if exist "%CP_SRC%" (
-    pushd "%CP_SRC%"
-    git pull origin master
-    git submodule init
-    git submodule update
-    :: git submodule foreach git pull origin master
-    popd 
-  ) else (
-    git clone --recursive https://github.com/CoolProp/CoolProp.git "%CP_SRC%"
-  )
-)
-
 pushd "%BUILD_DIR%"
-:: cmake .. -G "%CMake_generator%" 
-cmake .. 
+:: Select one of the options below
+:: :: Use 64bit
+:: cmake .. -G "Visual Studio 9 2008"  -A "x64" -DFLUIDP=%FLUIDP% -DCOOLP=%COOLP%
+:: cmake .. -G "Visual Studio 10 2010" -A "x64" -DFLUIDP=%FLUIDP% -DCOOLP=%COOLP%
+:: cmake .. -G "Visual Studio 11 2012" -A "x64" -DFLUIDP=%FLUIDP% -DCOOLP=%COOLP%
+:: cmake .. -G "Visual Studio 12 2013" -A "x64" -DFLUIDP=%FLUIDP% -DCOOLP=%COOLP%
+:: cmake .. -G "Visual Studio 14 2015" -A "x64" -DFLUIDP=%FLUIDP% -DCOOLP=%COOLP%
+:: cmake .. -G "Visual Studio 15 2017" -A "x64" -DFLUIDP=%FLUIDP% -DCOOLP=%COOLP%
+:: cmake .. -G "Visual Studio 16 2019" -A "x64" -DFLUIDP=%FLUIDP% -DCOOLP=%COOLP%
+:: :: Use 32bit
+:: cmake .. -G "Visual Studio 9 2008"  -A "Win32" -DFLUIDP=%FLUIDP% -DCOOLP=%COOLP%
+:: cmake .. -G "Visual Studio 10 2010" -A "Win32" -DFLUIDP=%FLUIDP% -DCOOLP=%COOLP%
+:: cmake .. -G "Visual Studio 11 2012" -A "Win32" -DFLUIDP=%FLUIDP% -DCOOLP=%COOLP%
+:: cmake .. -G "Visual Studio 12 2013" -A "Win32" -DFLUIDP=%FLUIDP% -DCOOLP=%COOLP%
+:: cmake .. -G "Visual Studio 14 2015" -A "Win32" -DFLUIDP=%FLUIDP% -DCOOLP=%COOLP%
+:: cmake .. -G "Visual Studio 15 2017" -A "Win32" -DFLUIDP=%FLUIDP% -DCOOLP=%COOLP%
+:: cmake .. -G "Visual Studio 16 2019" -A "Win32" -DFLUIDP=%FLUIDP% -DCOOLP=%COOLP%
+::
+cmake .. -DFLUIDP=%FLUIDP% -DCOOLP=%COOLP%
+::
 cmake --build . --config Release --target install
 popd 
 
