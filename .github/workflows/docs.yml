@@ -27,7 +27,6 @@ jobs:
 
     - name: Build Doxygen sources
       uses: mattnotmitt/doxygen-action@v1
-      #uses: jowr/doxygen-action@1.2.2
       with:
         working-directory: 'Projects/'
         doxyfile-path: './Doxyfile'
