@@ -1,0 +1,59 @@
+name: Documentation builds
+
+#on:
+#  push:
+#    tags:
+#      - 'v*'
+
+on: [push]
+
+jobs:
+  finish-docs:
+
+    runs-on: ubuntu-latest
+    needs: [build-docs]
+
+    steps:
+    - uses: actions/download-artifact@v2
+
+    - name: Display structure of downloaded files
+      run: ls -R
+
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Build Doxygen sources
+      #uses: mattnotmitt/doxygen-action@v1
+      uses: jowr/doxygen-action@1.2.2
+      with:
+        working-directory: 'Projects/'
+        doxyfile-path: './Doxyfile'
+        enable-latex: true
+
+    - name: Upload documentation artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: docs
+        path: Projects/Documentation
+
+    - name: Copy PDF to Modelica tree
+      run: cp 'Projects/Documentation/latex/refman.pdf' 'Modelica/ExternalMedia 3.2.3/Resources/manual.pdf'
+
+    - name: Upload Modelica sources with PDF
+      uses: actions/upload-artifact@v1
+      with:
+        name: binaries
+        path: Modelica
+
+    #- name: Deploy generated HTML
+    #  uses: peaceiris/actions-gh-pages@v3
+    #  with:
+    #    github_token: ${{ secrets.GITHUB_TOKEN }}
+    #    publish_dir: Documentation/html
+    #    enable_jekyll: false
+    #    allow_empty_commit: false
+    #    force_orphan: true
+    #    #publish_branch: gh-pages
