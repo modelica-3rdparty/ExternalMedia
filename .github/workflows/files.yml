@@ -9,6 +9,7 @@ on: [push]
 
 jobs:
   get-docs:
+    runs-on: ubuntu-latest
     steps:
 
     - name: Download documentation
