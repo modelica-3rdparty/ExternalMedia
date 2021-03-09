@@ -15,7 +15,7 @@ Modelica.Media.Interfaces.PartialTwoPhaseMedium interface. Please have a look at
 the [dedicated introduction section](README_introduction.md) for an in-depth
 description of the architecture.
 
-The current release of the library (3.2.3) includes a pre-compiled interface to
+The current release of the library (3.3.0) includes a pre-compiled interface to
 the [FluidProp](http://www.asimptote.nl/software/fluidprop) software and
 built-in access to [CoolProp](http://www.coolprop.org).
 If you use the FluidProp software, you need to have the proper licenses to
@@ -53,7 +53,7 @@ and Include Files in section 12.9.4. Following the concepts put forward there,
 the ExternalMedia package provides several static libraries supporting a
 selection of compilers and development environments.
 
-Please open the `package.mo` file inside the `ExternalMedia 3.2.3` folder to
+Please open the `package.mo` file inside the `ExternalMedia 3.3.0` folder to
 load the library. If your Modelica tool is able to find a matching precompiled
 binary for your configuration, you should now be able to run the examples.
 
