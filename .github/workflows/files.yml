@@ -1,4 +1,4 @@
-name: Collect binary files
+name: Collect Binaries
 
 #on:
 #  push:
@@ -9,34 +9,22 @@ name: Collect binary files
 
 on:
   workflow_run:
-    workflows: ["Continuous Integration", "Documentation builds"]
+    workflows: ["Continuous Integration", "Build Documentation"]
     types:
       - completed
-      - requested
+  workflow_dispatch
+
 
 jobs:
   get-docs:
     runs-on: ubuntu-latest
     steps:
 
-    # - name: Wait for build to succeed
-        # uses: fountainhead/action-wait-for-check@v1.0.0
-        # id: wait-for-build
-        # with:
-          # token: ${{ secrets.GITHUB_TOKEN }}
-          # checkName: build
-          # ref: ${{ github.event.pull_request.head.sha || github.sha }}
-
     - name: Download documentation
       uses: dawidd6/action-download-artifact@v2
       with:
         github_token: ${{secrets.GITHUB_TOKEN}}
-        workflow: docs.yml
-        # Can be one of a workflow conclusion::
-        # "failure", "success", "neutral", "cancelled", "skipped", "timed_out", "action_required"
-        # Or a workflow status:
-        # "completed", "in_progress", "queued"
-        # Default: "completed"
+        workflow: Documentation
         workflow_conclusion: success
         commit: ${{ github.event.pull_request.head.sha || github.sha }}
 
@@ -44,16 +32,16 @@ jobs:
       uses: dawidd6/action-download-artifact@v2
       with:
         github_token: ${{secrets.GITHUB_TOKEN}}
-        workflow: ci.yml
+        workflow: Continuous Integration
         workflow_conclusion: success
         commit: ${{ github.event.pull_request.head.sha || github.sha }}
 
     - name: Display structure of downloaded files
       run: ls -R
 
-    - name: Upload Modelica folder with PDF
-      uses: actions/upload-artifact@v1
-      with:
-        name: binaries
-        path: Modelica
+    # - name: Upload Modelica folder with PDF
+      # uses: actions/upload-artifact@v1
+      # with:
+        # name: binaries
+        # path: Modelica
       

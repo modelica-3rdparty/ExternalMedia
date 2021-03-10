@@ -15,6 +15,11 @@ jobs:
     - uses: actions/download-artifact@v2
     - name: Display structure of downloaded files
       run: ls -R
+    - name: Invoke workflow without inputs
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+        workflow: Collect Binaries
+        token: ${{ secrets.PERSONAL_TOKEN }}
 
   build-macos:
     runs-on: macOS-latest
