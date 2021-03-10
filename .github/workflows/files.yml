@@ -15,35 +15,30 @@ jobs:
     - name: Download documentation
       uses: dawidd6/action-download-artifact@v2
       with:
-        # Optional, GitHub token
         github_token: ${{secrets.GITHUB_TOKEN}}
-        # Required, workflow file name or ID
         workflow: docs.yml
-        # Optional, the status or conclusion of a completed workflow to search for
         # Can be one of a workflow conclusion::
         # "failure", "success", "neutral", "cancelled", "skipped", "timed_out", "action_required"
         # Or a workflow status:
         # "completed", "in_progress", "queued"
         # Default: "completed"
-        workflow_conclusion: success
+        workflow_conclusion: completed
+        commit: ${{github.sha}}
 
     - name: Download binaries
       uses: dawidd6/action-download-artifact@v2
       with:
-        # Optional, GitHub token
         github_token: ${{secrets.GITHUB_TOKEN}}
-        # Required, workflow file name or ID
         workflow: ci.yml
-        # Optional, the status or conclusion of a completed workflow to search for
-        # Can be one of a workflow conclusion::
-        # "failure", "success", "neutral", "cancelled", "skipped", "timed_out", "action_required"
-        # Or a workflow status:
-        # "completed", "in_progress", "queued"
-        # Default: "completed"
-        workflow_conclusion: success
+        workflow_conclusion: completed
+        commit: ${{github.sha}}
+
+    - name: Display structure of downloaded files
+      run: ls -R
 
     - name: Upload Modelica folder with PDF
       uses: actions/upload-artifact@v1
       with:
         name: binaries
         path: Modelica
+      
