@@ -12,6 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+    # - name: Wait for build to succeed
+        # uses: fountainhead/action-wait-for-check@v1.0.0
+        # id: wait-for-build
+        # with:
+          # token: ${{ secrets.GITHUB_TOKEN }}
+          # checkName: build
+          # ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
     - name: Download documentation
       uses: dawidd6/action-download-artifact@v2
       with:
@@ -22,16 +30,16 @@ jobs:
         # Or a workflow status:
         # "completed", "in_progress", "queued"
         # Default: "completed"
-        workflow_conclusion: completed
-        commit: ${{github.sha}}
+        workflow_conclusion: success
+        commit: ${{ github.event.pull_request.head.sha || github.sha }}
 
     - name: Download binaries
       uses: dawidd6/action-download-artifact@v2
       with:
         github_token: ${{secrets.GITHUB_TOKEN}}
         workflow: ci.yml
-        workflow_conclusion: completed
-        commit: ${{github.sha}}
+        workflow_conclusion: success
+        commit: ${{ github.event.pull_request.head.sha || github.sha }}
 
     - name: Display structure of downloaded files
       run: ls -R
