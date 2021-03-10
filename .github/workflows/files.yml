@@ -5,7 +5,14 @@ name: Collect binary files
 #    tags:
 #      - 'v*'
 
-on: [push]
+#on: [push]
+
+on:
+  workflow_run:
+    workflows: ["Continuous Integration", "Documentation builds"]
+    types:
+      - completed
+      - requested
 
 jobs:
   get-docs:
