@@ -10,11 +10,28 @@ on: [push]
 jobs:
   finish-ci:
     runs-on: ubuntu-latest
-    needs: [build-macos, build-linux, build-windows, build-msys-openmodelica, build-msys]
+    needs: [build-macos, build-linux, build-windows, build-msys-openmodelica, build-msys, build-docs]
     steps:
     - uses: actions/download-artifact@v2
     - name: Display structure of downloaded files
       run: ls -R
+    # - name: Zip binaries
+      # uses: papeloto/action-zip@v1
+      # with:
+        # files: binaries/
+        # recursive: true
+        # dest: latest.zip
+    # - name: Upload zipped binaries
+      # uses: actions/upload-artifact@v1
+        # with:
+          # name: latest
+          # path: latest.zip
+    # - name: Deploy zipped binaries
+      # uses: peaceiris/actions-gh-pages@v3
+      # with:
+        # github_token: ${{ secrets.GITHUB_TOKEN }}
+        # publish_dir: Documentation/html
+        # #destination_dir: latest
 
   build-macos:
     runs-on: macOS-latest
@@ -161,3 +178,38 @@ jobs:
     #  with:
     #    name: binaries
     #    path: Modelica
+    
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Build Doxygen sources
+      uses: mattnotmitt/doxygen-action@v1
+      with:
+        working-directory: 'Projects/'
+        doxyfile-path: './Doxyfile'
+        enable-latex: true
+
+    - name: Upload documentation artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: docs
+        path: Projects/Documentation
+
+    - name: Copy PDF to Modelica tree
+      run: cp 'Projects/Documentation/latex/refman.pdf' 'Modelica/ExternalMedia 3.3.0/Resources/manual.pdf'
+
+    - name: Upload Modelica sources with PDF
+      uses: actions/upload-artifact@v1
+      with:
+        name: binaries
+        path: Modelica
+
+    - name: Deploy generated HTML
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: Documentation/html
+        #destination_dir: latest
