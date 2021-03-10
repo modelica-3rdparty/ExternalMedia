@@ -8,43 +8,55 @@ name: Continuous Integration
 on: [push]
 
 jobs:
-  # finish-ci:
-    # runs-on: ubuntu-latest
-    # needs: [build-macos, build-linux, build-windows, build-msys-openmodelica, build-msys]
-    # steps:
-    # - uses: actions/download-artifact@v2
-    # - name: Display structure of downloaded files
-      # run: ls -R
-    # - name: Invoke workflow without inputs
-      # uses: benc-uk/workflow-dispatch@v1
+  finish-ci:
+    runs-on: ubuntu-latest
+    needs: [build-macos, build-linux, build-windows, build-msys-openmodelica, build-msys, build-docs]
+    steps:
+    - uses: actions/download-artifact@v2
+    - name: Display structure of downloaded files
+      run: ls -R
+    # - name: Zip binaries
+      # uses: papeloto/action-zip@v1
       # with:
-        # workflow: Collect Binaries
-        # token: ${{ secrets.PERSONAL_TOKEN }}
-
-  # build-macos:
-    # runs-on: macOS-latest
-    # steps:
-    # - uses: actions/checkout@v2
-    # - name: Create Build Environment
-      # run: |
-        # cmake --version
-        # cmake -E make_directory ${{runner.workspace}}/build
-    # - name: Configure with CMake
-      # working-directory: ${{runner.workspace}}/build
-      # run: |
-       # cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDP=0 -DCOOLP=1 || true
-       # cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDP=0 -DCOOLP=1
-    # - name: Build with CMake
-      # working-directory: ${{runner.workspace}}/build
-      # run: cmake --build . --target ExternalMediaLib
-    # - name: Install with CMake
-      # working-directory: ${{runner.workspace}}/build
-      # run: cmake --build . --target install
-    # - name: upload macos artifacts
+        # files: binaries/
+        # recursive: true
+        # dest: latest.zip
+    # - name: Upload zipped binaries
       # uses: actions/upload-artifact@v1
+        # with:
+          # name: latest
+          # path: latest.zip
+    # - name: Deploy zipped binaries
+      # uses: peaceiris/actions-gh-pages@v3
       # with:
-        # name: binaries
-        # path: Modelica
+        # github_token: ${{ secrets.GITHUB_TOKEN }}
+        # publish_dir: Documentation/html
+        # #destination_dir: latest
+
+  build-macos:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Create Build Environment
+      run: |
+        cmake --version
+        cmake -E make_directory ${{runner.workspace}}/build
+    - name: Configure with CMake
+      working-directory: ${{runner.workspace}}/build
+      run: |
+       cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDP=0 -DCOOLP=1 || true
+       cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDP=0 -DCOOLP=1
+    - name: Build with CMake
+      working-directory: ${{runner.workspace}}/build
+      run: cmake --build . --target ExternalMediaLib
+    - name: Install with CMake
+      working-directory: ${{runner.workspace}}/build
+      run: cmake --build . --target install
+    - name: upload macos artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: binaries
+        path: Modelica
 
 
   build-linux:
@@ -73,73 +85,73 @@ jobs:
         path: Modelica
 
 
-  # build-windows:
-    # runs-on: ${{ matrix.platform }}
-    # strategy:
-      # matrix:
-        # platform: [windows-2019, windows-2016]
-        # arch: [Win32, x64]
-    # steps:
-    # - uses: actions/checkout@v2
-    # - name: Create Build Environment
-      # run: |
-        # cmake --version
-        # cmake -E make_directory ${{runner.workspace}}/build
-    # - name: Configure with CMake
-      # working-directory: ${{runner.workspace}}/build
-      # run: |
-        # cmake ${{ runner.workspace }}/ExternalMedia/Projects -A ${{ matrix.arch }} -DFLUIDP=1 -DCOOLP=1
-        # cmake ${{ runner.workspace }}/ExternalMedia/Projects -A ${{ matrix.arch }} -DFLUIDP=1 -DCOOLP=1
-    # - name: Build with CMake
-      # working-directory: ${{runner.workspace}}/build
-      # run: cmake --build . --target ExternalMediaLib --config Release
-    # - name: Install with CMake
-      # working-directory: ${{runner.workspace}}/build
-      # run: cmake --build . --target install --config Release
-    # - name: upload windows artifacts
-      # uses: actions/upload-artifact@v1
-      # with:
-        # name: binaries
-        # path: Modelica
+  build-windows:
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      matrix:
+        platform: [windows-2019, windows-2016]
+        arch: [Win32, x64]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Create Build Environment
+      run: |
+        cmake --version
+        cmake -E make_directory ${{runner.workspace}}/build
+    - name: Configure with CMake
+      working-directory: ${{runner.workspace}}/build
+      run: |
+        cmake ${{ runner.workspace }}/ExternalMedia/Projects -A ${{ matrix.arch }} -DFLUIDP=1 -DCOOLP=1
+        cmake ${{ runner.workspace }}/ExternalMedia/Projects -A ${{ matrix.arch }} -DFLUIDP=1 -DCOOLP=1
+    - name: Build with CMake
+      working-directory: ${{runner.workspace}}/build
+      run: cmake --build . --target ExternalMediaLib --config Release
+    - name: Install with CMake
+      working-directory: ${{runner.workspace}}/build
+      run: cmake --build . --target install --config Release
+    - name: upload windows artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: binaries
+        path: Modelica
 
 
-  # build-msys-openmodelica:
-    # runs-on: windows-latest
-    # steps:
-    # - uses: actions/checkout@v2
-    # - name: Create Build Environment
-      # run: |
-        # cmake --version
-        # svn checkout -q https://openmodelica.org/svn/OpenModelicaExternal/trunk/tools/windows/OMDev C:/OMDev
-    # - name: Configure with CMake for 32bit
-      # working-directory: ${{runner.workspace}}
-      # run: |
-        # $env:Path = "${env:ProgramFiles}\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw32\bin;$env:Path"
-        # cmake -B build32 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDP=1 -DCOOLP=1
-        # cmake -B build32 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDP=1 -DCOOLP=1
-    # - name: Build with CMake for 32bit
-      # working-directory: ${{runner.workspace}}
-      # run: |
-        # $env:Path = "${env:ProgramFiles}\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw32\bin;$env:Path"
-        # cmake --build build32 --target ExternalMediaLib
-        # cmake --build build32 --target install
-    # - name: Configure with CMake for 64bit
-      # working-directory: ${{runner.workspace}}
-      # run: |
-        # $env:Path = "${env:ProgramFiles}\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw64\bin;$env:Path"
-        # cmake -B build64 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDP=1 -DCOOLP=1
-        # cmake -B build64 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDP=1 -DCOOLP=1
-    # - name: Build with CMake for 64bit
-      # working-directory: ${{runner.workspace}}
-      # run: |
-        # $env:Path = "${env:ProgramFiles}\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw64\bin;$env:Path"
-        # cmake --build build64 --target ExternalMediaLib
-        # cmake --build build64 --target install
-    # - name: upload msys-openmodelica artifacts
-      # uses: actions/upload-artifact@v1
-      # with:
-        # name: binaries
-        # path: Modelica
+  build-msys-openmodelica:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Create Build Environment
+      run: |
+        cmake --version
+        svn checkout -q https://openmodelica.org/svn/OpenModelicaExternal/trunk/tools/windows/OMDev C:/OMDev
+    - name: Configure with CMake for 32bit
+      working-directory: ${{runner.workspace}}
+      run: |
+        $env:Path = "${env:ProgramFiles}\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw32\bin;$env:Path"
+        cmake -B build32 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDP=1 -DCOOLP=1
+        cmake -B build32 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDP=1 -DCOOLP=1
+    - name: Build with CMake for 32bit
+      working-directory: ${{runner.workspace}}
+      run: |
+        $env:Path = "${env:ProgramFiles}\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw32\bin;$env:Path"
+        cmake --build build32 --target ExternalMediaLib
+        cmake --build build32 --target install
+    - name: Configure with CMake for 64bit
+      working-directory: ${{runner.workspace}}
+      run: |
+        $env:Path = "${env:ProgramFiles}\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw64\bin;$env:Path"
+        cmake -B build64 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDP=1 -DCOOLP=1
+        cmake -B build64 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDP=1 -DCOOLP=1
+    - name: Build with CMake for 64bit
+      working-directory: ${{runner.workspace}}
+      run: |
+        $env:Path = "${env:ProgramFiles}\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw64\bin;$env:Path"
+        cmake --build build64 --target ExternalMediaLib
+        cmake --build build64 --target install
+    - name: upload msys-openmodelica artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: binaries
+        path: Modelica
 
 
   build-msys:
@@ -166,3 +178,38 @@ jobs:
     #  with:
     #    name: binaries
     #    path: Modelica
+    
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Build Doxygen sources
+      uses: mattnotmitt/doxygen-action@v1
+      with:
+        working-directory: 'Projects/'
+        doxyfile-path: './Doxyfile'
+        enable-latex: true
+
+    - name: Upload documentation artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: docs
+        path: Projects/Documentation
+
+    - name: Copy PDF to Modelica tree
+      run: cp 'Projects/Documentation/latex/refman.pdf' 'Modelica/ExternalMedia 3.3.0/Resources/manual.pdf'
+
+    - name: Upload Modelica sources with PDF
+      uses: actions/upload-artifact@v1
+      with:
+        name: binaries
+        path: Modelica
+
+    - name: Deploy generated HTML
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: Documentation/html
+        #destination_dir: latest
