@@ -8,11 +8,11 @@ name: Collect Binaries
 #on: [push]
 
 on:
-  - workflow_run:
-    workflows: ["Continuous Integration", "Build Documentation"]
-    types:
-      - completed
-  - workflow_dispatch
+  #workflow_run:
+  #  workflows: ["Continuous Integration", "Build Documentation"]
+  #  types:
+  #    - completed
+  workflow_dispatch:
 
 
 jobs:
