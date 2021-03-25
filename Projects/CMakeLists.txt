@@ -31,7 +31,7 @@ if (MSVC)
 #    set (CMAKE_C_FLAGS_DEBUG     "${CMAKE_C_FLAGS_DEBUG} /MTd")
     ADD_DEFINITIONS (-D_CRT_SECURE_NO_WARNINGS)
 endif()
-ADD_DEFINITIONS (-DMODELICA_ERRORS=0 -DNOMINMAX)
+ADD_DEFINITIONS (-DMODELICA_ERRORS=1 -DNOMINMAX)
 # Workaround for missing ModelicaMessage and ModelicaError objects
 set(INCLUDE_DIRS "")
 
@@ -42,7 +42,8 @@ set(INCLUDE_DIRS "")
 
 if(COOLP)
   if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
-    file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/5.1.1/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
+    file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/nightly/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
+    #file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/5.1.1/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
     file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/coolprop-tmp")
     # Use CMake to unzip
     file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/coolprop-tmp")
@@ -53,7 +54,6 @@ if(COOLP)
     #file(ARCHIVE_EXTRACT INPUT ${CMAKE_BINARY_DIR}/coolprop.zip)
     #execute_process(COMMAND unzip ${CMAKE_BINARY_DIR}/coolprop.zip -d "${CMAKE_BINARY_DIR}/coolprop-tmp")
     #execute_process(COMMAND sed -i '421s;^;\#;' "${CMAKE_BINARY_DIR}/coolprop-tmp/CoolProp.sources/CMakeLists.txt")
-    file(MAKE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../externals")
     file(RENAME "${CMAKE_BINARY_DIR}/coolprop-tmp/CoolProp.sources" "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
     file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/coolprop-tmp")
     file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
@@ -62,11 +62,15 @@ if(COOLP)
   SET(COOLPROP_STATIC_LIBRARY OFF CACHE BOOL "Force the object library")
   SET(COOLPROP_SHARED_LIBRARY OFF CACHE BOOL "Force the object library")
   SET(COOLPROP_OBJECT_LIBRARY ON  CACHE BOOL "Force the object library")
+  ## Assuming shared library...
+  SET(COOLPROP_FPIC ON CACHE BOOL "force -fPIC switch")
+  ##
   ADD_SUBDIRECTORY ("${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git" "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
   list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
   list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/include")
   list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/externals/msgpack-c/include")
   list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/externals/cppformat")
+  list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/externals/fmtlib")
 else()
   list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/coolpropsolver.cpp")
 endif()
@@ -113,8 +117,9 @@ if(COOLP)
 LIST (APPEND LIB_SOURCES $<TARGET_OBJECTS:CoolProp>)
 endif()
 
-add_library (${LIBRARY_NAME} STATIC ${LIB_SOURCES})
+add_library (${LIBRARY_NAME} SHARED ${LIB_SOURCES})
 set_property (TARGET ${LIBRARY_NAME} PROPERTY VERSION ${APP_VERSION})
+#target_link_libraries (${LIBRARY_NAME} ${CMAKE_DL_LIBS})
 if(COOLP)
 add_dependencies (${LIBRARY_NAME} CoolProp)
 endif()
@@ -186,6 +191,9 @@ if(MINGW)
   else()
     set(MODELICA_PLATFORM "mingw32")
   endif()
+  ## for NF..
+  set(CMAKE_SHARED_LIBRARY_PREFIX "")
+  ##
   set(MODELICA_COMPILER "")
   message(WARNING "Discarded compiler information since OpenModelica expect the mingw32/64 platform.")
 endif()
@@ -194,7 +202,8 @@ set(MODELICA_INSTALL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia
 
 message(STATUS "Installation path: ${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
 
-INSTALL(TARGETS "${LIBRARY_NAME}"                                     DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
+#INSTALL(TARGETS "${LIBRARY_NAME}"                                     DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
+INSTALL(TARGETS "${LIBRARY_NAME}"                                     DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")
 INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/${LIBRARY_HEADER}" DESTINATION "${MODELICA_INSTALL_PATH}/Include")
 
 

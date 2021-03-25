@@ -39,7 +39,7 @@ void errorMessage(char *errorMessage){
 }
 
 void warningMessage(char *warningMessage){
-	strcat(warningMessage, "\n");
-	printf("%s",warningMessage);
+  //	strcat(warningMessage, "\n");
+	printf("%s\n",warningMessage);
 }
 #endif

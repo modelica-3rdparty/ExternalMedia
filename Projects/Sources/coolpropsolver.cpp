@@ -529,13 +529,15 @@ void CoolPropSolver::setState_ph(double &p, double &h, int &phase, ExternalTherm
 			throw CoolProp::ValueError(format("p-h [%g, %g] failed for update",p,h));
 		}
 
-		// Set the values in the output structure
-		this->postStateChange(properties);
+		//this->postStateChange(properties);
 	}
 	catch(std::exception &e)
 	{
-		errorMessage((char*)e.what());
+	  //std::cout << (char *) e.what() << std::endl;
+	  errorMessage((char*)e.what());
 	}
+	// Set the values in the output structure	
+	this->postStateChange(properties);
 }
 
 void CoolPropSolver::setState_pT(double &p, double &T, ExternalThermodynamicState *const properties){
@@ -618,9 +620,10 @@ void CoolPropSolver::setState_hs(double &h, double &s, int &phase, ExternalTherm
 		// Set the values in the output structure
 		this->postStateChange(properties);
 	}
-	catch(std::exception &e)
+	catch(...)
 	{
-		errorMessage((char*)e.what());
+	  //std::cout << (char*)e.what();
+	  //errorMessage((char*)e.what());
 	}
 }
 
