@@ -34,7 +34,9 @@ endif()
 ADD_DEFINITIONS (-DMODELICA_ERRORS=1 -DNOMINMAX)
 # Workaround for missing ModelicaMessage and ModelicaError objects
 set(INCLUDE_DIRS "")
-
+if (MINGW)
+  LINK_DIRECTORIES($ENV{OPENMODELICAHOME}/lib/omc/)
+endif()
 
 #######################################
 #       INCLUDE COOLPROP              #
@@ -42,6 +44,9 @@ set(INCLUDE_DIRS "")
 
 if(COOLP)
   if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
+    if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../externals")
+		file(MAKE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../externals")
+	endif() 
     file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/nightly/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
     #file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/5.1.1/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
     file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/coolprop-tmp")
@@ -54,7 +59,7 @@ if(COOLP)
     #file(ARCHIVE_EXTRACT INPUT ${CMAKE_BINARY_DIR}/coolprop.zip)
     #execute_process(COMMAND unzip ${CMAKE_BINARY_DIR}/coolprop.zip -d "${CMAKE_BINARY_DIR}/coolprop-tmp")
     #execute_process(COMMAND sed -i '421s;^;\#;' "${CMAKE_BINARY_DIR}/coolprop-tmp/CoolProp.sources/CMakeLists.txt")
-    file(RENAME "${CMAKE_BINARY_DIR}/coolprop-tmp/CoolProp.sources" "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
+	file(RENAME "${CMAKE_BINARY_DIR}/coolprop-tmp/CoolProp.sources" "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
     file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/coolprop-tmp")
     file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
   endif()
@@ -62,6 +67,10 @@ if(COOLP)
   SET(COOLPROP_STATIC_LIBRARY OFF CACHE BOOL "Force the object library")
   SET(COOLPROP_SHARED_LIBRARY OFF CACHE BOOL "Force the object library")
   SET(COOLPROP_OBJECT_LIBRARY ON  CACHE BOOL "Force the object library")
+  ## Bitness of the CoolProp Library
+  if (CMAKE_SIZEOF_VOID_P MATCHES "8")
+   SET(FORCE_BITNESS_64 ON CACHE BOOL "force 64 bit")
+  endif()
   ## Assuming shared library...
   SET(COOLPROP_FPIC ON CACHE BOOL "force -fPIC switch")
   ##
@@ -119,7 +128,10 @@ endif()
 
 add_library (${LIBRARY_NAME} SHARED ${LIB_SOURCES})
 set_property (TARGET ${LIBRARY_NAME} PROPERTY VERSION ${APP_VERSION})
-#target_link_libraries (${LIBRARY_NAME} ${CMAKE_DL_LIBS})
+if (MINGW)
+  target_link_libraries(${LIBRARY_NAME} SimulationRuntimeC omcgc)
+endif()
+##target_link_libraries (${LIBRARY_NAME} ${CMAKE_DL_LIBS})
 if(COOLP)
 add_dependencies (${LIBRARY_NAME} CoolProp)
 endif()
@@ -187,9 +199,9 @@ endif()
 
 if(MINGW)
   if(CMAKE_SIZEOF_VOID_P MATCHES "8")
-    set(MODELICA_PLATFORM "mingw64")
+    set(MODELICA_PLATFORM "win64")
   else()
-    set(MODELICA_PLATFORM "mingw32")
+    set(MODELICA_PLATFORM "win32")
   endif()
   ## for NF..
   set(CMAKE_SHARED_LIBRARY_PREFIX "")
@@ -203,7 +215,10 @@ set(MODELICA_INSTALL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia
 message(STATUS "Installation path: ${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
 
 #INSTALL(TARGETS "${LIBRARY_NAME}"                                     DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
-INSTALL(TARGETS "${LIBRARY_NAME}"                                     DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")
+INSTALL(TARGETS "${LIBRARY_NAME}" RUNTIME DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")
+if(MINGW OR WIN32)
+  INSTALL(TARGETS "${LIBRARY_NAME}" RUNTIME DESTINATION "$ENV{OPENMODELICAHOME}/bin")
+endif()
 INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/${LIBRARY_HEADER}" DESTINATION "${MODELICA_INSTALL_PATH}/Include")
 
 

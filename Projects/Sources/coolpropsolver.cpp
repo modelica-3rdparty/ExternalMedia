@@ -531,9 +531,12 @@ void CoolPropSolver::setState_ph(double &p, double &h, int &phase, ExternalTherm
 
 		//this->postStateChange(properties);
 	}
+	catch (CoolProp::ValueError &e) 
+	{
+	  warningMessage((char*)e.what());
+	}
 	catch(std::exception &e)
 	{
-	  //std::cout << (char *) e.what() << std::endl;
 	  errorMessage((char*)e.what());
 	}
 	// Set the values in the output structure	
