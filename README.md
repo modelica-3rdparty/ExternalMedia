@@ -81,10 +81,9 @@ controbuted to it. The [history page](README_history.md) provides a lot
 of useful insights and explains how the software became what it is today.
 
 Current main developers: 
- - [Francesco Casella](mailto:francesco.casella@polimi.it) and Christoph
-   Richter for the initial development
+ - [Francesco Casella](mailto:francesco.casella@polimi.it)
  - [Jorrit Wronski](mailto:jowr@ipu.dk) and Ian Bell for the integration of
-   CoolProp in the library
+   CoolProp in the library and CMake-based compilation
 
 Please report problems using
 [GitHub issues](https://github.com/modelica-3rdparty/ExternalMedia/issues).
