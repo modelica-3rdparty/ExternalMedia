@@ -7,7 +7,9 @@ computing fluid properties to Modelica.Media-compatible component models.
 
 The ExternalMedia library provides a framework for interfacing external codes
 computing fluid properties to Modelica.Media-compatible component models. It is
-compatible with Modelica Standard Library v 3.2, 3.2.1, 3.2.2 and 3.2.3.
+compatible with Modelica Standard Library (MSL) 3.2.3, which is the latest,
+backwards-compatible version of the 3.2.x series. A version compatible with
+MSL 4.0.0 is planned for the near future.
 
 The current version of the library supports pure and pseudo-pure fluids models,
 possibly two-phase, compliant with the
@@ -25,23 +27,20 @@ previous versions of that software, but compatibility is no longer guaranteed.
 Please refer to the [chapter on FluidProp](README_fluidprop.md) and the
 dedicated [chapter on CoolProp](README_coolprop.md) for details.
 
-The released files are typically tested with Dymola and OpenModelica on Windows
+The released files are tested with Dymola and OpenModelica on Windows
 as well as with Dymola on Linux. Support for more tools and operating systems
-might be added in the future.
+might be added in the future, please let us know if you want to contribute.
 
 You can modify the library to add an interface to your own solver. If your
-solver is open-source, please contact the developers, we might add it to the
+solver is open-source, please contact the developers, so we can add it to the
 official ExternalMedia library.
 
 ## Installation instructions for the ExternalMedia library
 
 The provided version of ExternalMedia is compatible with Modelica
-Standard Library 3.2.3.
-
-You can also use it with the Modelica Standard Library down to 3.2, provided
-you change the uses annotation in the package.mo file of the Modelica package
-root directory to uses(Modelica(version = "3.2")). Previous versions of the
-Modelica Standard Library are no longer supported.
+Standard Library 3.2.3, we recommend you to use that instead of previous
+3.2.x versions, because it contains many bug fixes and is fully backwards
+compatible with them.
 
 If you want to experiment with the code and recompile the libraries, check
 the [compilation instructions](README_compilation.md).
