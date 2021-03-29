@@ -48,9 +48,10 @@ the [compilation instructions](README_compilation.md).
 ### Modelica integration
 
 The Modelica Language Specification mentions annotations for External Libraries
-and Include Files in section 12.9.4. Following the concepts put forward there,
-the ExternalMedia package provides several static libraries supporting a
-selection of compilers and development environments.
+and Include Files in [section 12.9.4]
+(https://specification.modelica.org/maint/3.5/functions.html#annotations-for-external-libraries-and-include-files).
+Following the concepts put forward there, the ExternalMedia package provides several pre-compiled
+static libraries supporting a selection of operating systems, C-compilers and Modelica tools.
 
 Please open the `package.mo` file inside the `ExternalMedia 3.3.0` folder to
 load the library. If your Modelica tool is able to find a matching precompiled
