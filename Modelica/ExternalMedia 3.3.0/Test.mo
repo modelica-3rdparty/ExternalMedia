@@ -326,7 +326,7 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.CompareModelicaTestMedium(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
-          redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF95,
+          redeclare package TestMedium = ExternalMedia.Examples.WaterIF95,
           pmin=1e5,
           pmax=1e5,
           hmin=1e5,
@@ -339,7 +339,7 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.CompareModelicaTestMedium(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
-          redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF95,
+          redeclare package TestMedium = ExternalMedia.Examples.WaterIF95,
           pmin=60e5,
           pmax=60e5,
           hmin=1000e3,
@@ -352,7 +352,7 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.CompareModelicaTestMedium(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
-          redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF95,
+          redeclare package TestMedium = ExternalMedia.Examples.WaterIF95,
           pmin=60e5,
           pmax=60e5,
           hmin=2800e3,
@@ -441,7 +441,7 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.CompareModelicaTestMedium(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
-          redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF97,
+          redeclare package TestMedium = ExternalMedia.Examples.WaterIF97,
           pmin=1e5,
           pmax=1e5,
           hmin=1e5,
@@ -454,7 +454,7 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.CompareModelicaTestMedium(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
-          redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF97,
+          redeclare package TestMedium = ExternalMedia.Examples.WaterIF97,
           pmin=60e5,
           pmax=60e5,
           hmin=1000e3,
@@ -467,7 +467,7 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.CompareModelicaTestMedium(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
-          redeclare package FluidPropMedium = ExternalMedia.Examples.WaterIF97,
+          redeclare package TestMedium = ExternalMedia.Examples.WaterIF97,
           pmin=60e5,
           pmax=60e5,
           hmin=2800e3,
@@ -556,7 +556,7 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.CompareModelicaTestMedium(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
-          redeclare package FluidPropMedium = ExternalMedia.Examples.WaterTPSI,
+          redeclare package TestMedium = ExternalMedia.Examples.WaterTPSI,
           pmin=1e5,
           pmax=1e5,
           hmin=1e5,
@@ -569,7 +569,7 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.CompareModelicaTestMedium(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
-          redeclare package FluidPropMedium = ExternalMedia.Examples.WaterTPSI,
+          redeclare package TestMedium = ExternalMedia.Examples.WaterTPSI,
           pmin=60e5,
           pmax=60e5,
           hmin=1000e3,
@@ -582,7 +582,7 @@ package Test "Test models for the different solvers"
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.CompareModelicaTestMedium(
           redeclare package ModelicaMedium = Modelica.Media.Water.StandardWater,
-          redeclare package FluidPropMedium = ExternalMedia.Examples.WaterTPSI,
+          redeclare package TestMedium = ExternalMedia.Examples.WaterTPSI,
           pmin=60e5,
           pmax=60e5,
           hmin=2800e3,
@@ -840,8 +840,8 @@ package Test "Test models for the different solvers"
       model TestStatesSatSubcritical
         "Test case state + sat records, subcritical conditions"
         extends Modelica.Icons.Example;
-        extends GenericModels.TestStatesSat(          redeclare package Medium
-            = ExternalMedia.Examples.CO2CoolProp);
+        extends GenericModels.TestStatesSat(          redeclare package Medium =
+              ExternalMedia.Examples.CO2CoolProp);
       equation
         p1 = 1e6;
         h1 = 1.0e5 + 6e5*time;
@@ -1469,10 +1469,10 @@ package Test "Test models for the different solvers"
           sat=sat1);
       CompleteSaturationProperties completeSat2(redeclare package Medium = Medium,
           sat=sat2);
-      CompleteBubbleDewStates completeBubbleDewStates1(redeclare package Medium
-          = Medium, sat=sat1);
-      CompleteBubbleDewStates completeBubbleDewStates2(redeclare package Medium
-          = Medium, sat=sat2);
+      CompleteBubbleDewStates completeBubbleDewStates1(redeclare package Medium =
+            Medium, sat=sat1);
+      CompleteBubbleDewStates completeBubbleDewStates2(redeclare package Medium =
+            Medium, sat=sat2);
     equation
       state1 = Medium.setState_ph(p1, h1);
       state2 = Medium.setState_pT(p2, T2);
