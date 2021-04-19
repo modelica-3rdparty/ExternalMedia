@@ -1,6 +1,9 @@
 #ifndef COOLPROPSOLVER_H_
 #define COOLPROPSOLVER_H_
 
+#include "include.h"
+#if (EXTERNALMEDIA_COOLPROP == 1)
+
 #include "basesolver.h"
 #include "AbstractState.h"
 #include "crossplatform_shared_ptr.h"
@@ -97,5 +100,7 @@ public:
 	virtual double Tsat(ExternalSaturationProperties *const properties);
 
 };
+
+#endif
 
 #endif // COOLPROPSOLVER_H_

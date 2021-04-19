@@ -24,27 +24,38 @@
 #define CHOICE_ps 4
 #define CHOICE_pT 5
 
-/*! Detect the platform in order to avoid the DLL commands from
- * making g++ choke. Code taken from CoolProp...
- */
-#if defined(_WIN32) || defined(__WIN32__) || defined(_WIN64) || defined(__WIN64__)
-#  define __ISWINDOWS__
-#elif __APPLE__
-#  define __ISAPPLE__
-#elif __linux
-#  define __ISLINUX__
-#endif
-
 /*!
 Portable definitions of the EXPORT macro
  */
-#ifndef EXPORT
-#  if defined(__ISLINUX__)
-#    define EXPORT
-#  elif defined(__ISAPPLE__)
-#    define EXPORT
+#if !defined(EXTERNALMEDIA_EXPORT)
+#  if !defined(EXTERNALMEDIA_LIBRARY_EXPORTS)
+#    define EXTERNALMEDIA_EXPORT
 #  else
-#    define EXPORT __declspec(dllexport)
+#    if (EXTERNALMEDIA_LIBRARY_EXPORTS == 1)
+#      if defined(_WIN32) || defined(__WIN32__) || defined(_WIN64) || defined(__WIN64__)
+#        if !defined(__EXTERNALMEDIA_ISWINDOWS__)
+#          define __EXTERNALMEDIA_ISWINDOWS__
+#        endif
+#      elif __APPLE__
+#        if !defined(__EXTERNALMEDIA_ISAPPLE__)
+#          define __EXTERNALMEDIA_ISAPPLE__
+#        endif
+#      elif __linux
+#        if !defined(__EXTERNALMEDIA_ISLINUX__)
+#          define __EXTERNALMEDIA_ISLINUX__
+#        endif
+#      endif
+#
+#      if defined(__EXTERNALMEDIA_ISLINUX__)
+#        define EXTERNALMEDIA_EXPORT
+#      elif defined(__EXTERNALMEDIA_ISAPPLE__)
+#        define EXTERNALMEDIA_EXPORT
+#      else
+#        define EXTERNALMEDIA_EXPORT __declspec(dllexport)
+#      endif
+#    else
+#      define EXTERNALMEDIA_EXPORT
+#    endif
 #  endif
 #endif
 
@@ -135,58 +146,58 @@ typedef struct {
 extern "C" {
 #endif // __cplusplus
 
-	EXPORT double TwoPhaseMedium_getMolarMass_C_impl(const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_getCriticalTemperature_C_impl(const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_getCriticalPressure_C_impl(const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_getCriticalMolarVolume_C_impl(const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_getMolarMass_C_impl(const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_getCriticalTemperature_C_impl(const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_getCriticalPressure_C_impl(const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_getCriticalMolarVolume_C_impl(const char *mediumName, const char *libraryName, const char *substanceName);
 
-	EXPORT void TwoPhaseMedium_setState_ph_C_impl(double p, double h, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT void TwoPhaseMedium_setState_pT_C_impl(double p, double T, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT void TwoPhaseMedium_setState_dT_C_impl(double d, double T, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT void TwoPhaseMedium_setState_ps_C_impl(double p, double s, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT void TwoPhaseMedium_setState_hs_C_impl(double h, double s, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_ph_C_impl(double p, double h, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_pT_C_impl(double p, double T, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_dT_C_impl(double d, double T, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_ps_C_impl(double p, double s, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_hs_C_impl(double h, double s, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
 
-	EXPORT double TwoPhaseMedium_partialDeriv_state_C_impl(const char *of, const char *wrt, const char *cst, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_partialDeriv_state_C_impl(const char *of, const char *wrt, const char *cst, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
 
-	EXPORT double TwoPhaseMedium_prandtlNumber_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_temperature_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_velocityOfSound_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_isobaricExpansionCoefficient_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_specificHeatCapacityCp_C_impl(ExternalThermodynamicState *state,	const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_specificHeatCapacityCv_C_impl(ExternalThermodynamicState *state,	const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_density_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_density_derh_p_C_impl(ExternalThermodynamicState *state,	const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_density_derp_h_C_impl(ExternalThermodynamicState *state,	const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_dynamicViscosity_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_specificEnthalpy_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_isothermalCompressibility_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_thermalConductivity_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_pressure_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_specificEntropy_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_density_ph_der_C_impl(ExternalThermodynamicState *state,	const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_isentropicEnthalpy_C_impl(double p_downstream, ExternalThermodynamicState *refState,	const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_prandtlNumber_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_temperature_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_velocityOfSound_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_isobaricExpansionCoefficient_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_specificHeatCapacityCp_C_impl(ExternalThermodynamicState *state,	const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_specificHeatCapacityCv_C_impl(ExternalThermodynamicState *state,	const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_density_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_density_derh_p_C_impl(ExternalThermodynamicState *state,	const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_density_derp_h_C_impl(ExternalThermodynamicState *state,	const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_dynamicViscosity_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_specificEnthalpy_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_isothermalCompressibility_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_thermalConductivity_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_pressure_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_specificEntropy_C_impl(ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_density_ph_der_C_impl(ExternalThermodynamicState *state,	const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_isentropicEnthalpy_C_impl(double p_downstream, ExternalThermodynamicState *refState,	const char *mediumName, const char *libraryName, const char *substanceName);
 
-	EXPORT void TwoPhaseMedium_setSat_p_C_impl(double p, ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT void TwoPhaseMedium_setSat_T_C_impl(double T, ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT void TwoPhaseMedium_setBubbleState_C_impl(ExternalSaturationProperties *sat, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT void TwoPhaseMedium_setDewState_C_impl(ExternalSaturationProperties *sat, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setSat_p_C_impl(double p, ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setSat_T_C_impl(double T, ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setBubbleState_C_impl(ExternalSaturationProperties *sat, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setDewState_C_impl(ExternalSaturationProperties *sat, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
 
-	EXPORT double TwoPhaseMedium_saturationTemperature_C_impl(double p, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_saturationTemperature_derp_C_impl(double p, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_saturationTemperature_derp_sat_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_saturationTemperature_C_impl(double p, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_saturationTemperature_derp_C_impl(double p, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_saturationTemperature_derp_sat_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
 
-	EXPORT double TwoPhaseMedium_dBubbleDensity_dPressure_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_dDewDensity_dPressure_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_dBubbleEnthalpy_dPressure_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_dDewEnthalpy_dPressure_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_bubbleDensity_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_dewDensity_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_bubbleEnthalpy_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_dewEnthalpy_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_saturationPressure_C_impl(double T, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_surfaceTension_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_bubbleEntropy_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXPORT double TwoPhaseMedium_dewEntropy_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_dBubbleDensity_dPressure_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_dDewDensity_dPressure_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_dBubbleEnthalpy_dPressure_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_dDewEnthalpy_dPressure_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_bubbleDensity_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_dewDensity_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_bubbleEnthalpy_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_dewEnthalpy_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_saturationPressure_C_impl(double T, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_surfaceTension_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_bubbleEntropy_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_dewEntropy_C_impl(ExternalSaturationProperties *sat, const char *mediumName, const char *libraryName, const char *substanceName);
 
 #ifdef __cplusplus
 }

@@ -51,15 +51,15 @@ line switches.
 The recommended configuration step for Windows systems is 
 
 ```shell
-cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DADD_FLUIDPROP_SHARED:BOOL=ON -DADD_COOLPROP_OBJECT:BOOL=ON
-cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DADD_FLUIDPROP_SHARED:BOOL=ON -DADD_COOLPROP_OBJECT:BOOL=ON
+cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=ON -DCOOLPROP:BOOL=ON
+cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=ON -DCOOLPROP:BOOL=ON
 ```
 
 ... and for all other systems, you probably want to use
 
 ```shell
-cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DADD_FLUIDPROP_SHARED:BOOL=OFF -DADD_COOLPROP_OBJECT:BOOL=ON
-cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DADD_FLUIDPROP_SHARED:BOOL=OFF -DADD_COOLPROP_OBJECT:BOOL=ON
+cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=OFF -DCOOLPROP:BOOL=ON
+cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=OFF -DCOOLPROP:BOOL=ON
 ```
 
 ## Building OpenModelica libraries
