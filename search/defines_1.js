@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['coolprop_302',['COOLPROP',['../include_8h.html#ac90813d501c7e368a80ee142d65a9c1a',1,'include.h']]]
+  ['nan_298',['NAN',['../include_8h.html#a8abfcc76130f3f991d124dd22d7e69bc',1,'include.h']]]
 ];

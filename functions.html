@@ -198,6 +198,19 @@ $(function() {
 , <a class="el" href="class_cool_prop_solver.html#a60b9329b6cda0cfac1724923312c3bc3">CoolPropSolver</a>
 , <a class="el" href="struct_external_thermodynamic_state.html#a5665445df720713ae50755da3bcdf7e5">ExternalThermodynamicState</a>
 </li>
+<li>ExternalSaturationProperties()
+: <a class="el" href="struct_external_saturation_properties.html#a1a25e0d1030481999b7db72e3d4645e7">ExternalSaturationProperties</a>
+</li>
+<li>ExternalThermodynamicState()
+: <a class="el" href="struct_external_thermodynamic_state.html#a3402ef6e8faf9b51d471fbece297158f">ExternalThermodynamicState</a>
+</li>
+</ul>
+
+
+<h3><a id="index_f"></a>- f -</h3><ul>
+<li>FluidConstants()
+: <a class="el" href="struct_fluid_constants.html#a47d6c602f27839cda59deee9e36f6ad4">FluidConstants</a>
+</li>
 </ul>
 
 
@@ -237,10 +250,6 @@ $(function() {
 <li>isentropicEnthalpy()
 : <a class="el" href="class_base_solver.html#a873ae3236f1fbf393b057a5905c3134e">BaseSolver</a>
 , <a class="el" href="class_cool_prop_solver.html#abae0da2bde8a4bc78ba790f962b9f1ea">CoolPropSolver</a>
-, <a class="el" href="class_fluid_prop_solver.html#a9390f1053fc9956c2b1ebce68987830e">FluidPropSolver</a>
-</li>
-<li>isError()
-: <a class="el" href="class_fluid_prop_solver.html#ad5d2fedb53e9bd814504551e1e507275">FluidPropSolver</a>
 </li>
 </ul>
 
@@ -262,9 +271,6 @@ $(function() {
 </li>
 <li>libraryName
 : <a class="el" href="class_base_solver.html#a62463955cca1ceafbdda667ba391ff2f">BaseSolver</a>
-</li>
-<li>licenseError()
-: <a class="el" href="class_fluid_prop_solver.html#a319a9e206d1d918d635106ecde23feb9">FluidPropSolver</a>
 </li>
 </ul>
 
@@ -327,35 +333,29 @@ $(function() {
 <li>setBubbleState()
 : <a class="el" href="class_base_solver.html#a5a0d03f291d24594041416e5026435aa">BaseSolver</a>
 , <a class="el" href="class_cool_prop_solver.html#a2a80697af2e88e4a01fb77508e4f846f">CoolPropSolver</a>
-, <a class="el" href="class_fluid_prop_solver.html#aa881794c7680103d4027f9b19af7723c">FluidPropSolver</a>
 </li>
 <li>setDewState()
 : <a class="el" href="class_base_solver.html#ad159c19beb366152d9b4355c24ccbfb0">BaseSolver</a>
 , <a class="el" href="class_cool_prop_solver.html#a0904dbf91f032873e4f26c1429f0c198">CoolPropSolver</a>
-, <a class="el" href="class_fluid_prop_solver.html#a03809a2767f8445d7ef1cd5ec6ffaba9">FluidPropSolver</a>
 </li>
 <li>setFluidConstants()
 : <a class="el" href="class_base_solver.html#ac4ff166bdd79f1ea94b323a44d239e26">BaseSolver</a>
 , <a class="el" href="class_cool_prop_solver.html#a76da1286d6fe1790cef29d93202ddec4">CoolPropSolver</a>
-, <a class="el" href="class_fluid_prop_solver.html#ab5639f296eeb12be5654d0c14f819e13">FluidPropSolver</a>
 , <a class="el" href="class_test_solver.html#a52f0da114720e2f6a24034a2d746658a">TestSolver</a>
 </li>
 <li>setSat_p()
 : <a class="el" href="class_base_solver.html#a0e003b5333e11973b86ffc001ba6f4b4">BaseSolver</a>
 , <a class="el" href="class_cool_prop_solver.html#a129b498edc2af997d8538284470b92d8">CoolPropSolver</a>
-, <a class="el" href="class_fluid_prop_solver.html#acddd13d1388f661ca0a37068bdceeb44">FluidPropSolver</a>
 , <a class="el" href="class_test_solver.html#a6d11f4aae0115508a0edd1420ba78e69">TestSolver</a>
 </li>
 <li>setSat_T()
 : <a class="el" href="class_base_solver.html#a4d1798184dc0d1233e21fefe1f93d20d">BaseSolver</a>
 , <a class="el" href="class_cool_prop_solver.html#aad3fc6241450f4c06dd14346b76dc955">CoolPropSolver</a>
-, <a class="el" href="class_fluid_prop_solver.html#a7899a53ec845e59bfed662eec9091f54">FluidPropSolver</a>
 , <a class="el" href="class_test_solver.html#aa3c4cee49c13c332b1a3e693a5ff8282">TestSolver</a>
 </li>
 <li>setState_dT()
 : <a class="el" href="class_base_solver.html#a199d8074c5e0f67e89bb5b81088c68cf">BaseSolver</a>
 , <a class="el" href="class_cool_prop_solver.html#a90f862edfce09cb059e794b5d4f40a11">CoolPropSolver</a>
-, <a class="el" href="class_fluid_prop_solver.html#a2ef2fe61e61f641952859eba898ec494">FluidPropSolver</a>
 , <a class="el" href="class_test_solver.html#a08a48c69ef2222bc99b783ae1bbd45c0">TestSolver</a>
 </li>
 <li>setState_hs()
@@ -365,19 +365,16 @@ $(function() {
 <li>setState_ph()
 : <a class="el" href="class_base_solver.html#ac8cb5bbd9295dbdb9194830fc5c1402e">BaseSolver</a>
 , <a class="el" href="class_cool_prop_solver.html#a22db72a845b52bc3e8c95cd5eded3544">CoolPropSolver</a>
-, <a class="el" href="class_fluid_prop_solver.html#ad0fdebe1810f8065f1ea6f52255cef82">FluidPropSolver</a>
 , <a class="el" href="class_test_solver.html#a023b7fd06f2b2b26ce8c4288ccb52977">TestSolver</a>
 </li>
 <li>setState_ps()
 : <a class="el" href="class_base_solver.html#a2f87bf46aa4e999ac138b8346c50e00e">BaseSolver</a>
 , <a class="el" href="class_cool_prop_solver.html#a41752f627a66f02d9f5884adb6ad4033">CoolPropSolver</a>
-, <a class="el" href="class_fluid_prop_solver.html#abc969d4f914f037edebe8985914d52a2">FluidPropSolver</a>
 , <a class="el" href="class_test_solver.html#aa4b93c3aee28ce770f96f6cd08855d81">TestSolver</a>
 </li>
 <li>setState_pT()
 : <a class="el" href="class_base_solver.html#a3ec5f548721d07bc0260b80f4572a7c7">BaseSolver</a>
 , <a class="el" href="class_cool_prop_solver.html#a24623628b15970db81ba91967cd822be">CoolPropSolver</a>
-, <a class="el" href="class_fluid_prop_solver.html#ae2dd0625f685a78412ec5a3d63348d36">FluidPropSolver</a>
 , <a class="el" href="class_test_solver.html#a6220dcbb279a215d2166b6eda85082f8">TestSolver</a>
 </li>
 <li>sigma()

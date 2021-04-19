@@ -87,11 +87,11 @@ Quick-start guide</h1>
 Selecting the fluid property libraries</h1>
 <p>You can disable and enable the FluidProp and the CoolProp integration with command line switches.</p>
 <p>The recommended configuration step for Windows systems is</p>
-<div class="fragment"><div class="line">cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DADD_FLUIDPROP_SHARED:BOOL=ON -DADD_COOLPROP_OBJECT:BOOL=ON</div>
-<div class="line">cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DADD_FLUIDPROP_SHARED:BOOL=ON -DADD_COOLPROP_OBJECT:BOOL=ON</div>
+<div class="fragment"><div class="line">cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=ON -DCOOLPROP:BOOL=ON</div>
+<div class="line">cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=ON -DCOOLPROP:BOOL=ON</div>
 </div><!-- fragment --><p>... and for all other systems, you probably want to use</p>
-<div class="fragment"><div class="line">cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DADD_FLUIDPROP_SHARED:BOOL=OFF -DADD_COOLPROP_OBJECT:BOOL=ON</div>
-<div class="line">cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DADD_FLUIDPROP_SHARED:BOOL=OFF -DADD_COOLPROP_OBJECT:BOOL=ON</div>
+<div class="fragment"><div class="line">cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=OFF -DCOOLPROP:BOOL=ON</div>
+<div class="line">cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=OFF -DCOOLPROP:BOOL=ON</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md10"></a>
 Building OpenModelica libraries</h1>
 <ul>

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['kappa_186',['kappa',['../class_base_solver.html#a347e203708246c283d3c374da4ab8206',1,'BaseSolver::kappa()'],['../class_cool_prop_solver.html#a746b9bf760cd9d223fabe2023ad0c732',1,'CoolPropSolver::kappa()']]]
+  ['interp_5flinear_179',['interp_linear',['../class_cool_prop_solver.html#a30f0b88c55400101d1d20d8de36a9dbb',1,'CoolPropSolver']]],
+  ['isentropicenthalpy_180',['isentropicEnthalpy',['../class_base_solver.html#a873ae3236f1fbf393b057a5905c3134e',1,'BaseSolver::isentropicEnthalpy()'],['../class_cool_prop_solver.html#abae0da2bde8a4bc78ba790f962b9f1ea',1,'CoolPropSolver::isentropicEnthalpy()']]]
 ];
