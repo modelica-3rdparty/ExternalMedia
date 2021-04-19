@@ -9,6 +9,6 @@ var searchData=
   ['externalmedia_5fexport_36',['EXTERNALMEDIA_EXPORT',['../externalmedialib_8h.html#a36e06e81d239e720dffc6c829cadc189',1,'externalmedialib.h']]],
   ['externalmedia_5ffluidprop_37',['EXTERNALMEDIA_FLUIDPROP',['../include_8h.html#ab6065aca29e73624ad4d0a18e932c6d2',1,'include.h']]],
   ['externalmedialib_2eh_38',['externalmedialib.h',['../externalmedialib_8h.html',1,'']]],
-  ['externalsaturationproperties_39',['ExternalSaturationProperties',['../struct_external_saturation_properties.html',1,'ExternalSaturationProperties'],['../struct_external_saturation_properties.html#a1a25e0d1030481999b7db72e3d4645e7',1,'ExternalSaturationProperties::ExternalSaturationProperties()']]],
-  ['externalthermodynamicstate_40',['ExternalThermodynamicState',['../struct_external_thermodynamic_state.html',1,'ExternalThermodynamicState'],['../struct_external_thermodynamic_state.html#a3402ef6e8faf9b51d471fbece297158f',1,'ExternalThermodynamicState::ExternalThermodynamicState()']]]
+  ['externalsaturationproperties_39',['ExternalSaturationProperties',['../struct_external_saturation_properties.html',1,'ExternalSaturationProperties'],['../externalmedialib_8h.html#a73c66957686a6fe8feac77fa6385132d',1,'ExternalSaturationProperties():&#160;externalmedialib.h']]],
+  ['externalthermodynamicstate_40',['ExternalThermodynamicState',['../struct_external_thermodynamic_state.html',1,'ExternalThermodynamicState'],['../externalmedialib_8h.html#a8b9e439158c1b774fbe17473aa53f1e5',1,'ExternalThermodynamicState():&#160;externalmedialib.h']]]
 ];

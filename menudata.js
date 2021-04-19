@@ -91,4 +91,5 @@ var menudata={children:[
 {text:"e",url:"globals_func.html#index_e"},
 {text:"t",url:"globals_func.html#index_t"},
 {text:"w",url:"globals_func.html#index_w"}]},
+{text:"Typedefs",url:"globals_type.html"},
 {text:"Macros",url:"globals_defs.html"}]}]}]}
