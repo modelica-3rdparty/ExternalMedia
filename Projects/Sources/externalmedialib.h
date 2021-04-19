@@ -67,7 +67,7 @@ Portable definitions of the EXPORT macro
   PartialExternalTwoPhaseMedium.
 */
 
-typedef struct {
+struct ExternalThermodynamicState {
 
 	//! Temperature
     double T;
@@ -100,7 +100,13 @@ typedef struct {
 	//! Specific entropy
     double s;
 
-} ExternalThermodynamicState;
+	//! Constructor.
+	/*!
+	  The constructor only initializes the variables.
+	*/
+	ExternalThermodynamicState() : T(-1), a(-1), beta(-1), cp(-1), cv(-1), d(-1), ddhp(-1), ddph(-1), eta(-1), h(-1), kappa(-1), lambda(-1), p(-1), phase(-1), s(-1) {};
+
+};
 
 //! ExternalSaturationProperties property struct
 /*!
@@ -109,7 +115,7 @@ typedef struct {
   extending from PartialExternalTwoPhaseMedium.
 */
 
-typedef struct {
+struct ExternalSaturationProperties {
 	//! Saturation temperature
     double Tsat;
 	//! Derivative of Ts wrt pressure
@@ -139,7 +145,12 @@ typedef struct {
 	//! Specific entropy at dew line (for pressure ps)
     double sv;
 
-} ExternalSaturationProperties;
+	//! Constructor.
+	/*!
+	  The constructor only initializes the variables.
+	*/
+	ExternalSaturationProperties() : Tsat(-1), dTp(-1), ddldp(-1), ddvdp(-1), dhldp(-1), dhvdp(-1), dl(-1), dv(-1), hl(-1), hv(-1), psat(-1), sigma(-1), sl(-1), sv(-1) {};
+};
 
 
 #ifdef __cplusplus
