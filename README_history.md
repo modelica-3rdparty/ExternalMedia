@@ -31,7 +31,7 @@ In 2014, Ian Bell initially provided some makefiles to automatically compile
 different versions of the library. Later on, Jorrit Wronski added support for
 CMake scripts.
 
-In 2021, Jorrit Wronksi implemented the entire CMake build pipeline witin the
-GitHub CI enviroment. New annotations introduced in Modelica 3.4 now allow to
+In 2021, Jorrit Wronksi implemented the entire CMake build pipeline within the
+GitHub CI environment. New annotations introduced in Modelica 3.4 now allow to
 build and ship the ExternalMedia package with built-in pre-compiled libraries
 for many different operating systems, C-compilers, and Modelica tools.

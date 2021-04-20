@@ -1,4 +1,8 @@
 #include "coolpropsolver.h"
+
+#include "include.h"
+#if (EXTERNALMEDIA_COOLPROP == 1)
+
 #include "CoolPropTools.h"
 #include "CoolPropLib.h"
 #include "CoolProp.h"
@@ -897,3 +901,5 @@ double CoolPropSolver::interp_linear(double Q, double valueL, double valueV) {
 double CoolPropSolver::interp_recip(double Q, double valueL, double valueV){
 	return 1.0 / interp_linear(Q, 1.0/valueL, 1.0/valueV);
 }
+
+#endif

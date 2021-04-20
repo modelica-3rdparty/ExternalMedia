@@ -36,6 +36,8 @@
 #define FLUIDPROPSOLVER_H_
 
 #include "include.h"
+#if (EXTERNALMEDIA_FLUIDPROP == 1)
+
 #include "basesolver.h"
 
 #include "FluidProp_IF.h"
@@ -65,6 +67,6 @@ protected:
 	bool licenseError(string ErrorMsg);
 };
 
-
+#endif 
 
 #endif /*FLUIDPROPSOLVER_H_*/
