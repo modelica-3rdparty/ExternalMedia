@@ -35,7 +35,7 @@ struct FluidConstants{
 	/*!
 	  The constructor only initializes the variables.
 	*/
-	FluidConstants() : MM(NAN), pc(NAN), Tc(NAN), dc(NAN), hc(NAN), sc(NAN) {};
+	FluidConstants() : MM(-1), pc(-1), Tc(-1), dc(-1), hc(-1), sc(-1) {};
 };
 
 #endif // FLUIDCONSTANTS_H_
