@@ -12,8 +12,8 @@ project ("ExternalMedia")
 
 # Project version
 set (VERSION_MAJOR 3)
-set (VERSION_MINOR 2)
-set (VERSION_PATCH 1)
+set (VERSION_MINOR 3)
+set (VERSION_PATCH 0)
 set (APP_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 message (STATUS "ExternalMedia library version: ${APP_VERSION}")
 set (LIBRARY_NAME "ExternalMediaLib")
@@ -31,18 +31,28 @@ if (MSVC)
 #    set (CMAKE_C_FLAGS_DEBUG     "${CMAKE_C_FLAGS_DEBUG} /MTd")
     ADD_DEFINITIONS (-D_CRT_SECURE_NO_WARNINGS)
 endif()
-ADD_DEFINITIONS (-DMODELICA_ERRORS=1 -DNOMINMAX)
+#-- TO BE TESTED (USED) FOR DLL --
+#set(INCLUDE_DIRS "")
+#if (MINGW)
+#  LINK_DIRECTORIES($ENV{OPENMODELICAHOME}/lib/omc/)
+#endif()
+#ADD_DEFINITIONS (-DMODELICA_ERRORS=0 -DNOMINMAX)
 # Workaround for missing ModelicaMessage and ModelicaError objects
 set(INCLUDE_DIRS "")
-if (MINGW)
-  LINK_DIRECTORIES($ENV{OPENMODELICAHOME}/lib/omc/)
+
+if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../externals")
+  file(MAKE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../externals")
 endif()
+
+option(COOLPROP "Include the CoolProp library for fluid properties" ON)
+option(FLUIDPROP "Include the FluidProp library for fluid properties" OFF)
 
 #######################################
 #       INCLUDE COOLPROP              #
 #######################################
 
-if(COOLP)
+if(COOLPROP)
+  # Get the CoolProp code
   if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
     if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../externals")
 		file(MAKE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../externals")
@@ -63,25 +73,27 @@ if(COOLP)
     file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/coolprop-tmp")
     file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
   endif()
-  
+  # Configure CMake switches for CoolProp
   SET(COOLPROP_STATIC_LIBRARY OFF CACHE BOOL "Force the object library")
   SET(COOLPROP_SHARED_LIBRARY OFF CACHE BOOL "Force the object library")
   SET(COOLPROP_OBJECT_LIBRARY ON  CACHE BOOL "Force the object library")
-  ## Bitness of the CoolProp Library
-  if (CMAKE_SIZEOF_VOID_P MATCHES "8")
-   SET(FORCE_BITNESS_64 ON CACHE BOOL "force 64 bit")
-  endif()
-  ## Assuming shared library...
+
+  #-- TO BE TESTED FOR THE BITNESS OF COOLPROP --
+  #if(CMAKE_SIZEOF_VOID_P MATCHES "8")
+  # SET(FORCE_BITNESS_64 ON CACHE BOOL "force 64 bit")
+  #endif()
+  # Enable this for shared libraries (either CoolProp itself or ExternalMedia)
   SET(COOLPROP_FPIC ON CACHE BOOL "force -fPIC switch")
-  ##
+  # Add the CoolProp sources
   ADD_SUBDIRECTORY ("${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git" "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
   list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
   list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/include")
   list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/externals/msgpack-c/include")
   list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/externals/cppformat")
   list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/externals/fmtlib")
-else()
-  list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/coolpropsolver.cpp")
+# -- TO BE TESTED --  
+#else()
+#  list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/coolpropsolver.cpp")
 endif()
 
 ## We use CMake to handle the dependency since the primary VCS for 
@@ -117,23 +129,32 @@ endif()
 list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/Sources")
 include_directories (${INCLUDE_DIRS})
 file (GLOB_RECURSE LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/*.cpp")
-if (NOT FLUIDP)
-    list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/FluidProp_IF.cpp")
-    list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/FluidProp_COM.cpp")
-    list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/fluidpropsolver.cpp")
-endif()
-if(COOLP)
-LIST (APPEND LIB_SOURCES $<TARGET_OBJECTS:CoolProp>)
+
+if(NOT FLUIDPROP)
+  list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/FluidProp_IF.cpp")
+  list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/FluidProp_COM.cpp")
+  list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/fluidpropsolver.cpp")
 endif()
 
-add_library (${LIBRARY_NAME} SHARED ${LIB_SOURCES})
-set_property (TARGET ${LIBRARY_NAME} PROPERTY VERSION ${APP_VERSION})
-if (MINGW)
-  target_link_libraries(${LIBRARY_NAME} SimulationRuntimeC omcgc)
+if(COOLPROP)
+  list(APPEND LIB_SOURCES $<TARGET_OBJECTS:CoolProp>)
+else()
+  list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/coolpropsolver.cpp")
 endif()
-##target_link_libraries (${LIBRARY_NAME} ${CMAKE_DL_LIBS})
-if(COOLP)
-add_dependencies (${LIBRARY_NAME} CoolProp)
+
+# -- TO BE TESTED (USERD) FOR DLL --
+#if (MINGW)
+#  target_link_libraries(${LIBRARY_NAME} SimulationRuntimeC omcgc)
+#endif()
+# Add the target for ExternalMedia
+add_library(${LIBRARY_NAME} STATIC ${LIB_SOURCES})
+set_property(TARGET ${LIBRARY_NAME} PROPERTY VERSION ${APP_VERSION})
+target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_FLUIDPROP=$<IF:$<BOOL:${FLUIDPROP}>,1,0>)
+target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_COOLPROP=$<IF:$<BOOL:${COOLPROP}>,1,0>)
+target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_MODELICA_ERRORS=1) # Use 0 for a shared library and 1 for a static library
+#target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_LIBRARY_EXPORTS) # Use this for a shared library
+if(COOLPROP)
+add_dependencies(${LIBRARY_NAME} CoolProp)
 endif()
 
 if(WIN32)
@@ -214,21 +235,22 @@ set(MODELICA_INSTALL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia
 
 message(STATUS "Installation path: ${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
 
-#INSTALL(TARGETS "${LIBRARY_NAME}"                                     DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
-if(MINGW OR WIN32)
-  INSTALL(TARGETS "${LIBRARY_NAME}" RUNTIME DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")	
-  INSTALL(TARGETS "${LIBRARY_NAME}" RUNTIME DESTINATION "$ENV{OPENMODELICAHOME}/bin")
-else()
-  INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")
-endif()
-INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/${LIBRARY_HEADER}" DESTINATION "${MODELICA_INSTALL_PATH}/Include")
+# -- TO BE TESTED (USED) FOR DLL --
+#if(MINGW OR WIN32)
+#  INSTALL(TARGETS "${LIBRARY_NAME}" RUNTIME DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")	
+#  INSTALL(TARGETS "${LIBRARY_NAME}" RUNTIME DESTINATION "$ENV{OPENMODELICAHOME}/bin")
+#else()
+#  INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")
+#endif()
 
+INSTALL(TARGETS "${LIBRARY_NAME}"                                     DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
+INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/${LIBRARY_HEADER}" DESTINATION "${MODELICA_INSTALL_PATH}/Include")
 
 #######################################
 #          TEST DEFINITIONS           #
 #######################################
 # Customise this part to use your own CPP files
-if (COOLP)
+if (COOLPROP)
 add_executable (main EXCLUDE_FROM_ALL ${CMAKE_CURRENT_SOURCE_DIR}/Tests/coolprop_comparisons.cpp ${LIB_SOURCES})
 add_dependencies (main CoolProp)
 endif()

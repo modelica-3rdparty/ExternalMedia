@@ -19,47 +19,25 @@
  *                Start of user option selection
  ********************************************************************/
 
-// Selection of Modelica compiler
-//! Modelica compiler is Dymola
-/*!
-  Set this preprocessor variable to 1 if Dymola is the Modelica
-  compiler that is going to be used with the compiled library.
-  \sa OPEN_MODELICA
-*/
-#define DYMOLA 1
-
-//! Modelica compiler is OpenModelica
-/*!
-  Set this preprocessor variable to 1 if OpenModelica is the Modelica
-  compiler that is going to be used with the compiled library.
-  \sa DYMOLA
-*/
-#define OPEN_MODELICA 0
-
 // Selection of used external fluid property computation packages.
 //! FluidProp solver
 /*!
   Set this preprocessor variable to 1 to include the interface to the
   FluidProp solver developed and maintained by Francesco Casella.
 */
-#define FLUIDPROP 1
+#ifndef EXTERNALMEDIA_FLUIDPROP
+#define EXTERNALMEDIA_FLUIDPROP 0
+#endif
 
 // Selection of used external fluid property computation packages.
 //! CoolProp solver
 /*!
   Set this preprocessor variable to 1 to include the interface to the
-  CoolProp solver developed and maintained by Ian Bell et al.
+  CoolProp solver developed and maintained by Jorrit Wronski et al.
 */
-#define COOLPROP 1
-
-// Selection of build type for this project
-//! Build project into a DLL
-/*!
-  Set this preprocessor variable to 1 if the project is built into a
-  dynamic link library. This setting influences the error reporting
-  mechanism as well as the export statement.
-*/
-#define BUILD_DLL 0
+#ifndef EXTERNALMEDIA_COOLPROP
+#define EXTERNALMEDIA_COOLPROP 1
+#endif
 
 //! Not a number
 /*!
@@ -78,42 +56,6 @@
  *                 End of user option selection
  *            Do not change anything below this line
  ********************************************************************/
-/*! Detect the platform in order to avoid the DLL commands from 
- * making g++ choke. Code taken from CoolProp...
- */
-#if defined(_WIN32) || defined(__WIN32__) || defined(_WIN64) || defined(__WIN64__)
-#  define __ISWINDOWS__
-#elif __APPLE__
-#  define __ISAPPLE__
-#elif __linux
-#  define __ISLINUX__
-#endif
-
-/*! 
-Portable definitions of the EXPORT macro
- */
-#ifndef EXPORT
-#  if defined(__ISLINUX__)
-#    define EXPORT
-#  elif defined(__ISAPPLE__)
-#    define EXPORT
-#  else
-#    define EXPORT __declspec(dllexport)
-#  endif
-#endif
-
-/*!
-Overwrite FluidProp inclusion if not on Windows
- */
-#if defined(__ISLINUX__)
-#  undef FLUIDPROP
-#  define FLUIDPROP 0
-#elif defined(__ISAPPLE__)
-#  undef FLUIDPROP
-#  define FLUIDPROP 0
-#endif
-
-
 
 // General purpose includes
 #include <map>

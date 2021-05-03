@@ -1,0 +1,37 @@
+# External Media History
+
+The ExternalMedia project was started in 2006 by Francesco Casella and 
+Christoph Richter, with the aim of providing a framework for interfacing
+external codes computing fluid properties to Modelica.Media-compatible
+component models. The two main requirements were: maximizing the efficiency
+of the code and minimizing the amount of extra code required to use your
+own external code within the framework. The library was described in
+[this paper](https://www.modelica.org/events/modelica2008/Proceedings/sessions/session2b1.pdf).
+
+The first implementation featured a hidden cache in the C++ layer and used
+integer unique IDs to reference that cache. This architecture worked well
+if the models did not contain implicit algebraic equations involving medium
+properties, but had serious issues when such equations were involved, which
+is often the case when solving steady-state initialization problems. The
+library was shipped with an interface to the FluidProp software, provided
+at the time by TU Delft.
+
+The library was then restructured in 2012 by Francesco Casella and Roberto
+Bonifetto. The main idea was to get rid of the hidden cache and of the
+unique ID references and use the Modelica state records instead for caching. In this
+way, all optimizations performed by Modelica tools are guaranteed to give
+correct results, also in case of implicit equations, which was previously
+not the case. The library was mainly used with the Dymola tool, although
+some limited support for OpenModelica was given.
+
+In 2013, the open-source CoolProp package was integrated in the
+library, thus providing built-in access to a wide range of fluids.
+
+In 2014, Ian Bell initially provided some makefiles to automatically compile
+different versions of the library. Later on, Jorrit Wronski added support for
+CMake scripts.
+
+In 2021, Jorrit Wronksi implemented the entire CMake build pipeline within the
+GitHub CI environment. New annotations introduced in Modelica 3.4 now allow to
+build and ship the ExternalMedia package with built-in pre-compiled libraries
+for many different operating systems, C-compilers, and Modelica tools.
