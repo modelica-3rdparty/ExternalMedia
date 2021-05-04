@@ -22,3 +22,5 @@ dymosim.lib
 /.svn/
 /externals/
 /build/
+/build32/
+/build64/

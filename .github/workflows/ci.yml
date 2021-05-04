@@ -153,6 +153,11 @@ jobs:
         name: binaries
         path: Modelica
 
+#set Path=%ProgramFiles%\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw64\bin;%Path%
+#cmake -B build64 -S Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
+#cmake -B build64 -S Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
+#cmake --build build64 --target ExternalMediaLib
+#cmake --build build64 --target install
 
   build-msys:
     runs-on: windows-latest
