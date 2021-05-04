@@ -40,7 +40,7 @@ endif()
 
 option(COOLPROP "Include the CoolProp library for fluid properties" ON)
 option(FLUIDPROP "Include the FluidProp library for fluid properties" OFF)
-option(OPENMODELICA "Add the shared library required by the OpenModelica's NF" ON)
+option(OPENMODELICA "Add the shared library required by the OpenModelica's NF" OFF)
 
 #######################################
 #       INCLUDE COOLPROP              #
