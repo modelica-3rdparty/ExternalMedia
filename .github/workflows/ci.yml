@@ -99,19 +99,19 @@ jobs:
             arch: x64
             toolset: v142
           - platform: windows-2016
-            generator: Visual Studio 15 2016
+            generator: Visual Studio 15 2017
             arch: Win32
             toolset: v141
           - platform: windows-2016
-            generator: Visual Studio 15 2016
+            generator: Visual Studio 15 2017
             arch: x64
             toolset: v141
           - platform: windows-2016
-            generator: Visual Studio 15 2016
+            generator: Visual Studio 15 2017
             arch: Win32
             toolset: v140
           - platform: windows-2016
-            generator: Visual Studio 15 2016
+            generator: Visual Studio 15 2017
             arch: x64
             toolset: v140
             #cmake -G "Visual Studio 14" -T v120 -T v141,version=14.11
