@@ -30,6 +30,12 @@ struct FluidConstants{
 	double hc;
 	//! Specific entropy at critical point
 	double sc;
+
+	//! Constructor.
+	/*!
+	  The constructor only initializes the variables.
+	*/
+	FluidConstants() : MM(-1), pc(-1), Tc(-1), dc(-1), hc(-1), sc(-1) {};
 };
 
 #endif // FLUIDCONSTANTS_H_

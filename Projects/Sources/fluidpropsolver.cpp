@@ -6,6 +6,8 @@
  ********************************************************************/
 
 #include "include.h"
+#if (EXTERNALMEDIA_FLUIDPROP == 1)
+
 #include "fluidpropsolver.h"
 #include <iostream>
 
@@ -499,3 +501,4 @@ bool FluidPropSolver::licenseError(string ErrorMsg)
   	  return false;
 }
 
+#endif
