@@ -93,21 +93,28 @@ jobs:
           - platform: windows-2019
             generator: Visual Studio 16 2019
             arch: Win32
+            toolset: v142
           - platform: windows-2019
             generator: Visual Studio 16 2019
             arch: x64
+            toolset: v142
           - platform: windows-2016
             generator: Visual Studio 15 2016
             arch: Win32
+            toolset: v141
           - platform: windows-2016
             generator: Visual Studio 15 2016
             arch: x64
+            toolset: v141
           - platform: windows-2016
-            generator: Visual Studio 14 2015
+            generator: Visual Studio 15 2016
             arch: Win32
+            toolset: v140
           - platform: windows-2016
-            generator: Visual Studio 14 2015
+            generator: Visual Studio 15 2016
             arch: x64
+            toolset: v140
+            #cmake -G "Visual Studio 14" -T v120 -T v141,version=14.11
     steps:
     - uses: actions/checkout@v2
     - name: Create Build Environment
@@ -117,8 +124,8 @@ jobs:
     - name: Configure with CMake
       working-directory: ${{runner.workspace}}/build
       run: |
-        cmake ${{ runner.workspace }}/ExternalMedia/Projects -A ${{ matrix.arch }} -G "${{ matrix.generator }}" -DFLUIDPROP=1 -DCOOLPROP=1
-        cmake ${{ runner.workspace }}/ExternalMedia/Projects -A ${{ matrix.arch }} -G "${{ matrix.generator }}" -DFLUIDPROP=1 -DCOOLPROP=1
+        cmake ${{ runner.workspace }}/ExternalMedia/Projects -A ${{ matrix.arch }} -G "${{ matrix.generator }}" -T "${{ matrix.toolset }}" -DFLUIDPROP=1 -DCOOLPROP=1
+        cmake ${{ runner.workspace }}/ExternalMedia/Projects -A ${{ matrix.arch }} -G "${{ matrix.generator }}" -T "${{ matrix.toolset }}" -DFLUIDPROP=1 -DCOOLPROP=1
     - name: Build with CMake
       working-directory: ${{runner.workspace}}/build
       run: cmake --build . --target ExternalMediaLib --config Release
