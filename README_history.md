@@ -1,4 +1,4 @@
-# External Media History
+# ExternalMedia History
 
 The ExternalMedia project was started in 2006 by Francesco Casella and 
 Christoph Richter, with the aim of providing a framework for interfacing
