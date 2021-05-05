@@ -32,6 +32,6 @@ This Modelica package is free software and the use is completely at your own ris
 it can be redistributed and/or modified under the terms of the [Modelica License 2](https://modelica.org/licenses/ModelicaLicense2).
 
 ## Development and contribution
-Main developers: [Francesco Casella](mailto:francesco.casella@polimi.it), Christoph Richter for the initial development. Ian Bell, Jorrit Wronski for the integration of CoolProp in the library.
+Main developers: [Francesco Casella](mailto:francesco.casella@polimi.it), Christoph Richter.
 
-Please report problems using [GitHub issues](https://github.com/modelica/ExternalMedia/issues).
+You may report any issues by using the [Modelica Issue Tracker](https://trac.modelica.org/Modelica/newticket?component=_ExternalMedia).
