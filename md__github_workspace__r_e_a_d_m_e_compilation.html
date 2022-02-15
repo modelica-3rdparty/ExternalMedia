@@ -93,16 +93,16 @@ Selecting the fluid property libraries</h1>
 <div class="line">cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=OFF -DCOOLPROP:BOOL=ON</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md12"></a>
 Building OpenModelica libraries</h1>
-<ul>
-<li>Get the OMDEV environment from the SVN repository: <a href="https://openmodelica.org/svn/OpenModelicaExternal/trunk/tools/windows/OMDev">https://openmodelica.org/svn/OpenModelicaExternal/trunk/tools/windows/OMDev</a> user: anonymous pass: none</li>
-<li>Install OMDEV in the C:\OMDev path</li>
-<li>Start C:\OMDev\tools\msys\msys.bat (You should get a command window pop up that looks like the emulation of a unix prompt - because it is)</li>
-<li>$ mount d:/Path_to_your_ExternalMediaLibrary_working_copy /ExternalMediaLibrary</li>
-<li>$ cd /ExternalMediaLibrary/</li>
-<li>$ cmake -B build -S Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release</li>
-<li>$ cmake &ndash;build build &ndash;target install</li>
-</ul>
-<p >This will build the static gcc library and copy it and the externalmedia.h header files in the Resource directories of the Modelica packages, so it can be used right away by just loading the Modelica package in OMC. </p>
+<p >Get the OMDEV environment from the SVN repository:</p>
+<div class="fragment"><div class="line">https://openmodelica.org/svn/OpenModelicaExternal/trunk/tools/windows/OMDev</div>
+<div class="line">user: anonymous</div>
+<div class="line">pass: none</div>
+</div><!-- fragment --><p >To install OMDEV in the <code>C:\OMDev</code> path, you should start <code>C:\OMDev\tools\msys\msys.bat</code>. This gives you a command window that looks like the emulation of a unix prompt. Afterwards, you can run the following commands</p>
+<div class="fragment"><div class="line">$ mount d:/Path_to_your_ExternalMediaLibrary_working_copy /ExternalMediaLibrary</div>
+<div class="line">$ cd /ExternalMediaLibrary/</div>
+<div class="line">$ cmake -B build -S Projects -G &quot;MSYS Makefiles&quot; -DCMAKE_BUILD_TYPE=Release</div>
+<div class="line">$ cmake --build build --target install</div>
+</div><!-- fragment --><p >This will build the static gcc library and copy it and the <code>externalmedia.h</code> header files in the Resource directories of the Modelica packages, so it can be used right away by just loading the Modelica package in OMC. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
