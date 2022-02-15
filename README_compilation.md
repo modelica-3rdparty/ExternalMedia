@@ -64,18 +64,25 @@ cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=OFF -DCOO
 
 ## Building OpenModelica libraries
 
-- Get the OMDEV environment from the SVN repository:
-  https://openmodelica.org/svn/OpenModelicaExternal/trunk/tools/windows/OMDev
-  user: anonymous
-  pass: none
-- Install OMDEV in the C:\OMDev path
-- Start C:\OMDev\tools\msys\msys.bat (You should get a command window pop up
-  that looks like the emulation of a unix prompt - because it is)
-- $ mount d:/Path_to_your_ExternalMediaLibrary_working_copy /ExternalMediaLibrary
-- $ cd /ExternalMediaLibrary/
-- $ cmake -B build -S Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release
-- $ cmake --build build --target install
- 
-This will build the static gcc library and copy it and the externalmedia.h
+Get the OMDEV environment from the SVN repository:
+
+```shell
+https://openmodelica.org/svn/OpenModelicaExternal/trunk/tools/windows/OMDev
+user: anonymous
+pass: none
+```
+
+To install OMDEV in the `C:\OMDev` path, you should start `C:\OMDev\tools\msys\msys.bat`. This
+gives you a command window that looks like the emulation of a unix prompt. Afterwards, you can
+run the following commands
+
+```shell
+$ mount d:/Path_to_your_ExternalMediaLibrary_working_copy /ExternalMediaLibrary
+$ cd /ExternalMediaLibrary/
+$ cmake -B build -S Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release
+$ cmake --build build --target install
+```
+
+This will build the static gcc library and copy it and the `externalmedia.h`
 header files in the Resource directories of the Modelica packages, so it can
 be used right away by just loading the Modelica package in OMC.
