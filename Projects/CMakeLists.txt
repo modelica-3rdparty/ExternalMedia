@@ -13,7 +13,7 @@ project ("ExternalMedia")
 # Project version
 set (VERSION_MAJOR 3)
 set (VERSION_MINOR 3)
-set (VERSION_PATCH 0)
+set (VERSION_PATCH 1)
 set (APP_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 message (STATUS "ExternalMedia library version: ${APP_VERSION}")
 set (LIBRARY_NAME "ExternalMediaLib")
