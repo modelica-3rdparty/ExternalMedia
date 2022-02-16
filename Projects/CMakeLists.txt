@@ -142,6 +142,7 @@ endif()
 # Add the target for ExternalMedia
 add_library(${LIBRARY_NAME} STATIC ${LIB_SOURCES})
 set_property(TARGET ${LIBRARY_NAME} PROPERTY VERSION ${APP_VERSION})
+set_property(TARGET ${LIBRARY_NAME} PROPERTY DEBUG_POSTFIX "")
 target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_FLUIDPROP=$<IF:$<BOOL:${FLUIDPROP}>,1,0>)
 target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_COOLPROP=$<IF:$<BOOL:${COOLPROP}>,1,0>)
 target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_MODELICA_ERRORS=1) # Use 0 for a shared library and 1 for a static library
