@@ -49,7 +49,7 @@ option(FLUIDPROP "Include the FluidProp library for fluid properties" OFF)
 if(COOLPROP)
   # Get the CoolProp code
   if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
-    file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/5.1.1/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
+    file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/6.4.1/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
     #file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/nightly/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
     file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/coolprop-tmp")
     # Use CMake to unzip

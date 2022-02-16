@@ -1,4 +1,4 @@
-openModel("../../Modelica/ExternalMedia 3.3.0/package.mo")
+openModel("../../Modelica/ExternalMedia 3.3.1/package.mo")
 cd("../../Projects/RunTests/Results")
 simulateModel("ExternalMedia.Test.TestMedium.TestStatesSat", method="dassl", resultFile="TestMedium-TestStatesSat");
 simulateModel("ExternalMedia.Test.TestMedium.TestBasePropertiesExplicit", method="dassl", resultFile="TestMedium-TestBasePropertiesExplicit");
