@@ -141,13 +141,15 @@ else()
 endif()
 
 # Add the target for ExternalMedia
-add_library(${LIBRARY_NAME} STATIC ${LIB_SOURCES})
+add_library(${LIBRARY_NAME} SHARED ${LIB_SOURCES})
 set_property(TARGET ${LIBRARY_NAME} PROPERTY VERSION ${APP_VERSION})
 set_property(TARGET ${LIBRARY_NAME} PROPERTY DEBUG_POSTFIX "")
 target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_FLUIDPROP=$<IF:$<BOOL:${FLUIDPROP}>,1,0>)
 target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_COOLPROP=$<IF:$<BOOL:${COOLPROP}>,1,0>)
-target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_MODELICA_ERRORS=1) # Use 0 for a shared library and 1 for a static library
-#target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_LIBRARY_EXPORTS) # Use this for a shared library
+target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_MODELICA_ERRORS=0) # Use 0 for a shared library and 1 for a static library
+target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_EXPORTS) # Use this for a shared library
+target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_LIBRARY_EXPORTS=1) # Use this for a shared library
+
 if(COOLPROP)
 add_dependencies(${LIBRARY_NAME} CoolProp)
 endif()
