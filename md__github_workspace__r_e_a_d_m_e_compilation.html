@@ -68,7 +68,7 @@ $(function() {
 <div class="contents">
 <div class="textblock"><h1><a class="anchor" id="autotoc_md11"></a>
 Quick-start guide</h1>
-<p >The heavy-lifting regarding the project configuration is done using the CMake file <code>CMakeLists.txt</code>, which makes the [CMake software] (<a href="https://cmake.org/">https://cmake.org/</a>) a prerequisite for compiling ExternalMedia.</p>
+<p >The heavy-lifting regarding the project configuration is done using the CMake file <code>CMakeLists.txt</code>, which makes the <a href="https://cmake.org/">CMake software</a> a prerequisite for compiling ExternalMedia.</p>
 <p >Once you have installed CMake and can access it from a command prompt, you can go to the root folder of the source code and run:</p>
 <div class="fragment"><div class="line">cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release</div>
 <div class="line">cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release</div>
@@ -93,10 +93,8 @@ Selecting the fluid property libraries</h1>
 <div class="line">cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=OFF -DCOOLPROP:BOOL=ON</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md13"></a>
 Building OpenModelica libraries</h1>
-<p >Get the OMDEV environment from the SVN repository:</p>
-<div class="fragment"><div class="line">https://openmodelica.org/svn/OpenModelicaExternal/trunk/tools/windows/OMDev</div>
-<div class="line">user: anonymous</div>
-<div class="line">pass: none</div>
+<p >Get the OMDEV environment from the git repository:</p>
+<div class="fragment"><div class="line">git clone https://openmodelica.org/git/OMDev.git C:/OMDev</div>
 </div><!-- fragment --><p >To install OMDEV in the <code>C:\OMDev</code> path, you should start <code>C:\OMDev\tools\msys\msys.bat</code>. This gives you a command window that looks like the emulation of a unix prompt. Afterwards, you can run the following commands</p>
 <div class="fragment"><div class="line">$ mount d:/Path_to_your_ExternalMediaLibrary_working_copy /ExternalMediaLibrary</div>
 <div class="line">$ cd /ExternalMediaLibrary/</div>
