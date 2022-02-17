@@ -123,7 +123,7 @@ FluidProp solver is implemented for an example.
 
 Finally, add the .cpp and .h files of the solver object to the C/C++ project,
 set the include.h file according to your needs and recompile it to a
-static library (or to a DLL). The compiled libraries and the externalmedialib.h
+shared library. The compiled libraries and the externalmedialib.h
 files must then be copied into the Include subdirectory of the Modelica package
 so that the Modelica tool can link them when compiling the models.
 

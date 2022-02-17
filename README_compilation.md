@@ -81,6 +81,6 @@ $ cmake -B build -S Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release
 $ cmake --build build --target install
 ```
 
-This will build the static gcc library and copy it and the `externalmedia.h`
+This will build the dynamic library and copy it and the `externalmedia.h`
 header files in the Resource directories of the Modelica packages, so it can
 be used right away by just loading the Modelica package in OMC.
