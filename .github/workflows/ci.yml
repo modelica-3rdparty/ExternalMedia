@@ -34,7 +34,12 @@ jobs:
         # #destination_dir: latest
 
   build-macos:
-    runs-on: macOS-latest
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      matrix:
+        include:
+          - platform: macos-11
+          - platform: macos-10.15
     steps:
     - uses: actions/checkout@v2
     - name: Create Build Environment
@@ -60,7 +65,12 @@ jobs:
 
 
   build-linux:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      matrix:
+        include:
+          - platform: ubuntu-20.04
+          - platform: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
     - name: Create Build Environment
