@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 2.8.8 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
 include(ExternalProject)
 
-CMAKE_POLICY(SET CMP0053 OLD)
+CMAKE_POLICY(SET CMP0053 NEW)
 
 #######################################
 #         PROJECT INFORMATION         #
@@ -29,7 +29,8 @@ if (MSVC)
 #    set (CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
 #    set (CMAKE_C_FLAGS_RELEASE   "${CMAKE_C_FLAGS_RELEASE} /MT")
 #    set (CMAKE_C_FLAGS_DEBUG     "${CMAKE_C_FLAGS_DEBUG} /MTd")
-    ADD_DEFINITIONS (-D_CRT_SECURE_NO_WARNINGS)
+  ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS)
+  ADD_DEFINITIONS(-DNOMINMAX) # Avoid name clash in CoolProp FMT library
 endif()
 #ADD_DEFINITIONS (-DMODELICA_ERRORS=0 -DNOMINMAX)
 # Workaround for missing ModelicaMessage and ModelicaError objects
@@ -190,6 +191,8 @@ if(MSVC) #CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set(MODELICA_COMPILER vs2017)
   elseif(MSVC_TOOLSET_VERSION EQUAL 142)
     set(MODELICA_COMPILER vs2019)
+  elseif(MSVC_TOOLSET_VERSION EQUAL 143)
+    set(MODELICA_COMPILER vs2022)
   else()
     message(WARNING "\"${MSVC_TOOLSET_VERSION}\" is not explicitly supported. Please check you build carefully.")
   endif()
