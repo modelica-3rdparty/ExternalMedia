@@ -48,8 +48,7 @@ the [compilation instructions](README_compilation.md).
 ### Modelica integration
 
 The Modelica Language Specification mentions annotations for External Libraries
-and Include Files in [section 12.9.4]
-(https://specification.modelica.org/maint/3.5/functions.html#annotations-for-external-libraries-and-include-files).
+and Include Files in [section 12.9.4](https://specification.modelica.org/maint/3.5/functions.html#annotations-for-external-libraries-and-include-files).
 Following the concepts put forward there, the ExternalMedia package provides several pre-compiled
 static libraries supporting a selection of operating systems, C-compilers and Modelica tools.
 
@@ -62,10 +61,10 @@ binary for your configuration, you should now be able to run the examples.
 If your Modelica tool cannot find the provided binaries or if you use an
 unsupported compiler, you can build the ExternalMedia files yourself. All
 you need to compile ExternalMedia, besides your C/C++ compiler, is the 
-[CMake software] (https://cmake.org/) by Kitware. If you would like to include
+[CMake software](https://cmake.org/) by Kitware. If you would like to include
 the CoolProp library, you also need a working Python installation.
 
-Please consult [compilation guide](README_compilation.md) for further
+Please consult the [compilation guide](README_compilation.md) for further
 instructions and details on how to compile ExternalMedia for different Modelica
 tools and operating systems.
 

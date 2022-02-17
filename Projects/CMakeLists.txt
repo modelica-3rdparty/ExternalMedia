@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 2.8.8 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
 include(ExternalProject)
 
-CMAKE_POLICY(SET CMP0053 OLD)
+CMAKE_POLICY(SET CMP0053 NEW)
 
 #######################################
 #         PROJECT INFORMATION         #
@@ -13,7 +13,7 @@ project ("ExternalMedia")
 # Project version
 set (VERSION_MAJOR 3)
 set (VERSION_MINOR 3)
-set (VERSION_PATCH 0)
+set (VERSION_PATCH 1)
 set (APP_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 message (STATUS "ExternalMedia library version: ${APP_VERSION}")
 set (LIBRARY_NAME "ExternalMediaLib")
@@ -29,7 +29,8 @@ if (MSVC)
 #    set (CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
 #    set (CMAKE_C_FLAGS_RELEASE   "${CMAKE_C_FLAGS_RELEASE} /MT")
 #    set (CMAKE_C_FLAGS_DEBUG     "${CMAKE_C_FLAGS_DEBUG} /MTd")
-    ADD_DEFINITIONS (-D_CRT_SECURE_NO_WARNINGS)
+  ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS)
+  ADD_DEFINITIONS(-DNOMINMAX) # Avoid name clash in CoolProp FMT library
 endif()
 #ADD_DEFINITIONS (-DMODELICA_ERRORS=0 -DNOMINMAX)
 # Workaround for missing ModelicaMessage and ModelicaError objects
@@ -49,7 +50,7 @@ option(FLUIDPROP "Include the FluidProp library for fluid properties" OFF)
 if(COOLPROP)
   # Get the CoolProp code
   if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
-    file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/5.1.1/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
+    file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/6.4.1/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
     #file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/nightly/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
     file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/coolprop-tmp")
     # Use CMake to unzip
@@ -142,6 +143,7 @@ endif()
 # Add the target for ExternalMedia
 add_library(${LIBRARY_NAME} STATIC ${LIB_SOURCES})
 set_property(TARGET ${LIBRARY_NAME} PROPERTY VERSION ${APP_VERSION})
+set_property(TARGET ${LIBRARY_NAME} PROPERTY DEBUG_POSTFIX "")
 target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_FLUIDPROP=$<IF:$<BOOL:${FLUIDPROP}>,1,0>)
 target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_COOLPROP=$<IF:$<BOOL:${COOLPROP}>,1,0>)
 target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_MODELICA_ERRORS=1) # Use 0 for a shared library and 1 for a static library
@@ -189,6 +191,8 @@ if(MSVC) #CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set(MODELICA_COMPILER vs2017)
   elseif(MSVC_TOOLSET_VERSION EQUAL 142)
     set(MODELICA_COMPILER vs2019)
+  elseif(MSVC_TOOLSET_VERSION EQUAL 143)
+    set(MODELICA_COMPILER vs2022)
   else()
     message(WARNING "\"${MSVC_TOOLSET_VERSION}\" is not explicitly supported. Please check you build carefully.")
   endif()

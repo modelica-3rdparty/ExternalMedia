@@ -3,7 +3,7 @@
 ## Quick-start guide
 
 The heavy-lifting regarding the project configuration is done using the CMake
-file `CMakeLists.txt`, which makes the [CMake software] (https://cmake.org/)
+file `CMakeLists.txt`, which makes the [CMake software](https://cmake.org/)
 a prerequisite for compiling ExternalMedia.
 
 Once you have installed CMake and can access it from a command prompt, you can
@@ -64,12 +64,10 @@ cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=OFF -DCOO
 
 ## Building OpenModelica libraries
 
-Get the OMDEV environment from the SVN repository:
+Get the OMDEV environment from the git repository:
 
 ```shell
-https://openmodelica.org/svn/OpenModelicaExternal/trunk/tools/windows/OMDev
-user: anonymous
-pass: none
+git clone https://openmodelica.org/git/OMDev.git C:/OMDev
 ```
 
 To install OMDEV in the `C:\OMDev` path, you should start `C:\OMDev\tools\msys\msys.bat`. This

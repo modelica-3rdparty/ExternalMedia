@@ -353,6 +353,50 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
     }
 }
 
+void fillCritSatState(ExternalSaturationProperties* const properties, const ExternalSaturationProperties &_satPropsClose2Crit) {
+	properties->Tsat = _satPropsClose2Crit.Tsat;  // saturation temperature
+	properties->dTp = _satPropsClose2Crit.dTp;   // derivative of Ts by pressure
+	properties->ddldp = _satPropsClose2Crit.ddldp; // derivative of dls by pressure
+	properties->ddvdp = _satPropsClose2Crit.ddvdp; // derivative of dvs by pressure
+	properties->dhldp = _satPropsClose2Crit.dhldp; // derivative of hls by pressure
+	properties->dhvdp = _satPropsClose2Crit.dhvdp; // derivative of hvs by pressure
+	properties->dl = _satPropsClose2Crit.dl;    // bubble density
+	properties->dv = _satPropsClose2Crit.dv;    // dew density
+	properties->hl = _satPropsClose2Crit.hl;    // bubble specific enthalpy
+	properties->hv = _satPropsClose2Crit.hv;    // dew specific enthalpy
+	properties->psat = _satPropsClose2Crit.psat;  // saturation pressure
+	properties->sigma = _satPropsClose2Crit.sigma; // Surface tension
+	properties->sl = _satPropsClose2Crit.sl;    // Specific entropy at bubble line (for pressure ps)
+	properties->sv = _satPropsClose2Crit.sv;    // Specific entropy at dew line (for pressure ps)
+}
+
+void fillBubbleState(shared_ptr<CoolProp::AbstractState> state, ExternalSaturationProperties* const properties) {
+	properties->psat = state->p(); // At bubble line! (matters for pseudo-pure fluids, potentially wrong for mixtures)
+	properties->Tsat = state->T(); // At bubble line! (matters for pseudo-pure fluids, potentially wrong for mixtures)
+	properties->dTp = state->first_saturation_deriv(CoolProp::iT, CoolProp::iP); // At bubble line! (matters for pseudo-pure fluids, potentially wrong for mixtures)
+
+	try {
+		//! Surface tension
+		properties->sigma = state->surface_tension();
+	} catch (...) {
+		properties->sigma = NAN;
+	}
+
+	properties->dl = state->rhomass();
+	properties->hl = state->hmass();
+	properties->ddldp = state->first_saturation_deriv(CoolProp::iDmass, CoolProp::iP);
+	properties->dhldp = state->first_saturation_deriv(CoolProp::iHmass, CoolProp::iP);
+	properties->sl = state->smass();
+}
+
+void fillDewState(shared_ptr<CoolProp::AbstractState> state, ExternalSaturationProperties* const properties) {
+	properties->dv = state->rhomass();
+	properties->hv = state->hmass();
+	properties->ddvdp = state->first_saturation_deriv(CoolProp::iDmass, CoolProp::iP);
+	properties->dhvdp = state->first_saturation_deriv(CoolProp::iHmass, CoolProp::iP);
+	properties->sv = state->smass();
+}
+
 
 void CoolPropSolver::setSat_p(double &p, ExternalSaturationProperties *const properties){
 
@@ -360,20 +404,7 @@ void CoolPropSolver::setSat_p(double &p, ExternalSaturationProperties *const pro
 		std::cout << format("setSat_p(%0.16e)\n",p);
 
 	if (p > _satPropsClose2Crit.psat) { // supercritical conditions
-		properties->Tsat  = _satPropsClose2Crit.Tsat;  // saturation temperature
-		properties->dTp   = _satPropsClose2Crit.dTp;   // derivative of Ts by pressure
-		properties->ddldp = _satPropsClose2Crit.ddldp; // derivative of dls by pressure
-		properties->ddvdp = _satPropsClose2Crit.ddvdp; // derivative of dvs by pressure
-		properties->dhldp = _satPropsClose2Crit.dhldp; // derivative of hls by pressure
-		properties->dhvdp = _satPropsClose2Crit.dhvdp; // derivative of hvs by pressure
-		properties->dl    = _satPropsClose2Crit.dl;    // bubble density
-		properties->dv    = _satPropsClose2Crit.dv;    // dew density
-		properties->hl    = _satPropsClose2Crit.hl;    // bubble specific enthalpy
-		properties->hv    = _satPropsClose2Crit.hv;    // dew specific enthalpy
-		properties->psat  = _satPropsClose2Crit.psat;  // saturation pressure
-		properties->sigma = _satPropsClose2Crit.sigma; // Surface tension
-		properties->sl    = _satPropsClose2Crit.sl;    // Specific entropy at bubble line (for pressure ps)
-		properties->sv    = _satPropsClose2Crit.sv;    // Specific entropy at dew line (for pressure ps)
+		fillCritSatState(properties, _satPropsClose2Crit);
 	} else {
 	  //this->preStateChange();
 	  try {
@@ -388,40 +419,13 @@ void CoolPropSolver::setSat_p(double &p, ExternalSaturationProperties *const pro
 
 		  // At bubble line:
 		  state->specify_phase(CoolProp::iphase_liquid);
-		  state->update(CoolProp::PQ_INPUTS,p,0);
-		  //! Saturation temperature
-		  properties->Tsat = state->T(); // At bubble line! (mather for pseudo-pure fluids)
-		  //! Derivative of Ts wrt pressure
-		  properties->dTp = state->first_saturation_deriv(CoolProp::iT, CoolProp::iP);
-		  //! Derivative of dls wrt pressure
-		  properties->ddldp = state->first_saturation_deriv(CoolProp::iDmass, CoolProp::iP);
-		  //! Derivative of hls wrt pressure
-		  properties->dhldp = state->first_saturation_deriv(CoolProp::iHmass, CoolProp::iP);
-		  //! Density at bubble line (for pressure ps)
-		  properties->dl = state->rhomass();
-		  //! Specific enthalpy at bubble line (for pressure ps)
-		  properties->hl = state->hmass();
-		  //! Saturation pressure
-		  properties->psat = p;
-		  //! Surface tension
-		  properties->sigma = state->surface_tension();
-		  //! Specific entropy at bubble line (for pressure ps)
-		  properties->sl = state->smass();
+		  state->update(CoolProp::PQ_INPUTS, p, 0);
+		  fillBubbleState(state, properties);
 
 		  // At dew line:
 		  state->specify_phase(CoolProp::iphase_gas);
-		  state->update(CoolProp::PQ_INPUTS,p,1);
-		  //! Derivative of dvs wrt pressure
-		  properties->ddvdp = state->first_saturation_deriv(CoolProp::iDmass, CoolProp::iP);
-		  //! Derivative of hvs wrt pressure
-		  properties->dhvdp = state->first_saturation_deriv(CoolProp::iHmass, CoolProp::iP);
-		  //! Density at dew line (for pressure ps)
-		  properties->dv = state->rhomass();
-		  //! Specific enthalpy at dew line (for pressure ps)
-		  properties->hv = state->hmass();
-		  //! Specific entropy at dew line (for pressure ps)
-		  properties->sv = state->smass();
-		  // state->specify_phase(CoolProp::iphase_not_imposed);
+		  state->update(CoolProp::PQ_INPUTS, p, 1);
+		  fillDewState(state, properties);
 
 		  // Reset the state (to be sure a new one is created before computing new values):
 		  state->clear();
@@ -439,20 +443,7 @@ void CoolPropSolver::setSat_T(double &T, ExternalSaturationProperties *const pro
 		std::cout << format("setSat_T(%0.16e)\n",T);
 
 	if (T > _satPropsClose2Crit.Tsat) { // supercritical conditions
-		properties->Tsat  = _satPropsClose2Crit.Tsat;  // saturation temperature
-		properties->dTp   = _satPropsClose2Crit.dTp;   // derivative of Ts by pressure
-		properties->ddldp = _satPropsClose2Crit.ddldp; // derivative of dls by pressure
-		properties->ddvdp = _satPropsClose2Crit.ddvdp; // derivative of dvs by pressure
-		properties->dhldp = _satPropsClose2Crit.dhldp; // derivative of hls by pressure
-		properties->dhvdp = _satPropsClose2Crit.dhvdp; // derivative of hvs by pressure
-		properties->dl    = _satPropsClose2Crit.dl;    // bubble density
-		properties->dv    = _satPropsClose2Crit.dv;    // dew density
-		properties->hl    = _satPropsClose2Crit.hl;    // bubble specific enthalpy
-		properties->hv    = _satPropsClose2Crit.hv;    // dew specific enthalpy
-		properties->psat  = _satPropsClose2Crit.psat;  // saturation pressure
-		properties->sigma = _satPropsClose2Crit.sigma; // Surface tension
-		properties->sl    = _satPropsClose2Crit.sl;    // Specific entropy at bubble line (for pressure ps)
-		properties->sv    = _satPropsClose2Crit.sv;    // Specific entropy at dew line (for pressure ps)
+		fillCritSatState(properties, _satPropsClose2Crit);
 	} else {
 	  //this->preStateChange();
 	  try
@@ -464,25 +455,16 @@ void CoolPropSolver::setSat_T(double &T, ExternalSaturationProperties *const pro
 		  // At bubble line:
 		  state->specify_phase(CoolProp::iphase_liquid);
 		  state->update(CoolProp::QT_INPUTS,0,T);
-		  properties->Tsat = T;
-		  properties->psat = state->p(); // At bubble line! (mather for pseudo-pure fluids)
-		  properties->dl = state->rhomass();
-		  properties->hl = state->hmass();
-		  properties->dTp = state->first_saturation_deriv(CoolProp::iT, CoolProp::iP);
-		  properties->ddldp = state->first_saturation_deriv(CoolProp::iDmass, CoolProp::iP);
-		  properties->dhldp = state->first_saturation_deriv(CoolProp::iHmass, CoolProp::iP);
-		  properties->sigma = state->surface_tension(); // Surface tension
-		  properties->sl    = state->smass();    // Specific entropy at bubble line (for pressure ps)
+		  fillBubbleState(state, properties);
 
 		  // At dew line:
 		  state->specify_phase(CoolProp::iphase_gas);
 		  state->update(CoolProp::QT_INPUTS,1,T);
-		  properties->dv = state->rhomass();
-		  properties->hv = state->hmass();
-		  properties->ddvdp = state->first_saturation_deriv(CoolProp::iDmass, CoolProp::iP);
-		  properties->dhvdp = state->first_saturation_deriv(CoolProp::iHmass, CoolProp::iP);
-		  properties->sv    = state->smass();    // Specific entropy at dew line (for pressure ps)
-		  // state->specify_phase(CoolProp::iphase_not_imposed);
+		  fillDewState(state, properties);
+
+		  // Reset the state (to be sure a new one is created before computing new values):
+		  state->clear();
+		  state->unspecify_phase();
 
 	  } catch(std::exception &e) {
 		errorMessage((char*)e.what());

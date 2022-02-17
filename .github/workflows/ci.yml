@@ -34,7 +34,12 @@ jobs:
         # #destination_dir: latest
 
   build-macos:
-    runs-on: macOS-latest
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      matrix:
+        include:
+          - platform: macos-11
+          - platform: macos-10.15
     steps:
     - uses: actions/checkout@v2
     - name: Create Build Environment
@@ -60,7 +65,12 @@ jobs:
 
 
   build-linux:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      matrix:
+        include:
+          - platform: ubuntu-20.04
+          - platform: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
     - name: Create Build Environment
@@ -90,6 +100,14 @@ jobs:
     strategy:
       matrix:
         include:
+          - platform: windows-2022
+            generator: Visual Studio 17 2022
+            arch: Win32
+            toolset: v143
+          - platform: windows-2022
+            generator: Visual Studio 17 2022
+            arch: x64
+            toolset: v143
           - platform: windows-2019
             generator: Visual Studio 16 2019
             arch: Win32
@@ -98,20 +116,20 @@ jobs:
             generator: Visual Studio 16 2019
             arch: x64
             toolset: v142
-          - platform: windows-2016
-            generator: Visual Studio 15 2017
+          - platform: windows-2019
+            generator: Visual Studio 16 2019
             arch: Win32
             toolset: v141
-          - platform: windows-2016
-            generator: Visual Studio 15 2017
+          - platform: windows-2019
+            generator: Visual Studio 16 2019
             arch: x64
             toolset: v141
-          - platform: windows-2016
-            generator: Visual Studio 15 2017
+          - platform: windows-2019
+            generator: Visual Studio 16 2019
             arch: Win32
             toolset: v140
-          - platform: windows-2016
-            generator: Visual Studio 15 2017
+          - platform: windows-2019
+            generator: Visual Studio 16 2019
             arch: x64
             toolset: v140
             #cmake -G "Visual Studio 14" -T v120 -T v141,version=14.11
@@ -146,7 +164,7 @@ jobs:
     - name: Create Build Environment
       run: |
         cmake --version
-        svn checkout -q https://openmodelica.org/svn/OpenModelicaExternal/trunk/tools/windows/OMDev C:/OMDev
+        git clone https://openmodelica.org/git/OMDev.git C:/OMDev
     - name: Configure with CMake for 32bit
       working-directory: ${{runner.workspace}}
       run: |
@@ -228,7 +246,7 @@ jobs:
         path: Projects/Documentation
 
     - name: Copy PDF to Modelica tree
-      run: cp 'Projects/Documentation/latex/refman.pdf' 'Modelica/ExternalMedia 3.3.0/Resources/manual.pdf'
+      run: cp 'Projects/Documentation/latex/refman.pdf' 'Modelica/ExternalMedia 3.3.1/Resources/manual.pdf'
 
     - name: Upload Modelica sources with PDF
       uses: actions/upload-artifact@v1
