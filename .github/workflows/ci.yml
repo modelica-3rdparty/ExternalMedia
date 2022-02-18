@@ -49,8 +49,8 @@ jobs:
     - name: Configure with CMake
       working-directory: ${{runner.workspace}}/build
       run: |
-       cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=0 -DCOOLPROP=1 || true
-       cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=0 -DCOOLPROP=1
+       cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=0 -DCOOLPROP=1 -DDEFAULTLIB=0 || true
+       cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=0 -DCOOLPROP=1 -DDEFAULTLIB=0
     - name: Build with CMake
       working-directory: ${{runner.workspace}}/build
       run: cmake --build . --target ExternalMediaLib
@@ -80,8 +80,8 @@ jobs:
     - name: Configure with CMake
       working-directory: ${{runner.workspace}}/build
       run: |
-        cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=0 -DCOOLPROP=1 || true
-        cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=0 -DCOOLPROP=1
+        cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=0 -DCOOLPROP=1 -DDEFAULTLIB=0 || true
+        cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=0 -DCOOLPROP=1 -DDEFAULTLIB=0
     - name: Build with CMake
       working-directory: ${{runner.workspace}}/build
       run: cmake --build . --target ExternalMediaLib
@@ -142,8 +142,8 @@ jobs:
     - name: Configure with CMake
       working-directory: ${{runner.workspace}}/build
       run: |
-        cmake ${{ runner.workspace }}/ExternalMedia/Projects -A ${{ matrix.arch }} -G "${{ matrix.generator }}" -T "${{ matrix.toolset }}" -DFLUIDPROP=1 -DCOOLPROP=1
-        cmake ${{ runner.workspace }}/ExternalMedia/Projects -A ${{ matrix.arch }} -G "${{ matrix.generator }}" -T "${{ matrix.toolset }}" -DFLUIDPROP=1 -DCOOLPROP=1
+        cmake ${{ runner.workspace }}/ExternalMedia/Projects -A ${{ matrix.arch }} -G "${{ matrix.generator }}" -T "${{ matrix.toolset }}" -DFLUIDPROP=1 -DCOOLPROP=1 -DDEFAULTLIB=0
+        cmake ${{ runner.workspace }}/ExternalMedia/Projects -A ${{ matrix.arch }} -G "${{ matrix.generator }}" -T "${{ matrix.toolset }}" -DFLUIDPROP=1 -DCOOLPROP=1 -DDEFAULTLIB=0
     - name: Build with CMake
       working-directory: ${{runner.workspace}}/build
       run: cmake --build . --target ExternalMediaLib --config Release
@@ -169,8 +169,8 @@ jobs:
       working-directory: ${{runner.workspace}}
       run: |
         $env:Path = "${env:ProgramFiles}\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw32\bin;$env:Path"
-        cmake -B build32 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
-        cmake -B build32 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
+        cmake -B build32 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1 -DDEFAULTLIB=0
+        cmake -B build32 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1 -DDEFAULTLIB=0
     - name: Build with CMake for 32bit
       working-directory: ${{runner.workspace}}
       run: |
@@ -181,8 +181,8 @@ jobs:
       working-directory: ${{runner.workspace}}
       run: |
         $env:Path = "${env:ProgramFiles}\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw64\bin;$env:Path"
-        cmake -B build64 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
-        cmake -B build64 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
+        cmake -B build64 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1 -DDEFAULTLIB=0
+        cmake -B build64 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1 -DDEFAULTLIB=0
     - name: Build with CMake for 64bit
       working-directory: ${{runner.workspace}}
       run: |
@@ -212,8 +212,8 @@ jobs:
     - name: Configure with CMake
       working-directory: ${{runner.workspace}}/build
       run: |
-        cmake ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
-        cmake ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
+        cmake ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1 -DDEFAULTLIB=0
+        cmake ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1 -DDEFAULTLIB=0
     - name: Build with CMake
       working-directory: ${{runner.workspace}}/build
       run: cmake --build . --target ExternalMediaLib
