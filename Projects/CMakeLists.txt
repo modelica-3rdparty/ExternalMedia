@@ -218,6 +218,9 @@ else()
 endif()
 
 if(MINGW)
+  # It looks like we need a global setting
+  set(CMAKE_SHARED_LIBRARY_PREFIX "")
+  #set_property(TARGET ${LIBRARY_NAME} PROPERTY SHARED_LIBRARY_PREFIX "")
   if(CMAKE_SIZEOF_VOID_P MATCHES "8")
     set(MODELICA_PLATFORM "mingw64")
   else()
