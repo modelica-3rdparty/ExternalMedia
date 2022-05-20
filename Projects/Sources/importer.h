@@ -11,6 +11,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <libloaderapi.h>
+#include <errhandlingapi.h>
 
 template<typename T>
 T importFromExecutable(const char *funcName)
@@ -19,13 +20,13 @@ T importFromExecutable(const char *funcName)
     HMODULE exe = GetModuleHandleA(NULL);
     if(exe == NULL)
     {
-        printf("Can't get handle to executable\n");
+        printf("Can't get handle to executable (error %d)\n", GetLastError());
         exit(1);
     }
     T pfn = reinterpret_cast<T>(GetProcAddress(exe, funcName));
     if(pfn == NULL)
     {
-        printf("Can't get handle to %s\n",funcName);
+        printf("Can't get handle to %s (error %d)\n",funcName, GetLastError());
         exit(1);
     }
     return pfn;
