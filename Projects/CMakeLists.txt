@@ -42,7 +42,6 @@ endif()
 
 option(COOLPROP "Include the CoolProp library for fluid properties" ON)
 option(FLUIDPROP "Include the FluidProp library for fluid properties" OFF)
-option(DEFAULTLIB "Install the current library in the resource root" ON)
 
 #######################################
 #       INCLUDE COOLPROP              #
@@ -234,11 +233,11 @@ endif()
 set(MODELICA_INSTALL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia ${APP_VERSION}/Resources")
 message(STATUS "Installation path: ${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
 INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/${LIBRARY_HEADER}" DESTINATION "${MODELICA_INSTALL_PATH}/Include")
-INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
-
-if(DEFAULTLIB)
-  INSTALL(FILES "$<TARGET_FILE:${LIBRARY_NAME}>" DESTINATION "${MODELICA_INSTALL_PATH}/Library")
-  #INSTALL(FILES "$<TARGET_LINKER_FILE:${LIBRARY_NAME}>" DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")
+if(WIN32)
+    INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
+else()
+    # Both OpenModelica and Dymola on Linux DO NOT expect a compiler-specific subdirectory
+    INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")
 endif()
 
 
