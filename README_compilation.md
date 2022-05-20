@@ -7,7 +7,7 @@ file `CMakeLists.txt`, which makes the [CMake software](https://cmake.org/)
 a prerequisite for compiling ExternalMedia.
 
 Once you have installed CMake and can access it from a command prompt, you can
-go to the root folder of the source code and run:
+go to the root folder of the GIT repository and run:
 
 ```shell
 cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release
