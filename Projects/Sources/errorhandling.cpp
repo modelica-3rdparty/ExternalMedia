@@ -16,17 +16,17 @@
 #ifndef EXTERNALMEDIA_MODELICA_ERRORS
 #define EXTERNALMEDIA_MODELICA_ERRORS 1
 #endif
-// The Dymola specific implementation does currently not work for dynamic link libraries
+
 #if (EXTERNALMEDIA_MODELICA_ERRORS == 1)
-extern "C" {
-#include "ModelicaUtilities.h"
-}
+#include "importer.h"
 // This implementation uses the native Modelica tool log and error window to report errors
 void errorMessage(char *errorMessage){
+	IMPORT(void (*)(const char *), ModelicaError);
 	ModelicaError(errorMessage);
 }
 
 void warningMessage(char *warningMessage){
+	IMPORT(void (*)(const char *), ModelicaMessage);
 	ModelicaMessage(warningMessage);
 }
 #else
