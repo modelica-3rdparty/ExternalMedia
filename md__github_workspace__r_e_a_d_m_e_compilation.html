@@ -69,7 +69,7 @@ $(function() {
 <div class="textblock"><h1><a class="anchor" id="autotoc_md11"></a>
 Quick-start guide</h1>
 <p >The heavy-lifting regarding the project configuration is done using the CMake file <code>CMakeLists.txt</code>, which makes the <a href="https://cmake.org/">CMake software</a> a prerequisite for compiling ExternalMedia.</p>
-<p >Once you have installed CMake and can access it from a command prompt, you can go to the root folder of the source code and run:</p>
+<p >Once you have installed CMake and can access it from a command prompt, you can go to the root folder of the GIT repository and run:</p>
 <div class="fragment"><div class="line">cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release</div>
 <div class="line">cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release</div>
 </div><!-- fragment --><p >Please note that there is no typing mistake in the lines above. The current version of ExternalMedia requires you to run the configure step twice. Now you should have a working project configuration and the actual compilation can be triggered using:</p>
@@ -100,7 +100,7 @@ Building OpenModelica libraries</h1>
 <div class="line">$ cd /ExternalMediaLibrary/</div>
 <div class="line">$ cmake -B build -S Projects -G &quot;MSYS Makefiles&quot; -DCMAKE_BUILD_TYPE=Release</div>
 <div class="line">$ cmake --build build --target install</div>
-</div><!-- fragment --><p >This will build the dynamic library and copy it and the <code>externalmedia.h</code> header files in the Resource directories of the Modelica packages, so it can be used right away by just loading the Modelica package in OMC. </p>
+</div><!-- fragment --><p >This will build the static gcc library and copy it and the <code>externalmedia.h</code> header files in the Resource directories of the Modelica packages, so it can be used right away by just loading the Modelica package in OMC. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
