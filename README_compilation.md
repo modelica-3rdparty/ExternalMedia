@@ -14,6 +14,8 @@ cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release
 cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release
 ```
 
+NOTE: On Windows to select a 32 or 64 bit build you can append the option `-A Win32` or `-A x64` to the above command.
+
 Please note that there is no typing mistake in the lines above. The current version
 of ExternalMedia requires you to run the configure step twice. Now you should have
 a working project configuration and the actual compilation can be triggered using:
