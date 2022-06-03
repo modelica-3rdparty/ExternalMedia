@@ -12,6 +12,9 @@
   Minor additions in 2014 to make ExternalMedia compatible
   with GCC on Linux operating systems
   Jorrit Wronski (Technical University of Denmark)
+  
+  Adapted to work with dynamically linked libraries by Francesco Casella and
+  Federico Terraneo 2022 (Politecnico di Milano)
 */
 
 #ifndef EXTERNALMEDIALIB_H_
@@ -168,10 +171,17 @@ extern "C" {
 	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_getCriticalMolarVolume_C_impl(const char *mediumName, const char *libraryName, const char *substanceName);
 
 	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_ph_C_impl(double p, double h, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
-	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_pT_C_impl(double p, double T, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_pT_C_impl(double p, double T,            ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
 	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_dT_C_impl(double d, double T, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
 	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_ps_C_impl(double p, double s, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
 	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_hs_C_impl(double h, double s, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
+
+	// These functions implement a workaround to handle ModelicaError and ModelicaWarning on Windows until a proper solution based on exporting symbols becomes available in Modelica tools
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_ph_C_impl_err(double p, double h, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName, void (*ModelicaErrorPtr)(const char *), void (*ModelicaWarningPtr)(const char *));
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_pT_C_impl_err(double p, double T,            ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName, void (*ModelicaErrorPtr)(const char *), void (*ModelicaWarningPtr)(const char *));
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_dT_C_impl_err(double d, double T, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName, void (*ModelicaErrorPtr)(const char *), void (*ModelicaWarningPtr)(const char *));
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_ps_C_impl_err(double p, double s, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName, void (*ModelicaErrorPtr)(const char *), void (*ModelicaWarningPtr)(const char *));
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_hs_C_impl_err(double h, double s, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName, void (*ModelicaErrorPtr)(const char *), void (*ModelicaWarningPtr)(const char *));
 
 	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_partialDeriv_state_C_impl(const char *of, const char *wrt, const char *cst, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName);
 

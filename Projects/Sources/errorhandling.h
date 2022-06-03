@@ -13,6 +13,11 @@
 #ifndef ERRORHANDLING_H_
 #define ERRORHANDLING_H_
 
+#ifdef WIN32
+extern void (*ModelicaErrorPtr)(const char *);
+extern void (*ModelicaWarningPtr)(const char *);
+#endif
+
 //! Function to display error message
 /*!
   Calling this function will display the specified error message and will
