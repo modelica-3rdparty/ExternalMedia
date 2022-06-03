@@ -143,47 +143,6 @@ void TwoPhaseMedium_setState_hs_C_impl(double h, double s, int phase, ExternalTh
     solver->setState_hs(h, s, phase, state);
 }
 
-// These functions implement a workaround to handle ModelicaError and ModelicaWarning on Windows until a proper solution based on exporting symbols becomes available in Modelica tools
-void TwoPhaseMedium_setState_ph_C_impl_err(double p, double h, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName, void (*ModelicaErrorPtr)(const char *), void (*ModelicaWarningPtr)(const char *))
-{
-  // Assign the global pointers to the function parameters
-  ::ModelicaErrorPtr = ModelicaErrorPtr;
-  ::ModelicaWarningPtr = ModelicaWarningPtr;
-  TwoPhaseMedium_setState_ph_C_impl(p, h, phase, state, mediumName, libraryName, substanceName);
-}
-
-void TwoPhaseMedium_setState_pT_C_impl_err(double p, double T, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName, void (*ModelicaErrorPtr)(const char *), void (*ModelicaWarningPtr)(const char *))
-{
-  // Assign the global pointers to the function parameters
-  ::ModelicaErrorPtr = ModelicaErrorPtr;
-  ::ModelicaWarningPtr = ModelicaWarningPtr;
-  TwoPhaseMedium_setState_pT_C_impl(p, T, state, mediumName, libraryName, substanceName);
-}
-
-void TwoPhaseMedium_setState_dT_C_impl_err(double d, double T, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName, void (*ModelicaErrorPtr)(const char *), void (*ModelicaWarningPtr)(const char *))
-{
-  // Assign the global pointers to the function parameters
-  ::ModelicaErrorPtr = ModelicaErrorPtr;
-  ::ModelicaWarningPtr = ModelicaWarningPtr;
-  TwoPhaseMedium_setState_dT_C_impl(d, T, phase, state, mediumName, libraryName, substanceName);
-}
-
-void TwoPhaseMedium_setState_ps_C_impl_err(double p, double s, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName, void (*ModelicaErrorPtr)(const char *), void (*ModelicaWarningPtr)(const char *))
-{
-  // Assign the global pointers to the function parameters
-  ::ModelicaErrorPtr = ModelicaErrorPtr;
-  ::ModelicaWarningPtr = ModelicaWarningPtr;
-  TwoPhaseMedium_setState_ps_C_impl(p, s, phase, state, mediumName, libraryName, substanceName);
-}
-
-void TwoPhaseMedium_setState_hs_C_impl_err(double h, double s, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName, void (*ModelicaErrorPtr)(const char *), void (*ModelicaWarningPtr)(const char *))
-{
-  // Assign the global pointers to the function parameters
-  ::ModelicaErrorPtr = ModelicaErrorPtr;
-  ::ModelicaWarningPtr = ModelicaWarningPtr;
-  TwoPhaseMedium_setState_hs_C_impl(h, s, phase, state, mediumName, libraryName, substanceName);
-}
-
 //! Compute partial derivative from a populated state record
 /*!
   This function computes the derivative of the specified input.
@@ -576,4 +535,56 @@ double TwoPhaseMedium_dewEntropy_C_impl(ExternalSaturationProperties *sat,
 								  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
     return solver->sv(sat);
+}
+
+// The following functions implement a workaround to handle ModelicaError and ModelicaWarning on Windows
+// until a proper solution based on exporting symbols becomes available in Modelica tools
+// pointers to ModelicaError and ModelicaWarning functions are passed from wrapper functions
+// that are defined and compile in the Include annotation, which call these function, that in turn
+// set global pointers for ModelicaError and ModelicaWarning. 
+// These pointers are used by the errorMessage and warningMessage function when compiling for Windows
+
+void TwoPhaseMedium_setState_ph_C_impl_err(double p, double h, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName, void (*ModelicaErrorPtr)(const char *), void (*ModelicaWarningPtr)(const char *))
+{
+  // Assign the global pointers to the function parameters, so they are initialized for all other functions
+  ::ModelicaErrorPtr = ModelicaErrorPtr;
+  ::ModelicaWarningPtr = ModelicaWarningPtr;
+  // Call the actual C implementation function
+  TwoPhaseMedium_setState_ph_C_impl(p, h, phase, state, mediumName, libraryName, substanceName);
+}
+
+void TwoPhaseMedium_setState_pT_C_impl_err(double p, double T, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName, void (*ModelicaErrorPtr)(const char *), void (*ModelicaWarningPtr)(const char *))
+{
+  // Assign the global pointers to the function parameters, so they are initialized for all other functions
+  ::ModelicaErrorPtr = ModelicaErrorPtr;
+  ::ModelicaWarningPtr = ModelicaWarningPtr;
+  // Call the actual C implementation function
+  TwoPhaseMedium_setState_pT_C_impl(p, T, state, mediumName, libraryName, substanceName);
+}
+
+void TwoPhaseMedium_setState_dT_C_impl_err(double d, double T, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName, void (*ModelicaErrorPtr)(const char *), void (*ModelicaWarningPtr)(const char *))
+{
+  // Assign the global pointers to the function parameters, so they are initialized for all other functions
+  ::ModelicaErrorPtr = ModelicaErrorPtr;
+  ::ModelicaWarningPtr = ModelicaWarningPtr;
+  // Call the actual C implementation function
+  TwoPhaseMedium_setState_dT_C_impl(d, T, phase, state, mediumName, libraryName, substanceName);
+}
+
+void TwoPhaseMedium_setState_ps_C_impl_err(double p, double s, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName, void (*ModelicaErrorPtr)(const char *), void (*ModelicaWarningPtr)(const char *))
+{
+  // Assign the global pointers to the function parameters, so they are initialized for all other functions
+  ::ModelicaErrorPtr = ModelicaErrorPtr;
+  ::ModelicaWarningPtr = ModelicaWarningPtr;
+  // Call the actual C implementation function
+  TwoPhaseMedium_setState_ps_C_impl(p, s, phase, state, mediumName, libraryName, substanceName);
+}
+
+void TwoPhaseMedium_setState_hs_C_impl_err(double h, double s, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName, void (*ModelicaErrorPtr)(const char *), void (*ModelicaWarningPtr)(const char *))
+{
+  // Assign the global pointers to the function parameters, so they are initialized for all other functions
+  ::ModelicaErrorPtr = ModelicaErrorPtr;
+  ::ModelicaWarningPtr = ModelicaWarningPtr;
+  // Call the actual C implementation function
+  TwoPhaseMedium_setState_hs_C_impl(h, s, phase, state, mediumName, libraryName, substanceName);
 }
