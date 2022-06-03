@@ -15,20 +15,20 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   constant String substanceName = substanceNames[1]
     "Only one substance can be specified";
   constant FluidConstants externalFluidConstants = FluidConstants(
-    iupacName=  "unknown",
-    casRegistryNumber=  "unknown",
-    chemicalFormula=  "unknown",
-    structureFormula=  "unknown",
-    molarMass=  getMolarMass(),
-    criticalTemperature=  getCriticalTemperature(),
-    criticalPressure=  getCriticalPressure(),
-    criticalMolarVolume=  getCriticalMolarVolume(),
-    acentricFactor=  0,
-    triplePointTemperature=  280.0,
-    triplePointPressure=  500.0,
-    meltingPoint=  280,
-    normalBoilingPoint=  380.0,
-    dipoleMoment=  2.0);
+    iupacName = "unknown",
+    casRegistryNumber = "unknown",
+    chemicalFormula = "unknown",
+    structureFormula = "unknown",
+    molarMass = getMolarMass(),
+    criticalTemperature = getCriticalTemperature(),
+    criticalPressure = getCriticalPressure(),
+    criticalMolarVolume = getCriticalMolarVolume(),
+    acentricFactor = 0,
+    triplePointTemperature = 280.0,
+    triplePointPressure = 500.0,
+    meltingPoint = 280,
+    normalBoilingPoint = 380.0,
+    dipoleMoment = 2.0);
 
   constant InputChoice inputChoice=InputChoice.ph
     "Default choice of input variables for property computations";
@@ -185,25 +185,25 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
 
   replaceable function getMolarMass
     output MolarMass MM "molar mass";
-    external "C" MM=  TwoPhaseMedium_getMolarMass_C_impl(mediumName, libraryName, substanceName)
+    external "C" MM = TwoPhaseMedium_getMolarMass_C_impl(mediumName, libraryName, substanceName)
       annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end getMolarMass;
 
   replaceable function getCriticalTemperature
     output Temperature Tc "Critical temperature";
-    external "C" Tc=  TwoPhaseMedium_getCriticalTemperature_C_impl(mediumName, libraryName, substanceName)
+    external "C" Tc = TwoPhaseMedium_getCriticalTemperature_C_impl(mediumName, libraryName, substanceName)
       annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end getCriticalTemperature;
 
   replaceable function getCriticalPressure
     output AbsolutePressure pc "Critical temperature";
-    external "C" pc=  TwoPhaseMedium_getCriticalPressure_C_impl(mediumName, libraryName, substanceName)
+    external "C" pc = TwoPhaseMedium_getCriticalPressure_C_impl(mediumName, libraryName, substanceName)
       annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end getCriticalPressure;
 
   replaceable function getCriticalMolarVolume
     output MolarVolume vc "Critical molar volume";
-    external "C" vc=  TwoPhaseMedium_getCriticalMolarVolume_C_impl(mediumName, libraryName, substanceName)
+    external "C" vc = TwoPhaseMedium_getCriticalMolarVolume_C_impl(mediumName, libraryName, substanceName)
       annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end getCriticalMolarVolume;
 
@@ -215,8 +215,17 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     input FixedPhase phase = 0
       "2 for two-phase, 1 for one-phase, 0 if not known";
     output ThermodynamicState state;
-  external "C" TwoPhaseMedium_setState_ph_C_impl(p, h, phase, state, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
+    external "C" TwoPhaseMedium_setState_ph_C_impl_wrap(p, h, phase, state, mediumName, libraryName, substanceName)
+    annotation(Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library",
+    Include="
+    #include \"externalmedialib.h\"
+    #include \"ModelicaUtilities.h\"
+    
+    void TwoPhaseMedium_setState_ph_C_impl_wrap(p, h, phase, state, mediumName, libraryName, substanceName)
+    {
+      void TwoPhaseMedium_setState_ph_C_impl_err(p, h, phase, state, mediumName, libraryName, substanceName, ModelicaError,ModelicaWarning);
+    }
+    ");
   end setState_ph;
 
   redeclare replaceable function setState_pT
@@ -227,8 +236,17 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     input FixedPhase phase = 0
       "2 for two-phase, 1 for one-phase, 0 if not known";
     output ThermodynamicState state;
-  external "C" TwoPhaseMedium_setState_pT_C_impl(p, T, state, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
+    external "C" TwoPhaseMedium_setState_pT_C_impl_wrap(p, T, state, mediumName, libraryName, substanceName)
+    annotation(Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library",
+    Include="
+    #include \"externalmedialib.h\"
+    #include \"ModelicaUtilities.h\"
+    
+    void TwoPhaseMedium_setState_pT_C_impl_wrap(p, T, phase, state, mediumName, libraryName, substanceName)
+    {
+      void TwoPhaseMedium_setState_pT_C_impl_err(p, T, phase, state, mediumName, libraryName, substanceName, ModelicaError, ModelicaWarning);
+    }
+    ");
   end setState_pT;
 
   redeclare replaceable function setState_dT
@@ -239,8 +257,17 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     input FixedPhase phase = 0
       "2 for two-phase, 1 for one-phase, 0 if not known";
     output ThermodynamicState state;
-  external "C" TwoPhaseMedium_setState_dT_C_impl(d, T, phase, state, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
+    external "C" TwoPhaseMedium_setState_dT_C_impl_wrap(d, T, phase, state, mediumName, libraryName, substanceName)
+    annotation(Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library",
+    Include="
+    #include \"externalmedialib.h\"
+    #include \"ModelicaUtilities.h\"
+    
+    void TwoPhaseMedium_setState_dT_C_impl_wrap(d, T, phase, state, mediumName, libraryName, substanceName)
+    {
+      void TwoPhaseMedium_setState_dT_C_impl_err(d, T, phase, state, mediumName, libraryName, substanceName, &ModelicaError, &ModelicaWarning);
+    }
+    ");
   end setState_dT;
 
   redeclare replaceable function setState_ps
@@ -251,8 +278,17 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     input FixedPhase phase = 0
       "2 for two-phase, 1 for one-phase, 0 if not known";
     output ThermodynamicState state;
-  external "C" TwoPhaseMedium_setState_ps_C_impl(p, s, phase, state, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
+    external "C" TwoPhaseMedium_setState_ps_C_impl_wrap(p, s, phase, state, mediumName, libraryName, substanceName)
+    annotation(Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library",
+    Include="
+    #include \"externalmedialib.h\"
+    #include \"ModelicaUtilities.h\"
+    
+    void TwoPhaseMedium_setState_ps_C_impl_wrap(p, s, phase, state, mediumName, libraryName, substanceName)
+    {
+      void TwoPhaseMedium_setState_ps_C_impl_err(p, s, phase, state, mediumName, libraryName, substanceName, &ModelicaError, &ModelicaWarning);
+    }
+    ");
   end setState_ps;
 
   replaceable function setState_hs
@@ -263,8 +299,17 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     input FixedPhase phase = 0
       "2 for two-phase, 1 for one-phase, 0 if not known";
     output ThermodynamicState state;
-  external "C" TwoPhaseMedium_setState_hs_C_impl(h, s, phase, state, mediumName, libraryName, substanceName)
-    annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
+    external "C" TwoPhaseMedium_setState_hs_C_impl_wrap(h, s, phase, state, mediumName, libraryName, substanceName)
+    annotation(Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library",
+    Include="
+    #include \"externalmedialib.h\"
+    #include \"ModelicaUtilities.h\"
+    
+    void TwoPhaseMedium_setState_hs_C_impl_wrap(h, s, phase, state, mediumName, libraryName, substanceName)
+    {
+      void TwoPhaseMedium_setState_hs_C_impl_err(h, s, phase, state, mediumName, libraryName, substanceName, &ModelicaError, &ModelicaWarning);
+    }
+    ");
   end setState_hs;
 
   replaceable function partialDeriv_state
@@ -275,7 +320,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     input String cst "Keep this constant";
     input ThermodynamicState  state;
     output Real partialDerivative;
-    external "C" partialDerivative=  TwoPhaseMedium_partialDeriv_state_C_impl(of, wrt, cst, state, mediumName, libraryName, substanceName)
+    external "C" partialDerivative = TwoPhaseMedium_partialDeriv_state_C_impl(of, wrt, cst, state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end partialDeriv_state;
 
@@ -987,7 +1032,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
   end specificEntropy;
 
   redeclare replaceable function extends isentropicEnthalpy
-  external "C" h_is=  TwoPhaseMedium_isentropicEnthalpy_C_impl(p_downstream, refState,
+  external "C" h_is = TwoPhaseMedium_isentropicEnthalpy_C_impl(p_downstream, refState,
    mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end isentropicEnthalpy;
@@ -1090,7 +1135,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
 
   redeclare replaceable function extends saturationTemperature_derp "Returns derivative of saturation temperature w.r.t.. pressureBeing this function inefficient, it is strongly recommended to use saturationTemperature_derp_sat
      and never use saturationTemperature_derp directly"
-  external "C" dTp=  TwoPhaseMedium_saturationTemperature_derp_C_impl(p, mediumName, libraryName, substanceName)
+  external "C" dTp = TwoPhaseMedium_saturationTemperature_derp_C_impl(p, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end saturationTemperature_derp;
 
