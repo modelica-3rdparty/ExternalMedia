@@ -1,7 +1,7 @@
 /* *****************************************************************
  * Working around Windows' dynamic linker
  *
- * Federico Terraneo May 2022
+ * Federico Terraneo, Mahder Gebremedhin May 2022
  ********************************************************************/
 
 #pragma once
@@ -20,19 +20,52 @@ T importFromExecutable(const char *funcName)
     HMODULE exe = GetModuleHandleA(NULL);
     if(exe == NULL)
     {
-        printf("Can't get handle to executable (error %d)\n", GetLastError());
+        fprintf(stderr, "Can't get handle to executable (error %d)\n", GetLastError());
         exit(1);
     }
     T pfn = reinterpret_cast<T>(GetProcAddress(exe, funcName));
     if(pfn == NULL)
     {
-        printf("Can't get handle to %s (error %d)\n",funcName, GetLastError());
+        fprintf(stderr, "Can't get handle to %s (error %d)\n",funcName, GetLastError());
         exit(1);
     }
     return pfn;
 }
 
-#define IMPORT(x,y) auto y = importFromExecutable<x>(#y)
+template<typename T>
+T importFromLoadedModules(const char *funcName)
+{
+    //TODO: we should do caching
+    HANDLE process = GetCurrentProcess();
+    if(process == NULL)
+    {
+        fprintf(stderr, "Can't get a handle to current process (error %d)\n", GetLastError());
+        exit(1);
+    }
+
+    HMODULE loaded_modules[1024];
+    DWORD cbNeeded;
+    auto result = EnumProcessModules(process, loaded_modules, sizeof(loaded_modules), &cbNeeded);
+    CloseHandle(process);
+    if(!result)
+    {
+        fprintf(stderr, "Can't enumerate loaded modules (error %d)\n", GetLastError());
+        exit(1);
+    }
+
+    // The actual number of loaded modules.
+    int num_modules = cbNeeded / sizeof(HMODULE);
+    for(int i = 0; i < num_modules; i++)
+    {
+        T pfn = reinterpret_cast<T>(GetProcAddress(loaded_modules[i], funcName));
+        if(pfn) return pfn;
+    }
+
+    fprintf(stderr, "Can't get handle to %s in all loaded modules.\n", funcName);
+    exit(1);
+}
+
+#define IMPORT(x,y) auto y = importFromLoadedModules<x>(#y)
 
 #else //_WIN32
 
