@@ -12,6 +12,7 @@
 #include <windows.h>
 #include <libloaderapi.h>
 #include <errhandlingapi.h>
+#include <psapi.h>
 
 template<typename T>
 T importFromExecutable(const char *funcName)
