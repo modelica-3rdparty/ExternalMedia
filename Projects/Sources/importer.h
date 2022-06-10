@@ -14,9 +14,11 @@
 #include <errhandlingapi.h>
 
 template<typename T>
-T importFromExecutable(const char *funcName)
+T importSymbol(const char *funcName)
 {
-    //TODO: if GetModuleHandleA/GetProcAddress are heavy we could do caching
+    //TODO: we should do caching
+    
+    // First check if the executable itself exports the symbol we want
     HMODULE exe = GetModuleHandleA(NULL);
     if(exe == NULL)
     {
@@ -24,18 +26,9 @@ T importFromExecutable(const char *funcName)
         exit(1);
     }
     T pfn = reinterpret_cast<T>(GetProcAddress(exe, funcName));
-    if(pfn == NULL)
-    {
-        fprintf(stderr, "Can't get handle to %s (error %d)\n",funcName, GetLastError());
-        exit(1);
-    }
-    return pfn;
-}
-
-template<typename T>
-T importFromLoadedModules(const char *funcName)
-{
-    //TODO: we should do caching
+    if(pfn) return pfn;
+    
+    // If we don't find it in the executable, then we search it in all loaded DLLs
     HANDLE process = GetCurrentProcess();
     if(process == NULL)
     {
@@ -53,8 +46,7 @@ T importFromLoadedModules(const char *funcName)
         exit(1);
     }
 
-    // The actual number of loaded modules.
-    int num_modules = cbNeeded / sizeof(HMODULE);
+    int num_modules = cbNeeded / sizeof(HMODULE); // Actual number of loaded modules
     for(int i = 0; i < num_modules; i++)
     {
         T pfn = reinterpret_cast<T>(GetProcAddress(loaded_modules[i], funcName));
@@ -65,7 +57,7 @@ T importFromLoadedModules(const char *funcName)
     exit(1);
 }
 
-#define IMPORT(x,y) auto y = importFromLoadedModules<x>(#y)
+#define IMPORT(x,y) auto y = importSymbol<x>(#y)
 
 #else //_WIN32
 
