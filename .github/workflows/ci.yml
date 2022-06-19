@@ -246,7 +246,7 @@ jobs:
         path: Projects/Documentation
 
     - name: Copy PDF to Modelica tree
-      run: cp 'Projects/Documentation/latex/refman.pdf' 'Modelica/ExternalMedia 3.3.1/Resources/manual.pdf'
+      run: cp 'Projects/Documentation/latex/refman.pdf' 'Modelica/ExternalMedia/Resources/manual.pdf'
 
     - name: Upload Modelica sources with PDF
       uses: actions/upload-artifact@v1

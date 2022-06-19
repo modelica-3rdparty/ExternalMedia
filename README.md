@@ -3,11 +3,11 @@
 The ExternalMedia library provides a framework for interfacing external codes
 computing fluid properties to Modelica.Media-compatible component models.
 
-The current downloads can be found here:
+The current downloads can be found [here](https://github.com/modelica-3rdparty/ExternalMedia/releases/latest):
 
- - [Precompiled Modelica library](https://github.com/modelica-3rdparty/ExternalMedia/releases/download/v3.3.1/ExternalMedia_v3.3.1.zip)
- - [Manual as PDF](https://github.com/modelica-3rdparty/ExternalMedia/releases/download/v3.3.1/ExternalMedia_v3.3.1.pdf)
- - [Full source code](https://github.com/modelica-3rdparty/ExternalMedia/archive/refs/tags/v3.3.1.zip)
+ - The precompiled Modelica library can be found in the zip-file
+ - The manual can be downloaded as PDF
+ - The full source code is also available as compressed file
 
 ## Library overview
 
@@ -23,7 +23,7 @@ Modelica.Media.Interfaces.PartialTwoPhaseMedium interface. Please have a look at
 the [dedicated introduction section](README_introduction.md) for an in-depth
 description of the architecture.
 
-The current release of the library (3.3.1) includes a pre-compiled interface to
+The current release of the library (3.3.2) includes a pre-compiled interface to
 the [FluidProp](http://www.asimptote.nl/software/fluidprop) software and
 built-in access to [CoolProp](http://www.coolprop.org).
 If you use the FluidProp software, you need to have the proper licenses to
@@ -58,7 +58,7 @@ and Include Files in [section 12.9.4](https://specification.modelica.org/maint/3
 Following the concepts put forward there, the ExternalMedia package provides several pre-compiled
 shared libraries supporting a selection of operating systems, C-compilers and Modelica tools.
 
-Please open the `package.mo` file inside the `ExternalMedia 3.3.1` folder to
+Please open the `package.mo` file inside the `ExternalMedia` folder to
 load the library. If your Modelica tool is able to find a matching precompiled
 binary for your configuration, you should now be able to run the examples.
 

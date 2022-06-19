@@ -1,5 +1,10 @@
 # ExternalMedia Change Log
 
+## v3.3.2 - 2022/06/XX
+ - Improved OpenModelica compatibility
+ - Restructured the Modelica sources
+ - ...
+
 ## v3.3.1 - 2022/02/17
  - Updated CoolProp to v6.4.1
  - Fixed problems with CoolProp interpolation tables
