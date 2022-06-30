@@ -165,7 +165,6 @@ elseif(UNIX)
   else()
     set(MODELICA_PLATFORM "linux32")
   endif()
-else()
 elseif(APPLE)
   # Platform name is not standardized, for now we stick with darwin but untested
   # https://openmodelica.org/forum/default-topic/583-openmodelica-1-8-1-fmu-export-fails-under-mac-os-x
@@ -174,6 +173,7 @@ elseif(APPLE)
   else()
     set(MODELICA_PLATFORM "darwin32")
   endif()
+else()
   message(FATAL_ERROR "Could not determine the MODELICA_PLATFORM, aborting.")
 endif()
 
