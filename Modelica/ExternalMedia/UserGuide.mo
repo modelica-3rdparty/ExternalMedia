@@ -29,8 +29,17 @@ package UserGuide "User's Guide"
     class CoolProp "CoolProp medium models"
       extends Modelica.Icons.Information;
       annotation (Documentation(info="<html>
-<p>Pure (or pseudo-pure) medium models in CoolProp can be accessed by extending the <a href=\"modelica://ExternalMedia.Media.FluidPropMedium\">ExternalMedia.Media.CoolPropMedium</a> package.</p>
-<p>Set substanceNames to a single-element string array containing the name of the specific medium, as specified by the CoolProp documentation. Set mediumName to a string that describes the medium (this only used for documentation purposes but has no effect in selecting the medium model).</p>
+<p>Pure (or pseudo-pure) medium models in <a href=\"http://www.coolprop.org/\">CoolProp</a> can be accessed by extending the <a href=\"modelica://ExternalMedia.Media.FluidPropMedium\">ExternalMedia.Media.CoolPropMedium</a> package.</p>
+<p>Set substanceNames to a single-element string array containing the name of the specific medium, as specified by the CoolProp documentation. Additional flags can be passed to CoolProp by separating them from the name of the medium,
+e.g., &quot;CO2|enable_BICUBIC=1&quot; or &quot;CO2|enable_TTSE=1|calc_transport=0&quot;. Useful flags include:
+<ul>
+<li>enable_TTSE (default 0) Enables TTSE tabular interpolation</li>
+<li>enable_BICUBIC (default 0) Enables bicubic tabular interpolation</li>
+<li>calc_transport (default 1) Enables the computation of transport properties</li>
+<li>debug (default 0) Set the debug level, 0-1000</li>
+</ul>
+</p>
+<p>Set mediumName to a string that describes the medium (this only used for documentation purposes but has no effect in selecting the medium model).</p>
 <p>See <a href=\"modelica://ExternalMedia.Examples\">ExternalMedia.Examples</a> for examples.</p>
 </html>"));
     end CoolProp;
@@ -46,8 +55,8 @@ package UserGuide "User's Guide"
 <br>Via Ponzio 34/5
 <br>I-20133 Milano ITALY<br>
 <a href=\"mailto:francesco.casella@polimi.it\">francesco.casella@polimi.it</a></p>
-<p>Submit bug reports to <a href=\"https://trac.modelica.org/Modelica/newticket?component=_ExternalMedia\">
-https://trac.modelica.org/Modelica/newticket?component=_ExternalMedia</p>
+<p>Submit bug reports to <a href=\"https://github.com/modelica-3rdparty/ExternalMedia/issues\">
+https://github.com/modelica-3rdparty/ExternalMedia/issues</p>
 </html>"));
   end Contact;
   annotation(DocumentationClass = true);
