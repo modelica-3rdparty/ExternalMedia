@@ -1202,7 +1202,6 @@ package Test "Test models for the different solvers"
       Medium.AbsolutePressure pc=Medium.fluidConstants[1].criticalPressure;
       Medium.MolarVolume vc=Medium.fluidConstants[1].criticalMolarVolume;
       Medium.MolarMass MM=Medium.fluidConstants[1].molarMass;
-    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end CompleteFluidConstants;
 
     model CompleteThermodynamicState
@@ -1226,7 +1225,6 @@ package Test "Test models for the different solvers"
       Medium.DerDensityByPressure d_d_dp_h=Medium.density_derp_h(state);
       Medium.DerDensityByEnthalpy d_d_dh_p=Medium.density_derh_p(state);
       Medium.MolarMass MM=Medium.molarMass(state);
-    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end CompleteThermodynamicState;
 
     model CompleteSaturationProperties
@@ -1248,7 +1246,6 @@ package Test "Test models for the different solvers"
       Real d_dv_dp=Medium.dDewDensity_dPressure(sat);
       Real d_hl_dp=Medium.dBubbleEnthalpy_dPressure(sat);
       Real d_hv_dp=Medium.dDewEnthalpy_dPressure(sat);
-    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end CompleteSaturationProperties;
 
     model CompleteBubbleDewStates
@@ -1268,7 +1265,6 @@ package Test "Test models for the different solvers"
             sat, 1), redeclare package Medium = Medium);
       CompleteThermodynamicState bubbleStateTwoPhase(state=Medium.setBubbleState(
             sat, 2), redeclare package Medium = Medium);
-    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end CompleteBubbleDewStates;
 
     model CompleteBaseProperties
@@ -1285,7 +1281,6 @@ package Test "Test models for the different solvers"
       CompleteSaturationProperties completeSat(redeclare package Medium = Medium,
           sat=baseProperties.sat);
       CompleteFluidConstants completeConstants(redeclare package Medium = Medium);
-    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end CompleteBaseProperties;
 
     partial model TestStates "Test case with state"
@@ -1306,7 +1301,6 @@ package Test "Test models for the different solvers"
     equation
       state1 = Medium.setState_ph(p1, h1);
       state2 = Medium.setState_pT(p2, T2);
-    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end TestStates;
 
     partial model TestStatesSat "Test case with state + sat records"
@@ -1343,7 +1337,6 @@ package Test "Test models for the different solvers"
       sat2 = Medium.setSat_T(T2);
       Ts = Medium.saturationTemperature(p1);
       ps = Medium.saturationPressure(T2);
-    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end TestStatesSat;
 
     partial model TestBasePropertiesExplicit
@@ -1365,7 +1358,6 @@ package Test "Test models for the different solvers"
       medium1.baseProperties.h = h1;
       medium2.baseProperties.p = p2;
       medium2.baseProperties.h = h2;
-    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end TestBasePropertiesExplicit;
 
     partial model TestBasePropertiesImplicit
@@ -1391,7 +1383,6 @@ package Test "Test models for the different solvers"
       medium1.baseProperties.T = T1;
       medium2.baseProperties.p = p2;
       medium2.baseProperties.T = T2;
-    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end TestBasePropertiesImplicit;
 
     partial model TestBasePropertiesDynamic
@@ -1431,8 +1422,7 @@ package Test "Test models for the different solvers"
       // Steady state equations
       der(medium.p) = 0;
       der(medium.h) = 0;
-      annotation (experiment(StopTime=80, Tolerance=1e-007),
-                Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
+      annotation (experiment(StopTime=80, Tolerance=1e-007));
     end TestBasePropertiesDynamic;
 
     partial model CompareModelicaTestMedium
@@ -1459,7 +1449,6 @@ package Test "Test models for the different solvers"
       modelicaMedium.baseProperties.h = hmin + (hmax - hmin)*time/T;
       testMedium.baseProperties.p = pmin + (pmax - pmin)*time/T;
       testMedium.baseProperties.h = hmin + (hmax - hmin)*time/T;
-    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end CompareModelicaTestMedium;
 
     partial model TestRunner
