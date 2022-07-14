@@ -816,61 +816,66 @@ package Test "Test models for the different solvers"
       model TestStatesSupercritical
         "Test case with state records, supercritical conditions"
         extends Modelica.Icons.Example;
-        extends GenericModels.TestStates(          redeclare package Medium =
-              ExternalMedia.Examples.CO2CoolProp);
+        extends GenericModels.TestStates(
+          redeclare package Medium = ExternalMedia.Examples.CO2CoolProp);
       equation
         p1 = 8e6;
         h1 = 1.0e5 + 6e5*time;
         p2 = 8e6;
         T2 = 280 + 50*time;
+      annotation(experiment(StopTime = 1));
       end TestStatesSupercritical;
 
       model TestStatesTranscritical
         "Test case with state records, transcritical conditions"
         extends Modelica.Icons.Example;
-        extends GenericModels.TestStates(          redeclare package Medium =
-              ExternalMedia.Examples.CO2CoolProp);
+        extends GenericModels.TestStates(
+          redeclare package Medium = ExternalMedia.Examples.CO2CoolProp);
       equation
         p1 = 1e6 + time*10e6;
         h1 = 1.0e5;
         p2 = 1e6 + time*10e6;
         T2 = 330;
+      annotation(experiment(StopTime = 1));
       end TestStatesTranscritical;
 
       model TestStatesSatSubcritical
         "Test case state + sat records, subcritical conditions"
         extends Modelica.Icons.Example;
-        extends GenericModels.TestStatesSat(          redeclare package Medium =
-              ExternalMedia.Examples.CO2CoolProp);
+        extends GenericModels.TestStatesSat(
+          redeclare package Medium = ExternalMedia.Examples.CO2CoolProp);
       equation
         p1 = 1e6;
         h1 = 1.0e5 + 6e5*time;
         p2 = 1e6;
         T2 = 250 + 50*time;
+      annotation(experiment(StopTime = 1));
       end TestStatesSatSubcritical;
 
       model TestBasePropertiesExplicit
         "Test case using BaseProperties and explicit equations"
         extends Modelica.Icons.Example;
-        extends GenericModels.TestBasePropertiesExplicit(          redeclare
-            package Medium = ExternalMedia.Examples.CO2CoolProp);
+        extends GenericModels.TestBasePropertiesExplicit(
+          redeclare package Medium = ExternalMedia.Examples.CO2CoolProp);
       equation
         p1 = 8e6;
         h1 = 1.0e5 + 6e5*time;
         p2 = 1e6;
         h2 = 1.0e5 + 6e5*time;
+      annotation(experiment(StopTime = 1));
       end TestBasePropertiesExplicit;
 
       model TestBasePropertiesImplicit
         "Test case using BaseProperties and implicit equations"
         extends Modelica.Icons.Example;
-        extends GenericModels.TestBasePropertiesImplicit(          redeclare
-            package Medium = ExternalMedia.Examples.CO2CoolProp, hstart=1e5);
+        extends GenericModels.TestBasePropertiesImplicit(
+          redeclare package Medium = ExternalMedia.Examples.CO2CoolProp, hstart=1e5);
       equation
         p1 = 8e6;
         T1 = 280 + 50*time;
         p2 = 1e6;
         T2 = 280 + 50*time;
+      annotation(experiment(StopTime = 1));
       end TestBasePropertiesImplicit;
 
       model TestBasePropertiesDynamic
@@ -897,126 +902,31 @@ package Test "Test models for the different solvers"
       model TestBasePropertiesTranscritical
         "Test case using BaseProperties and explicit equations"
         extends Modelica.Icons.Example;
-        extends GenericModels.TestBasePropertiesExplicit(          redeclare
-            package Medium = ExternalMedia.Examples.CO2CoolProp);
+        extends GenericModels.TestBasePropertiesExplicit(
+          redeclare package Medium = ExternalMedia.Examples.CO2CoolProp);
       equation
         p1 = 1e6 + time*10e6;
         h1 = 1.0e5;
         p2 = 1e6 + time*10e6;
         h2 = 7.0e5;
+      annotation(experiment(StopTime = 1));
       end TestBasePropertiesTranscritical;
 
     end CO2;
 
-    model Pentane_hs
-    package wf
-      extends ExternalMedia.Media.CoolPropMedium(
-        mediumName = "Pentane",
-        substanceNames = {"n-Pentane"},
-        inputChoice=ExternalMedia.Common.InputChoice.hs);
-    end wf;
-      wf.BaseProperties fluid "Properties of the two-phase fluid";
-      Modelica.SIunits.SpecificEnthalpy h;
-      Modelica.SIunits.Pressure p;
-      Modelica.SIunits.SpecificEntropy s;
-      Modelica.SIunits.DerDensityByEnthalpy drdh
-        "Derivative of average density by enthalpy";
-      Modelica.SIunits.DerDensityByPressure drdp
-        "Derivative of average density by pressure";
-    equation
-      //p = 1E5;
-      h = 0 + time*1E6;
-      s = 1500;  //600 + time*2000;
-      fluid.p = p;
-      fluid.s = s;
-      fluid.h = h;
-      drdp = wf.density_derp_h(fluid.state);
-      drdh = wf.density_derh_p(fluid.state);
-    end Pentane_hs;
-
-    model Pentane_hs_state
-    package wf
-      extends ExternalMedia.Media.CoolPropMedium(
-        mediumName = "Pentane",
-        substanceNames = {"n-Pentane"},
-        inputChoice=ExternalMedia.Common.InputChoice.hs);
-    end wf;
-      wf.ThermodynamicState fluid "Properties of the two-phase fluid";
-      Modelica.SIunits.SpecificEnthalpy h;
-      Modelica.SIunits.Pressure p;
-      Modelica.SIunits.SpecificEntropy s;
-      Modelica.SIunits.DerDensityByEnthalpy drdh
-        "Derivative of average density by enthalpy";
-      Modelica.SIunits.DerDensityByPressure drdp
-        "Derivative of average density by pressure";
-    equation
-      //p = 1E5;
-      h = 0 + time*1E6;
-      s = 600 + time*2000;
-      fluid = wf.setState_hs(h,s);
-      fluid.p = p;
-      drdp = wf.density_derp_h(fluid);
-      drdh = wf.density_derh_p(fluid);
-    end Pentane_hs_state;
-
-    model MSL_Models
-      import ExternalMedia;
-      extends Modelica.Icons.Example;
-
-      ExternalMedia.Test.MSL_Models.BranchingDynamicPipes branchingDynamicPipes(
-          redeclare package NewMedium = ExternalMedia.Examples.WaterCoolProp)
-        annotation (Placement(transformation(extent={{-50,20},{-30,40}})));
-    end MSL_Models;
-
-    model CheckOptions
-      extends Modelica.Icons.Example;
-      String test;
-    algorithm
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_TTSE");
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_TTSE=0");
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_TTSE=1");
-      //
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_BICUBIC");
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_BICUBIC=0");
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_BICUBIC=1");
-      //
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_EXTTP");
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_EXTTP=0");
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_EXTTP=1");
-      //
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|twophase_derivsmoothing_xend");
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|twophase_derivsmoothing_xend=0.0");
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|twophase_derivsmoothing_xend=0.1");
-      //
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|rho_smoothing_xend");
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|rho_smoothing_xend=0.0");
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|rho_smoothing_xend=0.1");
-      //
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|debug");
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|debug=0");
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|debug=100");
-      //
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_TTSE=1|debug=0|enable_EXTTP",debug=true);
-      test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_TTSE=1|debug=0|enableEXTTP=1");
-    end CheckOptions;
-
     package Incompressible
                            extends Modelica.Icons.ExamplesPackage;
-      model incompressibleCoolPropMedium
-                                         extends Modelica.Icons.Example;
+      model IncompressibleCoolPropMedium
+        extends Modelica.Icons.Example;
 
-      package DowQ_CP "DowthermQ properties from CoolProp"
-        extends ExternalMedia.Media.IncompressibleCoolPropMedium(
-        mediumName="DowQ",
-        substanceNames={"DowQ|calc_transport=1|debug=1000"},
-        ThermoStates=Modelica.Media.Interfaces.PartialMedium.Choices.IndependentVariables.pT);
-      end DowQ_CP;
+        package DowQ_CP "DowthermQ properties from CoolProp"
+          extends ExternalMedia.Media.IncompressibleCoolPropMedium(
+          mediumName="DowQ",
+          substanceNames={"DowQ|calc_transport=1|debug=1000"},
+          ThermoStates=Modelica.Media.Interfaces.PartialMedium.Choices.IndependentVariables.pT);
+        end DowQ_CP;
 
-      //replaceable package Fluid = ExternalMedia.Examples.WaterCoolProp (
-      //  ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.pTX) constrainedby
-      //    Modelica.Media.Interfaces.PartialMedium "Medium model";
-
-      replaceable package Fluid =  DowQ_CP constrainedby
+        replaceable package Fluid =  DowQ_CP constrainedby
           Modelica.Media.Interfaces.PartialMedium "Medium model";
         Fluid.ThermodynamicState state;
         Fluid.Temperature T;
@@ -1030,19 +940,20 @@ package Test "Test models for the different solvers"
         // And now we do some testing with the BaseProperties
         props.T = T;
         props.p = p;
-      end incompressibleCoolPropMedium;
+      annotation(experiment(StopTime = 1));
+      end IncompressibleCoolPropMedium;
 
-      model incompressibleCoolPropMixture
-                                         extends Modelica.Icons.Example;
+      model IncompressibleCoolPropMixture
+        extends Modelica.Icons.Example;
 
-      package LiBr_CP "Lithium bromide solution properties from CoolProp"
-        extends ExternalMedia.Media.IncompressibleCoolPropMedium(
-        mediumName="LiBr",
-        substanceNames={"LiBr|calc_transport=1|debug=1000","dummyToMakeBasePropertiesWork"},
-        ThermoStates=Modelica.Media.Interfaces.PartialMedium.Choices.IndependentVariables.pTX);
-      end LiBr_CP;
+        package LiBr_CP "Lithium bromide solution properties from CoolProp"
+          extends ExternalMedia.Media.IncompressibleCoolPropMedium(
+          mediumName="LiBr",
+          substanceNames={"LiBr|calc_transport=1|debug=1000","dummyToMakeBasePropertiesWork"},
+          ThermoStates=Modelica.Media.Interfaces.PartialMedium.Choices.IndependentVariables.pTX);
+        end LiBr_CP;
 
-      replaceable package Fluid = LiBr_CP constrainedby
+        replaceable package Fluid = LiBr_CP constrainedby
           Modelica.Media.Interfaces.PartialMedium "Medium model";
         Fluid.ThermodynamicState state_var;
         Fluid.ThermodynamicState state_con;
@@ -1063,63 +974,179 @@ package Test "Test models for the different solvers"
         varProps.T = T;
         varProps.p = p;
         varProps.Xi = X_var;
-      end incompressibleCoolPropMixture;
+      annotation(experiment(StopTime = 1));
+      end IncompressibleCoolPropMixture;
     end Incompressible;
 
-    model RhoSmoothing
-      extends Modelica.Icons.Example;
-    package fluid_std
-      extends ExternalMedia.Media.CoolPropMedium(
-        mediumName = "Water",
-        substanceNames = {"Water|rho_smoothing_xend=0.0|calc_transport=0"},
-        inputChoice=ExternalMedia.Common.InputChoice.ph);
-    end fluid_std;
+    package Pentane "Test cases using Pentane model from CoolProp"
+      extends Modelica.Icons.ExamplesPackage;
+      model Pentane_hs
+        extends Modelica.Icons.Example;
+        package wf
+          extends ExternalMedia.Media.CoolPropMedium(
+            mediumName = "Pentane",
+            substanceNames = {"n-Pentane"},
+            inputChoice=ExternalMedia.Common.InputChoice.hs);
+        end wf;
+        wf.BaseProperties fluid "Properties of the two-phase fluid";
+        Modelica.SIunits.SpecificEnthalpy h;
+        Modelica.SIunits.Pressure p;
+        Modelica.SIunits.SpecificEntropy s;
+        Modelica.SIunits.DerDensityByEnthalpy drdh
+          "Derivative of average density by enthalpy";
+        Modelica.SIunits.DerDensityByPressure drdp
+          "Derivative of average density by pressure";
+      equation
+        //p = 1E5;
+        h = 0 + time*1E6;
+        s = 1500;  //600 + time*2000;
+        fluid.p = p;
+        fluid.s = s;
+        fluid.h = h;
+        drdp = wf.density_derp_h(fluid.state);
+        drdh = wf.density_derh_p(fluid.state);
+      annotation(experiment(StopTime = 1));
+      end Pentane_hs;
 
-    package fluid_spl
-      extends ExternalMedia.Media.CoolPropMedium(
-        mediumName = "Water",
-        substanceNames = {"Water|rho_smoothing_xend=0.1|calc_transport=0"},
-        inputChoice=ExternalMedia.Common.InputChoice.ph);
-    end fluid_spl;
+      model Pentane_hs_state
+        extends Modelica.Icons.Example;
+        package wf
+          extends ExternalMedia.Media.CoolPropMedium(
+            mediumName = "Pentane",
+            substanceNames = {"n-Pentane"},
+            inputChoice=ExternalMedia.Common.InputChoice.hs);
+        end wf;
+        wf.ThermodynamicState fluid "Properties of the two-phase fluid";
+        Modelica.SIunits.SpecificEnthalpy h;
+        Modelica.SIunits.Pressure p;
+        Modelica.SIunits.SpecificEntropy s;
+        Modelica.SIunits.DerDensityByEnthalpy drdh
+          "Derivative of average density by enthalpy";
+        Modelica.SIunits.DerDensityByPressure drdp
+          "Derivative of average density by pressure";
+      equation
+        //p = 1E5;
+        h = 0 + time*1E6;
+        s = 600 + time*2000;
+        fluid = wf.setState_hs(h,s);
+        fluid.p = p;
+        drdp = wf.density_derp_h(fluid);
+        drdh = wf.density_derh_p(fluid);
+      annotation(experiment(StopTime = 1));
+      end Pentane_hs_state;
+    end Pentane;
 
-    package fluid_tbl
-      extends ExternalMedia.Media.CoolPropMedium(
-        mediumName = "Water",
-        substanceNames = {"Water|rho_smoothing_xend=0.1|calc_transport=0|enable_TTSE=1"},
-        inputChoice=ExternalMedia.Common.InputChoice.ph);
-    end fluid_tbl;
+    package Misc "Miscellanous tests"
+      extends Modelica.Icons.ExamplesPackage;
+      model BranchingPipeWaterCoolProp "MSL example using CoolProp medium"
+        import ExternalMedia;
+        extends Modelica.Icons.Example;
 
-    fluid_std.ThermodynamicState state_std "Properties of the two-phase fluid";
-    fluid_spl.ThermodynamicState state_spl "Properties of the two-phase fluid";
-    fluid_tbl.ThermodynamicState state_tbl "Properties of the two-phase fluid";
+        ExternalMedia.Test.MSL_Models.BranchingDynamicPipes branchingDynamicPipes(
+            redeclare package NewMedium = ExternalMedia.Examples.WaterCoolProp)
+          annotation (Placement(transformation(extent={{-50,20},{-30,40}})));
+      end BranchingPipeWaterCoolProp;
 
-    Modelica.SIunits.AbsolutePressure p;
-    Modelica.SIunits.SpecificEnthalpy h;
+      model CheckOptions "Check CoolProp library options"
+        extends Modelica.Icons.Example;
+        String test;
+      algorithm
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_TTSE");
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_TTSE=0");
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_TTSE=1");
+        //
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_BICUBIC");
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_BICUBIC=0");
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_BICUBIC=1");
+        //
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_EXTTP");
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_EXTTP=0");
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_EXTTP=1");
+        //
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|twophase_derivsmoothing_xend");
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|twophase_derivsmoothing_xend=0.0");
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|twophase_derivsmoothing_xend=0.1");
+        //
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|rho_smoothing_xend");
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|rho_smoothing_xend=0.0");
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|rho_smoothing_xend=0.1");
+        //
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|debug");
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|debug=0");
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|debug=100");
+        //
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_TTSE=1|debug=0|enable_EXTTP",debug=true);
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_TTSE=1|debug=0|enableEXTTP=1");
+      end CheckOptions;
 
-    fluid_std.SaturationProperties sat_std;
+      model RhoSmoothing "Test of two-phase CoolProp medium with density smoothing"
+        extends Modelica.Icons.Example;
+        package fluid_std
+          extends ExternalMedia.Media.CoolPropMedium(
+            mediumName = "Water",
+            substanceNames = {"Water|rho_smoothing_xend=0.0|calc_transport=0"},
+            inputChoice=ExternalMedia.Common.InputChoice.ph);
+        end fluid_std;
 
-    Modelica.SIunits.SpecificEnthalpy h_start;
-    Modelica.SIunits.SpecificEnthalpy h_end;
-    Modelica.SIunits.SpecificEnthalpy h_delta;
+        package fluid_spl
+          extends ExternalMedia.Media.CoolPropMedium(
+            mediumName = "Water",
+            substanceNames = {"Water|rho_smoothing_xend=0.1|calc_transport=0"},
+            inputChoice=ExternalMedia.Common.InputChoice.ph);
+        end fluid_spl;
 
-    Modelica.SIunits.Time t = 1;
+        package fluid_tbl
+          extends ExternalMedia.Media.CoolPropMedium(
+            mediumName = "Water",
+            substanceNames = {"Water|rho_smoothing_xend=0.1|calc_transport=0|enable_TTSE=1"},
+            inputChoice=ExternalMedia.Common.InputChoice.ph);
+        end fluid_tbl;
 
-    Real x_std, x_spl, x_tbl;
+        fluid_std.ThermodynamicState state_std "Properties of the two-phase fluid";
+        fluid_spl.ThermodynamicState state_spl "Properties of the two-phase fluid";
+        fluid_tbl.ThermodynamicState state_tbl "Properties of the two-phase fluid";
 
-    equation
-      p = 10E5;
-      sat_std = fluid_std.setSat_p(p);
-      h_start = fluid_std.bubbleEnthalpy(sat_std);
-      h_end = fluid_std.dewEnthalpy(sat_std);
-      h_delta = 3e3;
-      h = (h_start - h_delta) + (h_end-h_start+2*h_delta)*time/t;
-      state_std = fluid_std.setState_ph(p,h);
-      state_spl = fluid_spl.setState_ph(p,h);
-      state_tbl = fluid_tbl.setState_ph(p,h);
-      x_std = fluid_std.vapourQuality(state_std);
-      x_spl = fluid_spl.vapourQuality(state_spl);
-      x_tbl = fluid_spl.vapourQuality(state_tbl);
-    end RhoSmoothing;
+        Modelica.SIunits.AbsolutePressure p;
+        Modelica.SIunits.SpecificEnthalpy h;
+
+        fluid_std.SaturationProperties sat_std;
+
+        Modelica.SIunits.SpecificEnthalpy h_start;
+        Modelica.SIunits.SpecificEnthalpy h_end;
+        Modelica.SIunits.SpecificEnthalpy h_delta;
+
+        Modelica.SIunits.Time t = 1;
+
+        Real x_std, x_spl, x_tbl;
+
+      equation
+        p = 10E5;
+        sat_std = fluid_std.setSat_p(p);
+        h_start = fluid_std.bubbleEnthalpy(sat_std);
+        h_end = fluid_std.dewEnthalpy(sat_std);
+        h_delta = 3e3;
+        h = (h_start - h_delta) + (h_end-h_start+2*h_delta)*time/t;
+        state_std = fluid_std.setState_ph(p,h);
+        state_spl = fluid_spl.setState_ph(p,h);
+        state_tbl = fluid_tbl.setState_ph(p,h);
+        x_std = fluid_std.vapourQuality(state_std);
+        x_spl = fluid_spl.vapourQuality(state_spl);
+        x_tbl = fluid_spl.vapourQuality(state_tbl);
+      annotation(experiment(StopTime = 1));
+      end RhoSmoothing;
+
+      model WaterComparison "Compares different implementations of water"
+        extends Modelica.Icons.Example;
+
+        GenericModels.TestRunnerTwoPhase      testRunnerTwoPhaseWater1(
+          hstart=4e5,
+          redeclare package TwoPhaseMedium =
+              ExternalMedia.Examples.WaterCoolPropTabular,
+          p_start=100000)
+          annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
+      end WaterComparison;
+    end Misc;
+
   end CoolProp;
 
   package WrongMedium "Test cases with wrong medium models"
@@ -1135,205 +1162,35 @@ package Test "Test models for the different solvers"
     end TestWrongMedium;
   end WrongMedium;
 
-  package TestOMC "Test cases for OpenModelica implementation"
+  package MSL_Models
+    "Test cases taken from the Modelica Standard Library, medium redefinition needed."
     extends Modelica.Icons.ExamplesPackage;
-    package TestHelium
-      "Test for NIST Helium model using ExternalMedia and FluidProp"
-      extends Modelica.Icons.ExamplesPackage;
-      package Helium "Helium model from NIST RefProp database"
-        extends ExternalMedia.Media.BaseClasses.ExternalTwoPhaseMedium(
-          mediumName="Helium",
-          libraryName="FluidProp.RefProp",
-          substanceNames={"He"},
-          ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.ph,
-          AbsolutePressure(
-            min=500,
-            max=44e5,
-            nominal=1e5,
-            start=1e5),
-          Density(
-            min=0.1,
-            max=200,
-            nominal=100,
-            start=100),
-          SpecificEnthalpy(
-            min=-6000,
-            max=1.7e6,
-            nominal=1000,
-            start=0),
-          SpecificEntropy(
-            min=-4000,
-            max=30e3,
-            nominal=1000,
-            start=0),
-          Temperature(
-            min=2.17,
-            max=310,
-            nominal=10,
-            start=5,
-            displayUnit="K"));
-      end Helium;
 
-      model TestSupercriticalHelium
-        extends Modelica.Icons.Example;
-        package Medium = Helium;
-        Medium.ThermodynamicState state;
-        Medium.Temperature T;
-        Medium.Temperature Tcrit=Medium.fluidConstants[1].criticalTemperature;
-        Medium.AbsolutePressure p;
-        Modelica.SIunits.Density d;
-        Medium.AbsolutePressure pcrit=Medium.fluidConstants[1].criticalPressure;
-      equation
-        T = 300 - 297.5*time;
-        p = 4e5 + 0*time;
-        state = Medium.setState_pT(p, T);
-        d = Medium.density(state);
-      end TestSupercriticalHelium;
+    model BranchingDynamicPipes "From Fluid library, needs medium definition"
+      extends Modelica.Fluid.Examples.BranchingDynamicPipes(
+        redeclare package Medium=NewMedium);
 
-      model TestSaturatedHelium
-        extends Modelica.Icons.Example;
-        package Medium = Helium;
-        Medium.SaturationProperties sat;
-        Medium.Temperature T;
-        Medium.AbsolutePressure p;
-        Modelica.SIunits.Density dl;
-        Modelica.SIunits.Density dv;
-      equation
-        p = 1e5 + 1.27e5*time;
-        sat = Medium.setSat_p(p);
-        dv = Medium.dewDensity(sat);
-        dl = Medium.bubbleDensity(sat);
-        T = Medium.saturationTemperature_sat(sat);
-      end TestSaturatedHelium;
+      replaceable package NewMedium=Modelica.Media.Water.StandardWater constrainedby
+        Modelica.Media.Interfaces.PartialMedium
+        annotation(choicesAllMatching=true);
 
-      model TypicalHeliumProperties
-        extends Modelica.Icons.Example;
-        package Medium = Helium;
-        Medium.ThermodynamicState state;
-        Medium.Temperature T;
-        Medium.Temperature Tcrit=Medium.fluidConstants[1].criticalTemperature;
-        Medium.AbsolutePressure p;
-        Modelica.SIunits.Density d;
-        Medium.AbsolutePressure pcrit=Medium.fluidConstants[1].criticalPressure;
-        Modelica.SIunits.SpecificHeatCapacity cv=Medium.specificHeatCapacityCv(
-            state);
-      equation
-        T = 5;
-        p = 5e5;
-        state = Medium.setState_pT(p, T);
-        d = Medium.density(state);
-      end TypicalHeliumProperties;
-    end TestHelium;
+      //replaceable package NewMedium=ExternalMedia.Examples.WaterCoolProp;
+      //replaceable package NewMedium=Modelica.Media.Water.StandardWater;
+      //replaceable package NewMedium=ExternalMedia.Examples.WaterIF97;
+    end BranchingDynamicPipes;
 
-    package TestHeliumHardCodedProperties
-      "Test for NIST Helium model using ExternalMedia and FluidProp, hard-coded fluid properties package constants"
-      extends Modelica.Icons.ExamplesPackage;
-      package Helium "Helium model from NIST RefProp database"
-        extends ExternalMedia.Media.BaseClasses.ExternalTwoPhaseMedium(
-          mediumName="Helium",
-          libraryName="FluidProp.RefProp",
-          substanceNames={"He"},
-          externalFluidConstants=FluidConstants(
-                    iupacName="unknown",
-                    casRegistryNumber="unknown",
-                    chemicalFormula="unknown",
-                    structureFormula="unknown",
-                    molarMass=4.0026e-3,
-                    criticalTemperature=5.1953,
-                    criticalPressure=2.2746e5,
-                    criticalMolarVolume=1/69.641*4.0026e-3,
-                    acentricFactor=0,
-                    triplePointTemperature=280.0,
-                    triplePointPressure=500.0,
-                    meltingPoint=280,
-                    normalBoilingPoint=380.0,
-                    dipoleMoment=2.0),
-          ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.ph,
-          AbsolutePressure(
-            min=500,
-            max=44e5,
-            nominal=1e5,
-            start=1e5),
-          Density(
-            min=0.1,
-            max=200,
-            nominal=100,
-            start=100),
-          SpecificEnthalpy(
-            min=-6000,
-            max=1.7e6,
-            nominal=1000,
-            start=0),
-          SpecificEntropy(
-            min=-4000,
-            max=30e3,
-            nominal=1000,
-            start=0),
-          Temperature(
-            min=2.17,
-            max=310,
-            nominal=10,
-            start=5,
-            displayUnit="K"));
-      end Helium;
-
-      model TestSupercriticalHelium
-        extends Modelica.Icons.Example;
-        package Medium = Helium;
-        Medium.ThermodynamicState state;
-        Medium.Temperature T;
-        Medium.Temperature Tcrit=Medium.fluidConstants[1].criticalTemperature;
-        Medium.AbsolutePressure p;
-        Modelica.SIunits.Density d;
-        Medium.AbsolutePressure pcrit=Medium.fluidConstants[1].criticalPressure;
-      equation
-        T = 300 - 297.5*time;
-        p = 4e5 + 0*time;
-        state = Medium.setState_pT(p, T);
-        d = Medium.density(state);
-      end TestSupercriticalHelium;
-
-      model TestSaturatedHelium
-        extends Modelica.Icons.Example;
-        package Medium = Helium;
-        Medium.SaturationProperties sat;
-        Medium.Temperature T;
-        Medium.AbsolutePressure p;
-        Modelica.SIunits.Density dl;
-        Modelica.SIunits.Density dv;
-      equation
-        p = 1e5 + 1.27e5*time;
-        sat = Medium.setSat_p(p);
-        dv = Medium.dewDensity(sat);
-        dl = Medium.bubbleDensity(sat);
-        T = Medium.saturationTemperature_sat(sat);
-      end TestSaturatedHelium;
-
-      model TypicalHeliumProperties
-        extends Modelica.Icons.Example;
-        package Medium = Helium;
-        Medium.ThermodynamicState state;
-        Medium.Temperature T;
-        Medium.Temperature Tcrit=Medium.fluidConstants[1].criticalTemperature;
-        Medium.AbsolutePressure p;
-        Modelica.SIunits.Density d;
-        Medium.AbsolutePressure pcrit=Medium.fluidConstants[1].criticalPressure;
-        Modelica.SIunits.SpecificHeatCapacity cv=Medium.specificHeatCapacityCv(
-            state);
-      equation
-        T = 5;
-        p = 5e5;
-        state = Medium.setState_pT(p, T);
-        d = Medium.density(state);
-      end TypicalHeliumProperties;
-    end TestHeliumHardCodedProperties;
-  end TestOMC;
+    model IncompressibleFluidNetwork
+      "From Fluid library, needs medium definition"
+      extends Modelica.Fluid.Examples.IncompressibleFluidNetwork(
+        redeclare package Medium=NewMedium);
+      replaceable package NewMedium=Modelica.Media.Water.StandardWater constrainedby
+        Modelica.Media.Interfaces.PartialMedium
+        annotation(choicesAllMatching=true);
+    end IncompressibleFluidNetwork;
+  end MSL_Models;
 
   package GenericModels "Generic models for FluidProp media tests"
     extends Modelica.Icons.BasesPackage;
-    package DummyTwoPhaseMedium "A dummy to allow for pedantic checking"
-      extends Modelica.Media.Water.WaterIF97_ph;
-    end DummyTwoPhaseMedium;
 
     model CompleteFluidConstants "Compute all available medium fluid constants"
       replaceable package Medium =
@@ -1345,6 +1202,7 @@ package Test "Test models for the different solvers"
       Medium.AbsolutePressure pc=Medium.fluidConstants[1].criticalPressure;
       Medium.MolarVolume vc=Medium.fluidConstants[1].criticalMolarVolume;
       Medium.MolarMass MM=Medium.fluidConstants[1].molarMass;
+    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end CompleteFluidConstants;
 
     model CompleteThermodynamicState
@@ -1368,6 +1226,7 @@ package Test "Test models for the different solvers"
       Medium.DerDensityByPressure d_d_dp_h=Medium.density_derp_h(state);
       Medium.DerDensityByEnthalpy d_d_dh_p=Medium.density_derh_p(state);
       Medium.MolarMass MM=Medium.molarMass(state);
+    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end CompleteThermodynamicState;
 
     model CompleteSaturationProperties
@@ -1389,6 +1248,7 @@ package Test "Test models for the different solvers"
       Real d_dv_dp=Medium.dDewDensity_dPressure(sat);
       Real d_hl_dp=Medium.dBubbleEnthalpy_dPressure(sat);
       Real d_hv_dp=Medium.dDewEnthalpy_dPressure(sat);
+    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end CompleteSaturationProperties;
 
     model CompleteBubbleDewStates
@@ -1408,6 +1268,7 @@ package Test "Test models for the different solvers"
             sat, 1), redeclare package Medium = Medium);
       CompleteThermodynamicState bubbleStateTwoPhase(state=Medium.setBubbleState(
             sat, 2), redeclare package Medium = Medium);
+    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end CompleteBubbleDewStates;
 
     model CompleteBaseProperties
@@ -1424,6 +1285,7 @@ package Test "Test models for the different solvers"
       CompleteSaturationProperties completeSat(redeclare package Medium = Medium,
           sat=baseProperties.sat);
       CompleteFluidConstants completeConstants(redeclare package Medium = Medium);
+    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end CompleteBaseProperties;
 
     partial model TestStates "Test case with state"
@@ -1444,6 +1306,7 @@ package Test "Test models for the different solvers"
     equation
       state1 = Medium.setState_ph(p1, h1);
       state2 = Medium.setState_pT(p2, T2);
+    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end TestStates;
 
     partial model TestStatesSat "Test case with state + sat records"
@@ -1480,6 +1343,7 @@ package Test "Test models for the different solvers"
       sat2 = Medium.setSat_T(T2);
       Ts = Medium.saturationTemperature(p1);
       ps = Medium.saturationPressure(T2);
+    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end TestStatesSat;
 
     partial model TestBasePropertiesExplicit
@@ -1501,6 +1365,7 @@ package Test "Test models for the different solvers"
       medium1.baseProperties.h = h1;
       medium2.baseProperties.p = p2;
       medium2.baseProperties.h = h2;
+    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end TestBasePropertiesExplicit;
 
     partial model TestBasePropertiesImplicit
@@ -1526,6 +1391,7 @@ package Test "Test models for the different solvers"
       medium1.baseProperties.T = T1;
       medium2.baseProperties.p = p2;
       medium2.baseProperties.T = T2;
+    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end TestBasePropertiesImplicit;
 
     partial model TestBasePropertiesDynamic
@@ -1565,7 +1431,8 @@ package Test "Test models for the different solvers"
       // Steady state equations
       der(medium.p) = 0;
       der(medium.h) = 0;
-      annotation (experiment(StopTime=80, Tolerance=1e-007));
+      annotation (experiment(StopTime=80, Tolerance=1e-007),
+                Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end TestBasePropertiesDynamic;
 
     partial model CompareModelicaTestMedium
@@ -1586,11 +1453,13 @@ package Test "Test models for the different solvers"
       parameter Modelica.SIunits.Pressure pmax;
       parameter Modelica.SIunits.SpecificEnthalpy hmin;
       parameter Modelica.SIunits.SpecificEnthalpy hmax;
+      constant Modelica.SIunits.Time T = 1;
     equation
-      modelicaMedium.baseProperties.p = pmin + (pmax - pmin)*time;
-      modelicaMedium.baseProperties.h = hmin + (hmax - hmin)*time;
-      testMedium.baseProperties.p = pmin + (pmax - pmin)*time;
-      testMedium.baseProperties.h = hmin + (hmax - hmin)*time;
+      modelicaMedium.baseProperties.p = pmin + (pmax - pmin)*time/T;
+      modelicaMedium.baseProperties.h = hmin + (hmax - hmin)*time/T;
+      testMedium.baseProperties.p = pmin + (pmax - pmin)*time/T;
+      testMedium.baseProperties.h = hmin + (hmax - hmin)*time/T;
+    annotation (Icon(graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,0,0})}));
     end CompareModelicaTestMedium;
 
     partial model TestRunner
@@ -1715,9 +1584,8 @@ package Test "Test models for the different solvers"
     model TestRunnerTwoPhase
       "A collection of models to test the saturation states"
       extends Modelica.Icons.Example;
-      extends ExternalMedia.Test.GenericModels.TestRunner(        redeclare
-          package Medium =
-            TwoPhaseMedium);
+      extends ExternalMedia.Test.GenericModels.TestRunner(
+        redeclare package Medium = TwoPhaseMedium);
 
       replaceable package TwoPhaseMedium = Modelica.Media.Water.StandardWater
         constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium
@@ -1731,14 +1599,14 @@ package Test "Test models for the different solvers"
       sat_in = Medium.setSat_p(p=p_in);
       h_in = Medium.bubbleEnthalpy(sat_in);
       T_in = Medium.saturationTemperature_sat(sat_in);
+    annotation(experiment(StopTime = 1));
     end TestRunnerTwoPhase;
 
     model TestRunnerTranscritical
       "A collection of models to test the transcritical states"
       extends Modelica.Icons.Example;
-      extends ExternalMedia.Test.GenericModels.TestRunner(        redeclare
-          package Medium =
-            TwoPhaseMedium);
+      extends ExternalMedia.Test.GenericModels.TestRunner(
+        redeclare package Medium = TwoPhaseMedium);
 
       replaceable package TwoPhaseMedium = Modelica.Media.Water.StandardWater
         constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium
@@ -1752,44 +1620,12 @@ package Test "Test models for the different solvers"
       sat_in = Medium.setSat_p(p=p_in);
       h_in = Medium.bubbleEnthalpy(sat_in);
       T_in = Medium.saturationTemperature_sat(sat_in);
+    annotation(experiment(StopTime = 1));
     end TestRunnerTranscritical;
+
+    package DummyTwoPhaseMedium "A dummy to allow for pedantic checking"
+      extends Modelica.Media.Water.WaterIF97_ph;
+    end DummyTwoPhaseMedium;
   end GenericModels;
 
-  package MSL_Models
-    "Test cases taken from the Modelica Standard Library, medium redefinition needed."
-    extends Modelica.Icons.BasesPackage;
-
-    model BranchingDynamicPipes "From Fluid library, needs medium definition"
-      extends Modelica.Fluid.Examples.BranchingDynamicPipes(
-        redeclare package Medium=NewMedium);
-
-      replaceable package NewMedium=Modelica.Media.Water.StandardWater constrainedby
-        Modelica.Media.Interfaces.PartialMedium
-        annotation(choicesAllMatching=true);
-
-      //replaceable package NewMedium=ExternalMedia.Examples.WaterCoolProp;
-      //replaceable package NewMedium=Modelica.Media.Water.StandardWater;
-      //replaceable package NewMedium=ExternalMedia.Examples.WaterIF97;
-    end BranchingDynamicPipes;
-
-    model IncompressibleFluidNetwork
-      "From Fluid library, needs medium definition"
-      extends Modelica.Fluid.Examples.IncompressibleFluidNetwork(
-        redeclare package Medium=NewMedium);
-      replaceable package NewMedium=Modelica.Media.Water.StandardWater constrainedby
-        Modelica.Media.Interfaces.PartialMedium
-        annotation(choicesAllMatching=true);
-    end IncompressibleFluidNetwork;
-  end MSL_Models;
-
-  model WaterComparison "Compares different implementations of water"
-    extends Modelica.Icons.Example;
-
-    GenericModels.TestRunnerTwoPhase      testRunnerTwoPhaseWater1(
-      hstart=4e5,
-      redeclare package TwoPhaseMedium =
-          ExternalMedia.Examples.WaterCoolPropTabular,
-      p_start=100000)
-      annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
-  end WaterComparison;
 end Test;

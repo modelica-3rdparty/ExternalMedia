@@ -1,6 +1,6 @@
 within ExternalMedia;
-package Examples "Examples of external medium models"
-  extends Modelica.Icons.Package;
+package Examples "Examples of external medium model definitions"
+  extends Modelica.Icons.VariantsPackage;
   package WaterIF95 "RefProp water model"
     extends ExternalMedia.Media.FluidPropMedium(
       mediumName = "Water",
@@ -50,6 +50,14 @@ package Examples "Examples of external medium models"
       SpecificEnthalpy(start=2e5));
   end CO2CoolProp;
 
+  package CO2CoolPropTabular "CoolProp model of CO2 using tabulated data and bicubic interpolation"
+    extends ExternalMedia.Media.CoolPropMedium(
+      mediumName = "CarbonDioxide",
+      substanceNames = {"CO2|enable_BICUBIC=1"},
+      ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.ph,
+      SpecificEnthalpy(start=2e5));
+  end CO2CoolPropTabular;
+
   package WaterCoolProp "CoolProp model of water"
     extends ExternalMedia.Media.CoolPropMedium(
       mediumName = "Water",
@@ -81,5 +89,4 @@ package Examples "Examples of external medium models"
       substanceNames={"LiBr|calc_transport=1","dummyToMakeBasePropertiesWork"},
       ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX);
   end LiBrAQCoolProp;
-
 end Examples;

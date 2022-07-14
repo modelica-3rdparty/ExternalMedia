@@ -13,10 +13,10 @@ protected
   String rest;
 algorithm
   if noEvent(size(composition,1) <= 0) then
-    assert(not debug, "You are passing an empty composition vector, returning name only: "+substanceName, level=  AssertionLevel.warning);
+    assert(not debug, "You are passing an empty composition vector, returning name only: "+substanceName, level = AssertionLevel.warning);
     result :=substanceName;
   else
-    assert(noEvent(size(composition,1)==1), "Your mixture has more than two components, ignoring all but the first element.", level=  AssertionLevel.warning);
+    assert(noEvent(size(composition,1)==1), "Your mixture has more than two components, ignoring all but the first element.", level = AssertionLevel.warning);
     inLength  := Modelica.Utilities.Strings.length(substanceName);
     nextIndex := Modelica.Utilities.Strings.find(substanceName, delimiter);
     if noEvent(nextIndex<2) then

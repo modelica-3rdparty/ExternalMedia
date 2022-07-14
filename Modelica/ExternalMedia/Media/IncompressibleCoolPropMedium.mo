@@ -20,7 +20,6 @@ partial package IncompressibleCoolPropMedium
     "Default choice of input variables for property computations, incompressibles are in p,T";
   redeclare replaceable record ThermodynamicState =
   ExternalMedia.Media.BaseClasses.ExternalTwoPhaseMedium.ThermodynamicState;
-
   redeclare replaceable model extends BaseProperties(
     p(stateSelect = if preferredMediumStates and
                        (basePropertiesInputChoice == InputChoiceIncompressible.phX or

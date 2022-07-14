@@ -74,5 +74,4 @@ package CoolPropMedium "Medium package accessing the CoolProp solver"
   algorithm
     assert(false, "The CoolProp solver does not provide surface tension");
   end surfaceTension;
-
 end CoolPropMedium;
