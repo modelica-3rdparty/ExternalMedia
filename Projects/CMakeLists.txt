@@ -240,6 +240,7 @@ if(WIN32)
     INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
 else()
     # Both OpenModelica and Dymola on Linux DO NOT expect a compiler-specific subdirectory
+    # NB: This means that subsequent builds for different compilers overwrite the previously installed binaries.
     message(STATUS "Installation path: ${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")
     INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")
 endif()

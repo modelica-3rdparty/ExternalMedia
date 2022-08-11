@@ -36,10 +36,13 @@ jobs:
   build-macos:
     runs-on: ${{ matrix.platform }}
     strategy:
+      # Only use one build here, otherwise we cannot control which build is included in the release zip package
+      # Check the use of the ${MODELICA_PLATFORM} and ${MODELICA_COMPILER} variables in the CMake files
       matrix:
         include:
-          - platform: macos-11
-          - platform: macos-10.15
+          - platform: macos-latest
+          #- platform: macos-11
+          #- platform: macos-10.15
     steps:
     - uses: actions/checkout@v2
     - name: Create Build Environment
@@ -67,10 +70,13 @@ jobs:
   build-linux:
     runs-on: ${{ matrix.platform }}
     strategy:
+      # Only use one build here, otherwise we cannot control which build is included in the release zip package
+      # Check the use of the ${MODELICA_PLATFORM} and ${MODELICA_COMPILER} variables in the CMake files
       matrix:
         include:
-          - platform: ubuntu-20.04
-          - platform: ubuntu-18.04
+          - platform: ubuntu-latest
+          #- platform: ubuntu-20.04
+          #- platform: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
     - name: Create Build Environment
@@ -98,6 +104,8 @@ jobs:
   build-windows:
     runs-on: ${{ matrix.platform }}
     strategy:
+      # Use several builds here, Windows requires different builds for different compilers
+      # Check the use of the ${MODELICA_PLATFORM} and ${MODELICA_COMPILER} variables in the CMake files
       matrix:
         include:
           - platform: windows-2022
