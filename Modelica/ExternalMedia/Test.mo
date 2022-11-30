@@ -142,7 +142,7 @@ package Test "Test models for the different solvers"
       // Steady state equations
       der(medium.p) = 0;
       der(medium.h) = 0;
-      annotation (experiment(StopTime=80, Tolerance=1e-007, Interval = 0.001));
+      annotation (experiment(StopTime=80, Tolerance=1e-007, Interval = 0.1));
     end TestBasePropertiesDynamic;
 
     package GenericModels
@@ -246,26 +246,26 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
          extends Modelica.Icons.Example;
          extends ExternalMedia.Test.GenericModels.TestStates(
-                                          redeclare package Medium =
-              ExternalMedia.Examples.WaterIF95);
+            redeclare package Medium = ExternalMedia.Examples.WaterIF95);
        equation
         p1 = 1e5;
         h1 = 1e5 + 2e5*time;
         p2 = 1e5;
         T2 = 300 + 50*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
        end TestStates;
 
       model TestStatesSat "Test case with state + sat records"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestStatesSat(
-                                            redeclare package Medium =
-              ExternalMedia.Examples.WaterIF95);
+          redeclare package Medium = ExternalMedia.Examples.WaterIF95);
       equation
         p1 = 1e5;
         h1 = 1e5 + 2e5*time;
         p2 = 1e5;
         T2 = 300 + 50*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestStatesSat;
 
       model TestBasePropertiesExplicit
@@ -273,13 +273,13 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestBasePropertiesExplicit(
-                                                         redeclare package
-            Medium = ExternalMedia.Examples.WaterIF95);
+            redeclare package Medium = ExternalMedia.Examples.WaterIF95);
       equation
         p1 = 1e5 + 1e5*time;
         h1 = 1e5;
         p2 = 1e5;
         h2 = 1e5 + 2e5*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestBasePropertiesExplicit;
 
       model TestBasePropertiesImplicit
@@ -287,13 +287,13 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestBasePropertiesImplicit(
-                                                         redeclare package
-            Medium = ExternalMedia.Examples.WaterIF95, hstart=1e5);
+           redeclare package Medium = ExternalMedia.Examples.WaterIF95, hstart=1e5);
       equation
         p1 = 1e5 + 1e5*time;
         T1 = 300 + 25*time;
         p2 = 1e5 + 1e5*time;
         T2 = 300;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestBasePropertiesImplicit;
 
       model TestBasePropertiesDynamic
@@ -311,8 +311,7 @@ package Test "Test models for the different solvers"
         // Input variables
         Kv = if time < 50 then Kv0 else Kv0*1.1;
         Q = if time < 1 then 0 else 1e7;
-        annotation (experiment(StopTime=80, Tolerance=1e-007),
-            experimentSetupOutput(equdistant=false));
+        annotation (experiment(StopTime=80, Tolerance=1e-007, Interval = 0.1));
       end TestBasePropertiesDynamic;
 
       model CompareModelicaFluidProp_liquid
@@ -326,6 +325,7 @@ package Test "Test models for the different solvers"
           pmax=1e5,
           hmin=1e5,
           hmax=4e5);
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end CompareModelicaFluidProp_liquid;
 
       model CompareModelicaFluidProp_twophase
@@ -339,6 +339,7 @@ package Test "Test models for the different solvers"
           pmax=60e5,
           hmin=1000e3,
           hmax=2000e3);
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end CompareModelicaFluidProp_twophase;
 
       model CompareModelicaFluidProp_vapour
@@ -352,6 +353,7 @@ package Test "Test models for the different solvers"
           pmax=60e5,
           hmin=2800e3,
           hmax=3200e3);
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end CompareModelicaFluidProp_vapour;
     end WaterIF95;
 
@@ -361,26 +363,26 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestStates(
-                                         redeclare package Medium =
-              ExternalMedia.Examples.WaterIF97);
+          redeclare package Medium = ExternalMedia.Examples.WaterIF97);
       equation
         p1 = 1e5;
         h1 = 1e5 + 2e5*time;
         p2 = 1e5;
         T2 = 300 + 50*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestStates;
 
       model TestStatesSat "Test case with state + sat records"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestStatesSat(
-                                            redeclare package Medium =
-              ExternalMedia.Examples.WaterIF97);
+          redeclare package Medium = ExternalMedia.Examples.WaterIF97);
       equation
         p1 = 1e5;
         h1 = 1e5 + 2e5*time;
         p2 = 1e5;
         T2 = 300 + 50*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestStatesSat;
 
       model TestBasePropertiesExplicit
@@ -388,13 +390,13 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestBasePropertiesExplicit(
-                                                         redeclare package
-            Medium = ExternalMedia.Examples.WaterIF97);
+          redeclare package Medium = ExternalMedia.Examples.WaterIF97);
       equation
         p1 = 1e5 + 1e5*time;
         h1 = 1e5;
         p2 = 1e5;
         h2 = 1e5 + 2e5*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestBasePropertiesExplicit;
 
       model TestBasePropertiesImplicit
@@ -402,13 +404,13 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestBasePropertiesImplicit(
-                                                         redeclare package
-            Medium = ExternalMedia.Examples.WaterIF97, hstart=1e5);
+          redeclare package Medium = ExternalMedia.Examples.WaterIF97, hstart=1e5);
       equation
         p1 = 1e5 + 1e5*time;
         T1 = 300 + 25*time;
         p2 = 1e5 + 1e5*time;
         T2 = 300;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestBasePropertiesImplicit;
 
       model TestBasePropertiesDynamic
@@ -426,8 +428,7 @@ package Test "Test models for the different solvers"
         // Input variables
         Kv = if time < 50 then Kv0 else Kv0*1.1;
         Q = if time < 1 then 0 else 1e7;
-        annotation (experiment(StopTime=80, Tolerance=1e-007),
-            experimentSetupOutput(equdistant=false));
+        annotation (experiment(StopTime=80, Tolerance=1e-007, Interval = 0.1));
       end TestBasePropertiesDynamic;
 
       model CompareModelicaFluidProp_liquid
@@ -441,6 +442,7 @@ package Test "Test models for the different solvers"
           pmax=1e5,
           hmin=1e5,
           hmax=4e5);
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end CompareModelicaFluidProp_liquid;
 
       model CompareModelicaFluidProp_twophase
@@ -454,6 +456,7 @@ package Test "Test models for the different solvers"
           pmax=60e5,
           hmin=1000e3,
           hmax=2000e3);
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end CompareModelicaFluidProp_twophase;
 
       model CompareModelicaFluidProp_vapour
@@ -467,6 +470,7 @@ package Test "Test models for the different solvers"
           pmax=60e5,
           hmin=2800e3,
           hmax=3200e3);
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end CompareModelicaFluidProp_vapour;
     end WaterIF97;
 
@@ -476,26 +480,26 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestStates(
-                                         redeclare package Medium =
-              ExternalMedia.Examples.WaterTPSI);
+          redeclare package Medium = ExternalMedia.Examples.WaterTPSI);
       equation
         p1 = 1e5;
         h1 = 1e5 + 2e5*time;
         p2 = 1e5;
         T2 = 300 + 50*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestStates;
 
       model TestStatesSat "Test case with state + sat records"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestStatesSat(
-                                            redeclare package Medium =
-              ExternalMedia.Examples.WaterTPSI);
+          redeclare package Medium = ExternalMedia.Examples.WaterTPSI);
       equation
         p1 = 1e5;
         h1 = 1e5 + 2e5*time;
         p2 = 1e5;
         T2 = 300 + 50*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestStatesSat;
 
       model TestBasePropertiesExplicit
@@ -503,13 +507,13 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestBasePropertiesExplicit(
-                                                         redeclare package
-            Medium = ExternalMedia.Examples.WaterTPSI);
+          redeclare package Medium = ExternalMedia.Examples.WaterTPSI);
       equation
         p1 = 1e5 + 1e5*time;
         h1 = 1e5;
         p2 = 1e5;
         h2 = 1e5 + 2e5*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestBasePropertiesExplicit;
 
       model TestBasePropertiesImplicit
@@ -517,13 +521,13 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestBasePropertiesImplicit(
-                                                         redeclare package
-            Medium = ExternalMedia.Examples.WaterTPSI, hstart=1e5);
+          redeclare package Medium = ExternalMedia.Examples.WaterTPSI, hstart=1e5);
       equation
         p1 = 1e5 + 1e5*time;
         T1 = 300 + 25*time;
         p2 = 1e5 + 1e5*time;
         T2 = 300;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestBasePropertiesImplicit;
 
       model TestBasePropertiesDynamic
@@ -541,8 +545,7 @@ package Test "Test models for the different solvers"
         // Input variables
         Kv = if time < 50 then Kv0 else Kv0*1.1;
         Q = if time < 1 then 0 else 1e7;
-        annotation (experiment(StopTime=80, Tolerance=1e-007),
-            experimentSetupOutput(equdistant=false));
+        annotation (experiment(StopTime=80, Tolerance=1e-007, Interval = 0.1));
       end TestBasePropertiesDynamic;
 
       model CompareModelicaFluidProp_liquid
@@ -556,6 +559,7 @@ package Test "Test models for the different solvers"
           pmax=1e5,
           hmin=1e5,
           hmax=4e5);
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end CompareModelicaFluidProp_liquid;
 
       model CompareModelicaFluidProp_twophase
@@ -569,6 +573,7 @@ package Test "Test models for the different solvers"
           pmax=60e5,
           hmin=1000e3,
           hmax=2000e3);
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end CompareModelicaFluidProp_twophase;
 
       model CompareModelicaFluidProp_vapour
@@ -582,6 +587,7 @@ package Test "Test models for the different solvers"
           pmax=60e5,
           hmin=2800e3,
           hmax=3200e3);
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end CompareModelicaFluidProp_vapour;
     end WaterTPSI;
 
@@ -592,13 +598,13 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestStates(
-                                         redeclare package Medium =
-              ExternalMedia.Examples.CO2StanMix);
+          redeclare package Medium = ExternalMedia.Examples.CO2StanMix);
       equation
         p1 = 8e6;
         h1 = -4.2e5 + 6e5*time;
         p2 = 8e6;
         T2 = 280 + 50*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestStatesSupercritical;
 
       model TestStatesTranscritical
@@ -606,13 +612,13 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestStates(
-                                         redeclare package Medium =
-              ExternalMedia.Examples.CO2StanMix);
+          redeclare package Medium = ExternalMedia.Examples.CO2StanMix);
       equation
         p1 = 1e6 + time*10e6;
         h1 = -4.2e5 + 0*time;
         p2 = 1e6 + time*10e6;
         T2 = 330;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestStatesTranscritical;
 
       model TestStatesSatSubcritical
@@ -620,13 +626,13 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestStatesSat(
-                                            redeclare package Medium =
-              ExternalMedia.Examples.CO2StanMix);
+          redeclare package Medium = ExternalMedia.Examples.CO2StanMix);
       equation
         p1 = 1e6;
         h1 = -4.2e5 + 6e5*time;
         p2 = 1e6;
         T2 = 250 + 50*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestStatesSatSubcritical;
 
       model TestBasePropertiesExplicit
@@ -634,13 +640,13 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestBasePropertiesExplicit(
-                                                         redeclare package
-            Medium = ExternalMedia.Examples.CO2StanMix);
+          redeclare package Medium = ExternalMedia.Examples.CO2StanMix);
       equation
         p1 = 8e6;
         h1 = -4.2e5 + 6e5*time;
         p2 = 1e6;
         h2 = -4.2e5 + 6e5*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestBasePropertiesExplicit;
 
       model TestBasePropertiesImplicit
@@ -648,13 +654,13 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestBasePropertiesImplicit(
-                                                         redeclare package
-            Medium = ExternalMedia.Examples.CO2StanMix, hstart=0);
+          redeclare package Medium = ExternalMedia.Examples.CO2StanMix, hstart=0);
       equation
         p1 = 8e6;
         T1 = 280 + 20*time;
         p2 = 1e6;
         T2 = 280 + 20*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestBasePropertiesImplicit;
 
       model TestBasePropertiesDynamic
@@ -675,8 +681,7 @@ package Test "Test models for the different solvers"
         // Input variables
         Kv = if time < 50 then Kv0 else Kv0*1.1;
         Q = if time < 1 then 0 else 1e4;
-        annotation (experiment(StopTime=80, Tolerance=1e-007),
-            experimentSetupOutput(equdistant=false));
+        annotation (experiment(StopTime=80, Tolerance=1e-007, Interval = 0.1));
       end TestBasePropertiesDynamic;
 
       model TestBasePropertiesTranscritical
@@ -684,13 +689,13 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestBasePropertiesExplicit(
-                                                         redeclare package
-            Medium = ExternalMedia.Examples.CO2StanMix);
+          redeclare package Medium = ExternalMedia.Examples.CO2StanMix);
       equation
         p1 = 1e6 + time*10e6;
         h1 = -4.2e5 + 0*time;
         p2 = 1e6 + time*10e6;
         h2 = 2.0e5;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestBasePropertiesTranscritical;
     end CO2StanMix;
 
@@ -701,13 +706,13 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestStates(
-                                         redeclare package Medium =
-              ExternalMedia.Examples.CO2RefProp);
+          redeclare package Medium = ExternalMedia.Examples.CO2RefProp);
       equation
         p1 = 8e6;
         h1 = 1.0e5 + 6e5*time;
         p2 = 8e6;
         T2 = 280 + 50*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestStatesSupercritical;
 
       model TestStatesTranscritical
@@ -715,13 +720,13 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestStates(
-                                         redeclare package Medium =
-              ExternalMedia.Examples.CO2RefProp);
+          redeclare package Medium = ExternalMedia.Examples.CO2RefProp);
       equation
         p1 = 1e6 + time*10e6;
         h1 = 1.0e5;
         p2 = 1e6 + time*10e6;
         T2 = 330;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestStatesTranscritical;
 
       model TestStatesSatSubcritical
@@ -729,13 +734,13 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestStatesSat(
-                                            redeclare package Medium =
-              ExternalMedia.Examples.CO2RefProp);
+          redeclare package Medium = ExternalMedia.Examples.CO2RefProp);
       equation
         p1 = 1e6;
         h1 = 1.0e5 + 6e5*time;
         p2 = 1e6;
         T2 = 250 + 50*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestStatesSatSubcritical;
 
       model TestBasePropertiesExplicit
@@ -743,13 +748,13 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestBasePropertiesExplicit(
-                                                         redeclare package
-            Medium = ExternalMedia.Examples.CO2RefProp);
+           redeclare package Medium = ExternalMedia.Examples.CO2RefProp);
       equation
         p1 = 8e6;
         h1 = 1.0e5 + 6e5*time;
         p2 = 1e6;
         h2 = 1.0e5 + 6e5*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestBasePropertiesExplicit;
 
       model TestBasePropertiesImplicit
@@ -757,13 +762,13 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestBasePropertiesImplicit(
-                                                         redeclare package
-            Medium = ExternalMedia.Examples.CO2RefProp, hstart=1e5);
+          redeclare package Medium = ExternalMedia.Examples.CO2RefProp, hstart=1e5);
       equation
         p1 = 8e6;
         T1 = 280 + 50*time;
         p2 = 1e6;
         T2 = 280 + 50*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestBasePropertiesImplicit;
 
       model TestBasePropertiesDynamic
@@ -784,8 +789,7 @@ package Test "Test models for the different solvers"
         // Input variables
         Kv = if time < 50 then Kv0 else Kv0*1.1;
         Q = if time < 1 then 0 else 1e4;
-        annotation (experiment(StopTime=80, Tolerance=1e-007),
-            experimentSetupOutput(equdistant=false));
+        annotation (experiment(StopTime=80, Tolerance=1e-007, Interval = 0.1));
       end TestBasePropertiesDynamic;
 
       model TestBasePropertiesTranscritical
@@ -793,13 +797,13 @@ package Test "Test models for the different solvers"
         import ExternalMedia;
         extends Modelica.Icons.Example;
         extends ExternalMedia.Test.GenericModels.TestBasePropertiesExplicit(
-                                                         redeclare package
-            Medium = ExternalMedia.Examples.CO2RefProp);
+          redeclare package Medium = ExternalMedia.Examples.CO2RefProp);
       equation
         p1 = 1e6 + time*10e6;
         h1 = 1.0e5;
         p2 = 1e6 + time*10e6;
         h2 = 7.0e5;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestBasePropertiesTranscritical;
     end CO2RefProp;
   end FluidProp;
@@ -818,7 +822,7 @@ package Test "Test models for the different solvers"
         h1 = 1.0e5 + 6e5*time;
         p2 = 8e6;
         T2 = 280 + 50*time;
-      annotation(experiment(StopTime = 1));
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestStatesSupercritical;
 
       model TestStatesTranscritical
@@ -831,7 +835,7 @@ package Test "Test models for the different solvers"
         h1 = 1.0e5;
         p2 = 1e6 + time*10e6;
         T2 = 330;
-      annotation(experiment(StopTime = 1));
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestStatesTranscritical;
 
       model TestStatesSatSubcritical
@@ -844,7 +848,7 @@ package Test "Test models for the different solvers"
         h1 = 1.0e5 + 6e5*time;
         p2 = 1e6;
         T2 = 250 + 50*time;
-      annotation(experiment(StopTime = 1));
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestStatesSatSubcritical;
 
       model TestBasePropertiesExplicit
@@ -857,7 +861,7 @@ package Test "Test models for the different solvers"
         h1 = 1.0e5 + 6e5*time;
         p2 = 1e6;
         h2 = 1.0e5 + 6e5*time;
-      annotation(experiment(StopTime = 1));
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestBasePropertiesExplicit;
 
       model TestBasePropertiesImplicit
@@ -870,7 +874,7 @@ package Test "Test models for the different solvers"
         T1 = 280 + 50*time;
         p2 = 1e6;
         T2 = 280 + 50*time;
-      annotation(experiment(StopTime = 1));
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestBasePropertiesImplicit;
 
       model TestBasePropertiesDynamic
@@ -890,8 +894,7 @@ package Test "Test models for the different solvers"
         // Input variables
         Kv = if time < 50 then Kv0 else Kv0*1.1;
         Q = if time < 1 then 0 else 1e4;
-        annotation (experiment(StopTime=80, Tolerance=1e-007),
-            experimentSetupOutput(equdistant=false));
+        annotation (experiment(StopTime=80, Tolerance=1e-007, Interval = 0.1));
       end TestBasePropertiesDynamic;
 
       model TestBasePropertiesTranscritical
@@ -904,7 +907,7 @@ package Test "Test models for the different solvers"
         h1 = 1.0e5;
         p2 = 1e6 + time*10e6;
         h2 = 7.0e5;
-      annotation(experiment(StopTime = 1));
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestBasePropertiesTranscritical;
 
     end CO2;
@@ -935,7 +938,7 @@ package Test "Test models for the different solvers"
         // And now we do some testing with the BaseProperties
         props.T = T;
         props.p = p;
-      annotation(experiment(StopTime = 1));
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end IncompressibleCoolPropMedium;
 
       model IncompressibleCoolPropMixture
@@ -969,7 +972,7 @@ package Test "Test models for the different solvers"
         varProps.T = T;
         varProps.p = p;
         varProps.Xi = X_var;
-      annotation(experiment(StopTime = 1));
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end IncompressibleCoolPropMixture;
     end Incompressible;
 
@@ -1000,7 +1003,7 @@ package Test "Test models for the different solvers"
         fluid.h = h;
         drdp = wf.density_derp_h(fluid.state);
         drdh = wf.density_derh_p(fluid.state);
-      annotation(experiment(StopTime = 1));
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end Pentane_hs;
 
       model Pentane_hs_state
@@ -1027,7 +1030,7 @@ package Test "Test models for the different solvers"
         fluid.p = p;
         drdp = wf.density_derp_h(fluid);
         drdh = wf.density_derh_p(fluid);
-      annotation(experiment(StopTime = 1));
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end Pentane_hs_state;
     end Pentane;
 
@@ -1039,7 +1042,7 @@ package Test "Test models for the different solvers"
 
         ExternalMedia.Test.MSL_Models.BranchingDynamicPipes branchingDynamicPipes(
             redeclare package NewMedium = ExternalMedia.Examples.WaterCoolProp)
-          annotation (Placement(transformation(extent={{-50,20},{-30,40}})));
+        annotation(experiment(StopTime = 10, Interval = 0.01));
       end BranchingPipeWaterCoolProp;
 
       model CheckOptions "Check CoolProp library options"
@@ -1127,7 +1130,7 @@ package Test "Test models for the different solvers"
         x_std = fluid_std.vapourQuality(state_std);
         x_spl = fluid_spl.vapourQuality(state_spl);
         x_tbl = fluid_spl.vapourQuality(state_tbl);
-      annotation(experiment(StopTime = 1));
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end RhoSmoothing;
 
       model WaterComparison "Compares different implementations of water"
@@ -1138,7 +1141,7 @@ package Test "Test models for the different solvers"
           redeclare package TwoPhaseMedium =
               ExternalMedia.Examples.WaterCoolPropTabular,
           p_start=100000)
-          annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
+        annotation(experiment(StopTime = 1, Interval = 0.001));
       end WaterComparison;
     end Misc;
 
@@ -1159,7 +1162,7 @@ package Test "Test models for the different solvers"
 
   package MSL_Models
     "Test cases taken from the Modelica Standard Library, medium redefinition needed."
-    extends Modelica.Icons.ExamplesPackage;
+    extends Modelica.Icons.BasesPackage;
 
     model BranchingDynamicPipes "From Fluid library, needs medium definition"
       extends Modelica.Fluid.Examples.BranchingDynamicPipes(
@@ -1262,7 +1265,7 @@ package Test "Test models for the different solvers"
             sat, 2), redeclare package Medium = Medium);
     end CompleteBubbleDewStates;
 
-    model CompleteBaseProperties
+    partial model CompleteBaseProperties
       "Compute all available two-phase medium properties from a BaseProperties model"
       replaceable package Medium =
           ExternalMedia.Test.GenericModels.DummyTwoPhaseMedium
