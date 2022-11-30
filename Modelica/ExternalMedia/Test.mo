@@ -7,6 +7,7 @@ package Test "Test models for the different solvers"
       extends Modelica.Icons.Example;
       replaceable package Medium = Media.TestMedium;
       Medium.Temperature Tc=Medium.fluidConstants[1].criticalTemperature;
+      annotation(experiment(StopTime = 1, Interval = 0.001));
     end TestConstants;
 
     model TestState "Test case using TestMedium with a single state record"
@@ -15,6 +16,7 @@ package Test "Test models for the different solvers"
       Medium.ThermodynamicState state;
     equation
       state = Medium.setState_ph(1e5, 1e5 + 1e5*time);
+      annotation(experiment(StopTime = 1, Interval = 0.001));
     end TestState;
 
     model TestSat
@@ -24,6 +26,7 @@ package Test "Test models for the different solvers"
       Medium.SaturationProperties sat;
     equation
       sat = Medium.setSat_p(1e5 + 1e5*time);
+      annotation(experiment(StopTime = 1, Interval = 0.001));
     end TestSat;
 
     model TestStatesSat "Test case using TestMedium with state + sat records"
@@ -60,6 +63,7 @@ package Test "Test models for the different solvers"
       sat2 = Medium.setSat_T(300 + 50*time);
       Ts = Medium.saturationTemperature(1e5 + 1e5*time);
       ps = Medium.saturationPressure(300 + 50*time);
+      annotation(experiment(StopTime = 1, Interval = 0.001));
     end TestStatesSat;
 
     model TestBasePropertiesExplicit
@@ -77,6 +81,7 @@ package Test "Test models for the different solvers"
       medium1.baseProperties.h = 1e5;
       medium2.baseProperties.p = 1e5;
       medium2.baseProperties.h = 1e5 + 2e5*time;
+      annotation(experiment(StopTime = 1, Interval = 0.001));
     end TestBasePropertiesExplicit;
 
     model TestBasePropertiesImplicit
@@ -94,6 +99,7 @@ package Test "Test models for the different solvers"
       medium1.baseProperties.T = 300 + 25*time;
       medium2.baseProperties.p = 1e5 + 1e5*time;
       medium2.baseProperties.T = 300;
+      annotation(experiment(StopTime = 1, Interval = 0.001));
     end TestBasePropertiesImplicit;
 
     model TestBasePropertiesDynamic
@@ -136,8 +142,7 @@ package Test "Test models for the different solvers"
       // Steady state equations
       der(medium.p) = 0;
       der(medium.h) = 0;
-      annotation (experiment(StopTime=80, Tolerance=1e-007),
-          experimentSetupOutput(equdistant=false));
+      annotation (experiment(StopTime=80, Tolerance=1e-007, Interval = 0.001));
     end TestBasePropertiesDynamic;
 
     package GenericModels
@@ -230,16 +235,6 @@ package Test "Test models for the different solvers"
       end CompleteBaseProperties;
     end GenericModels;
 
-    model TestRunner "A model to collect generaic test cases"
-      import ExternalMedia;
-      extends Modelica.Icons.Example;
-      ExternalMedia.Test.GenericModels.CompleteFluidConstants
-        completeFluidConstants(redeclare package Medium =
-            ExternalMedia.Media.TestMedium)
-        annotation (Placement(transformation(extent={{-60,60},{-40,80}})));
-    equation
-
-    end TestRunner;
   end TestMedium;
 
   package FluidProp "Test cases for FluidPropMedium"
