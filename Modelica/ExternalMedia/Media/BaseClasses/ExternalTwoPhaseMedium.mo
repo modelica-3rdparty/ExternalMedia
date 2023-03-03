@@ -4,7 +4,8 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     singleState = false,
     onePhase = false,
     smoothModel = false,
-    fluidConstants = {externalFluidConstants});
+    fluidConstants = {externalFluidConstants},
+    h_default = specificEnthalpy_pT_noErr(p_default, T_default));
   import ExternalMedia.Common.InputChoice;
   // mediumName is declared here instead of in the extends clause
   // to break a circular dependency in redeclaration that OpenModelica
@@ -248,6 +249,19 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     }
     ");
   end setState_pT;
+
+  function setState_pT_noErr
+    "Return thermodynamic state record from p and T - does not use workaround to handle ModelicaError"
+    extends Modelica.Icons.Function;
+    input AbsolutePressure p "pressure";
+    input Temperature T "temperature";
+    input FixedPhase phase = 0
+      "2 for two-phase, 1 for one-phase, 0 if not known";
+    output ThermodynamicState state;
+    external "C" TwoPhaseMedium_setState_pT_C_impl(p, T, state, mediumName, libraryName, substanceName)
+    annotation(Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library",
+    Include="#include \"externalmedialib.h\"");
+  end setState_pT_noErr;
 
   redeclare replaceable function setState_dT
     "Return thermodynamic state record from d and T"
@@ -533,6 +547,21 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     Inline=true,
     inverse(T=temperature_ph(p=p, h=h, phase=phase)));
   end specificEnthalpy_pT;
+
+  replaceable function specificEnthalpy_pT_noErr
+    "Return specific enthalpy from p and T - doesn't use workaround for ModelicaError"
+    extends Modelica.Icons.Function;
+    input AbsolutePressure p "Pressure";
+    input Temperature T "Temperature";
+    input FixedPhase phase = 0
+      "2 for two-phase, 1 for one-phase, 0 if not known";
+    output SpecificEnthalpy h "specific enthalpy";
+  algorithm
+    h := specificEnthalpy_pT_state(p=p, T=T, state=setState_pT_noErr(p=p, T=T, phase=phase));
+  annotation (
+    Inline=true,
+    inverse(T=temperature_ph(p=p, h=h, phase=phase)));
+  end specificEnthalpy_pT_noErr;
 
   function specificEnthalpy_pT_state
     "returns specific enthalpy for given p and T"
