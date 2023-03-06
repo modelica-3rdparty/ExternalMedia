@@ -25,21 +25,21 @@ package FluidPropMedium "Medium package accessing the FluidProp solver"
     annotation(Inline = true);
   end setDewState;
 
-  redeclare function bubbleEntropy "Return bubble point specific entropy"
+  redeclare replaceable function bubbleEntropy "Return bubble point specific entropy"
     input SaturationProperties sat "saturation property record";
     output SI.SpecificEntropy sl "boiling curve specific entropy";
   algorithm
     sl := specificEntropy(setBubbleState(sat));
   end bubbleEntropy;
 
-  redeclare function dewEntropy "Return dew point specific entropy"
+  redeclare replaceable function dewEntropy "Return dew point specific entropy"
     input SaturationProperties sat "saturation property record";
     output SI.SpecificEntropy sv "dew curve specific entropy";
   algorithm
     sv := specificEntropy(setDewState(sat));
   end dewEntropy;
 
-  redeclare function surfaceTension
+  redeclare replaceable function surfaceTension
     extends Modelica.Icons.Function;
     input SaturationProperties sat "saturation property record";
     output SurfaceTension sigma "Surface tension sigma in the two phase region";

@@ -222,7 +222,7 @@ partial package IncompressibleCoolPropMedium
     annotation(Inline = true);
   end density_derp_h;
 
-  redeclare function temperature_phX "returns temperature for given p and h"
+  redeclare replaceable function temperature_phX "returns temperature for given p and h"
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input SpecificEnthalpy h "Enthalpy";
@@ -251,18 +251,18 @@ partial package IncompressibleCoolPropMedium
     inverse(h=specificEnthalpy_pTX_state(p=p, T=T, X=X, state=state)));
   end temperature_phX_state;
 
-    function specificEntropy_phX "returns specific entropy for a given p and h"
+  function specificEntropy_phX "returns specific entropy for a given p and h"
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input SpecificEnthalpy h "Specific Enthalpy";
     input MassFraction X[nX] "Mass fractions";
     input Integer phase=1 "2 for two-phase, 1 for one-phase, 0 if not known";
     output SpecificEntropy s "Specific Entropy";
-    algorithm
+  algorithm
     s := specificEntropy_phX_state(p=p, h=h, X=X, state=setState_phX(p=p, h=h, X=X, phase=phase));
     annotation (
     Inline=true);
-    end specificEntropy_phX;
+  end specificEntropy_phX;
 
   function specificEntropy_phX_state
     "returns specific entropy for a given p and h"
