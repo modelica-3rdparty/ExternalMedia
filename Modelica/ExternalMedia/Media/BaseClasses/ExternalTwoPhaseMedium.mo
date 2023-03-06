@@ -219,6 +219,8 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     external "C" TwoPhaseMedium_setState_ph_C_impl_wrap(p, h, phase, state, mediumName, libraryName, substanceName)
     annotation(Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library",
     Include="
+    #ifndef SETSTATE_PH_DEFINED
+    #define SETSTATE_PH_DEFINED
     #include \"externalmedialib.h\"
     #include \"ModelicaUtilities.h\"
     
@@ -226,6 +228,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     {
       TwoPhaseMedium_setState_ph_C_impl_err(p, h, phase, state, mediumName, libraryName, substanceName, ModelicaError,ModelicaWarning);
     }
+    #endif // SETSTATE_PH_DEFINED
     ");
   end setState_ph;
 
@@ -240,6 +243,8 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     external "C" TwoPhaseMedium_setState_pT_C_impl_wrap(p, T, state, mediumName, libraryName, substanceName)
     annotation(Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library",
     Include="
+    #ifndef SETSTATE_PT_DEFINED
+    #define SETSTATE_PT_DEFINED
     #include \"externalmedialib.h\"
     #include \"ModelicaUtilities.h\"
     
@@ -247,6 +252,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     {
       TwoPhaseMedium_setState_pT_C_impl_err(p, T, state, mediumName, libraryName, substanceName, ModelicaError, ModelicaWarning);
     }
+    #endif // SETSTATE_PT_DEFINED
     ");
   end setState_pT;
 
@@ -274,6 +280,8 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     external "C" TwoPhaseMedium_setState_dT_C_impl_wrap(d, T, phase, state, mediumName, libraryName, substanceName)
     annotation(Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library",
     Include="
+    #ifndef SETSTATE_DT_DEFINED
+    #define SETSTATE_DT_DEFINED
     #include \"externalmedialib.h\"
     #include \"ModelicaUtilities.h\"
     
@@ -281,6 +289,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     {
       TwoPhaseMedium_setState_dT_C_impl_err(d, T, phase, state, mediumName, libraryName, substanceName, &ModelicaError, &ModelicaWarning);
     }
+    #endif // SETSTATE_DT_DEFINED
     ");
   end setState_dT;
 
@@ -295,6 +304,8 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     external "C" TwoPhaseMedium_setState_ps_C_impl_wrap(p, s, phase, state, mediumName, libraryName, substanceName)
     annotation(Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library",
     Include="
+    #ifndef SETSTATE_PS_DEFINED
+    #define SETSTATE_PS_DEFINED
     #include \"externalmedialib.h\"
     #include \"ModelicaUtilities.h\"
     
@@ -302,6 +313,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     {
       TwoPhaseMedium_setState_ps_C_impl_err(p, s, phase, state, mediumName, libraryName, substanceName, &ModelicaError, &ModelicaWarning);
     }
+    #endif // SETSTATE_PS_DEFINED
     ");
   end setState_ps;
 
@@ -316,6 +328,8 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     external "C" TwoPhaseMedium_setState_hs_C_impl_wrap(h, s, phase, state, mediumName, libraryName, substanceName)
     annotation(Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library",
     Include="
+    #ifndef SETSTATE_HS_DEFINED
+    #define SETSTATE_HS_DEFINED
     #include \"externalmedialib.h\"
     #include \"ModelicaUtilities.h\"
     
@@ -323,6 +337,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     {
       TwoPhaseMedium_setState_hs_C_impl_err(h, s, phase, state, mediumName, libraryName, substanceName, &ModelicaError, &ModelicaWarning);
     }
+    #endif // SETSTATE_HT_DEFINED
     ");
   end setState_hs;
 
