@@ -11,6 +11,8 @@ package UserGuide "User's Guide"
 <li><a href=\"http://www.fluidprop.com\">FluidProp</a>, formerly developed at TU Delft and currently devloped and maintained by Asimptote</li>
 <li><a href=\"http://coolprop.org\">CoolProp</a>, developed at the University of Liege and at the Technical University of Denmark (DTU)</li>
 </ul>
+<p>The library has been tested successfully with Dymola 2022 and OpenModelica 1.20.0, both under Windows and Linux.</p>
+<p>Please report any issue on the library <a href=\"https://github.com/modelica-3rdparty/ExternalMedia/issues\">GitHub issue tracker</a>.</p>
 </html>"));
   end Overview;
 
