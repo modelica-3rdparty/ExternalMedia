@@ -12,10 +12,10 @@ The current downloads can be found [here](https://github.com/modelica-3rdparty/E
 ## Library overview
 
 The ExternalMedia library provides a framework for interfacing external codes
-computing fluid properties to Modelica.Media-compatible component models. It is
-compatible with Modelica Standard Library (MSL) 3.2.3, which is the latest,
-backwards-compatible version of the 3.2.x series. A version compatible with
-MSL 4.0.0 is planned for the near future.
+computing fluid properties to Modelica.Media-compatible component models. The
+latest releases are compatible with Modelica Standard Library (MSL) 4.0.0
+and later; version 3.2.3 is provided for legacy models that still use MSL
+3.2.3.
 
 The current version of the library supports pure and pseudo-pure fluids models,
 possibly two-phase, compliant with the
@@ -23,18 +23,18 @@ Modelica.Media.Interfaces.PartialTwoPhaseMedium interface. Please have a look at
 the [dedicated introduction section](README_introduction.md) for an in-depth
 description of the architecture.
 
-The current release of the library (3.3.2) includes a pre-compiled interface to
-the [FluidProp](http://www.asimptote.nl/software/fluidprop) software and
-built-in access to [CoolProp](http://www.coolprop.org).
-If you use the FluidProp software, you need to have the proper licenses to
+The latest releases of the library includes a pre-compiled interface to
+the [FluidProp](http://www.asimptote.nl/software/fluidprop) commercial
+software and built-in access to the open-source [CoolProp](http://www.coolprop.org)
+software. If you use the FluidProp software, you need to have the proper licenses to
 access the media of your interest and to compute the property derivatives.
 The library works with FluidProp version 3.0 and later. It might work with
 previous versions of that software, but compatibility is no longer guaranteed.
 Please refer to the [chapter on FluidProp](README_fluidprop.md) and the
 dedicated [chapter on CoolProp](README_coolprop.md) for details.
 
-The released files are tested with Dymola and OpenModelica on Windows
-as well as with Dymola on Linux. Support for more tools and operating systems
+The latest releases were tested with Dymola and OpenModelica on Windows
+and Linux. Support for more tools and operating systems
 might be added in the future, please let us know if you want to contribute.
 
 You can modify the library to add an interface to your own solver. If your
@@ -43,10 +43,15 @@ official ExternalMedia library.
 
 ## Installation instructions for the ExternalMedia library
 
-The provided version of ExternalMedia is compatible with Modelica
-Standard Library 3.2.3, we recommend you to use that instead of previous
-3.2.x versions, because it contains many bug fixes and is fully backwards
-compatible with them.
+For OpenModelica, you can install and manage ExternalMedia using the
+built-in [Package Manager](https://openmodelica.org/doc/OpenModelicaUsersGuide/latest/omedit.html#omedit-install-library-label).
+For use with Dymola, you can download the zip file with the library and
+unzip it in your file system. The released library already contains all
+the pre-compiled binaries for all operating systems, so it should work
+out of the box.
+
+Install version 3.2.2 of External Media if your models still uses
+Modelica Standard Library 3.2.3, otherwise install version 4.x.x.
 
 If you want to experiment with the code and recompile the libraries, check
 the [compilation instructions](README_compilation.md).
@@ -62,10 +67,13 @@ Please open the `package.mo` file inside the `ExternalMedia` folder to
 load the library. If your Modelica tool is able to find a matching precompiled
 binary for your configuration, you should now be able to run the examples.
 
-### Missing library problems and compilation instructions
+### Compiling ExternalMedia from sources
 
-If your Modelica tool cannot find the provided binaries or if you use an
-unsupported compiler, you can build the ExternalMedia files yourself. All
+ExternalMedia extensively relies of external functions using code from
+pre-compiled dynamic libraries. The released versions include binaries
+for Windows and Linux, supporting CoolProp and FluidProp. If you want
+to experiment with other external codes or operating systems, you
+can build the ExternalMedia binary libraries yourself. All
 you need to compile ExternalMedia, besides your C/C++ compiler, is the 
 [CMake software](https://cmake.org/) by Kitware. If you would like to include
 the CoolProp library, you also need a working Python installation.
@@ -83,13 +91,16 @@ risk; it can be redistributed and/or modified under the terms of the
 ## Development and contribution
 
 ExternalMedia has been around since 2006 and many different people have
-controbuted to it. The [history page](README_history.md) provides a lot
+contributed to it. The [history page](README_history.md) provides a lot
 of useful insights and explains how the software became what it is today.
 
 Current main developers: 
- - [Francesco Casella](mailto:francesco.casella@polimi.it)
- - [Jorrit Wronski](mailto:jowr@ipu.dk) and Ian Bell for the integration of
-   CoolProp in the library and CMake-based compilation
+ - [Francesco Casella](mailto:francesco.casella@polimi.it) started the
+   development in 2006 and coordinates the current development effort.
+ - [Jorrit Wronski](mailto:jowr@ipu.dk) and Ian Bell took care of the
+   integration of CoolProp in the library and of CMake-based compilation.
+ - [Federico Terraneo](mailto:federico.terraneo@polimi.it) helped getting
+   the library to work with different Modelica tools and operating systems.
 
-Please report problems using
-[GitHub issues](https://github.com/modelica-3rdparty/ExternalMedia/issues).
+Please report problems using the library
+[GitHub issue tracker](https://github.com/modelica-3rdparty/ExternalMedia/issues).
