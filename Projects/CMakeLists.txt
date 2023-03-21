@@ -50,20 +50,24 @@ option(FLUIDPROP "Include the FluidProp library for fluid properties" OFF)
 if(COOLPROP)
   # Get the CoolProp code
   if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
-    file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/6.4.1/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
-    #file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/nightly/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
-    file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/coolprop-tmp")
+    if(NOT EXISTS "${CMAKE_BINARY_DIR}/coolprop.zip")
+      #file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/6.4.1/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
+      file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/nightly/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
+    endif()
+    #file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/coolprop-tmp")
+    file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/source")
     # Use CMake to unzip
-    file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/coolprop-tmp")
-    execute_process(
-      COMMAND ${CMAKE_COMMAND} -E tar xjf "${CMAKE_BINARY_DIR}/coolprop.zip"
-      WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/coolprop-tmp"
-    )
-    #file(ARCHIVE_EXTRACT INPUT ${CMAKE_BINARY_DIR}/coolprop.zip)
+    #file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/coolprop-tmp")
+    #execute_process(
+    #  COMMAND ${CMAKE_COMMAND} -E tar xjf "${CMAKE_BINARY_DIR}/coolprop.zip"
+    #  WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/coolprop-tmp"
+    #)
+    file(ARCHIVE_EXTRACT INPUT ${CMAKE_BINARY_DIR}/coolprop.zip)
     #execute_process(COMMAND unzip ${CMAKE_BINARY_DIR}/coolprop.zip -d "${CMAKE_BINARY_DIR}/coolprop-tmp")
     #execute_process(COMMAND sed -i '421s;^;\#;' "${CMAKE_BINARY_DIR}/coolprop-tmp/CoolProp.sources/CMakeLists.txt")
-    file(RENAME "${CMAKE_BINARY_DIR}/coolprop-tmp/CoolProp.sources" "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
-    file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/coolprop-tmp")
+    #file(RENAME "${CMAKE_BINARY_DIR}/coolprop-tmp/CoolProp.sources" "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
+    file(RENAME "${CMAKE_BINARY_DIR}/source" "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
+    #file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/coolprop-tmp")
     file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
   endif()
   # Configure CMake switches for CoolProp
