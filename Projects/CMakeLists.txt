@@ -10,6 +10,12 @@ CMAKE_POLICY(SET CMP0053 NEW)
 # Project name
 project ("ExternalMedia")
 
+if(APPLE)
+  # Latest version of coolprop only compiles with a modern C++ standard,
+  # and MacOS does not do that by default
+  set(CMAKE_CXX_STANDARD 14)
+endif()
+
 # Project version
 set (VERSION_MAJOR 3)
 set (VERSION_MINOR 3)
