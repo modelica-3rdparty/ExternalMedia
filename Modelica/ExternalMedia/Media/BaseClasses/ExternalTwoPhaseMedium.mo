@@ -224,7 +224,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     #include \"externalmedialib.h\"
     #include \"ModelicaUtilities.h\"
     
-    void TwoPhaseMedium_setState_ph_C_impl_wrap(double p, double h, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName)
+    void TwoPhaseMedium_setState_ph_C_impl_wrap(double p, double h, int phase, void *state, const char *mediumName, const char *libraryName, const char *substanceName)
     {
       TwoPhaseMedium_setState_ph_C_impl_err(p, h, phase, state, mediumName, libraryName, substanceName, ModelicaError,ModelicaWarning);
     }
@@ -248,7 +248,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     #include \"externalmedialib.h\"
     #include \"ModelicaUtilities.h\"
     
-    void TwoPhaseMedium_setState_pT_C_impl_wrap(double p, double T, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName)
+    void TwoPhaseMedium_setState_pT_C_impl_wrap(double p, double T, void *state, const char *mediumName, const char *libraryName, const char *substanceName)
     {
       TwoPhaseMedium_setState_pT_C_impl_err(p, T, state, mediumName, libraryName, substanceName, ModelicaError, ModelicaWarning);
     }
@@ -285,7 +285,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     #include \"externalmedialib.h\"
     #include \"ModelicaUtilities.h\"
     
-    void TwoPhaseMedium_setState_dT_C_impl_wrap(double d, double T, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName)
+    void TwoPhaseMedium_setState_dT_C_impl_wrap(double d, double T, int phase, void *state, const char *mediumName, const char *libraryName, const char *substanceName)
     {
       TwoPhaseMedium_setState_dT_C_impl_err(d, T, phase, state, mediumName, libraryName, substanceName, &ModelicaError, &ModelicaWarning);
     }
@@ -309,7 +309,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     #include \"externalmedialib.h\"
     #include \"ModelicaUtilities.h\"
     
-    void TwoPhaseMedium_setState_ps_C_impl_wrap(double p, double s, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName)
+    void TwoPhaseMedium_setState_ps_C_impl_wrap(double p, double s, int phase, void *state, const char *mediumName, const char *libraryName, const char *substanceName)
     {
       TwoPhaseMedium_setState_ps_C_impl_err(p, s, phase, state, mediumName, libraryName, substanceName, &ModelicaError, &ModelicaWarning);
     }
@@ -333,7 +333,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     #include \"externalmedialib.h\"
     #include \"ModelicaUtilities.h\"
     
-    void TwoPhaseMedium_setState_hs_C_impl_wrap(double h, double s, int phase, ExternalThermodynamicState *state, const char *mediumName, const char *libraryName, const char *substanceName)
+    void TwoPhaseMedium_setState_hs_C_impl_wrap(double h, double s, int phase, void *state, const char *mediumName, const char *libraryName, const char *substanceName)
     {
       TwoPhaseMedium_setState_hs_C_impl_err(h, s, phase, state, mediumName, libraryName, substanceName, &ModelicaError, &ModelicaWarning);
     }
