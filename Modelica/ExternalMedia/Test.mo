@@ -1023,7 +1023,7 @@ package Test "Test models for the different solvers"
           extends ExternalMedia.Media.IncompressibleCoolPropMedium(
           mediumName="DowQ",
           substanceNames={"DowQ|calc_transport=1|debug=1000"},
-          ThermoStates=Modelica.Media.Interfaces.PartialMedium.Choices.IndependentVariables.pT);
+          ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pT);
         end DowQ_CP;
 
         replaceable package Fluid =  DowQ_CP constrainedby
@@ -1050,7 +1050,7 @@ package Test "Test models for the different solvers"
           extends ExternalMedia.Media.IncompressibleCoolPropMedium(
           mediumName="LiBr",
           substanceNames={"LiBr|calc_transport=1|debug=1000","dummyToMakeBasePropertiesWork"},
-          ThermoStates=Modelica.Media.Interfaces.PartialMedium.Choices.IndependentVariables.pTX);
+          ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX);
         end LiBr_CP;
 
         replaceable package Fluid = LiBr_CP constrainedby
@@ -1367,7 +1367,7 @@ package Test "Test models for the different solvers"
             sat, 2), redeclare package Medium = Medium);
     end CompleteBubbleDewStates;
 
-    partial model CompleteBaseProperties
+    model CompleteBaseProperties
       "Compute all available two-phase medium properties from a BaseProperties model"
       replaceable package Medium =
           ExternalMedia.Test.GenericModels.DummyTwoPhaseMedium
