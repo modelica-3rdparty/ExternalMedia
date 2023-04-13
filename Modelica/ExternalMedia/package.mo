@@ -3,7 +3,6 @@ package ExternalMedia
   extends Modelica.Icons.Package;
   import SI = Modelica.SIunits;
 
-
   annotation(uses(Modelica(version="3.2.3")),
              version="3.3.2",
              conversion(noneFromVersion="3.3.1",
