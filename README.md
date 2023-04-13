@@ -3,7 +3,7 @@
 The ExternalMedia library provides a framework for interfacing external codes
 computing fluid properties to Modelica.Media-compatible component models.
 
-The current downloads can be found [here](https://github.com/modelica-3rdparty/ExternalMedia/releases/latest):
+The latest releases of the library can be downloaded [here](https://github.com/modelica-3rdparty/ExternalMedia/releases/):
 
  - The precompiled Modelica library can be found in the zip-file
  - The manual can be downloaded as PDF
@@ -13,8 +13,8 @@ The current downloads can be found [here](https://github.com/modelica-3rdparty/E
 
 The ExternalMedia library provides a framework for interfacing external codes
 computing fluid properties to Modelica.Media-compatible component models. The
-latest releases are compatible with Modelica Standard Library (MSL) 4.0.0
-and later; version 3.2.3 is provided for legacy models that still use MSL
+latest 4.0.x releases are compatible with Modelica Standard Library (MSL) 4.0.0
+and later, while 3.3.x versions are provided for legacy models that still use MSL
 3.2.3.
 
 The current version of the library supports pure and pseudo-pure fluids models,
@@ -23,15 +23,17 @@ Modelica.Media.Interfaces.PartialTwoPhaseMedium interface. Please have a look at
 the [dedicated introduction section](README_introduction.md) for an in-depth
 description of the architecture.
 
-The latest releases of the library includes a pre-compiled interface to
-the [FluidProp](http://www.asimptote.nl/software/fluidprop) commercial
-software and built-in access to the open-source [CoolProp](http://www.coolprop.org)
-software. If you use the FluidProp software, you need to have the proper licenses to
-access the media of your interest and to compute the property derivatives.
+The latest releases of the library include built-in access to the open-source
+[CoolProp](http://www.coolprop.org) software and a pre-compiled interface to
+the [FluidProp](https://asimptote.com/fluidprop/) commercial
+software. CoolProp medium models work out of the box without the need of any
+further installation. FluidProp medium models require to install the FluidProp
+software with proper licensing to access the media of your interest and to
+compute the property derivatives, which are required by ExternalMedia.
 The library works with FluidProp version 3.0 and later. It might work with
 previous versions of that software, but compatibility is no longer guaranteed.
 Please refer to the [chapter on FluidProp](README_fluidprop.md) and the
-dedicated [chapter on CoolProp](README_coolprop.md) for details.
+dedicated [chapter on CoolProp](README_coolprop.md) for further details.
 
 The latest releases were tested with Dymola and OpenModelica on Windows
 and Linux. Support for more tools and operating systems
@@ -50,8 +52,8 @@ unzip it in your file system. The released library already contains all
 the pre-compiled binaries for all operating systems, so it should work
 out of the box.
 
-Install version 3.2.2 of External Media if your models still uses
-Modelica Standard Library 3.2.3, otherwise install version 4.x.x.
+Install version 3.3.x of External Media if your models still uses
+Modelica Standard Library 3.2.3, otherwise install version 4.0.x.
 
 If you want to experiment with the code and recompile the libraries, check
 the [compilation instructions](README_compilation.md).
