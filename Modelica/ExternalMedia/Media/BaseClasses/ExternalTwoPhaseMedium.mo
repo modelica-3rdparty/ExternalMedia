@@ -15,7 +15,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     "Name of the external fluid property computation library";
   constant String substanceName = substanceNames[1]
     "Only one substance can be specified";
-  constant FluidConstants externalFluidConstants = FluidConstants(
+  constant FluidConstants externalFluidConstants(
     iupacName = "unknown",
     casRegistryNumber = "unknown",
     chemicalFormula = "unknown",
