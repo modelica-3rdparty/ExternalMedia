@@ -1089,12 +1089,12 @@ package Test "Test models for the different solvers"
             inputChoice=ExternalMedia.Common.InputChoice.hs);
         end wf;
         wf.BaseProperties fluid "Properties of the two-phase fluid";
-        Modelica.SIunits.SpecificEnthalpy h;
-        Modelica.SIunits.Pressure p;
-        Modelica.SIunits.SpecificEntropy s;
-        Modelica.SIunits.DerDensityByEnthalpy drdh
+        SI.SpecificEnthalpy h;
+        SI.Pressure p;
+        SI.SpecificEntropy s;
+        SI.DerDensityByEnthalpy drdh
           "Derivative of average density by enthalpy";
-        Modelica.SIunits.DerDensityByPressure drdp
+        SI.DerDensityByPressure drdp
           "Derivative of average density by pressure";
       equation
         //p = 1E5;
@@ -1117,12 +1117,12 @@ package Test "Test models for the different solvers"
             inputChoice=ExternalMedia.Common.InputChoice.hs);
         end wf;
         wf.ThermodynamicState fluid "Properties of the two-phase fluid";
-        Modelica.SIunits.SpecificEnthalpy h;
-        Modelica.SIunits.Pressure p;
-        Modelica.SIunits.SpecificEntropy s;
-        Modelica.SIunits.DerDensityByEnthalpy drdh
+        SI.SpecificEnthalpy h;
+        SI.Pressure p;
+        SI.SpecificEntropy s;
+        SI.DerDensityByEnthalpy drdh
           "Derivative of average density by enthalpy";
-        Modelica.SIunits.DerDensityByPressure drdp
+        SI.DerDensityByPressure drdp
           "Derivative of average density by pressure";
       equation
         //p = 1E5;
@@ -1206,16 +1206,16 @@ package Test "Test models for the different solvers"
         fluid_spl.ThermodynamicState state_spl "Properties of the two-phase fluid";
         fluid_tbl.ThermodynamicState state_tbl "Properties of the two-phase fluid";
 
-        Modelica.SIunits.AbsolutePressure p;
-        Modelica.SIunits.SpecificEnthalpy h;
+        SI.AbsolutePressure p;
+        SI.SpecificEnthalpy h;
 
         fluid_std.SaturationProperties sat_std;
 
-        Modelica.SIunits.SpecificEnthalpy h_start;
-        Modelica.SIunits.SpecificEnthalpy h_end;
-        Modelica.SIunits.SpecificEnthalpy h_delta;
+        SI.SpecificEnthalpy h_start;
+        SI.SpecificEnthalpy h_end;
+        SI.SpecificEnthalpy h_delta;
 
-        Modelica.SIunits.Time t = 1;
+        SI.Time t = 1;
 
         Real x_std, x_spl, x_tbl;
 
@@ -1539,11 +1539,11 @@ package Test "Test models for the different solvers"
             ModelicaMedium) "Modelica medium model";
       CompleteBaseProperties testMedium(redeclare package Medium = TestMedium)
         "TestMedium medium model";
-      parameter Modelica.SIunits.Pressure pmin;
-      parameter Modelica.SIunits.Pressure pmax;
-      parameter Modelica.SIunits.SpecificEnthalpy hmin;
-      parameter Modelica.SIunits.SpecificEnthalpy hmax;
-      constant Modelica.SIunits.Time T = 1;
+      parameter SI.Pressure pmin;
+      parameter SI.Pressure pmax;
+      parameter SI.SpecificEnthalpy hmin;
+      parameter SI.SpecificEnthalpy hmax;
+      constant SI.Time T = 1;
     equation
       modelicaMedium.baseProperties.p = pmin + (pmax - pmin)*time/T;
       modelicaMedium.baseProperties.h = hmin + (hmax - hmin)*time/T;
