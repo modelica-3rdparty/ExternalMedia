@@ -47,6 +47,9 @@ official ExternalMedia library.
 
 For OpenModelica, you can install and manage ExternalMedia using the
 built-in [Package Manager](https://openmodelica.org/doc/OpenModelicaUsersGuide/latest/omedit.html#omedit-install-library-label).
+This feature is coming soon, for the time being you can download the zip file
+with the library and unzip it in your file system.
+
 For use with Dymola, you can download the zip file with the library and
 unzip it in your file system. The released library already contains all
 the pre-compiled binaries for all operating systems, so it should work
