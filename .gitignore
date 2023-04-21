@@ -1,6 +1,7 @@
 # Ignore filetypes (alphabetical)
 ###############################################
 *.mat
+*.pdf
 *~
 
 
