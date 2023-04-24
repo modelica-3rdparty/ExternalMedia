@@ -99,7 +99,7 @@ typedef struct ExternalThermodynamicState {
     double kappa;
 	/* ! Thermal conductivity */
     double lambda;
-	//! Pressure
+	/* ! Pressure */
     double p;
 	/* ! Phase flag: 2 for two-phase, 1 for one-phase */
     int phase;
