@@ -75,38 +75,38 @@ Portable definitions of the EXPORT macro
 
 typedef struct ExternalThermodynamicState {
 
-	/* ! Temperature */
+	/*! Temperature */
     double T;
-	/* ! Velocity of sound */
+	/*! Velocity of sound */
     double a;
-	/* ! Isobaric expansion coefficient */
+	/*! Isobaric expansion coefficient */
     double beta;
-	/* ! Specific heat capacity cp */
+	/*! Specific heat capacity cp */
     double cp;
-	/* ! Specific heat capacity cv */
+	/*! Specific heat capacity cv */
     double cv;
-	/* ! Density */
+	/*! Density */
     double d;
-	/* ! Derivative of density wrt enthalpy at constant pressure */
+	/*! Derivative of density wrt enthalpy at constant pressure */
     double ddhp;
-	/* ! Derivative of density wrt pressure at constant enthalpy */
+	/*! Derivative of density wrt pressure at constant enthalpy */
     double ddph;
-	/* ! Dynamic viscosity */
+	/*! Dynamic viscosity */
     double eta;
-	/* ! Specific enthalpy */
+	/*! Specific enthalpy */
     double h;
-	/* ! Compressibility */
+	/*! Compressibility */
     double kappa;
-	/* ! Thermal conductivity */
+	/*! Thermal conductivity */
     double lambda;
-	/* ! Pressure */
+	/*! Pressure */
     double p;
-	/* ! Phase flag: 2 for two-phase, 1 for one-phase */
+	/*! Phase flag: 2 for two-phase, 1 for one-phase */
     int phase;
-	/* ! Specific entropy */
+	/*! Specific entropy */
     double s;
 
-	/* ! Constructor. */
+	/*! Constructor. */
 	/*!
 	  The constructor only initializes the variables.
 	*/
@@ -116,7 +116,7 @@ typedef struct ExternalThermodynamicState {
 
 } ExternalThermodynamicState;
 
-/* ! ExternalSaturationProperties property struct */
+/*! ExternalSaturationProperties property struct */
 /*!
   The ExternalSaturationProperties propery struct defines all the saturation properties
   for the dew and the bubble line that are computed by external Modelica medium models
@@ -127,36 +127,36 @@ typedef struct ExternalThermodynamicState {
 */
 
 typedef struct ExternalSaturationProperties {
-	/* ! Saturation temperature */
+	/*! Saturation temperature */
     double Tsat;
-	/* ! Derivative of Ts wrt pressure */
+	/*! Derivative of Ts wrt pressure */
     double dTp;
-	/* ! Derivative of dls wrt pressure */
+	/*! Derivative of dls wrt pressure */
     double ddldp;
-	/* ! Derivative of dvs wrt pressure */
+	/*! Derivative of dvs wrt pressure */
     double ddvdp;
-	/* ! Derivative of hls wrt pressure */
+	/*! Derivative of hls wrt pressure */
     double dhldp;
-	/* ! Derivative of hvs wrt pressure */
+	/*! Derivative of hvs wrt pressure */
     double dhvdp;
-	/* ! Density at bubble line (for pressure ps) */
+	/*! Density at bubble line (for pressure ps) */
     double dl;
-	/* ! Density at dew line (for pressure ps) */
+	/*! Density at dew line (for pressure ps) */
     double dv;
-	/* ! Specific enthalpy at bubble line (for pressure ps) */
+	/*! Specific enthalpy at bubble line (for pressure ps) */
     double hl;
-	/* ! Specific enthalpy at dew line (for pressure ps) */
+	/*! Specific enthalpy at dew line (for pressure ps) */
     double hv;
-	/* ! Saturation pressure */
+	/*! Saturation pressure */
     double psat;
-	/* ! Surface tension */
+	/*! Surface tension */
     double sigma;
-	/* ! Specific entropy at bubble line (for pressure ps) */
+	/*! Specific entropy at bubble line (for pressure ps) */
     double sl;
-	/* ! Specific entropy at dew line (for pressure ps) */
+	/*! Specific entropy at dew line (for pressure ps) */
     double sv;
 
-	/* ! Constructor. */
+	/*! Constructor. */
 	/*!
 	  The constructor only initializes the variables.
 	*/
