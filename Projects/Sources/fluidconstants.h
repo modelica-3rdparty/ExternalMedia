@@ -3,7 +3,7 @@
 
 #include "include.h"
 
-//! Fluid constants struct
+/*! Fluid constants struct */
 /*!
   The fluid constants struct contains all the constant fluid properties
   that are returned by the external solver.
@@ -15,27 +15,27 @@
 */
 
 struct FluidConstants{
-	//! Molar mass
+	/*! Molar mass */
 	double MM;
-	//! Pressure at critical point
+	/*! Pressure at critical point */
 	double pc;
-	//! Temperature at critical point
+	/*! Temperature at critical point */
 	double Tc;
-	//! Density at critical point
+	/*! Density at critical point */
 	double dc;
-	// The following two functions are currently only available internally
-	// but do not have the required interface functions to be accessible from
-	// Modelica.
-	//! Specific enthalpy at critical point
+	/* The following two functions are currently only available internally
+	but do not have the required interface functions to be accessible from
+	Modelica. */
+	/*! Specific enthalpy at critical point */
 	double hc;
-	//! Specific entropy at critical point
+	/*! Specific entropy at critical point */
 	double sc;
 
-	//! Constructor.
+	/*! Constructor. */
 	/*!
 	  The constructor only initializes the variables.
 	*/
 	FluidConstants() : MM(-1), pc(-1), Tc(-1), dc(-1), hc(-1), sc(-1) {};
 };
 
-#endif // FLUIDCONSTANTS_H_
+#endif /* FLUIDCONSTANTS_H_ */

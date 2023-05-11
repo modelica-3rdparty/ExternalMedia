@@ -17,9 +17,9 @@
 template<typename T>
 T importSymbol(const char *funcName)
 {
-    //TODO: we should do caching
+    /* TODO: we should do caching */
     
-    // First check if the executable itself exports the symbol we want
+    /* First check if the executable itself exports the symbol we want */
     HMODULE exe = GetModuleHandleA(NULL);
     if(exe == NULL)
     {
@@ -29,7 +29,7 @@ T importSymbol(const char *funcName)
     T pfn = reinterpret_cast<T>(GetProcAddress(exe, funcName));
     if(pfn) return pfn;
     
-    // If we don't find it in the executable, then we search it in all loaded DLLs
+    /* If we don't find it in the executable, then we search it in all loaded DLLs */
     HANDLE process = GetCurrentProcess();
     if(process == NULL)
     {
@@ -47,7 +47,7 @@ T importSymbol(const char *funcName)
         exit(1);
     }
 
-    int num_modules = cbNeeded / sizeof(HMODULE); // Actual number of loaded modules
+    int num_modules = cbNeeded / sizeof(HMODULE); /* Actual number of loaded modules */
     for(int i = 0; i < num_modules; i++)
     {
         T pfn = reinterpret_cast<T>(GetProcAddress(loaded_modules[i], funcName));
@@ -60,11 +60,11 @@ T importSymbol(const char *funcName)
 
 #define IMPORT(x,y) auto y = importSymbol<x>(#y)
 
-#else //_WIN32
+#else /* _WIN32 */
 
 #include "ModelicaUtilities.h"
 
-// Nothing to do on Linux, its linker just works
+/*  Nothing to do on Linux, its linker just works */
 #define IMPORT(x,y)
 
-#endif //_WIN32
+#endif /* _WIN32 */

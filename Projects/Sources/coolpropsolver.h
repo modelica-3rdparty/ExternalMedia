@@ -8,7 +8,7 @@
 #include "AbstractState.h"
 #include "crossplatform_shared_ptr.h"
 
-//! CoolProp solver class
+/*! CoolProp solver class */
 /*!
   This class defines a solver that calls out to the open-source CoolProp
   property database and is partly inspired by the fluidpropsolver that
@@ -30,15 +30,15 @@
 class CoolPropSolver : public BaseSolver{
 
 protected:
-	//class CoolProp::AbstractState *state;
+	/* class CoolProp::AbstractState *state; */
 	shared_ptr<CoolProp::AbstractState> state;
 	bool enable_TTSE, enable_BICUBIC, calc_transport, extend_twophase, isCompressible;
 	int debug_level;
 	double twophase_derivsmoothing_xend;
 	double rho_smoothing_xend;
-	double _p_eps   ; // relative tolerance margin for subcritical pressure conditions
-	double _delta_h ; // delta_h for one-phase/two-phase discrimination
-	ExternalSaturationProperties _satPropsClose2Crit; // saturation properties close to  critical conditions
+	double _p_eps   ; /* relative tolerance margin for subcritical pressure conditions */
+	double _delta_h ; /* delta_h for one-phase/two-phase discrimination */
+	ExternalSaturationProperties _satPropsClose2Crit; /* saturation properties close to  critical conditions */
 
 	virtual void postStateChange(ExternalThermodynamicState *const properties);
 	long makeDerivString(const string &of, const string &wrt, const string &cst);
@@ -103,4 +103,4 @@ public:
 
 #endif
 
-#endif // COOLPROPSOLVER_H_
+#endif /* COOLPROPSOLVER_H_ */

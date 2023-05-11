@@ -10,7 +10,7 @@
 
 struct FluidConstants;
 
-//! Base solver class.
+/*! Base solver class. */
 /*!
   This is the base class for all external solver objects
   (e.g. TestSolver, FluidPropSolver). A solver object
@@ -90,16 +90,16 @@ public:
 	virtual double psat(ExternalSaturationProperties *const properties);
 	virtual double Tsat(ExternalSaturationProperties *const properties);
 
-	//! Medium name
+	/*! Medium name */
 	string mediumName;
-	//! Library name
+	/*! Library name */
 	string libraryName;
-	//! Substance name
+    /*! Substance name */
 	string substanceName;
 
 protected:
-	//! Fluid constants
+	/*! Fluid constants */
 	FluidConstants _fluidConstants;
 };
 
-#endif // BASESOLVER_H_
+#endif /* BASESOLVER_H_ */

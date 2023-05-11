@@ -5,7 +5,7 @@
 
 class BaseSolver;
 
-//! Solver map
+/*! Solver map */
 /*!
   This class manages the map of all solvers. A solver is a class that inherits
   from BaseSolver and that interfaces the external fluid property computation
@@ -21,8 +21,8 @@ public:
 	static string solverKey(const string &libraryName, const string &substanceName);
 
 protected:
-	//! Map for all solver instances identified by the SolverKey
+   /*! Map for all solver instances identified by the SolverKey */
 	static map<string, BaseSolver*> _solvers;
 };
 
-#endif // SOLVERMAP_H_
+#endif /* SOLVERMAP_H_ */
