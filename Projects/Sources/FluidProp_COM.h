@@ -1,19 +1,19 @@
-//============================================================================//
-//                                                                            //
-//                        FluidProp C++ COM interface                         //
-//                        ---------------------------                         //
-//                                                                            //
-//  The interface defined in this file, IFluidProp_COM is the direct C++      //
-//  interface to the FluidProp COM server.  It is not recommended to use      //
-//  this interface directly, please use the TFluidProp wrapper class.         //
-//  This file should not be altered.                                          //
-//                                                                            //
-//  July, 2004, for FluidProp 1                                               //
-//  January, 2006, for FluidProp 2                                            //
-//  April, 2007, for FluidProp 2.3                                            //
-//  November, 2012, for FluidProp 2.5                                         //
-//                                                                            //
-//============================================================================//
+/*  ========================================================================== */
+/*                                                                             */
+/*                         FluidProp C++ COM interface                         */
+/*                         ---------------------------                         */
+/*                                                                             */
+/*   The interface defined in this file, IFluidProp_COM is the direct C++      */
+/*   interface to the FluidProp COM server.  It is not recommended to use      */
+/*   this interface directly, please use the TFluidProp wrapper class.         */
+/*   This file should not be altered.                                          */
+/*                                                                             */
+/*   July, 2004, for FluidProp 1                                               */
+/*   January, 2006, for FluidProp 2                                            */
+/*   April, 2007, for FluidProp 2.3                                            */
+/*   November, 2012, for FluidProp 2.5                                         */
+/*                                                                             */
+/*  ========================================================================== */
 
 #ifndef FluidProp_COM_h
 #define FluidProp_COM_h
@@ -22,7 +22,7 @@
 #include <comutil.h>
 
 
-// The IFluidProp interface
+/* The IFluidProp interface */
 interface IFluidProp_COM : public IDispatch
 {
   public:
@@ -166,17 +166,17 @@ interface IFluidProp_COM : public IDispatch
                                             BSTR Units, BSTR* ErrorMsg) = 0;
      virtual void __stdcall SetRefState   ( double T_ref, double P_ref, BSTR* ErrorMsg) = 0;
 
-     virtual void __stdcall freeStanMix_Psat_k1   ( ) = 0;    // C++ interface not yet implemented
-     virtual void __stdcall zFlow_vu          ( ) = 0;    // C++ interface not yet implemented
+     virtual void __stdcall freeStanMix_Psat_k1   ( ) = 0;    /* C++ interface not yet implemented */
+     virtual void __stdcall zFlow_vu          ( ) = 0;    /* C++ interface not yet implemented */
      virtual void __stdcall GetVersion        ( BSTR ModelName, SAFEARRAY** sa_version) = 0;
 
-     virtual void __stdcall AllTransProps     ( ) = 0;    // C++ interface not yet implemented
-     virtual void __stdcall SaturationLine    ( ) = 0;    // C++ interface not yet implemented
-     virtual void __stdcall IsoLine           ( ) = 0;    // C++ interface not yet implemented
-     virtual void __stdcall freeStanMix_xy_A_alfa ( ) = 0;    // C++ interface not yet implemented
-     virtual void __stdcall PCP_SAFT_xy_kij   ( ) = 0;    // C++ interface not yet implemented
-     virtual void __stdcall PCP_SAFT_hsxy_mp  ( ) = 0;    // C++ interface not yet implemented
-     virtual void __stdcall PCP_SAFT_hsxy_mp_M( ) = 0;    // C++ interface not yet implemented
+     virtual void __stdcall AllTransProps     ( ) = 0;    /* C++ interface not yet implemented */
+     virtual void __stdcall SaturationLine    ( ) = 0;    /* C++ interface not yet implemented */
+     virtual void __stdcall IsoLine           ( ) = 0;    /* C++ interface not yet implemented */
+     virtual void __stdcall freeStanMix_xy_A_alfa ( ) = 0;    /* C++ interface not yet implemented */
+     virtual void __stdcall PCP_SAFT_xy_kij   ( ) = 0;    /* C++ interface not yet implemented */
+     virtual void __stdcall PCP_SAFT_hsxy_mp  ( ) = 0;    /* C++ interface not yet implemented */
+     virtual void __stdcall PCP_SAFT_hsxy_mp_M( ) = 0;    /* C++ interface not yet implemented */
 
      virtual void __stdcall FugaCoef          ( BSTR InputSpec, double Input1, double Input2,
                                                 SAFEARRAY** Output, BSTR* ErrorMsg) = 0;
@@ -204,10 +204,10 @@ interface IFluidProp_COM : public IDispatch
      virtual void __stdcall FugaCoef_Deriv    ( BSTR InputSpec, double Input1, double Input2,
                                                 SAFEARRAY** Output, BSTR* ErrorMsg) = 0;
 
-     virtual void __stdcall PCP_SAFT_P_kij    ( ) = 0;    // C++ interface not yet implemented
-     virtual void __stdcall PCP_SAFT_T_kij    ( ) = 0;    // C++ interface not yet implemented
-     virtual void __stdcall PCP_SAFT_Prho_mseT( ) = 0;    // C++ interface not yet implemented
-     virtual void __stdcall CalcProp          ( ) = 0;    // C++ interface not yet implemented
+     virtual void __stdcall PCP_SAFT_P_kij    ( ) = 0;    /* C++ interface not yet implemented */
+     virtual void __stdcall PCP_SAFT_T_kij    ( ) = 0;    /* C++ interface not yet implemented */
+     virtual void __stdcall PCP_SAFT_Prho_mseT( ) = 0;    /* C++ interface not yet implemented */
+     virtual void __stdcall CalcProp          ( ) = 0;    /* C++ interface not yet implemented */
 };
 
-#endif // FluidProp_COM_h
+#endif /* FluidProp_COM_h */

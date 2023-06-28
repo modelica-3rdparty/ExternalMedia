@@ -1,4 +1,4 @@
-//! FluidProp solver interface class
+/*! FluidProp solver interface class */
 /*!
  * This class defines a solver object encapsulating a FluidProp object
  *
@@ -62,11 +62,11 @@ public:
 	virtual double isentropicEnthalpy(double &p, ExternalThermodynamicState *const properties);
 
 protected:
-    TFluidProp FluidProp;  // Instance of FluidProp wrapper object
+    TFluidProp FluidProp;  /* Instance of FluidProp wrapper object */
 	bool isError(string ErrorMsg);
 	bool licenseError(string ErrorMsg);
 };
 
 #endif 
 
-#endif /*FLUIDPROPSOLVER_H_*/
+#endif /* FLUIDPROPSOLVER_H_ */

@@ -3,7 +3,7 @@
 
 #include "basesolver.h"
 
-//! Test solver class
+/*! Test solver class */
 /*!
   This class defines a dummy solver object, computing properties of
   a fluid roughly resembling warm water at low pressure, without
@@ -47,4 +47,4 @@ public:
 	virtual void setState_ps(double &p, double &s, int &phase, ExternalThermodynamicState *const properties);
 };
 
-#endif // TESTSOLVER_H_
+#endif /* TESTSOLVER_H_ */

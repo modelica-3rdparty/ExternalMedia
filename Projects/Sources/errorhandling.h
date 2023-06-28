@@ -18,18 +18,18 @@ extern void (*ModelicaErrorPtr)(const char *);
 extern void (*ModelicaWarningPtr)(const char *);
 #endif
 
-//! Function to display error message
+/*! Function to display error message */
 /*!
   Calling this function will display the specified error message and will
   terminate the simulation.
   @param errorMessage Error message to be displayed
 */
 void errorMessage(char *errorMsg);
-//! Function to display warning message
+/*! Function to display warning message */
 /*!
   Calling this function will display the specified warning message.
   @param warningMessage Warning message to be displayed
 */
 void warningMessage(char *warningMsg);
 
-#endif // ERRORHANDLING_H_
+#endif /* ERRORHANDLING_H_ */

@@ -19,8 +19,8 @@
  *                Start of user option selection
  ********************************************************************/
 
-// Selection of used external fluid property computation packages.
-//! FluidProp solver
+/* Selection of used external fluid property computation packages. */
+/*! FluidProp solver */
 /*!
   Set this preprocessor variable to 1 to include the interface to the
   FluidProp solver developed and maintained by Francesco Casella.
@@ -29,8 +29,8 @@
 #define EXTERNALMEDIA_FLUIDPROP 0
 #endif
 
-// Selection of used external fluid property computation packages.
-//! CoolProp solver
+/* Selection of used external fluid property computation packages. */
+/*! CoolProp solver */
 /*!
   Set this preprocessor variable to 1 to include the interface to the
   CoolProp solver developed and maintained by Jorrit Wronski et al.
@@ -39,7 +39,7 @@
 #define EXTERNALMEDIA_COOLPROP 1
 #endif
 
-//! Not a number
+/*! Not a number */
 /*!
   This value is used as not a number value. It can be changed by
   the user if there is a more appropriate value.
@@ -57,14 +57,14 @@
  *            Do not change anything below this line
  ********************************************************************/
 
-// General purpose includes
+/* General purpose includes */
 #include <map>
 using std::map;
 
 #include <string>
 using std::string;
 
-// Include error handling
+/* Include error handling */
 #include "errorhandling.h"
 
-#endif /*INCLUDE_H_*/
+#endif /* INCLUDE_H_ */

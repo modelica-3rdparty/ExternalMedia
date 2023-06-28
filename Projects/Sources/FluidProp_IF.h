@@ -1,20 +1,20 @@
-//============================================================================//
-//                                                                            //
-//                          FluidProp C++ interface                           //
-//                          -----------------------                           //
-//                                                                            //
-//  The class implemented in this file, TFluidProp, is as a wrapper class for //
-//  the IFluidProp_COM interface.  TFluidProp hides COM specific details      //
-//  like safe arrays (SAFEARRAY) and binary strings (BSTR) in IFluidProp_COM. //
-//  In the TFluidProp class only standard C++ data types are used.  This is   //
-//  the recommended way working with the FluidProp COM server in C++.         //
-//                                                                            //
-//  July, 2004, for FluidProp 1                                               //
-//  January, 2006, for FluidProp 2                                            //
-//  April, 2007, for FluidProp 2.3                                            //
-//  November, 2012, for FluidProp 2.5                                         //
-//                                                                            //
-//============================================================================//
+/* ========================================================================== */
+/*                                                                            */
+/*                          FluidProp C++ interface                           */
+/*                          -----------------------                           */
+/*                                                                            */
+/*  The class implemented in this file, TFluidProp, is as a wrapper class for */
+/*  the IFluidProp_COM interface.  TFluidProp hides COM specific details      */
+/*  like safe arrays (SAFEARRAY) and binary strings (BSTR) in IFluidProp_COM. */
+/*  In the TFluidProp class only standard C++ data types are used.  This is   */
+/*  the recommended way working with the FluidProp COM server in C++.         */
+/*                                                                            */
+/*  July, 2004, for FluidProp 1                                               */
+/*  January, 2006, for FluidProp 2                                            */
+/*  April, 2007, for FluidProp 2.3                                            */
+/*  November, 2012, for FluidProp 2.5                                         */
+/*                                                                            */
+/* ========================================================================== */
 
 #ifndef FluidProp_IF_h
 #define FluidProp_IF_h
@@ -29,7 +29,7 @@ using std::string;
 #include "FluidProp_COM.h"
 
 
-// The TFluidProp class
+/* The TFluidProp class */
 class TFluidProp
 {
    public:
@@ -83,7 +83,7 @@ class TFluidProp
                            double& zeta, double& theta, double& kappa, double& gamma, double& eta,
                            double& lambda, string* ErrorMsg);
 
-      // Compute all the properties at once, including saturation properties
+     /*  Compute all the properties at once, including saturation properties */
       void AllPropsSat  ( string InputSpec, double Input1, double Input2, double& P, double& T,
                           double& v, double& d, double& h, double& s, double& u, double& q,
                           double* x, double* y, double& cv, double& cp, double& c, double& alpha,
@@ -123,9 +123,9 @@ class TFluidProp
 
    private:
 
-      IClassFactory*  ClassFactory ;      // Pointer to class factory
-      IFluidProp_COM* FluidProp_COM;      // Pointer to FluidProp interface
+      IClassFactory*  ClassFactory ;      /* Pointer to class factory */
+      IFluidProp_COM* FluidProp_COM;      /* Pointer to FluidProp interface */
 
 };
 
-#endif // FluidProp_IF_h
+#endif /* FluidProp_IF_h */
