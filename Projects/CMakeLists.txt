@@ -1,5 +1,7 @@
-cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
-include(ExternalProject)
+cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
+# For the generator expression CMake
+# $<IF:$<BOOL:ON>,1,0>
+#checked with https://github.com/nlohmann/cmake_min_version
 
 CMAKE_POLICY(SET CMP0053 NEW)
 
