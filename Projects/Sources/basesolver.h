@@ -353,7 +353,7 @@ public:
   */
   virtual void
   setBubbleState(ExternalSaturationProperties *const properties, int phase,
-                 ExternalThermodynamicState *const bubbleProperties) = 0;
+                 ExternalThermodynamicState *const bubbleProperties);
   //! Set dew state
   /*!
     This function sets the dew state record dewProperties corresponding to the
@@ -371,7 +371,7 @@ public:
   */
   virtual void
   setDewState(ExternalSaturationProperties *const properties, int phase,
-              ExternalThermodynamicState *const bubbleProperties) = 0;
+              ExternalThermodynamicState *const bubbleProperties);
 
   //! Compute derivative of Ts wrt pressure
   /*!
