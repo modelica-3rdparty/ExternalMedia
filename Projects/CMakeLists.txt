@@ -218,6 +218,6 @@ endif()
 #######################################
 # Customise this part to use your own CPP files
 if (COOLPROP)
-  add_executable (main EXCLUDE_FROM_ALL ${CMAKE_CURRENT_SOURCE_DIR}/Tests/coolprop_comparisons.cpp ${LIB_SOURCES})
-  target_link_libraries(main PRIVATE CoolProp)
+  add_executable (main EXCLUDE_FROM_ALL ${CMAKE_CURRENT_SOURCE_DIR}/Tests/coolprop_comparisons.cpp)
+  target_link_libraries(main PRIVATE CoolProp ${LIBRARY_NAME})
 endif()
