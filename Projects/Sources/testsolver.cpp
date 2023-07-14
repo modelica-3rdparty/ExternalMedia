@@ -1,4 +1,5 @@
 #include "testsolver.h"
+#include "errorhandling.h"
 #include <math.h>
 
 TestSolver::TestSolver(const string &mediumName, const string &libraryName, const string &substanceName)
@@ -138,3 +139,176 @@ void TestSolver::setState_ps(double &p, double &s, int &phase, ExternalThermodyn
 	properties->lambda = 0.60 + (properties->T-300)*1.6e-3;
 }
 
+
+void TestSolver::setState_hs(double &h, double &s, int &phase, ExternalThermodynamicState *const properties) {
+  errorMessage((char *)"Internal error: setState_hs not implemented in the TestSolver object");
+}
+double TestSolver::Pr(ExternalThermodynamicState *const properties) {
+  errorMessage(
+      (char *)"Internal error: Pr not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::T(ExternalThermodynamicState *const properties) {
+  errorMessage(
+      (char *)"Internal error: T not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::a(ExternalThermodynamicState *const properties) {
+  errorMessage(
+      (char *)"Internal error: a not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::beta(ExternalThermodynamicState *const properties) {
+  errorMessage(
+      (char *)"Internal error: beta not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::cp(ExternalThermodynamicState *const properties) {
+  errorMessage(
+      (char *)"Internal error: cp not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::cv(ExternalThermodynamicState *const properties) {
+  errorMessage(
+      (char *)"Internal error: cv not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::d(ExternalThermodynamicState *const properties) {
+  errorMessage(
+      (char *)"Internal error: d not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::ddhp(ExternalThermodynamicState *const properties) {
+  errorMessage(
+      (char *)"Internal error: ddhp not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::ddph(ExternalThermodynamicState *const properties) {
+  errorMessage(
+      (char *)"Internal error: ddph not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::eta(ExternalThermodynamicState *const properties) {
+  errorMessage(
+      (char *)"Internal error: eta not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::h(ExternalThermodynamicState *const properties) {
+  errorMessage(
+      (char *)"Internal error: h not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::kappa(ExternalThermodynamicState *const properties) {
+  errorMessage(
+      (char *)"Internal error: kappa not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::lambda(ExternalThermodynamicState *const properties) {
+  errorMessage(
+      (char *)"Internal error: lambda not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::p(ExternalThermodynamicState *const properties) {
+  errorMessage(
+      (char *)"Internal error: p not implemented in the TestSolver object");
+  return 0;
+}
+int TestSolver::phase(ExternalThermodynamicState *const properties) {
+  errorMessage(
+      (char *)"Internal error: phase not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::s(ExternalThermodynamicState *const properties) {
+  errorMessage(
+      (char *)"Internal error: s not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::d_der(ExternalThermodynamicState *const properties) {
+  errorMessage(
+      (char *)"Internal error: d_der not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::isentropicEnthalpy(double &p, ExternalThermodynamicState *const properties) {
+  errorMessage((char *)"Internal error: isentropicEnthalpy not implemented in "
+                       "the Solver object");
+  return 0;
+}
+
+double TestSolver::partialDeriv_state(const string &of, const string &wrt, const string &cst,
+                                      ExternalThermodynamicState *const properties) {
+  errorMessage((char *)"Internal error: partialDeriv_state not implemented in "
+                       "the Solver object");
+  return 0;
+}
+
+double TestSolver::dTp(ExternalSaturationProperties *const properties) {
+  errorMessage(
+      (char *)"Internal error: dTp not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::ddldp(ExternalSaturationProperties *const properties) {
+  errorMessage(
+      (char *)"Internal error: ddldp not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::ddvdp(ExternalSaturationProperties *const properties) {
+  errorMessage(
+      (char *)"Internal error: ddvdp not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::dhldp(ExternalSaturationProperties *const properties) {
+  errorMessage(
+      (char *)"Internal error: dhldp not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::dhvdp(ExternalSaturationProperties *const properties) {
+  errorMessage(
+      (char *)"Internal error: dhvdp not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::dl(ExternalSaturationProperties *const properties) {
+  errorMessage(
+      (char *)"Internal error: dl not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::dv(ExternalSaturationProperties *const properties) {
+  errorMessage(
+      (char *)"Internal error: dv not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::hl(ExternalSaturationProperties *const properties) {
+  errorMessage(
+      (char *)"Internal error: hl not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::hv(ExternalSaturationProperties *const properties) {
+  errorMessage(
+      (char *)"Internal error: hv not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::sigma(ExternalSaturationProperties *const properties) {
+  errorMessage(
+      (char *)"Internal error: sigma not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::sl(ExternalSaturationProperties *const properties) {
+  errorMessage(
+      (char *)"Internal error: sl not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::sv(ExternalSaturationProperties *const properties) {
+  errorMessage(
+      (char *)"Internal error: sv not implemented in the TestSolver object");
+  return 0;
+}
+
+double TestSolver::psat(ExternalSaturationProperties *const properties) {
+  errorMessage(
+      (char *)"Internal error: psat not implemented in the TestSolver object");
+  return 0;
+}
+double TestSolver::Tsat(ExternalSaturationProperties *const properties) {
+  errorMessage(
+      (char *)"Internal error: Tsat not implemented in the TestSolver object");
+  return 0;
+}
