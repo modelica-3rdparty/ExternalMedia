@@ -66,6 +66,7 @@ option(FLUIDPROP "Include the FluidProp library for fluid properties" OFF)
 #######################################
 
 
+add_subdirectory("ModelicaUtilitiesHelper")
 
 if(COOLPROP)
   
@@ -219,5 +220,5 @@ endif()
 # Customise this part to use your own CPP files
 if (COOLPROP)
   add_executable (main EXCLUDE_FROM_ALL ${CMAKE_CURRENT_SOURCE_DIR}/Tests/coolprop_comparisons.cpp)
-  target_link_libraries(main PRIVATE CoolProp ${LIBRARY_NAME})
+  target_link_libraries(main PRIVATE CoolProp ${LIBRARY_NAME} modelica_utilities_DONT_USE)
 endif()
