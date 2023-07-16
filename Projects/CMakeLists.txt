@@ -33,15 +33,6 @@ if(APPLE)
 endif()
 
 
-# Default to release build
-if (NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
-endif ()
-
-
-
-
-
 #######################################
 #       PROJECT-WIDE SETTINGS         #
 #######################################
@@ -83,6 +74,7 @@ if(COOLPROP)
   # Enable this for shared libraries (either CoolProp itself or ExternalMedia)
   SET(COOLPROP_FPIC ON CACHE BOOL "force -fPIC switch")
   SET(COOLPROP_STATIC_LIBRARY ON CACHE BOOL "Force the static library")
+  # SET(COOLPROP_SHARED_LIBRARY ON CACHE BOOL "Force the shared library")
 
   add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp" "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
 
@@ -105,9 +97,16 @@ endif()
 
 # Add the target for ExternalMedia
 add_library(${LIBRARY_NAME} SHARED ${LIB_SOURCES})
-
 if(COOLPROP)
   target_link_libraries(${LIBRARY_NAME} PUBLIC CoolProp)
+  # remove unneeded coolprop symbols from the library api to guard against
+  # name-clashes. MSVC should by default only export symbols that are explicitly
+  # declared for export via declspec. This only works for linkers that support
+  # "--exclude-libs", which ld and lld do. But all other linkers are not treated.
+  if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    set(coolprop_libname "${CMAKE_STATIC_LIBRARY_PREFIX}CoolProp${CMAKE_STATIC_LIBRARY_SUFFIX}")
+    target_link_options(${LIBRARY_NAME} PRIVATE "-Wl,--exclude-libs=${coolprop_libname}")
+  endif()
 else()
   list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/coolpropsolver.cpp")
 endif()
@@ -221,4 +220,7 @@ endif()
 if (COOLPROP)
   add_executable (main EXCLUDE_FROM_ALL ${CMAKE_CURRENT_SOURCE_DIR}/Tests/coolprop_comparisons.cpp)
   target_link_libraries(main PRIVATE CoolProp ${LIBRARY_NAME} modelica_utilities_DONT_USE)
+  if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    target_link_options(main PRIVATE "-Wl,--exclude-libs=${coolprop_libname}")
+  endif()
 endif()

@@ -224,8 +224,8 @@ int main()
 	std::cout << err1 << std::endl;
 	printValues(pointer);
 	*/
-	
 
-	system("pause");
+  std::cout << "Press Enter to continue...:" << std::endl;
+  std::cin.get();
 	return 0;
 }
