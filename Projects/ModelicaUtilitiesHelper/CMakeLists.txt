@@ -1,1 +1,1 @@
-add_library(modelica_utilities_DONT_USE EXCLUDE_FROM_ALL ModelicaUtilities.cpp)
+add_library(modelica_utilities_DONT_USE SHARED EXCLUDE_FROM_ALL ModelicaUtilities.cpp)
