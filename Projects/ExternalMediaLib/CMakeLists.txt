@@ -1,5 +1,6 @@
-# For all these static libraries:
-# If they are linked into a dynamic library don't export any symbols from these, unless they are explicitly exported via __attribute__((visibility("default")))
+# For all these static libraries: If they are linked into a dynamic library
+# don't export any symbols from these, unless they are explicitly exported via
+# __attribute__((visibility("default")))
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_C_VISIBILITY_PRESET hidden)
 
@@ -41,4 +42,17 @@ endif()
 
 target_link_libraries(${LIBRARY_NAME} PRIVATE errorhandling)
 target_link_libraries(${LIBRARY_NAME} PRIVATE SolverInterface)
+
+if(WIN32)
+  message(STATUS "Installation path: ${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
+  INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
+else()
+  # Both OpenModelica and Dymola on Linux DO NOT expect a compiler-specific subdirectory
+  # NB: This means that subsequent builds for different compilers overwrite the previously installed binaries.
+  message(STATUS "Installation path: ${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")
+  INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")
+endif()
+
+
+
 

@@ -1,11 +1,13 @@
-cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
-# For the generator expression CMake
+cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
+# Was 3.8 for the generator expression CMake
 # $<IF:$<BOOL:ON>,1,0>
-#checked with https://github.com/nlohmann/cmake_min_version
+# checked with https://github.com/nlohmann/cmake_min_version
+# Now it is 3.9 for CheckIPOSupported.
 
 CMAKE_POLICY(SET CMP0053 NEW)
 CMAKE_POLICY(SET CMP0063 NEW)
 set(CMAKE_POLICY_DEFAULT_CMP0063 NEW)
+set(CMAKE_POLICY_DEFAULT_CMP0069 NEW)
 
 #######################################
 #         PROJECT INFORMATION         #
@@ -26,6 +28,15 @@ set (LIBRARY_NAME "ExternalMediaLib")
 set (LIBRARY_HEADER "externalmedialib.h")
 
 project ("ExternalMedia" LANGUAGES C CXX VERSION ${APP_VERSION})
+
+include(CheckIPOSupported)
+check_ipo_supported(RESULT is_ipo_supported OUTPUT lto_error LANGUAGES C CXX)
+message(STATUS "is_ipo_supported = ${is_ipo_supported}")
+if(is_ipo_supported)
+  set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+endif()
+
+
 
 
 if(APPLE)
@@ -54,12 +65,21 @@ set(INCLUDE_DIRS "")
 option(COOLPROP "Include the CoolProp library for fluid properties" ON)
 option(FLUIDPROP "Include the FluidProp library for fluid properties" OFF)
 
-#######################################
-#       INCLUDE COOLPROP              #
-#######################################
+
+# For installation of the shared library look in ExternalMediaLib/CMakeLists.txt
+set(MODELICA_INSTALL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia/Resources")
+INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/ExternalMediaLib/include/" DESTINATION "${MODELICA_INSTALL_PATH}/Include")
+
 
 
 add_subdirectory("ModelicaUtilitiesHelper")
+
+
+
+
+#######################################
+#       INCLUDE COOLPROP              #
+#######################################
 
 if(COOLPROP)
   # Force bitness for MinGW
@@ -94,15 +114,7 @@ endif()
 #         TARGET DEFINITIONS          #
 #######################################
 
-if(NOT FLUIDPROP)
-  list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/FluidProp_IF.cpp")
-  list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/FluidProp_COM.cpp")
-  list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/fluidpropsolver.cpp")
-endif()
-
-
 add_subdirectory(ExternalMediaLib)
-
 
 if(WIN32)
   if(CMAKE_SIZEOF_VOID_P MATCHES "8")
@@ -184,17 +196,6 @@ if(MINGW)
   message(WARNING "Discarded compiler information since OpenModelica expect the mingw32/64 platform.")
 endif()
 
-set(MODELICA_INSTALL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia/Resources")
-INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/${LIBRARY_HEADER}" DESTINATION "${MODELICA_INSTALL_PATH}/Include")
-if(WIN32)
-    message(STATUS "Installation path: ${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
-    INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
-else()
-    # Both OpenModelica and Dymola on Linux DO NOT expect a compiler-specific subdirectory
-    # NB: This means that subsequent builds for different compilers overwrite the previously installed binaries.
-    message(STATUS "Installation path: ${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")
-    INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")
-endif()
 
 
 #######################################
