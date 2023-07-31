@@ -1,0 +1,4 @@
+add_library(SolverInterface STATIC basesolver.cpp)
+target_include_directories(SolverInterface PUBLIC include)
+target_link_libraries(SolverInterface PUBLIC ThermodynamicStructs CommonInclude)
+target_link_libraries(SolverInterface PRIVATE errorhandling)

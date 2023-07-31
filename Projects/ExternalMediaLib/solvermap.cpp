@@ -2,6 +2,8 @@
 #include "basesolver.h"
 #include "testsolver.h"
 #include "include.h"
+#include <string>
+#include "errorhandling.h"
 
 #if (EXTERNALMEDIA_FLUIDPROP == 1)
 #include "fluidpropsolver.h"
@@ -22,9 +24,9 @@
   @param libraryName Library name
   @param substanceName Substance name
 */
-BaseSolver *SolverMap::getSolver(const string &mediumName, const string &libraryName, const string &substanceName){
+BaseSolver *SolverMap::getSolver(const std::string &mediumName, const std::string &libraryName, const std::string &substanceName){
 	// Get solver key from library and substance name
-	string solverKeyString(solverKey(libraryName, substanceName));
+	std::string solverKeyString(solverKey(libraryName, substanceName));
 	// Check whether solver already exists
 	if (_solvers.find(solverKeyString) != _solvers.end())
 		return _solvers[solverKeyString];
@@ -60,9 +62,9 @@ BaseSolver *SolverMap::getSolver(const string &mediumName, const string &library
   This function generates a unique solver key based on the library name and
   substance name.
 */
-string SolverMap::solverKey(const string &libraryName, const string &substanceName){
+std::string SolverMap::solverKey(const std::string &libraryName, const std::string &substanceName){
 	// This function returns the solver key and may be changed by advanced users
 	return libraryName + "." + substanceName;
 }
 
-map<string, BaseSolver*> SolverMap::_solvers;
+std::map<std::string, BaseSolver*> SolverMap::_solvers;

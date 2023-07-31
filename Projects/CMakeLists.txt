@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
 #checked with https://github.com/nlohmann/cmake_min_version
 
 CMAKE_POLICY(SET CMP0053 NEW)
+CMAKE_POLICY(SET CMP0063 NEW)
+set(CMAKE_POLICY_DEFAULT_CMP0063 NEW)
 
 #######################################
 #         PROJECT INFORMATION         #
@@ -60,7 +62,6 @@ option(FLUIDPROP "Include the FluidProp library for fluid properties" OFF)
 add_subdirectory("ModelicaUtilitiesHelper")
 
 if(COOLPROP)
-  
   # Force bitness for MinGW
   if(MINGW)
     if(CMAKE_SIZEOF_VOID_P MATCHES "8")
@@ -69,14 +70,22 @@ if(COOLPROP)
       SET(FORCE_BITNESS_32 ON CACHE BOOL "force 32 bit")
     endif()
   endif()
-
+  
   # Configure CMake switches for CoolProp
   # Enable this for shared libraries (either CoolProp itself or ExternalMedia)
   SET(COOLPROP_FPIC ON CACHE BOOL "force -fPIC switch")
   SET(COOLPROP_STATIC_LIBRARY ON CACHE BOOL "Force the static library")
-  # SET(COOLPROP_SHARED_LIBRARY ON CACHE BOOL "Force the shared library")
 
+  # If the static CoolProp library is linked into a dynamic library don't export any symbols from coolprop!
+  set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+  set(CMAKE_C_VISIBILITY_PRESET hidden)
+  
+  # SET(COOLPROP_SHARED_LIBRARY ON CACHE BOOL "Force the shared library")
   add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp" "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
+
+  # reinstate the default:
+  set(CMAKE_CXX_VISIBILITY_PRESET default)
+  set(CMAKE_C_VISIBILITY_PRESET default)
 
 endif()
 
@@ -84,9 +93,6 @@ endif()
 #######################################
 #         TARGET DEFINITIONS          #
 #######################################
-list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/Sources")
-include_directories (${INCLUDE_DIRS})
-file (GLOB_RECURSE LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/*.cpp")
 
 if(NOT FLUIDPROP)
   list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/FluidProp_IF.cpp")
@@ -95,29 +101,7 @@ if(NOT FLUIDPROP)
 endif()
 
 
-# Add the target for ExternalMedia
-add_library(${LIBRARY_NAME} SHARED ${LIB_SOURCES})
-if(COOLPROP)
-  target_link_libraries(${LIBRARY_NAME} PUBLIC CoolProp)
-  # remove unneeded coolprop symbols from the library api to guard against
-  # name-clashes. MSVC should by default only export symbols that are explicitly
-  # declared for export via declspec. This only works for linkers that support
-  # "--exclude-libs", which ld and lld do. But all other linkers are not treated.
-  if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    set(coolprop_libname "${CMAKE_STATIC_LIBRARY_PREFIX}CoolProp${CMAKE_STATIC_LIBRARY_SUFFIX}")
-    target_link_options(${LIBRARY_NAME} PRIVATE "-Wl,--exclude-libs=ALL")
-  endif()
-else()
-  list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/coolpropsolver.cpp")
-endif()
-
-
-set_property(TARGET ${LIBRARY_NAME} PROPERTY VERSION ${APP_VERSION})
-set_property(TARGET ${LIBRARY_NAME} PROPERTY DEBUG_POSTFIX "")
-target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_FLUIDPROP=$<IF:$<BOOL:${FLUIDPROP}>,1,0>)
-target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_COOLPROP=$<IF:$<BOOL:${COOLPROP}>,1,0>)
-target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_EXPORTS) # Use this for a shared library
-target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_LIBRARY_EXPORTS=1) # Use this for a shared library
+add_subdirectory(ExternalMediaLib)
 
 
 if(WIN32)
@@ -219,8 +203,5 @@ endif()
 # Customise this part to use your own CPP files
 if (COOLPROP)
   add_executable (main EXCLUDE_FROM_ALL ${CMAKE_CURRENT_SOURCE_DIR}/Tests/coolprop_comparisons.cpp)
-  target_link_libraries(main PRIVATE CoolProp ${LIBRARY_NAME} modelica_utilities_DONT_USE)
-  if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_link_options(main PRIVATE "-Wl,--exclude-libs=All")
-  endif()
+  target_link_libraries(main PRIVATE ${LIBRARY_NAME} CoolProp modelica_utilities_DONT_USE)
 endif()

@@ -1,0 +1,3 @@
+add_library(errorhandling STATIC errorhandling.cpp)
+target_include_directories(errorhandling PUBLIC include)
+target_link_libraries(errorhandling PRIVATE CommonInclude)

@@ -1,6 +1,6 @@
 #include "basesolver.h"
 #include <math.h>
-#include "externalmedialib.h"
+#include "errorhandling.h"
 
 //! Constructor.
 /*!
@@ -10,7 +10,7 @@
   @param libraryName Name of the external fluid property library
   @param substanceName Substance name
 */
-BaseSolver::BaseSolver(const string &mediumName, const string &libraryName, const string &substanceName)
+BaseSolver::BaseSolver(const std::string &mediumName, const std::string &libraryName, const std::string &substanceName)
 	: mediumName(mediumName), libraryName(libraryName), substanceName(substanceName){
 }
 
@@ -164,7 +164,7 @@ void BaseSolver::setState_hs(double &h, double &s, int &phase, ExternalThermodyn
   @param libraryName Library name
   @param substanceName Substance name
 */
-double BaseSolver::partialDeriv_state(const string &of, const string &wrt, const string &cst, ExternalThermodynamicState *const properties){
+double BaseSolver::partialDeriv_state(const std::string &of, const std::string &wrt, const std::string &cst, ExternalThermodynamicState *const properties){
 //double BaseSolver::partialDeriv_state(const char *of, const char *wrt, const char *cst, ExternalThermodynamicState *const properties){
 	errorMessage((char*)"Internal error: partialDeriv_state() not implemented in the Solver object");
 	return 0.;

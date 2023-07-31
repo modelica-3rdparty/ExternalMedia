@@ -1,14 +1,10 @@
 #ifndef BASESOLVER_H_
 #define BASESOLVER_H_
 
-#include "externalmedialib.h"
+#include "ThermodynamicStructs.h"
 #include "fluidconstants.h"
 #include "include.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-struct FluidConstants;
+#include <string>
 
 /*! Base solver class. */
 /*!
@@ -24,8 +20,8 @@ struct FluidConstants;
 */
 class BaseSolver {
 public:
-  BaseSolver(const string &mediumName, const string &libraryName,
-             const string &substanceName);
+  BaseSolver(const std::string &mediumName, const std::string &libraryName,
+             const std::string &substanceName);
   virtual ~BaseSolver();
 
   //! Return molar mass
@@ -141,7 +137,7 @@ public:
     @param substanceName Substance name
   */
   virtual double
-  partialDeriv_state(const string &of, const string &wrt, const string &cst,
+  partialDeriv_state(const std::string &of, const std::string &wrt, const std::string &cst,
                      ExternalThermodynamicState *const properties) = 0;
 
   //! Compute Prandtl number
@@ -517,11 +513,11 @@ public:
   virtual double Tsat(ExternalSaturationProperties *const properties) = 0;
 
   /*! Medium name */
-  string mediumName;
+  std::string mediumName;
   /*! Library name */
-  string libraryName;
+  std::string libraryName;
   /*! Substance name */
-  string substanceName;
+  std::string substanceName;
 
 protected:
   /*! Fluid constants */

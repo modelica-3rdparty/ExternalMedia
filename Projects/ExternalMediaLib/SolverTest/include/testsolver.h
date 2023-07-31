@@ -2,7 +2,7 @@
 #define TESTSOLVER_H_
 
 #include "basesolver.h"
-
+#include <string>
 /*! Test solver class */
 /*!
   This class defines a dummy solver object, computing properties of
@@ -34,7 +34,7 @@
 */
 class TestSolver : public BaseSolver{
 public:
-	TestSolver(const string &mediumName, const string &libraryName, const string &substanceName);
+	TestSolver(const std::string &mediumName, const std::string &libraryName, const std::string &substanceName);
 	~TestSolver();
 	virtual void setFluidConstants();
 
@@ -69,7 +69,7 @@ public:
 	virtual double d_der(ExternalThermodynamicState *const properties);
 	virtual double isentropicEnthalpy(double &p, ExternalThermodynamicState *const properties);
 
- virtual double partialDeriv_state(const string &of, const string &wrt, const string &cst,
+ virtual double partialDeriv_state(const std::string &of, const std::string &wrt, const std::string &cst,
                            ExternalThermodynamicState *const properties);
 
  virtual double dTp(ExternalSaturationProperties *const properties);

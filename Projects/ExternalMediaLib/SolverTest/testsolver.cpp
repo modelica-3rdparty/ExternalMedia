@@ -2,7 +2,7 @@
 #include "errorhandling.h"
 #include <math.h>
 
-TestSolver::TestSolver(const string &mediumName, const string &libraryName, const string &substanceName)
+TestSolver::TestSolver(const std::string &mediumName, const std::string &libraryName, const std::string &substanceName)
 	: BaseSolver(mediumName, libraryName, substanceName){
   setFluidConstants();
 }
@@ -234,7 +234,7 @@ double TestSolver::isentropicEnthalpy(double &p, ExternalThermodynamicState *con
   return 0;
 }
 
-double TestSolver::partialDeriv_state(const string &of, const string &wrt, const string &cst,
+double TestSolver::partialDeriv_state(const std::string &of, const std::string &wrt, const std::string &cst,
                                       ExternalThermodynamicState *const properties) {
   errorMessage((char *)"Internal error: partialDeriv_state not implemented in "
                        "the Solver object");
