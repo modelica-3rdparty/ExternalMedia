@@ -62,13 +62,19 @@ if(COOLPROP)
     endif()
     #file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/coolprop-tmp")
     file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/source")
-    # Use CMake to unzip
-    #file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/coolprop-tmp")
-    #execute_process(
-    #  COMMAND ${CMAKE_COMMAND} -E tar xjf "${CMAKE_BINARY_DIR}/coolprop.zip"
-    #  WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/coolprop-tmp"
-    #)
-    file(ARCHIVE_EXTRACT INPUT ${CMAKE_BINARY_DIR}/coolprop.zip)
+    # Unpack the sources for CoolProp
+    if(${CMAKE_VERSION} VERSION_LESS "3.18") 
+      # Do not use CMake to unzip
+      file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/coolprop-tmp")
+      execute_process(
+        COMMAND ${CMAKE_COMMAND} -E tar xjf "${CMAKE_BINARY_DIR}/coolprop.zip"
+        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/coolprop-tmp"
+      )
+      file(RENAME "${CMAKE_BINARY_DIR}/coolprop-tmp/CoolProp.sources" "${CMAKE_BINARY_DIR}/source")
+    else()
+      # Use CMake to unzip
+      file(ARCHIVE_EXTRACT INPUT ${CMAKE_BINARY_DIR}/coolprop.zip)
+    endif()
     #execute_process(COMMAND unzip ${CMAKE_BINARY_DIR}/coolprop.zip -d "${CMAKE_BINARY_DIR}/coolprop-tmp")
     #execute_process(COMMAND sed -i '421s;^;\#;' "${CMAKE_BINARY_DIR}/coolprop-tmp/CoolProp.sources/CMakeLists.txt")
     #file(RENAME "${CMAKE_BINARY_DIR}/coolprop-tmp/CoolProp.sources" "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
