@@ -65,12 +65,10 @@ if(COOLPROP)
     # Unpack the sources for CoolProp
     if(${CMAKE_VERSION} VERSION_LESS "3.18") 
       # Do not use CMake to unzip
-      file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/coolprop-tmp")
       execute_process(
         COMMAND ${CMAKE_COMMAND} -E tar xjf "${CMAKE_BINARY_DIR}/coolprop.zip"
-        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/coolprop-tmp"
+        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
       )
-      file(RENAME "${CMAKE_BINARY_DIR}/coolprop-tmp/CoolProp.sources" "${CMAKE_BINARY_DIR}/source")
     else()
       # Use CMake to unzip
       file(ARCHIVE_EXTRACT INPUT ${CMAKE_BINARY_DIR}/coolprop.zip)
