@@ -1,0 +1,31 @@
+name: Minimum CMake version
+
+# only allow manual triggers and the cmake branch
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - fix/cmake_version
+
+jobs:
+
+  min-cmake:
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get the latest script
+      run:  git clone --recursive https://github.com/nlohmann/cmake_min_version.git cmake_min_version
+    - name: Prepare the environment
+      run: |
+        cd cmake_min_version
+        python3 -mvenv venv
+        venv/bin/pip3 install -r requirements.txt
+        venv/bin/python3 cmake_downloader.py --latest_patch
+    - name: Run the script
+      run: |
+        cd cmake_min_version
+        venv/bin/python cmake_min_version.py ../Projects
