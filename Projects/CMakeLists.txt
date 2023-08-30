@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.8.2 FATAL_ERROR) # Due to the use of target_compile_definitions
 include(ExternalProject)
 
 CMAKE_POLICY(SET CMP0053 NEW)
