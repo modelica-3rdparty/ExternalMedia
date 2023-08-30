@@ -55,31 +55,37 @@ option(FLUIDPROP "Include the FluidProp library for fluid properties" OFF)
 
 if(COOLPROP)
   # Get the CoolProp code
-  if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
-    if(NOT EXISTS "${CMAKE_BINARY_DIR}/coolprop.zip")
-      file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/6.5.0/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
-      #file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/nightly/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
-    endif()
-    #file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/coolprop-tmp")
-    file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/source")
-    # Unpack the sources for CoolProp
-    if(${CMAKE_VERSION} VERSION_LESS "3.18") 
-      # Do not use CMake to unzip
+  set(COOLPROP_SOURCES "${CMAKE_BINARY_DIR}/CoolProp.sources")
+  #file(REMOVE_RECURSE "${COOLPROP_SOURCES}")
+  if(EXISTS "${COOLPROP_SOURCES}")
+    message(STATUS "Using existing CoolProp sources from ${COOLPROP_SOURCES}")
+  else()
+    message(STATUS "Updating CoolProp sources in ${COOLPROP_SOURCES}")
+    set(COOLPROP_SOURCES_GIT "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
+    if(EXISTS "${COOLPROP_SOURCES_GIT}")
+      message(STATUS "Using existing CoolProp sources from ${COOLPROP_SOURCES_GIT}")
+      #file(COPY "${COOLPROP_SOURCES_GIT}" DESTINATION "${COOLPROP_SOURCES}")
       execute_process(
-        COMMAND ${CMAKE_COMMAND} -E tar xjf "${CMAKE_BINARY_DIR}/coolprop.zip"
-        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory "${COOLPROP_SOURCES_GIT}" "${COOLPROP_SOURCES}"
       )
     else()
-      # Use CMake to unzip
-      file(ARCHIVE_EXTRACT INPUT ${CMAKE_BINARY_DIR}/coolprop.zip)
+      message(STATUS "Downloading CoolProp sources from the released archive")
+      file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/6.5.0/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
+      #file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/nightly/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
+      # Unpack the sources for CoolProp
+      if(${CMAKE_VERSION} VERSION_LESS "3.18") 
+        execute_process(
+          COMMAND ${CMAKE_COMMAND} -E tar xjf "${CMAKE_BINARY_DIR}/coolprop.zip"
+          WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+        )
+      else()
+        file(ARCHIVE_EXTRACT INPUT ${CMAKE_BINARY_DIR}/coolprop.zip)
+      endif()
+      file(RENAME "${CMAKE_BINARY_DIR}/source" "${COOLPROP_SOURCES}")
     endif()
-    #execute_process(COMMAND unzip ${CMAKE_BINARY_DIR}/coolprop.zip -d "${CMAKE_BINARY_DIR}/coolprop-tmp")
-    #execute_process(COMMAND sed -i '421s;^;\#;' "${CMAKE_BINARY_DIR}/coolprop-tmp/CoolProp.sources/CMakeLists.txt")
-    #file(RENAME "${CMAKE_BINARY_DIR}/coolprop-tmp/CoolProp.sources" "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
-    file(RENAME "${CMAKE_BINARY_DIR}/source" "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
-    #file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/coolprop-tmp")
-    file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
   endif()
+  # Prepare the CoolProp build, "${COOLPROP_SOURCES}" is ready now
+  file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
   # Configure CMake switches for CoolProp
   SET(COOLPROP_STATIC_LIBRARY OFF CACHE BOOL "Force the object library")
   SET(COOLPROP_SHARED_LIBRARY OFF CACHE BOOL "Force the object library")
@@ -95,16 +101,16 @@ if(COOLPROP)
   # Enable this for shared libraries (either CoolProp itself or ExternalMedia)
   SET(COOLPROP_FPIC ON CACHE BOOL "force -fPIC switch")
   # Add the CoolProp sources
-  ADD_SUBDIRECTORY ("${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git" "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
-  list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
-  list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/include")
-  list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/externals/msgpack-c/include")
+  ADD_SUBDIRECTORY ("${COOLPROP_SOURCES}" "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
+  list (APPEND INCLUDE_DIRS "${COOLPROP_SOURCES}")
+  list (APPEND INCLUDE_DIRS "${COOLPROP_SOURCES}/include")
+  list (APPEND INCLUDE_DIRS "${COOLPROP_SOURCES}/externals/msgpack-c/include")
   # Handle different CoolProp versions
-  if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/externals/cppformat")
-    list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/externals/cppformat")
+  if(EXISTS "${COOLPROP_SOURCES}/externals/cppformat")
+    list (APPEND INCLUDE_DIRS "${COOLPROP_SOURCES}/externals/cppformat")
   endif()
-  if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/externals/fmtlib/include")
-    list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/externals/fmtlib/include")
+  if(EXISTS "${COOLPROP_SOURCES}/externals/fmtlib/include")
+    list (APPEND INCLUDE_DIRS "${COOLPROP_SOURCES}/externals/fmtlib/include")
   endif()
 endif()
 
