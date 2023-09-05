@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.8.2 FATAL_ERROR) # Due to the use of target_compile_definitions
 include(ExternalProject)
 
 CMAKE_POLICY(SET CMP0053 NEW)
@@ -55,27 +55,37 @@ option(FLUIDPROP "Include the FluidProp library for fluid properties" OFF)
 
 if(COOLPROP)
   # Get the CoolProp code
-  if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
-    if(NOT EXISTS "${CMAKE_BINARY_DIR}/coolprop.zip")
+  set(COOLPROP_SOURCES "${CMAKE_BINARY_DIR}/CoolProp.sources")
+  #file(REMOVE_RECURSE "${COOLPROP_SOURCES}")
+  if(EXISTS "${COOLPROP_SOURCES}")
+    message(STATUS "Using existing CoolProp sources from ${COOLPROP_SOURCES}")
+  else()
+    message(STATUS "Updating CoolProp sources in ${COOLPROP_SOURCES}")
+    set(COOLPROP_SOURCES_GIT "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
+    if(EXISTS "${COOLPROP_SOURCES_GIT}")
+      message(STATUS "Using existing CoolProp sources from ${COOLPROP_SOURCES_GIT}")
+      #file(COPY "${COOLPROP_SOURCES_GIT}" DESTINATION "${COOLPROP_SOURCES}")
+      execute_process(
+        COMMAND ${CMAKE_COMMAND} -E copy_directory "${COOLPROP_SOURCES_GIT}" "${COOLPROP_SOURCES}"
+      )
+    else()
+      message(STATUS "Downloading CoolProp sources from the released archive")
       file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/6.5.0/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
       #file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/nightly/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
+      # Unpack the sources for CoolProp
+      if(${CMAKE_VERSION} VERSION_LESS "3.18") 
+        execute_process(
+          COMMAND ${CMAKE_COMMAND} -E tar xjf "${CMAKE_BINARY_DIR}/coolprop.zip"
+          WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+        )
+      else()
+        file(ARCHIVE_EXTRACT INPUT ${CMAKE_BINARY_DIR}/coolprop.zip)
+      endif()
+      file(RENAME "${CMAKE_BINARY_DIR}/source" "${COOLPROP_SOURCES}")
     endif()
-    #file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/coolprop-tmp")
-    file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/source")
-    # Use CMake to unzip
-    #file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/coolprop-tmp")
-    #execute_process(
-    #  COMMAND ${CMAKE_COMMAND} -E tar xjf "${CMAKE_BINARY_DIR}/coolprop.zip"
-    #  WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/coolprop-tmp"
-    #)
-    file(ARCHIVE_EXTRACT INPUT ${CMAKE_BINARY_DIR}/coolprop.zip)
-    #execute_process(COMMAND unzip ${CMAKE_BINARY_DIR}/coolprop.zip -d "${CMAKE_BINARY_DIR}/coolprop-tmp")
-    #execute_process(COMMAND sed -i '421s;^;\#;' "${CMAKE_BINARY_DIR}/coolprop-tmp/CoolProp.sources/CMakeLists.txt")
-    #file(RENAME "${CMAKE_BINARY_DIR}/coolprop-tmp/CoolProp.sources" "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
-    file(RENAME "${CMAKE_BINARY_DIR}/source" "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
-    #file(REMOVE_RECURSE "${CMAKE_BINARY_DIR}/coolprop-tmp")
-    file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
   endif()
+  # Prepare the CoolProp build, "${COOLPROP_SOURCES}" is ready now
+  file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
   # Configure CMake switches for CoolProp
   SET(COOLPROP_STATIC_LIBRARY OFF CACHE BOOL "Force the object library")
   SET(COOLPROP_SHARED_LIBRARY OFF CACHE BOOL "Force the object library")
@@ -91,16 +101,16 @@ if(COOLPROP)
   # Enable this for shared libraries (either CoolProp itself or ExternalMedia)
   SET(COOLPROP_FPIC ON CACHE BOOL "force -fPIC switch")
   # Add the CoolProp sources
-  ADD_SUBDIRECTORY ("${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git" "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
-  list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
-  list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/include")
-  list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/externals/msgpack-c/include")
+  ADD_SUBDIRECTORY ("${COOLPROP_SOURCES}" "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
+  list (APPEND INCLUDE_DIRS "${COOLPROP_SOURCES}")
+  list (APPEND INCLUDE_DIRS "${COOLPROP_SOURCES}/include")
+  list (APPEND INCLUDE_DIRS "${COOLPROP_SOURCES}/externals/msgpack-c/include")
   # Handle different CoolProp versions
-  if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/externals/cppformat")
-    list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/externals/cppformat")
+  if(EXISTS "${COOLPROP_SOURCES}/externals/cppformat")
+    list (APPEND INCLUDE_DIRS "${COOLPROP_SOURCES}/externals/cppformat")
   endif()
-  if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/externals/fmtlib")
-    list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git/externals/fmtlib")
+  if(EXISTS "${COOLPROP_SOURCES}/externals/fmtlib/include")
+    list (APPEND INCLUDE_DIRS "${COOLPROP_SOURCES}/externals/fmtlib/include")
   endif()
 endif()
 
@@ -245,13 +255,12 @@ endif()
 
 set(MODELICA_INSTALL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia/Resources")
 INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/${LIBRARY_HEADER}" DESTINATION "${MODELICA_INSTALL_PATH}/Include")
-if(WIN32)
-    message(STATUS "Installation path: ${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
-    INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
-else()
+message(STATUS "Installation path: ${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
+INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
+if(NOT WIN32)
     # Both OpenModelica and Dymola on Linux DO NOT expect a compiler-specific subdirectory
-    # NB: This means that subsequent builds for different compilers overwrite the previously installed binaries.
-    message(STATUS "Installation path: ${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")
+    # NB: This means that subsequent builds for different compilers overwrite the previously installed default binaries.
+    message(STATUS "Additional installation path: ${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")
     INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")
 endif()
 
