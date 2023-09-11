@@ -4,8 +4,7 @@ cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
 # checked with https://github.com/nlohmann/cmake_min_version
 # Now it is 3.9 for CheckIPOSupported.
 
-CMAKE_POLICY(SET CMP0053 NEW)
-CMAKE_POLICY(SET CMP0063 NEW)
+
 set(CMAKE_POLICY_DEFAULT_CMP0063 NEW)
 set(CMAKE_POLICY_DEFAULT_CMP0069 NEW)
 
@@ -18,7 +17,6 @@ set(CMAKE_POLICY_DEFAULT_CMP0069 NEW)
 # PROJECT_VERSION_MINOR
 # PROJECT_VERSION_PATCH
 
-
 set(VERSION_MAJOR 3)
 set(VERSION_MINOR 3)
 set(VERSION_PATCH 2)
@@ -28,6 +26,10 @@ set (LIBRARY_NAME "ExternalMediaLib")
 set (LIBRARY_HEADER "externalmedialib.h")
 
 project ("ExternalMedia" LANGUAGES C CXX VERSION ${APP_VERSION})
+
+add_compile_definitions(EXTERNALMEDIA_EXPORTS) # Use this for a shared library
+add_compile_definitions(EXTERNALMEDIA_LIBRARY_EXPORTS=1) # Use this for a shared library
+
 
 include(CheckIPOSupported)
 check_ipo_supported(RESULT is_ipo_supported OUTPUT lto_error LANGUAGES C CXX)
@@ -65,14 +67,14 @@ set(INCLUDE_DIRS "")
 option(COOLPROP "Include the CoolProp library for fluid properties" ON)
 option(FLUIDPROP "Include the FluidProp library for fluid properties" OFF)
 
-
 # For installation of the shared library look in ExternalMediaLib/CMakeLists.txt
 set(MODELICA_INSTALL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia/Resources")
 INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/ExternalMediaLib/include/" DESTINATION "${MODELICA_INSTALL_PATH}/Include")
 
 
-
-add_subdirectory("ModelicaUtilitiesHelper")
+add_subdirectory(Export)
+add_subdirectory(ModelicaStaticHelper)
+add_subdirectory(ModelicaUtilitiesHelper)
 
 
 
@@ -198,11 +200,5 @@ endif()
 
 
 
-#######################################
-#          TEST DEFINITIONS           #
-#######################################
-# Customise this part to use your own CPP files
-if (COOLPROP)
-  add_executable (main EXCLUDE_FROM_ALL ${CMAKE_CURRENT_SOURCE_DIR}/Tests/coolprop_comparisons.cpp)
-  target_link_libraries(main PRIVATE ${LIBRARY_NAME} CoolProp modelica_utilities_DONT_USE)
-endif()
+
+add_subdirectory(Tests)

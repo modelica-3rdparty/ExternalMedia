@@ -1,0 +1,10 @@
+
+set(CMAKE_CXX_VISIBILITY_PRESET default)
+set(CMAKE_C_VISIBILITY_PRESET default)
+
+add_library(modelica_static_helper STATIC ModelicaUtilities.cpp)
+target_link_libraries(modelica_static_helper PUBLIC Export modelica_utilities_DONT_USE)
+target_include_directories(modelica_static_helper PUBLIC include)
+
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+set(CMAKE_C_VISIBILITY_PRESET hidden)

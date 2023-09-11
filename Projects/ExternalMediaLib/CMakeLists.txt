@@ -22,13 +22,11 @@ set_property(TARGET ${LIBRARY_NAME} PROPERTY VERSION ${APP_VERSION})
 set_property(TARGET ${LIBRARY_NAME} PROPERTY DEBUG_POSTFIX "")
 target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_FLUIDPROP=$<IF:$<BOOL:${FLUIDPROP}>,1,0>)
 target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_COOLPROP=$<IF:$<BOOL:${COOLPROP}>,1,0>)
-target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_EXPORTS) # Use this for a shared library
-target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_LIBRARY_EXPORTS=1) # Use this for a shared library
 
 
 target_include_directories(${LIBRARY_NAME} PUBLIC include)
 target_include_directories(${LIBRARY_NAME} PRIVATE private_include)
-target_link_libraries(${LIBRARY_NAME} INTERFACE ThermodynamicStructs)
+target_link_libraries(${LIBRARY_NAME} PUBLIC ThermodynamicStructs Export)
 target_link_libraries(${LIBRARY_NAME} PRIVATE SolverTest)
 
 if(COOLPROP)

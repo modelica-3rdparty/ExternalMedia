@@ -13,6 +13,7 @@
 #include "coolpropsolver.h"
 #endif // COOLPROP == 1
 
+
 //! Get a specific solver
 /*!
   This function returns the solver for the specified library name, substance name
@@ -47,7 +48,7 @@ BaseSolver *SolverMap::getSolver(const std::string &mediumName, const std::strin
 	  _solvers[solverKeyString] = new CoolPropSolver(mediumName, libraryName, substanceName);
 #endif // COOLPROP == 1
 
-	else {
+ else {
 	  // Generate error message
 	  char error[100];
 	  sprintf(error, "Error: libraryName = %s is not supported by any external solver\n", libraryName.c_str());

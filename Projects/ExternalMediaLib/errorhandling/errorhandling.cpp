@@ -24,11 +24,11 @@ void (*ModelicaErrorPtr)(const char *) = nullptr;
 void (*ModelicaWarningPtr)(const char *) = nullptr;
 #endif
 
-void errorMessage(char *errorMsg){
+void errorMessage(char const *errorMsg){
     //Add prefix to help users understand this message comes from externalmedia
     std::string msg="ExternalMedia error: ";
     msg+=errorMsg;
-    #ifndef WIN32
+  #ifndef WIN32
     IMPORT(void (*)(const char *), ModelicaError);
     ModelicaError(msg.c_str());
 	#else
@@ -48,7 +48,7 @@ void errorMessage(char *errorMsg){
 	#endif
 }
 
-void warningMessage(char *warningMsg){
+void warningMessage(char const *warningMsg){
     //Add prefix to help users understand this message comes from externalmedia
     std::string msg="ExternalMedia warning: ";
     msg+=warningMsg;

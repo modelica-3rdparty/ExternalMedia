@@ -1,1 +1,10 @@
+
+set(CMAKE_CXX_VISIBILITY_PRESET default)
+set(CMAKE_C_VISIBILITY_PRESET default)
+
 add_library(modelica_utilities_DONT_USE SHARED EXCLUDE_FROM_ALL ModelicaUtilities.cpp)
+target_link_libraries(modelica_utilities_DONT_USE PUBLIC Export)
+target_include_directories(modelica_utilities_DONT_USE PUBLIC include)
+
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+set(CMAKE_C_VISIBILITY_PRESET hidden)

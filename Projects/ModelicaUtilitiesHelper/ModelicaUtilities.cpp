@@ -43,9 +43,10 @@
 */
 
 #include "ModelicaUtilities.h"
+#include <stdexcept>
 
 
 
-void ModelicaError(const char *string){}
+void ModelicaError(const char *string){ throw std::runtime_error(string);}
 
-void ModelicaWarning(const char *string){}
+void ModelicaWarning(const char *string) { throw std::runtime_error(string); }
