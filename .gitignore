@@ -24,5 +24,6 @@ dymosim.lib
 /build/
 /build32/
 /build64/
+/clang/
 .cache
 compile_commands.json
