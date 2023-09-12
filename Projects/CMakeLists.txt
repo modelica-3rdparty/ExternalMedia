@@ -30,12 +30,14 @@ project ("ExternalMedia" LANGUAGES C CXX VERSION ${APP_VERSION})
 add_compile_definitions(EXTERNALMEDIA_EXPORTS) # Use this for a shared library
 add_compile_definitions(EXTERNALMEDIA_LIBRARY_EXPORTS=1) # Use this for a shared library
 
-
-include(CheckIPOSupported)
-check_ipo_supported(RESULT is_ipo_supported OUTPUT lto_error LANGUAGES C CXX)
-message(STATUS "is_ipo_supported = ${is_ipo_supported}")
-if(is_ipo_supported)
-  set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+option(SUPPRESS_IPO "Do not use inter process optimization (aka link-time optimization) for faster compilation" OFF)
+if(NOT SUPPRESS_IPO)
+  include(CheckIPOSupported)
+  check_ipo_supported(RESULT is_ipo_supported OUTPUT lto_error LANGUAGES C CXX)
+  message(STATUS "is_ipo_supported = ${is_ipo_supported}")
+  if(is_ipo_supported)
+    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+  endif()
 endif()
 
 
