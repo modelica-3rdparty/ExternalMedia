@@ -1,3 +1,6 @@
+# This is a shared library providing the symbols ModelicaError and ModelicaWarning.
+# It is needed for the modelica_static_helper library to make symbol overloading work.
+# This is probably not the most elegant way.
 
 set(CMAKE_CXX_VISIBILITY_PRESET default)
 set(CMAKE_C_VISIBILITY_PRESET default)

@@ -1,4 +1,8 @@
 
+# This helper library provides symbols (ModelicaError and ModelicaWarning) so
+# that you don't need to link the full modelica standard library in order to
+# use/test externalmedialib.
+
 set(CMAKE_CXX_VISIBILITY_PRESET default)
 set(CMAKE_C_VISIBILITY_PRESET default)
 

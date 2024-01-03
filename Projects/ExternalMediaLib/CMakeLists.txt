@@ -20,6 +20,10 @@ add_library(${LIBRARY_NAME} SHARED
 
 set_property(TARGET ${LIBRARY_NAME} PROPERTY VERSION ${APP_VERSION})
 set_property(TARGET ${LIBRARY_NAME} PROPERTY DEBUG_POSTFIX "")
+
+target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_EXPORTS) # Use this for a shared library          
+target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_LIBRARY_EXPORTS=1) # Use this for a shared library
+
 target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_FLUIDPROP=$<IF:$<BOOL:${FLUIDPROP}>,1,0>)
 target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_COOLPROP=$<IF:$<BOOL:${COOLPROP}>,1,0>)
 

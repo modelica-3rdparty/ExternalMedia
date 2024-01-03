@@ -1,8 +1,10 @@
-cmake_minimum_required(VERSION 3.9 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.9.0 FATAL_ERROR)
 # Was 3.8 for the generator expression CMake
 # $<IF:$<BOOL:ON>,1,0>
+
+# It is now 3.9 because of check_ipo_supported.
 # checked with https://github.com/nlohmann/cmake_min_version
-# Now it is 3.9 for CheckIPOSupported.
+
 
 
 set(CMAKE_POLICY_DEFAULT_CMP0063 NEW)
@@ -26,9 +28,6 @@ set (LIBRARY_NAME "ExternalMediaLib")
 set (LIBRARY_HEADER "externalmedialib.h")
 
 project ("ExternalMedia" LANGUAGES C CXX VERSION ${APP_VERSION})
-
-add_compile_definitions(EXTERNALMEDIA_EXPORTS) # Use this for a shared library
-add_compile_definitions(EXTERNALMEDIA_LIBRARY_EXPORTS=1) # Use this for a shared library
 
 option(SUPPRESS_IPO "Do not use inter process optimization (aka link-time optimization) for faster compilation" OFF)
 if(NOT SUPPRESS_IPO)
