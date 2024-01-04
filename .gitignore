@@ -1,29 +1,49 @@
+# Ignore filetypes (alphabetical)
+###############################################
 *.mat
-
+*.pdf
 *~
 
-buildlog.txt
 
-dsfinal.txt
 
-dsin.txt
+# Ignore individual files (alphabetical)
+###############################################
+compile_commands.json
 
-dslog.txt
-
-dsmodelext1.c
-
-dsmodel.c
-
-dymosim.exe
-
-dymosim.exp
-
-dymosim.lib
+# Ignore directories (alphabetical)
+###############################################
 /.svn/
 /externals/
 /build/
 /build32/
 /build64/
 /clang/
-.cache
-compile_commands.json
+/.cache/
+
+
+
+
+# Ignore Dymola files (in alphabetical order)
+###############################################
+*.bak-mo
+*.moe
+*.mof
+buildlog.txt
+dsfinal.txt
+dsin.txt
+dslog.txt
+dsmodel.c
+dsmodelext[0-9].c
+dsres.txt
+dymosim.exe
+dymosim.exp
+dymosim.lib
+dymosim
+unitTests.log
+empty.txt
+request
+stat
+status
+stop
+stop.
+

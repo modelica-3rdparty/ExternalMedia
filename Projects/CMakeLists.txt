@@ -1,7 +1,4 @@
 cmake_minimum_required(VERSION 3.9.0 FATAL_ERROR)
-# Was 3.8 for the generator expression CMake
-# $<IF:$<BOOL:ON>,1,0>
-
 # It is now 3.9 because of check_ipo_supported.
 # checked with https://github.com/nlohmann/cmake_min_version
 
@@ -97,6 +94,7 @@ if(COOLPROP)
   # Configure CMake switches for CoolProp
   # Enable this for shared libraries (either CoolProp itself or ExternalMedia)
   SET(COOLPROP_FPIC ON CACHE BOOL "force -fPIC switch")
+
   SET(COOLPROP_STATIC_LIBRARY ON CACHE BOOL "Force the static library")
 
   # If the static CoolProp library is linked into a dynamic library don't export any symbols from coolprop!
@@ -198,8 +196,6 @@ if(MINGW)
   set(MODELICA_COMPILER "")
   message(WARNING "Discarded compiler information since OpenModelica expect the mingw32/64 platform.")
 endif()
-
-
 
 
 add_subdirectory(Tests)
