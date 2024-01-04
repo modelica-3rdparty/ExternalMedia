@@ -45,6 +45,8 @@ jobs:
           #- platform: macos-10.15
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
     - name: Create Build Environment
       run: |
         cmake --version
@@ -79,6 +81,9 @@ jobs:
           #- platform: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
     - name: Create Build Environment
       run: |
         cmake --version
@@ -143,6 +148,9 @@ jobs:
             #cmake -G "Visual Studio 14" -T v120 -T v141,version=14.11
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
     - name: Create Build Environment
       run: |
         cmake --version
@@ -169,6 +177,9 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
     - name: Create Build Environment
       run: |
         cmake --version
@@ -212,7 +223,10 @@ jobs:
   build-msys:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2    
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    
     - name: Create Build Environment
       run: |
         cmake --version
@@ -239,6 +253,9 @@ jobs:
     steps:
 
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
 
     - name: Build Doxygen sources
       uses: mattnotmitt/doxygen-action@v1
