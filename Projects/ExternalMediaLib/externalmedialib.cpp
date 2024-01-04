@@ -322,10 +322,12 @@ double TwoPhaseMedium_density_ph_der_C_impl(void *state,
 }
 
 //! Return the enthalpy at pressure p after an isentropic transformation from the specified medium state
-double TwoPhaseMedium_isentropicEnthalpy_C_impl(double p_downstream, ExternalThermodynamicState *refState,
+double TwoPhaseMedium_isentropicEnthalpy_C_impl(double p_downstream, void *refState,
 										  const char *mediumName, const char *libraryName, const char *substanceName){
 	BaseSolver *solver = SolverMap::getSolver(mediumName, libraryName, substanceName);
-    return solver->isentropicEnthalpy(p_downstream, refState);
+  return solver->isentropicEnthalpy(
+      p_downstream,
+      static_cast<ExternalThermodynamicState *>(refState));
 }
 
 //! Compute saturation properties from p
