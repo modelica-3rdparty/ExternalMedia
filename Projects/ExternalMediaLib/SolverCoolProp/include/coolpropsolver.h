@@ -2,7 +2,6 @@
 #define COOLPROPSOLVER_H_
 
 #include "include.h"
-#if (EXTERNALMEDIA_COOLPROP == 1)
 
 #include "basesolver.h"
 #include "AbstractState.h"
@@ -41,7 +40,7 @@ protected:
 	ExternalSaturationProperties _satPropsClose2Crit; /* saturation properties close to  critical conditions */
 
 	virtual void postStateChange(ExternalThermodynamicState *const properties);
-	long makeDerivString(const string &of, const string &wrt, const string &cst);
+	long makeDerivString(const std::string &of, const std::string &wrt, const std::string &cst);
 	double interp_linear(double Q, double valueL, double valueV);
 	double interp_recip(double Q, double valueL, double valueV);
 
@@ -62,7 +61,7 @@ public:
 	virtual void setState_ps(double &p, double &s, int &phase, ExternalThermodynamicState *const properties);
 	virtual void setState_hs(double &h, double &s, int &phase, ExternalThermodynamicState *const properties);
 
-	virtual double partialDeriv_state(const string &of, const string &wrt, const string &cst, ExternalThermodynamicState *const properties);
+	virtual double partialDeriv_state(const std::string &of, const std::string &wrt, const std::string &cst, ExternalThermodynamicState *const properties);
 
 	virtual double Pr(ExternalThermodynamicState *const properties);
 	virtual double T(ExternalThermodynamicState *const properties);
@@ -100,7 +99,5 @@ public:
 	virtual double Tsat(ExternalSaturationProperties *const properties);
 
 };
-
-#endif
 
 #endif /* COOLPROPSOLVER_H_ */

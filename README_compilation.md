@@ -10,15 +10,11 @@ Once you have installed CMake and can access it from a command prompt, you can
 go to the root folder of the GIT repository and run:
 
 ```shell
-cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release
+git submodule update --init --recursive 
 cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release
 ```
 
 NOTE: On Windows to select a 32 or 64 bit build you can append the option `-A Win32` or `-A x64` to the above command.
-
-Please note that there is no typing mistake in the lines above. The current version
-of ExternalMedia requires you to run the configure step twice. Now you should have
-a working project configuration and the actual compilation can be triggered using:
 
 ```shell
 cmake --build build --config Release --target install
@@ -54,13 +50,11 @@ The recommended configuration step for Windows systems is
 
 ```shell
 cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=ON -DCOOLPROP:BOOL=ON
-cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=ON -DCOOLPROP:BOOL=ON
 ```
 
 ... and for all other systems, you probably want to use
 
 ```shell
-cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=OFF -DCOOLPROP:BOOL=ON
 cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=OFF -DCOOLPROP:BOOL=ON
 ```
 

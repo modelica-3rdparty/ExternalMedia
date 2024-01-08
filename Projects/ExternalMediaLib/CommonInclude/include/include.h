@@ -56,15 +56,4 @@
  *                 End of user option selection
  *            Do not change anything below this line
  ********************************************************************/
-
-/* General purpose includes */
-#include <map>
-using std::map;
-
-#include <string>
-using std::string;
-
-/* Include error handling */
-#include "errorhandling.h"
-
 #endif /* INCLUDE_H_ */

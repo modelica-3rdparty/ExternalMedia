@@ -1,12 +1,12 @@
 #ifndef BASESOLVER_H_
 #define BASESOLVER_H_
 
-#include "include.h"
+#include "ThermodynamicStructs.h"
 #include "fluidconstants.h"
-#include "externalmedialib.h"
+#include "include.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <string>
 
 struct FluidConstants;
 
@@ -24,7 +24,7 @@ struct FluidConstants;
 */
 class BaseSolver{
 public:
-	BaseSolver(const string &mediumName, const string &libraryName, const string &substanceName);
+	BaseSolver(const std::string &mediumName, const std::string &libraryName, const std::string &substanceName);
 	virtual ~BaseSolver();
 
 	double molarMass() const;
@@ -43,7 +43,7 @@ public:
 	virtual void setState_ps(double &p, double &s, int &phase, ExternalThermodynamicState *const properties);
 	virtual void setState_hs(double &h, double &s, int &phase, ExternalThermodynamicState *const properties);
 
-	virtual double partialDeriv_state(const string &of, const string &wrt, const string &cst, ExternalThermodynamicState *const properties);
+	virtual double partialDeriv_state(const std::string &of, const std::string &wrt, const std::string &cst, ExternalThermodynamicState *const properties);
 
 	virtual double Pr(ExternalThermodynamicState *const properties);
 	virtual double T(ExternalThermodynamicState *const properties);
@@ -91,11 +91,11 @@ public:
 	virtual double Tsat(ExternalSaturationProperties *const properties);
 
 	/*! Medium name */
-	string mediumName;
+	std::string mediumName;
 	/*! Library name */
-	string libraryName;
+	std::string libraryName;
     /*! Substance name */
-	string substanceName;
+	std::string substanceName;
 
 protected:
 	/*! Fluid constants */

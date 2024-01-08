@@ -1,7 +1,8 @@
 #ifndef SOLVERMAP_H_
 #define SOLVERMAP_H_
-
 #include "include.h"
+#include <string>
+#include <map>
 
 class BaseSolver;
 
@@ -17,12 +18,12 @@ class BaseSolver;
 */
 class SolverMap{
 public:
-	static BaseSolver *getSolver(const string &mediumName, const string &libraryName, const string &substanceName);
-	static string solverKey(const string &libraryName, const string &substanceName);
+	static BaseSolver *getSolver(const std::string &mediumName, const std::string &libraryName, const std::string &substanceName);
+	static std::string solverKey(const std::string &libraryName, const std::string &substanceName);
 
 protected:
    /*! Map for all solver instances identified by the SolverKey */
-	static map<string, BaseSolver*> _solvers;
+	static std::map<std::string, BaseSolver*> _solvers;
 };
 
 #endif /* SOLVERMAP_H_ */

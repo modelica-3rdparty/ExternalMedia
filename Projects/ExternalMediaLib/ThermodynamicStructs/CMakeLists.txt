@@ -1,0 +1,2 @@
+add_library(ThermodynamicStructs INTERFACE)
+target_include_directories(ThermodynamicStructs INTERFACE include)

@@ -17,6 +17,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules: recursive
     - name: Get the latest script
       run:  git clone --recursive https://github.com/nlohmann/cmake_min_version.git cmake_min_version
     - name: Prepare the environment

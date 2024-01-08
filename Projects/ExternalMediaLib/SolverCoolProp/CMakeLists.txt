@@ -1,0 +1,7 @@
+add_library(SolverCoolProp STATIC coolpropsolver.cpp)
+target_include_directories(SolverCoolProp PUBLIC include)
+
+target_link_libraries(SolverCoolProp PUBLIC SolverInterface CoolProp CommonInclude)
+target_link_libraries(SolverCoolProp PRIVATE errorhandling)
+
+

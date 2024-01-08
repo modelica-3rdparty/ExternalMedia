@@ -1,8 +1,8 @@
 #include "coolpropsolver.h"
 
 #include "include.h"
-#if (EXTERNALMEDIA_COOLPROP == 1)
 
+#include "errorhandling.h"
 #include "CoolPropTools.h"
 #include "CoolPropLib.h"
 #include "CoolProp.h"
@@ -610,7 +610,7 @@ void CoolPropSolver::setState_hs(double &h, double &s, int &phase, ExternalTherm
 	}
 }
 
-double CoolPropSolver::partialDeriv_state(const string &of, const string &wrt, const string &cst, ExternalThermodynamicState *const properties){
+double CoolPropSolver::partialDeriv_state(const std::string &of, const std::string &wrt, const std::string &cst, ExternalThermodynamicState *const properties){
 	if (debug_level > 5)
 		std::cout << format("partialDeriv_state(of=%s,wrt=%s,cst=%s,state)\n",of.c_str(),wrt.c_str(),cst.c_str());
 
@@ -628,7 +628,7 @@ double CoolPropSolver::partialDeriv_state(const string &of, const string &wrt, c
 	return res;
 }
 
-long CoolPropSolver::makeDerivString(const string &of, const string &wrt, const string &cst){
+long CoolPropSolver::makeDerivString(const std::string &of, const std::string &wrt, const std::string &cst){
 	std::string derivTerm;
 	     if (!of.compare("d")){ derivTerm = "drho"; }
 	else if (!of.compare("p")){ derivTerm = "dp"; }
@@ -884,4 +884,3 @@ double CoolPropSolver::interp_recip(double Q, double valueL, double valueV){
 	return 1.0 / interp_linear(Q, 1.0/valueL, 1.0/valueV);
 }
 
-#endif

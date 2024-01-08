@@ -5,6 +5,11 @@
 *~
 
 
+
+# Ignore individual files (alphabetical)
+###############################################
+compile_commands.json
+
 # Ignore directories (alphabetical)
 ###############################################
 /.svn/
@@ -12,6 +17,10 @@
 /build/
 /build32/
 /build64/
+/clang/
+/.cache/
+
+
 
 
 # Ignore Dymola files (in alphabetical order)
@@ -37,3 +46,4 @@ stat
 status
 stop
 stop.
+

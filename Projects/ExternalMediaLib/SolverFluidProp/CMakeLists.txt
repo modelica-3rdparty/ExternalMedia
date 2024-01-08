@@ -1,0 +1,7 @@
+add_library(SolverFluidProp STATIC fluidpropsolver.cpp)
+target_include_directories(SolverFluidProp PUBLIC include)
+
+target_link_libraries(SolverFluidProp PUBLIC SolverInterface CommonInclude)
+target_link_libraries(SolverFluidProp PRIVATE errorhandling)
+
+

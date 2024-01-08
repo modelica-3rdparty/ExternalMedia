@@ -1,29 +1,49 @@
-cmake_minimum_required(VERSION 3.8.2 FATAL_ERROR) # Due to the use of target_compile_definitions
-include(ExternalProject)
+cmake_minimum_required(VERSION 3.9.0 FATAL_ERROR)
+# It is now 3.9 because of check_ipo_supported.
+# checked with https://github.com/nlohmann/cmake_min_version
 
-CMAKE_POLICY(SET CMP0053 NEW)
+
+
+set(CMAKE_POLICY_DEFAULT_CMP0063 NEW)
+set(CMAKE_POLICY_DEFAULT_CMP0069 NEW)
 
 #######################################
 #         PROJECT INFORMATION         #
 #######################################
 
-# Project name
-project ("ExternalMedia")
+# PROJECT_VERSION
+# PROJECT_VERSION_MAJOR
+# PROJECT_VERSION_MINOR
+# PROJECT_VERSION_PATCH
+
+set(VERSION_MAJOR 3)
+set(VERSION_MINOR 3)
+set(VERSION_PATCH 2)
+set(APP_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
+message (STATUS "ExternalMedia library version: ${APP_VERSION}")
+set (LIBRARY_NAME "ExternalMediaLib")
+set (LIBRARY_HEADER "externalmedialib.h")
+
+project ("ExternalMedia" LANGUAGES C CXX VERSION ${APP_VERSION})
+
+option(SUPPRESS_IPO "Do not use inter process optimization (aka link-time optimization) for faster compilation" OFF)
+if(NOT SUPPRESS_IPO)
+  include(CheckIPOSupported)
+  check_ipo_supported(RESULT is_ipo_supported OUTPUT lto_error LANGUAGES C CXX)
+  message(STATUS "is_ipo_supported = ${is_ipo_supported}")
+  if(is_ipo_supported)
+    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+  endif()
+endif()
+
+
+
 
 if(APPLE)
   # Latest version of coolprop only compiles with a modern C++ standard,
   # and MacOS does not do that by default
   set(CMAKE_CXX_STANDARD 14)
 endif()
-
-# Project version
-set (VERSION_MAJOR 3)
-set (VERSION_MINOR 3)
-set (VERSION_PATCH 2)
-set (APP_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
-message (STATUS "ExternalMedia library version: ${APP_VERSION}")
-set (LIBRARY_NAME "ExternalMediaLib")
-set (LIBRARY_HEADER "externalmedialib.h")
 
 
 #######################################
@@ -42,54 +62,26 @@ endif()
 # Workaround for missing ModelicaMessage and ModelicaError objects
 set(INCLUDE_DIRS "")
 
-if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../externals")
-  file(MAKE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../externals")
-endif()
-
 option(COOLPROP "Include the CoolProp library for fluid properties" ON)
 option(FLUIDPROP "Include the FluidProp library for fluid properties" OFF)
+
+# For installation of the shared library look in ExternalMediaLib/CMakeLists.txt
+set(MODELICA_INSTALL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia/Resources")
+INSTALL(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/ExternalMediaLib/include/" DESTINATION "${MODELICA_INSTALL_PATH}/Include")
+
+
+add_subdirectory(Export)
+add_subdirectory(ModelicaStaticHelper)
+add_subdirectory(ModelicaUtilitiesHelper)
+
+
+
 
 #######################################
 #       INCLUDE COOLPROP              #
 #######################################
 
 if(COOLPROP)
-  # Get the CoolProp code
-  set(COOLPROP_SOURCES "${CMAKE_BINARY_DIR}/CoolProp.sources")
-  #file(REMOVE_RECURSE "${COOLPROP_SOURCES}")
-  if(EXISTS "${COOLPROP_SOURCES}")
-    message(STATUS "Using existing CoolProp sources from ${COOLPROP_SOURCES}")
-  else()
-    message(STATUS "Updating CoolProp sources in ${COOLPROP_SOURCES}")
-    set(COOLPROP_SOURCES_GIT "${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp.git")
-    if(EXISTS "${COOLPROP_SOURCES_GIT}")
-      message(STATUS "Using existing CoolProp sources from ${COOLPROP_SOURCES_GIT}")
-      #file(COPY "${COOLPROP_SOURCES_GIT}" DESTINATION "${COOLPROP_SOURCES}")
-      execute_process(
-        COMMAND ${CMAKE_COMMAND} -E copy_directory "${COOLPROP_SOURCES_GIT}" "${COOLPROP_SOURCES}"
-      )
-    else()
-      message(STATUS "Downloading CoolProp sources from the released archive")
-      file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/6.5.0/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
-      #file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/nightly/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
-      # Unpack the sources for CoolProp
-      if(${CMAKE_VERSION} VERSION_LESS "3.18") 
-        execute_process(
-          COMMAND ${CMAKE_COMMAND} -E tar xjf "${CMAKE_BINARY_DIR}/coolprop.zip"
-          WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
-        )
-      else()
-        file(ARCHIVE_EXTRACT INPUT ${CMAKE_BINARY_DIR}/coolprop.zip)
-      endif()
-      file(RENAME "${CMAKE_BINARY_DIR}/source" "${COOLPROP_SOURCES}")
-    endif()
-  endif()
-  # Prepare the CoolProp build, "${COOLPROP_SOURCES}" is ready now
-  file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
-  # Configure CMake switches for CoolProp
-  SET(COOLPROP_STATIC_LIBRARY OFF CACHE BOOL "Force the object library")
-  SET(COOLPROP_SHARED_LIBRARY OFF CACHE BOOL "Force the object library")
-  SET(COOLPROP_OBJECT_LIBRARY ON  CACHE BOOL "Force the object library")
   # Force bitness for MinGW
   if(MINGW)
     if(CMAKE_SIZEOF_VOID_P MATCHES "8")
@@ -98,80 +90,32 @@ if(COOLPROP)
       SET(FORCE_BITNESS_32 ON CACHE BOOL "force 32 bit")
     endif()
   endif()
+  
+  # Configure CMake switches for CoolProp
   # Enable this for shared libraries (either CoolProp itself or ExternalMedia)
   SET(COOLPROP_FPIC ON CACHE BOOL "force -fPIC switch")
-  # Add the CoolProp sources
-  ADD_SUBDIRECTORY ("${COOLPROP_SOURCES}" "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
-  list (APPEND INCLUDE_DIRS "${COOLPROP_SOURCES}")
-  list (APPEND INCLUDE_DIRS "${COOLPROP_SOURCES}/include")
-  list (APPEND INCLUDE_DIRS "${COOLPROP_SOURCES}/externals/msgpack-c/include")
-  # Handle different CoolProp versions
-  if(EXISTS "${COOLPROP_SOURCES}/externals/cppformat")
-    list (APPEND INCLUDE_DIRS "${COOLPROP_SOURCES}/externals/cppformat")
-  endif()
-  if(EXISTS "${COOLPROP_SOURCES}/externals/fmtlib/include")
-    list (APPEND INCLUDE_DIRS "${COOLPROP_SOURCES}/externals/fmtlib/include")
-  endif()
-endif()
 
-## We use CMake to handle the dependency since the primary VCS for 
-## ExternalMedia still is SVN.
-#ExternalProject_Add(
-#  CoolProp
-#
-#  GIT_REPOSITORY "https://github.com/CoolProp/CoolProp.git"
-#  GIT_TAG "master"
-#  
-#  #UPDATE_COMMAND ""
-#  #PATCH_COMMAND ""
-#  
-#  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/externals/CoolProp.git"
-#  CMAKE_ARGS -DCOOLPROP_OBJECT_LIBRARY=ON -DCOOLPROP_SHARED_LIBRARY=OFF -DCOOLPROP_STATIC_LIBRARY=OFF
-#  
-#  TEST_COMMAND ""
-#)
-#
-#set(CoolProp_INCLUDE_DIRS "")
-#list (APPEND CoolProp_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/externals/CoolProp.git/include")
-#list (APPEND CoolProp_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/externals/CoolProp.git/externals/msgpack-c/include")
-##set(CoolProp_OBJECTS "${CMAKE_SHARED_LIBRARY_PREFIX}humblelogging${CMAKE_SHARED_LIBRARY_SUFFIX}")
-#set(CoolProp_OBJECTS $<TARGET_OBJECTS:CoolProp>)
-#foreach (_dir ${CoolProp_INCLUDE_DIRS})
-#  list (APPEND INCLUDE_DIRS ${_dir})
-#endforeach()
+  SET(COOLPROP_STATIC_LIBRARY ON CACHE BOOL "Force the static library")
+
+  # If the static CoolProp library is linked into a dynamic library don't export any symbols from coolprop!
+  set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+  set(CMAKE_C_VISIBILITY_PRESET hidden)
+  
+  # SET(COOLPROP_SHARED_LIBRARY ON CACHE BOOL "Force the shared library")
+  add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../externals/CoolProp" "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
+
+  # reinstate the default:
+  set(CMAKE_CXX_VISIBILITY_PRESET default)
+  set(CMAKE_C_VISIBILITY_PRESET default)
+
+endif()
 
 
 #######################################
 #         TARGET DEFINITIONS          #
 #######################################
-list (APPEND INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/Sources")
-include_directories (${INCLUDE_DIRS})
-file (GLOB_RECURSE LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/*.cpp")
 
-if(NOT FLUIDPROP)
-  list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/FluidProp_IF.cpp")
-  list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/FluidProp_COM.cpp")
-  list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/fluidpropsolver.cpp")
-endif()
-
-if(COOLPROP)
-  list(APPEND LIB_SOURCES $<TARGET_OBJECTS:CoolProp>)
-else()
-  list(REMOVE_ITEM LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/coolpropsolver.cpp")
-endif()
-
-# Add the target for ExternalMedia
-add_library(${LIBRARY_NAME} SHARED ${LIB_SOURCES})
-set_property(TARGET ${LIBRARY_NAME} PROPERTY VERSION ${APP_VERSION})
-set_property(TARGET ${LIBRARY_NAME} PROPERTY DEBUG_POSTFIX "")
-target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_FLUIDPROP=$<IF:$<BOOL:${FLUIDPROP}>,1,0>)
-target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_COOLPROP=$<IF:$<BOOL:${COOLPROP}>,1,0>)
-target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_EXPORTS) # Use this for a shared library
-target_compile_definitions(${LIBRARY_NAME} PRIVATE EXTERNALMEDIA_LIBRARY_EXPORTS=1) # Use this for a shared library
-
-if(COOLPROP)
-add_dependencies(${LIBRARY_NAME} CoolProp)
-endif()
+add_subdirectory(ExternalMediaLib)
 
 if(WIN32)
   if(CMAKE_SIZEOF_VOID_P MATCHES "8")
@@ -253,23 +197,5 @@ if(MINGW)
   message(WARNING "Discarded compiler information since OpenModelica expect the mingw32/64 platform.")
 endif()
 
-set(MODELICA_INSTALL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia/Resources")
-INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/${LIBRARY_HEADER}" DESTINATION "${MODELICA_INSTALL_PATH}/Include")
-message(STATUS "Installation path: ${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
-INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}/${MODELICA_COMPILER}")
-if(NOT WIN32)
-    # Both OpenModelica and Dymola on Linux DO NOT expect a compiler-specific subdirectory
-    # NB: This means that subsequent builds for different compilers overwrite the previously installed default binaries.
-    message(STATUS "Additional installation path: ${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")
-    INSTALL(TARGETS "${LIBRARY_NAME}" DESTINATION "${MODELICA_INSTALL_PATH}/Library/${MODELICA_PLATFORM}")
-endif()
 
-
-#######################################
-#          TEST DEFINITIONS           #
-#######################################
-# Customise this part to use your own CPP files
-if (COOLPROP)
-  add_executable (main EXCLUDE_FROM_ALL ${CMAKE_CURRENT_SOURCE_DIR}/Tests/coolprop_comparisons.cpp ${LIB_SOURCES})
-  add_dependencies (main CoolProp)
-endif()
+add_subdirectory(Tests)
