@@ -1522,7 +1522,6 @@ package Test "Test models for the different solvers"
       // Steady state equations
       der(medium.p) = 0;
       der(medium.h) = 0;
-      annotation (experiment(StopTime=80, Tolerance=1e-007));
     end TestBasePropertiesDynamic;
 
     partial model CompareModelicaTestMedium
@@ -1667,7 +1666,7 @@ package Test "Test models for the different solvers"
         V=0.1,
         redeclare package Medium = Medium,_h1=h_in)
         annotation (Placement(transformation(extent={{0,20},{20,40}})));
-      annotation (experiment(StopTime=80, Tolerance=1e-007));
+
     end TestRunner;
 
     model TestRunnerTwoPhase
