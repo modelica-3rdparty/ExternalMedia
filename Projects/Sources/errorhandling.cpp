@@ -40,7 +40,7 @@ void errorMessage(char *errorMsg){
 	if(ModelicaErrorPtr)
     // The pointer to ModelicaError has already been initialized by a previous
     // call to setState_xx
-	  ModelicaErrorPtr(msg.c_str());
+		ModelicaErrorPtr(msg.c_str());
 	else
 	{
 	  // The pointer to ModelicaError is not yet initialized, so all we can do
@@ -67,7 +67,7 @@ void warningMessage(char *warningMsg){
 	if(ModelicaWarningPtr)
     // The pointer to ModelicaError has already been initialized by a previous
     // call to setState_xx
-	  ModelicaWarningPtr(msg.c_str());
+		ModelicaWarningPtr(msg.c_str());
 	else
 	{
 	  // The pointer to ModelicaError is not yet initialized, so all we can do
