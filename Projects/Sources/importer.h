@@ -61,7 +61,7 @@ T tryImportSymbol(const char *funcName)
 template<typename T>
 T importSymbol(const char *funcName)
 {
-    T result = tryImportSymbol(funcName);
+    T result = tryImportSymbol<T>(funcName);
     if(result) return result;
 
     fprintf(stderr, "Can't get handle to %s in all loaded modules.\n", funcName);
