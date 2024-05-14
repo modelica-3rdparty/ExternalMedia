@@ -47,16 +47,16 @@ official ExternalMedia library.
 
 For OpenModelica, you can install and manage ExternalMedia using the
 built-in [Package Manager](https://openmodelica.org/doc/OpenModelicaUsersGuide/latest/omedit.html#omedit-install-library-label).
-This feature is coming soon, for the time being you can download the zip file
-with the library and unzip it in your file system.
+Please note that due to currently unresolved issues about the definition of backwards compatibility, if you have installed both
+version 3.3.x and version 4.x.x, the class loader will always load version 4.x.x even in case of a uses annotation requiring version 3.3.2. In that case, please load ExternalMedia 3.3.2 manually when you start the OMEdit session, you can find it in your `.openmodelica/libraries` directory.
 
 For use with Dymola, you can download the zip file with the library and
 unzip it in your file system. The released library already contains all
 the pre-compiled binaries for all operating systems, so it should work
 out of the box.
 
-Install version 3.3.x of External Media if your models still uses
-Modelica Standard Library 3.2.3, otherwise install version 4.0.x.
+Install the latest version 3.3.x of External Media if your models still uses
+Modelica Standard Library 3.2.3, otherwise install the latest version 4.x.x.
 
 If you want to experiment with the code and recompile the libraries, check
 the [compilation instructions](README_compilation.md).
