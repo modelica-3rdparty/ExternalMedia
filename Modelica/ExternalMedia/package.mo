@@ -18,6 +18,6 @@ package ExternalMedia
 <p>The library has been tested with the Dymola and OpenModelica tools under the Windows and Linux operating system. If you are interested in the support of other tools, operating systems, and external fluid property computation codes, please contact the developers.</p>
 <p>Main contributors: Francesco Casella, Christoph Richter, Roberto Bonifetto, Ian Bell, Jorrit Wronski, Federico Terraneo.</p>
 <p><b>The code is licensed under the BSD 3-clause license. </b>For license conditions visit <a href=\"https://opensource.org/licenses/BSD-3-Clause\">https://opensource.org/licenses/BSD-3-Clause</a>. </p>
-<p>Copyright &copy; 2006-2023, Francesco Casella, Christoph Richter, Roberto Bonifetto, Ian Bell, Jorrit Wronski, Federico Terraneo.</p>
+<p>Copyright &copy; 2006-2024, Francesco Casella, Christoph Richter, Roberto Bonifetto, Ian Bell, Jorrit Wronski, Federico Terraneo.</p>
 </html>"));
 end ExternalMedia;
