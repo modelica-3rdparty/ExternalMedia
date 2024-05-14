@@ -15,7 +15,7 @@
 #include <psapi.h>
 
 template<typename T>
-T importSymbol(const char *funcName)
+T tryImportSymbol(const char *funcName)
 {
     /* TODO: we should do caching */
     
@@ -53,6 +53,16 @@ T importSymbol(const char *funcName)
         T pfn = reinterpret_cast<T>(GetProcAddress(loaded_modules[i], funcName));
         if(pfn) return pfn;
     }
+
+    /* not found */
+    return NULL;
+}
+
+template<typename T>
+T importSymbol(const char *funcName)
+{
+    T result = tryImportSymbol<T>(funcName);
+    if(result) return result;
 
     fprintf(stderr, "Can't get handle to %s in all loaded modules.\n", funcName);
     exit(1);

@@ -34,10 +34,13 @@ void errorMessage(char *errorMsg){
 	#else
 	// Workaround code for Windows, will be removed when a proper solution to
 	// call ModelicaUtilities functions from DLLs is finally delivered
+	if(ModelicaErrorPtr == nullptr)
+		ModelicaErrorPtr = tryImportSymbol<void (*)(const char *)>("ModelicaError");
+
 	if(ModelicaErrorPtr)
     // The pointer to ModelicaError has already been initialized by a previous
     // call to setState_xx
-	  ModelicaErrorPtr(msg.c_str());
+		ModelicaErrorPtr(msg.c_str());
 	else
 	{
 	  // The pointer to ModelicaError is not yet initialized, so all we can do
@@ -58,10 +61,13 @@ void warningMessage(char *warningMsg){
 	#else
 	// Workaround code for Windows, will be removed when a proper solution to
 	// call ModelicaUtilities functions from DLLs is finally delivered
+	if(ModelicaWarningPtr == nullptr)
+		ModelicaWarningPtr = tryImportSymbol<void (*)(const char *)>("ModelicaWarning");
+
 	if(ModelicaWarningPtr)
     // The pointer to ModelicaError has already been initialized by a previous
     // call to setState_xx
-	  ModelicaWarningPtr(msg.c_str());
+		ModelicaWarningPtr(msg.c_str());
 	else
 	{
 	  // The pointer to ModelicaError is not yet initialized, so all we can do
