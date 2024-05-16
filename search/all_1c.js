@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['your_20own_20external_20medium_20package_0',['Developing your own external medium package',['../md__2github_2workspace_2_r_e_a_d_m_e__introduction.html#autotoc_md20',1,'']]]
+  ['_7ebasesolver_0',['~BaseSolver',['../class_base_solver.html#a909263204490fee8f1ed0959525b30b0',1,'BaseSolver']]]
 ];
