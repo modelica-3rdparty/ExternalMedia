@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ExternalMedia<span id="projectnumber">&#160;4.1.0</span>
+   <div id="projectname">ExternalMedia<span id="projectnumber">&#160;4.0.0</span>
    </div>
    <div id="projectbrief">A framework for Modelica.Media-compatible fluid properties</div>
   </td>
@@ -82,16 +82,16 @@ $(function() {
 </ul>
 <h1><a class="anchor" id="autotoc_md1"></a>
 Library overview</h1>
-<p>The ExternalMedia library provides a framework for interfacing external codes computing fluid properties to Modelica.Media-compatible component models. The latest 4.x.x releases are compatible with Modelica Standard Library (MSL) 4.0.0 and later, while 3.3.x versions are provided for legacy models that still use MSL 3.2.3.</p>
+<p>The ExternalMedia library provides a framework for interfacing external codes computing fluid properties to Modelica.Media-compatible component models. The latest 4.0.x releases are compatible with Modelica Standard Library (MSL) 4.0.0 and later, while 3.3.x versions are provided for legacy models that still use MSL 3.2.3.</p>
 <p>The current version of the library supports pure and pseudo-pure fluids models, possibly two-phase, compliant with the Modelica.Media.Interfaces.PartialTwoPhaseMedium interface. Please have a look at the <a class="el" href="md__2github_2workspace_2_r_e_a_d_m_e__introduction.html">dedicated introduction section</a> for an in-depth description of the architecture.</p>
 <p>The latest releases of the library include built-in access to the open-source <a href="http://www.coolprop.org">CoolProp</a> software and a pre-compiled interface to the <a href="https://asimptote.com/fluidprop/">FluidProp</a> commercial software. CoolProp medium models work out of the box without the need of any further installation. FluidProp medium models require to install the FluidProp software with proper licensing to access the media of your interest and to compute the property derivatives, which are required by ExternalMedia. The library works with FluidProp version 3.0 and later. It might work with previous versions of that software, but compatibility is no longer guaranteed. Please refer to the <a class="el" href="md__2github_2workspace_2_r_e_a_d_m_e__fluidprop.html">chapter on FluidProp</a> and the dedicated <a class="el" href="md__2github_2workspace_2_r_e_a_d_m_e__coolprop.html">chapter on CoolProp</a> for further details.</p>
 <p>The latest releases were tested with Dymola and OpenModelica on Windows and Linux. Support for more tools and operating systems might be added in the future, please let us know if you want to contribute.</p>
 <p>You can modify the library to add an interface to your own solver. If your solver is open-source, please contact the developers, so we can add it to the official ExternalMedia library.</p>
 <h1><a class="anchor" id="autotoc_md2"></a>
 Installation instructions for the ExternalMedia library</h1>
-<p>For OpenModelica, you can install and manage ExternalMedia using the built-in <a href="https://openmodelica.org/doc/OpenModelicaUsersGuide/latest/omedit.html#omedit-install-library-label">Package Manager</a>. Please note that due to currently unresolved issues about the definition of backwards compatibility, if you have installed both version 3.3.x and version 4.x.x, the class loader will always load version 4.x.x even in case of a uses annotation requiring version 3.3.2. In that case, please load ExternalMedia 3.3.2 manually when you start the OMEdit session, you can find it in your <code>.openmodelica/libraries</code> directory.</p>
+<p>For OpenModelica, you can install and manage ExternalMedia using the built-in <a href="https://openmodelica.org/doc/OpenModelicaUsersGuide/latest/omedit.html#omedit-install-library-label">Package Manager</a>. This feature is coming soon, for the time being you can download the zip file with the library and unzip it in your file system.</p>
 <p>For use with Dymola, you can download the zip file with the library and unzip it in your file system. The released library already contains all the pre-compiled binaries for all operating systems, so it should work out of the box.</p>
-<p>Install the latest version 3.3.x of External Media if your models still uses Modelica Standard Library 3.2.3, otherwise install the latest version 4.x.x.</p>
+<p>Install version 3.3.x of External Media if your models still uses Modelica Standard Library 3.2.3, otherwise install version 4.0.x.</p>
 <p>If you want to experiment with the code and recompile the libraries, check the <a class="el" href="md__2github_2workspace_2_r_e_a_d_m_e__compilation.html">compilation instructions</a>.</p>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Modelica integration</h2>
