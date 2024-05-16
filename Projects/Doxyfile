@@ -5,7 +5,7 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = ExternalMedia
-PROJECT_NUMBER         = 4.0.0
+PROJECT_NUMBER         = 4.1.0
 PROJECT_BRIEF          = "A framework for Modelica.Media-compatible fluid properties"
 PROJECT_LOGO           = 
 OUTPUT_DIRECTORY       = Documentation

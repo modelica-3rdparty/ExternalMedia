@@ -4,7 +4,7 @@ package ExternalMedia
   import SI = Modelica.Units.SI;
 
   annotation(uses(Modelica(version="4.0.0")),
-             version="4.0.1",
+             version="4.1.0",
              conversion(noneFromVersion="4.0.0"),
   Documentation(info="<html>
 <p>The <b>ExternalMedia</b> library provides a framework for interfacing external codes computing fluid properties to Modelica.Media-compatible component models. The library has been designed with two main goals: maximizing the efficiency of the code, while minimizing the amount of extra code required to interface existing external codes to the library.</p>
