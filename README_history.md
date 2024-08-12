@@ -6,7 +6,7 @@ external codes computing fluid properties to Modelica.Media-compatible
 component models. The two main requirements were: maximizing the efficiency
 of the code and minimizing the amount of extra code required to use your
 own external code within the framework. The library was described in
-[this paper](https://www.modelica.org/events/modelica2008/Proceedings/sessions/session2b1.pdf).
+[this paper](https://modelica.org/events/conference2008/sessions/session2b1.pdf).
 
 The first implementation featured a hidden cache in the C++ layer and used
 integer unique IDs to reference that cache. This architecture worked well
