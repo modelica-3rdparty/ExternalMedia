@@ -79,7 +79,7 @@ if(COOLPROP)
           WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
         )
       else()
-        file(ARCHIVE_EXTRACT INPUT ${CMAKE_BINARY_DIR}/coolprop.zip)
+        file(ARCHIVE_EXTRACT INPUT "${CMAKE_BINARY_DIR}/coolprop.zip" DESTINATION "${CMAKE_BINARY_DIR}")
       endif()
       file(RENAME "${CMAKE_BINARY_DIR}/source" "${COOLPROP_SOURCES}")
     endif()
