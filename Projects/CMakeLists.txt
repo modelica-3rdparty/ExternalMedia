@@ -73,7 +73,7 @@ if(COOLPROP)
       file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/6.5.0/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
       #file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/nightly/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
       # Unpack the sources for CoolProp
-      if(${CMAKE_VERSION} VERSION_LESS "3.18") 
+      if(${CMAKE_VERSION} VERSION_LESS "3.18")
         execute_process(
           COMMAND ${CMAKE_COMMAND} -E tar xjf "${CMAKE_BINARY_DIR}/coolprop.zip"
           WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
@@ -114,20 +114,20 @@ if(COOLPROP)
   endif()
 endif()
 
-## We use CMake to handle the dependency since the primary VCS for 
+## We use CMake to handle the dependency since the primary VCS for
 ## ExternalMedia still is SVN.
 #ExternalProject_Add(
 #  CoolProp
 #
 #  GIT_REPOSITORY "https://github.com/CoolProp/CoolProp.git"
 #  GIT_TAG "master"
-#  
+#
 #  #UPDATE_COMMAND ""
 #  #PATCH_COMMAND ""
-#  
+#
 #  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/externals/CoolProp.git"
 #  CMAKE_ARGS -DCOOLPROP_OBJECT_LIBRARY=ON -DCOOLPROP_SHARED_LIBRARY=OFF -DCOOLPROP_STATIC_LIBRARY=OFF
-#  
+#
 #  TEST_COMMAND ""
 #)
 #
