@@ -77,7 +77,7 @@ package Examples "Examples of external medium model definitions"
   package R134aCoolPropTaylor "CoolProp model of R134a using tabulated data and TTSE interpolation"
     extends ExternalMedia.Media.CoolPropMedium(
       mediumName = "R-134a",
-      substanceNames = {"R134a|enable_BICUBIC=1"},
+      substanceNames = {"R134a|enable_TTSE=1"},
       ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.ph,
       SpecificEnthalpy(start=2e5));
   end R134aCoolPropTaylor;
