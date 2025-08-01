@@ -13,9 +13,9 @@ The latest releases of the library can be downloaded [here](https://github.com/m
 
 The ExternalMedia library provides a framework for interfacing external codes
 computing fluid properties to Modelica.Media-compatible component models. The
-latest 4.x.x releases are compatible with Modelica Standard Library (MSL) 4.0.0
-and later, while 3.3.x versions are provided for legacy models that still use MSL
-3.2.3.
+latest 4.1.0 and 4.0.0 releases are compatible with Modelica Standard Library (MSL)
+4.1.0 and 4.0.0, while 3.3.x versions are provided for legacy models that still
+use MSL 3.2.3.
 
 The current version of the library supports pure and pseudo-pure fluids models,
 possibly two-phase, compliant with the

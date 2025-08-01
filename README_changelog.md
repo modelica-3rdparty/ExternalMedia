@@ -1,6 +1,7 @@
 # ExternalMedia Change Log
 
-## v4.1.0 - 2024/05/16
+## v4.1.0 - 2025/08/01
+ - Uses Modelica Standard Library 4.1.0
  - CoolProp updated to v6.5.0
  - Fixed issue with ModelicaError that causes OMEdit to crash when opening ExternalTwoPhaseMedium
 
