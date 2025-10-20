@@ -44,7 +44,7 @@ jobs:
           #- platform: macos-11
           #- platform: macos-10.15
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v5
     - name: Create Build Environment
       run: |
         cmake --version
@@ -78,7 +78,7 @@ jobs:
           #- platform: ubuntu-20.04
           #- platform: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v5
     - name: Create Build Environment
       run: |
         cmake --version
@@ -142,7 +142,7 @@ jobs:
             toolset: v140
             #cmake -G "Visual Studio 14" -T v120 -T v141,version=14.11
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v5
     - name: Create Build Environment
       run: |
         cmake --version
@@ -168,7 +168,7 @@ jobs:
   build-msys-openmodelica:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v5
     - name: Create Build Environment
       run: |
         cmake --version
@@ -212,7 +212,7 @@ jobs:
   build-msys:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2    
+    - uses: actions/checkout@v5    
     - name: Create Build Environment
       run: |
         cmake --version
@@ -238,7 +238,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v5
 
     - name: Build Doxygen sources
       uses: mattnotmitt/doxygen-action@v1

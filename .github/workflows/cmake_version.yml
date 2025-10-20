@@ -16,7 +16,7 @@ jobs:
         platform: [ubuntu-latest] #, macos-latest, windows-latest]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v5
     - name: Get the latest script
       run:  git clone --recursive https://github.com/nlohmann/cmake_min_version.git cmake_min_version
     - name: Prepare the environment
