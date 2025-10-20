@@ -52,6 +52,14 @@ jobs:
       run: |
         cmake --version
         cmake -E make_directory ${{runner.workspace}}/build
+    - name: Download CoolProp sources
+      run: |
+        mkdir externals
+        cd externals
+        git clone --recursive https://github.com/CoolProp/CoolProp.git CoolProp.git
+        cd CoolProp.git
+        git checkout tags/v7.1.0
+        git submodule update --init --recursive
     - name: Configure with CMake
       working-directory: ${{runner.workspace}}/build
       run: |
@@ -86,6 +94,14 @@ jobs:
       run: |
         cmake --version
         cmake -E make_directory ${{runner.workspace}}/build
+    - name: Download CoolProp sources
+      run: |
+        mkdir externals
+        cd externals
+        git clone --recursive https://github.com/CoolProp/CoolProp.git CoolProp.git
+        cd CoolProp.git
+        git checkout tags/v7.1.0
+        git submodule update --init --recursive
     - name: Configure with CMake
       working-directory: ${{runner.workspace}}/build
       run: |
@@ -154,6 +170,14 @@ jobs:
           #   #cmake -G "Visual Studio 14" -T v120 -T v141,version=14.11
     steps:
     - uses: actions/checkout@v5
+    - name: Download CoolProp sources
+      run: |
+        mkdir externals
+        cd externals
+        git clone --recursive https://github.com/CoolProp/CoolProp.git CoolProp.git
+        cd CoolProp.git
+        git checkout tags/v7.1.0
+        git submodule update --init --recursive
     - name: Create Build Environment
       run: |
         cmake --version
@@ -180,6 +204,14 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v5
+    - name: Download CoolProp sources
+      run: |
+        mkdir externals
+        cd externals
+        git clone --recursive https://github.com/CoolProp/CoolProp.git CoolProp.git
+        cd CoolProp.git
+        git checkout tags/v7.1.0
+        git submodule update --init --recursive
     - name: Create Build Environment
       run: |
         cmake --version
@@ -224,6 +256,14 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v5    
+    - name: Download CoolProp sources
+      run: |
+        mkdir externals
+        cd externals
+        git clone --recursive https://github.com/CoolProp/CoolProp.git CoolProp.git
+        cd CoolProp.git
+        git checkout tags/v7.1.0
+        git submodule update --init --recursive
     - name: Create Build Environment
       run: |
         cmake --version
@@ -250,6 +290,14 @@ jobs:
     steps:
 
     - uses: actions/checkout@v5
+    - name: Download CoolProp sources
+      run: |
+        mkdir externals
+        cd externals
+        git clone --recursive https://github.com/CoolProp/CoolProp.git CoolProp.git
+        cd CoolProp.git
+        git checkout tags/v7.1.0
+        git submodule update --init --recursive
 
     - name: Build Doxygen sources
       uses: mattnotmitt/doxygen-action@v1
