@@ -111,39 +111,47 @@ jobs:
       # Check the use of the ${MODELICA_PLATFORM} and ${MODELICA_COMPILER} variables in the CMake files
       matrix:
         include:
-          - platform: windows-2022
+          - platform: windows-2025
             generator: Visual Studio 17 2022
             arch: Win32
             toolset: v143
-          - platform: windows-2022
+          - platform: windows-2025
             generator: Visual Studio 17 2022
             arch: x64
             toolset: v143
-          - platform: windows-2019
-            generator: Visual Studio 16 2019
-            arch: Win32
-            toolset: v142
-          - platform: windows-2019
-            generator: Visual Studio 16 2019
-            arch: x64
-            toolset: v142
-          - platform: windows-2019
-            generator: Visual Studio 16 2019
-            arch: Win32
-            toolset: v141
-          - platform: windows-2019
-            generator: Visual Studio 16 2019
-            arch: x64
-            toolset: v141
-          - platform: windows-2019
-            generator: Visual Studio 16 2019
-            arch: Win32
-            toolset: v140
-          - platform: windows-2019
-            generator: Visual Studio 16 2019
-            arch: x64
-            toolset: v140
-            #cmake -G "Visual Studio 14" -T v120 -T v141,version=14.11
+          # - platform: windows-2022
+          #   generator: Visual Studio 17 2022
+          #   arch: Win32
+          #   toolset: v143
+          # - platform: windows-2022
+          #   generator: Visual Studio 17 2022
+          #   arch: x64
+          #   toolset: v143
+          # - platform: windows-2019
+          #   generator: Visual Studio 16 2019
+          #   arch: Win32
+          #   toolset: v142
+          # - platform: windows-2019
+          #   generator: Visual Studio 16 2019
+          #   arch: x64
+          #   toolset: v142
+          # - platform: windows-2019
+          #   generator: Visual Studio 16 2019
+          #   arch: Win32
+          #   toolset: v141
+          # - platform: windows-2019
+          #   generator: Visual Studio 16 2019
+          #   arch: x64
+          #   toolset: v141
+          # - platform: windows-2019
+          #   generator: Visual Studio 16 2019
+          #   arch: Win32
+          #   toolset: v140
+          # - platform: windows-2019
+          #   generator: Visual Studio 16 2019
+          #   arch: x64
+          #   toolset: v140
+          #   #cmake -G "Visual Studio 14" -T v120 -T v141,version=14.11
     steps:
     - uses: actions/checkout@v5
     - name: Create Build Environment
