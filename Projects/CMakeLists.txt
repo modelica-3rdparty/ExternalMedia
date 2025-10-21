@@ -204,10 +204,9 @@ if(MSVC) #CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   # Ensure UTF-8 encoding for MSVC compiler
   foreach(flag_var CMAKE_C_FLAGS CMAKE_C_FLAGS_DEBUG CMAKE_C_FLAGS_RELEASE
                     CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE)
-    if(${flag_var} MATCHES "/utf-8")
-      continue()
+    if(NOT ${flag_var} MATCHES "/utf-8")
+      set(${flag_var} "${${flag_var}} /utf-8")
     endif()
-    set(${flag_var} "${${flag_var}} /utf-8")
   endforeach()
   if    (MSVC_TOOLSET_VERSION EQUAL 80 )
     set(MODELICA_COMPILER vs2005)
