@@ -13,9 +13,9 @@ The latest releases of the library can be downloaded [here](https://github.com/m
 
 The ExternalMedia library provides a framework for interfacing external codes
 computing fluid properties to Modelica.Media-compatible component models. The
-latest 4.x.x releases are compatible with Modelica Standard Library (MSL) 4.0.0
-and later, while 3.3.x versions are provided for legacy models that still use MSL
-3.2.3.
+latest 4.1.0 and 4.0.0 releases are compatible with Modelica Standard Library (MSL)
+4.1.0 and 4.0.0, while 3.3.x versions are provided for legacy models that still
+use MSL 3.2.3.
 
 The current version of the library supports pure and pseudo-pure fluids models,
 possibly two-phase, compliant with the
@@ -47,8 +47,8 @@ official ExternalMedia library.
 
 For OpenModelica, you can install and manage ExternalMedia using the
 built-in [Package Manager](https://openmodelica.org/doc/OpenModelicaUsersGuide/latest/omedit.html#omedit-install-library-label).
-Please note that due to currently unresolved issues about the definition of backwards compatibility, if you have installed both
-version 3.3.x and version 4.x.x, the class loader will always load version 4.x.x even in case of a uses annotation requiring version 3.3.2. In that case, please load ExternalMedia 3.3.2 manually when you start the OMEdit session, you can find it in your `.openmodelica/libraries` directory.
+Please make sure you are using OpenModelica version 1.25.1 or later to ensure the correct libraries are loaded, in case you want
+to install more than one version of ExternalMedia on your computer. 
 
 For use with Dymola, you can download the zip file with the library and
 unzip it in your file system. The released library already contains all
