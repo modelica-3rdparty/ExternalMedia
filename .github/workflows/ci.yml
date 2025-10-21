@@ -256,7 +256,7 @@ jobs:
   build-msys:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v5    
+    - uses: actions/checkout@v5
     - name: Download CoolProp sources
       run: |
         mkdir externals
