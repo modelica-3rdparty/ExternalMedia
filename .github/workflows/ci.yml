@@ -43,9 +43,10 @@ jobs:
       # Check the use of the ${MODELICA_PLATFORM} and ${MODELICA_COMPILER} variables in the CMake files
       matrix:
         include:
-          - platform: macos-latest
-          #- platform: macos-11
-          #- platform: macos-10.15
+          - platform: macos-latest  #  currently macos-26, arm-only
+            arch: arm64
+          - platform: macos-15-intel
+            arch: x86_64
     steps:
     - uses: actions/checkout@v5
     - name: Create Build Environment
@@ -63,8 +64,8 @@ jobs:
     - name: Configure with CMake
       working-directory: ${{runner.workspace}}/build
       run: |
-       cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=0 -DCOOLPROP=1 || true
-       cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=0 -DCOOLPROP=1
+       cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=${{ matrix.arch }} -DFLUIDPROP=0 -DCOOLPROP=1 || true
+       cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=${{ matrix.arch }} -DFLUIDPROP=0 -DCOOLPROP=1
     - name: Build with CMake
       working-directory: ${{runner.workspace}}/build
       run: cmake --build . --target ExternalMediaLib
@@ -74,7 +75,7 @@ jobs:
     - name: upload macos artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: binaries-${{ matrix.platform }}
+        name: binaries-${{ matrix.arch }}
         path: Modelica
 
 

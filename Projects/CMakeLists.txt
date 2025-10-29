@@ -74,13 +74,13 @@ if(COOLPROP)
       #file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/6.5.0/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
       #file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/nightly/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
       # Unpack the sources for CoolProp
-      if(${CMAKE_VERSION} VERSION_LESS "3.18") 
+      if(${CMAKE_VERSION} VERSION_LESS "3.18")
         execute_process(
           COMMAND ${CMAKE_COMMAND} -E tar xjf "${CMAKE_BINARY_DIR}/coolprop.zip"
           WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
         )
       else()
-        file(ARCHIVE_EXTRACT INPUT ${CMAKE_BINARY_DIR}/coolprop.zip)
+        file(ARCHIVE_EXTRACT INPUT "${CMAKE_BINARY_DIR}/coolprop.zip" DESTINATION "${CMAKE_BINARY_DIR}")
       endif()
       file(RENAME "${CMAKE_BINARY_DIR}/source" "${COOLPROP_SOURCES}")
     endif()
@@ -115,20 +115,20 @@ if(COOLPROP)
   endif()
 endif()
 
-## We use CMake to handle the dependency since the primary VCS for 
+## We use CMake to handle the dependency since the primary VCS for
 ## ExternalMedia still is SVN.
 #ExternalProject_Add(
 #  CoolProp
 #
 #  GIT_REPOSITORY "https://github.com/CoolProp/CoolProp.git"
 #  GIT_TAG "master"
-#  
+#
 #  #UPDATE_COMMAND ""
 #  #PATCH_COMMAND ""
-#  
+#
 #  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/externals/CoolProp.git"
 #  CMAKE_ARGS -DCOOLPROP_OBJECT_LIBRARY=ON -DCOOLPROP_SHARED_LIBRARY=OFF -DCOOLPROP_STATIC_LIBRARY=OFF
-#  
+#
 #  TEST_COMMAND ""
 #)
 #
@@ -187,12 +187,27 @@ elseif(UNIX AND NOT APPLE) # Important! UNIX is set both on Linux and MacOS!
     set(MODELICA_PLATFORM "linux32")
   endif()
 elseif(APPLE)
-  # Platform name is not standardized, for now we stick with darwin but untested
+  # Platform name is not standardized
   # https://openmodelica.org/forum/default-topic/583-openmodelica-1-8-1-fmu-export-fails-under-mac-os-x
-  if(CMAKE_SIZEOF_VOID_P MATCHES "8")
-    set(MODELICA_PLATFORM "darwin64")
+  list(LENGTH CMAKE_OSX_ARCHITECTURES NUMBER_OF_OSX_ARCHITECTURES)
+  if (NUMBER_OF_OSX_ARCHITECTURES EQUAL 0)
+    if (CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "x86_64")
+      set(MODELICA_PLATFORM "darwin64")
+    elseif (CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "arm64")
+      set(MODELICA_PLATFORM "aarch64-darwin")
+    else()
+      message(FATAL_ERROR "Unknown macOS architecture CMAKE_HOST_SYSTEM_PROCESSOR=${CMAKE_HOST_SYSTEM_PROCESSOR}.")
+    endif()
+  elseif(NUMBER_OF_OSX_ARCHITECTURES EQUAL 1)
+    if (CMAKE_OSX_ARCHITECTURES STREQUAL "x86_64")
+      set(MODELICA_PLATFORM "darwin64")
+    elseif (CMAKE_OSX_ARCHITECTURES STREQUAL "arm64")
+      set(MODELICA_PLATFORM "aarch64-darwin")
+    else()
+      message(FATAL_ERROR "Unknown macOS architecture CMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}.")
+    endif()
   else()
-    set(MODELICA_PLATFORM "darwin32")
+    message(FATAL_ERROR "Universal builds not supported CMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}.")
   endif()
   # Defer resolving ModelicaUtilities references at runtime
   set(CMAKE_SHARED_LINKER_FLAGS "-undefined dynamic_lookup")
