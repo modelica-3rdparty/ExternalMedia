@@ -241,10 +241,18 @@ jobs:
         cd CoolProp.git
         git checkout tags/v7.1.0
         git submodule update --init --recursive
-    - name: Create Build Environment
+    - name: Get OMDev version hash
       run: |
         cmake --version
-        git clone https://openmodelica.org/git/OMDev.git C:/OMDev
+        git ls-remote https://openmodelica.org/git/OMDev.git HEAD > omdev_hash.txt
+    - uses: actions/cache@v4
+      id: cache-omdev
+      with:
+        path: C:/OMDev
+        key: pre-commit-${{ hashFiles('omdev_hash.txt') }}
+    - name: Create Build Environment
+      if: steps.cache-omdev.outputs.cache-hit != 'true'
+      run: git clone https://openmodelica.org/git/OMDev.git C:/OMDev
     - name: Configure with CMake for 32bit
       working-directory: ${{runner.workspace}}
       run: |
