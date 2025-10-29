@@ -21,14 +21,24 @@ jobs:
       with:
         pattern: binaries-* 
         merge-multiple: true
+    - name: Determine the name suffix
+      id: ref_name
+      run: |
+        if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+          echo "This is a tag build"
+          echo "ref_name=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        else
+          echo "This is a branch build"
+          echo "ref_name=latest" >> $GITHUB_OUTPUT
+        fi
     - name: Copy the PDF manual
-      run: cp ExternalMedia/Resources/manual.pdf ExternalMedia-${{ github.ref_name }}.pdf
-    - name: Zip all binaries
+      run: cp ExternalMedia/Resources/manual.pdf ExternalMedia-${{ steps.ref_name.outputs.ref_name }}.pdf
+    - name: Zip all binaries (tag only)
       uses: papeloto/action-zip@v1
       with:
         files: ExternalMedia/
         recursive: true
-        dest: ExternalMedia-${{ github.ref_name }}.zip
+        dest: ExternalMedia-${{ steps.ref_name.outputs.ref_name }}.zip
     - name: Display the file structure
       run: ls -R
     # - name: Zip binaries
@@ -51,10 +61,10 @@ jobs:
     - name: Upload zipped binaries
       uses: actions/upload-artifact@v5
       with:
-        name: ExternalMedia-{{ github.ref_name }}
+        name: ExternalMedia-binaries
         path: |
-          ./ExternalMedia-*.pdf
-          ./ExternalMedia-*.zip
+          ./ExternalMedia-latest.pdf
+          ./ExternalMedia-latest.zip
       if: startsWith(github.ref, 'refs/tags/') == false
     - name: Release on GitHub
       uses: softprops/action-gh-release@v1
