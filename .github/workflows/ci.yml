@@ -1,10 +1,5 @@
 name: Continuous Integration
 
-#on:
-#  push:
-#    tags:
-#      - 'v*'
-
 on: [push]
 
 jobs:
@@ -12,10 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build-macos, build-linux, build-windows, build-msys-openmodelica, build-msys, build-docs]
     steps:
-    # - uses: actions/upload-artifact/merge@v4
-    #   with:
-    #     name: binaries
-    #     pattern: binaries-* 
     - name: Download All Artifacts
       uses: actions/download-artifact@v5
       with:
@@ -33,7 +24,7 @@ jobs:
         fi
     - name: Copy the PDF manual
       run: cp ExternalMedia/Resources/manual.pdf ExternalMedia-${{ steps.ref_name.outputs.ref_name }}.pdf
-    - name: Zip all binaries (tag only)
+    - name: Zip binaries
       uses: papeloto/action-zip@v1
       with:
         files: ExternalMedia/
@@ -41,23 +32,6 @@ jobs:
         dest: ExternalMedia-${{ steps.ref_name.outputs.ref_name }}.zip
     - name: Display the file structure
       run: ls -R
-    # - name: Zip binaries
-      # uses: papeloto/action-zip@v1
-      # with:
-        # files: binaries/
-        # recursive: true
-        # dest: latest.zip
-    # - name: Upload zipped binaries
-      # uses: actions/upload-artifact@v4
-        # with:
-          # name: latest
-          # path: latest.zip
-    # - name: Deploy zipped binaries
-      # uses: peaceiris/actions-gh-pages@v3
-      # with:
-        # github_token: ${{ secrets.GITHUB_TOKEN }}
-        # publish_dir: Documentation/html
-        # #destination_dir: latest
     - name: Upload zipped binaries
       uses: actions/upload-artifact@v5
       with:
@@ -174,39 +148,6 @@ jobs:
             generator: Visual Studio 17 2022
             arch: x64
             toolset: v143
-          # - platform: windows-2022
-          #   generator: Visual Studio 17 2022
-          #   arch: Win32
-          #   toolset: v143
-          # - platform: windows-2022
-          #   generator: Visual Studio 17 2022
-          #   arch: x64
-          #   toolset: v143
-          # - platform: windows-2019
-          #   generator: Visual Studio 16 2019
-          #   arch: Win32
-          #   toolset: v142
-          # - platform: windows-2019
-          #   generator: Visual Studio 16 2019
-          #   arch: x64
-          #   toolset: v142
-          # - platform: windows-2019
-          #   generator: Visual Studio 16 2019
-          #   arch: Win32
-          #   toolset: v141
-          # - platform: windows-2019
-          #   generator: Visual Studio 16 2019
-          #   arch: x64
-          #   toolset: v141
-          # - platform: windows-2019
-          #   generator: Visual Studio 16 2019
-          #   arch: Win32
-          #   toolset: v140
-          # - platform: windows-2019
-          #   generator: Visual Studio 16 2019
-          #   arch: x64
-          #   toolset: v140
-          #   #cmake -G "Visual Studio 14" -T v120 -T v141,version=14.11
     steps:
     - uses: actions/checkout@v5
     - name: Download CoolProp sources
@@ -292,12 +233,6 @@ jobs:
       with:
         name: binaries-windows-msys-openmodelica
         path: Modelica
-
-#set Path=%ProgramFiles%\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw64\bin;%Path%
-#cmake -B build64 -S Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
-#cmake -B build64 -S Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
-#cmake --build build64 --target ExternalMediaLib
-#cmake --build build64 --target install
 
   build-msys:
     runs-on: windows-latest
