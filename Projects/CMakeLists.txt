@@ -70,7 +70,8 @@ if(COOLPROP)
       )
     else()
       message(STATUS "Downloading CoolProp sources from the released archive")
-      file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/6.5.0/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
+      file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/6.7.0/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
+      #file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/6.5.0/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
       #file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/nightly/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
       # Unpack the sources for CoolProp
       if(${CMAKE_VERSION} VERSION_LESS "3.18") 
@@ -200,6 +201,13 @@ else()
 endif()
 
 if(MSVC) #CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+  # Ensure UTF-8 encoding for MSVC compiler
+  foreach(flag_var CMAKE_C_FLAGS CMAKE_C_FLAGS_DEBUG CMAKE_C_FLAGS_RELEASE
+                    CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE)
+    if(NOT ${flag_var} MATCHES "/utf-8")
+      set(${flag_var} "${${flag_var}} /utf-8")
+    endif()
+  endforeach()
   if    (MSVC_TOOLSET_VERSION EQUAL 80 )
     set(MODELICA_COMPILER vs2005)
   elseif(MSVC_TOOLSET_VERSION EQUAL 90 )
