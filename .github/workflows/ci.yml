@@ -21,7 +21,15 @@ jobs:
       with:
         pattern: binaries-* 
         merge-multiple: true
-    - name: Display structure of downloaded files
+    - name: Copy the PDF manual
+      run: cp ExternalMedia/Resources/manual.pdf ExternalMedia-${{ github.ref_name }}.pdf
+    - name: Zip all binaries
+      uses: papeloto/action-zip@v1
+      with:
+        files: ExternalMedia/
+        recursive: true
+        dest: ExternalMedia-${{ github.ref_name }}.zip
+    - name: Display the file structure
       run: ls -R
     # - name: Zip binaries
       # uses: papeloto/action-zip@v1
@@ -40,13 +48,21 @@ jobs:
         # github_token: ${{ secrets.GITHUB_TOKEN }}
         # publish_dir: Documentation/html
         # #destination_dir: latest
+    - name: Upload zipped binaries
+      uses: actions/upload-artifact@v5
+      with:
+        name: ExternalMedia-{{ github.ref_name }}
+        path: |
+          ./ExternalMedia-*.pdf
+          ./ExternalMedia-*.zip
+      if: startsWith(github.ref, 'refs/tags/') == false
     - name: Release on GitHub
       uses: softprops/action-gh-release@v1
       with:
         files: |
-          ./dist/ExternalMedia-*.pdf
-          ./dist/ExternalMedia-*.zip
-      if: startsWith(github.ref, 'refs/tags/')
+          ./ExternalMedia-*.pdf
+          ./ExternalMedia-*.zip
+      if: startsWith(github.ref, 'refs/tags/') == true
 
   build-macos:
     runs-on: ${{ matrix.platform }}
@@ -87,7 +103,7 @@ jobs:
     - name: upload macos artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: binaries-${{ matrix.arch }}
+        name: binaries-macos-${{ matrix.arch }}
         path: Modelica
 
 
@@ -129,7 +145,7 @@ jobs:
     - name: upload linux artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: binaries-${{ matrix.platform }}
+        name: binaries-linux-x86_64
         path: Modelica
 
 
@@ -209,7 +225,7 @@ jobs:
     - name: upload windows artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: binaries-${{ matrix.toolset }}-${{ matrix.arch }}
+        name: binaries-windows-${{ matrix.toolset }}-${{ matrix.arch }}
         path: Modelica
 
 
@@ -256,7 +272,7 @@ jobs:
     - name: upload msys-openmodelica artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: binaries-msys-openmodelica
+        name: binaries-windows-msys-openmodelica
         path: Modelica
 
 #set Path=%ProgramFiles%\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw64\bin;%Path%
