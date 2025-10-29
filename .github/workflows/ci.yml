@@ -47,6 +47,9 @@ jobs:
           ./ExternalMedia-*.pdf
           ./ExternalMedia-*.zip
       if: github.ref_type == 'tag'
+    - uses: geekyeggo/delete-artifact@v5
+      with:
+          name: binaries-*
 
   build-macos:
     runs-on: ${{ matrix.platform }}
