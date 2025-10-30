@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ExternalMedia<span id="projectnumber">&#160;4.1.0</span>
+   <div id="projectname">ExternalMedia<span id="projectnumber">&#160;4.1.1</span>
    </div>
    <div id="projectbrief">A framework for Modelica.Media-compatible fluid properties</div>
   </td>
@@ -88,7 +88,7 @@ $(function(){ initResizable(false); });
   <div class="headertitle"><div class="title">ExternalMedia History</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md19"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md20"></a></p>
 <p>The ExternalMedia project was started in 2006 by Francesco Casella and Christoph Richter, with the aim of providing a framework for interfacing external codes computing fluid properties to Modelica.Media-compatible component models. The two main requirements were: maximizing the efficiency of the code and minimizing the amount of extra code required to use your own external code within the framework. The library was described in <a href="https://modelica.org/events/conference2008/sessions/session2b1.pdf">this paper</a>.</p>
 <p>The first implementation featured a hidden cache in the C++ layer and used integer unique IDs to reference that cache. This architecture worked well if the models did not contain implicit algebraic equations involving medium properties, but had serious issues when such equations were involved, which is often the case when solving steady-state initialization problems. The library was shipped with an interface to the FluidProp software, provided at the time by TU Delft.</p>
 <p>The library was then restructured in 2012 by Francesco Casella and Roberto Bonifetto. The main idea was to get rid of the hidden cache and of the unique ID references and use the Modelica state records instead for caching. In this way, all optimizations performed by Modelica tools are guaranteed to give correct results, also in case of implicit equations, which was previously not the case. The library was mainly used with the Dymola tool, although some limited support for OpenModelica was given.</p>
