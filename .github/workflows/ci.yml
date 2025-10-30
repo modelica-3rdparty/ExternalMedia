@@ -183,9 +183,46 @@ jobs:
         path: Modelica
 
 
-  build-msys-openmodelica:
+  get-msys-openmodelica:
     runs-on: windows-latest
+    outputs:
+      omdev-cache-key: ${{ steps.keyomdev.outputs.omdev-hash }}
     steps:
+    - name: Get OMDev version hash
+      shell: bash
+      id: keyomdev
+      run: echo "omdev-hash=$(git ls-remote https://openmodelica.org/git/OMDev.git HEAD | awk '{print $1}')" >> $GITHUB_OUTPUT
+    - name: Restore the OMDev cache
+      uses: actions/cache/restore@v4
+      id: cacheomdev
+      with:
+        path: C:/OMDev
+        key: ${{ steps.keyomdev.outputs.omdev-hash }}
+        lookup-only: true
+    - name: Create the OMDev environment
+      if: steps.cacheomdev.outputs.cache-hit != 'true'
+      run: git clone https://openmodelica.org/git/OMDev.git C:/OMDev
+    - name: Save the OMDev cache
+      uses: actions/cache/save@v4
+      if: steps.cacheomdev.outputs.cache-hit != 'true'
+      with:
+        path: C:/OMDev
+        key: ${{ steps.keyomdev.outputs.omdev-hash }}
+
+  build-msys-openmodelica:
+    needs: get-msys-openmodelica
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        include:
+          - bitness: [32, 64]
+    steps:
+    - name: Restore the OMDev cache
+      uses: actions/cache/restore@v4
+      id: cache-omdev
+      with:
+        path: C:/OMDev
+        key: ${{ needs.get-msys-openmodelica.outputs.omdev-cache-key }}
     - uses: actions/checkout@v5
     - name: Download CoolProp sources
       run: |
@@ -194,47 +231,23 @@ jobs:
         git clone --recursive https://github.com/CoolProp/CoolProp.git CoolProp.git
         cd CoolProp.git
         git checkout tags/v7.1.0
-        git submodule update --init --recursive
-    - name: Get OMDev version hash
-      run: |
-        cmake --version
-        git ls-remote https://openmodelica.org/git/OMDev.git HEAD > omdev_hash.txt
-    - uses: actions/cache@v4
-      id: cache-omdev
-      with:
-        path: C:/OMDev
-        key: pre-commit-${{ hashFiles('omdev_hash.txt') }}
-    - name: Create Build Environment
-      if: steps.cache-omdev.outputs.cache-hit != 'true'
-      run: git clone https://openmodelica.org/git/OMDev.git C:/OMDev
-    - name: Configure with CMake for 32bit
+        git submodule update --init --recursive    
+    - name: Configure with CMake for ${{ matrix.bitness }}bit
       working-directory: ${{runner.workspace}}
       run: |
-        $env:Path = "${env:ProgramFiles}\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw32\bin;$env:Path"
-        cmake -B build32 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
-        cmake -B build32 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
-    - name: Build with CMake for 32bit
+        $env:Path = "${env:ProgramFiles}\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw${{ matrix.bitness }}\bin;$env:Path"
+        cmake -B build -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
+        cmake -B build -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
+    - name: Build with CMake for ${{ matrix.bitness }}bit
       working-directory: ${{runner.workspace}}
       run: |
-        $env:Path = "${env:ProgramFiles}\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw32\bin;$env:Path"
-        cmake --build build32 --target ExternalMediaLib
-        cmake --build build32 --target install
-    - name: Configure with CMake for 64bit
-      working-directory: ${{runner.workspace}}
-      run: |
-        $env:Path = "${env:ProgramFiles}\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw64\bin;$env:Path"
-        cmake -B build64 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
-        cmake -B build64 -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
-    - name: Build with CMake for 64bit
-      working-directory: ${{runner.workspace}}
-      run: |
-        $env:Path = "${env:ProgramFiles}\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw64\bin;$env:Path"
-        cmake --build build64 --target ExternalMediaLib
-        cmake --build build64 --target install
+        $env:Path = "${env:ProgramFiles}\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw${{ matrix.bitness }}\bin;$env:Path"
+        cmake --build build --target ExternalMediaLib
+        cmake --build build --target install
     - name: upload msys-openmodelica artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: binaries-windows-msys-openmodelica
+        name: binaries-windows-msys-openmodelica-${{ matrix.bitness }}
         path: Modelica
 
   build-msys:
