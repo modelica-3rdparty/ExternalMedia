@@ -51,7 +51,42 @@ jobs:
       with:
           name: binaries-*
 
+  get-coolprop:
+    runs-on: ubuntu-latest
+    outputs:
+      coolprop-hash: ${{ steps.keycoolprop.outputs.coolprop-hash }}
+    env:
+      COOLPROP_VERSION: v7.1.0
+    steps:
+    - name: Get CoolProp version hash
+      shell: bash
+      id: coolprop_hash
+      run: echo "coolprop-hash=$(git ls-remote https://github.com/CoolProp/CoolProp.git refs/tags/${COOLPROP_VERSION} | awk '{print $1}')" >> $GITHUB_OUTPUT
+    - name: Restore the CoolProp cache
+      uses: actions/cache/restore@v4
+      id: coolprop_cache
+      with:
+        key: coolprop-${{ steps.coolprop_hash.outputs.coolprop-hash }}
+        path: externals/CoolProp.git
+        lookup-only: true
+    - name: Download CoolProp sources
+      if: steps.coolprop_cache.outputs.cache-hit != 'true'
+      run: |
+        mkdir externals
+        cd externals
+        git clone --recursive https://github.com/CoolProp/CoolProp.git CoolProp.git
+        cd CoolProp.git
+        git checkout tags/v7.1.0
+        git submodule update --init --recursive
+    - name: Save the CoolProp cache
+      uses: actions/cache/save@v4
+      if: steps.coolprop_cache.outputs.cache-hit != 'true'
+      with:
+        key: coolprop-${{ steps.coolprop_hash.outputs.coolprop-hash }}
+        path: externals/CoolProp.git
+
   build-macos:
+    needs: get-coolprop
     runs-on: ${{ matrix.platform }}
     strategy:
       # Only use one build here, otherwise we cannot control which build is included in the release zip package
@@ -68,14 +103,11 @@ jobs:
       run: |
         cmake --version
         cmake -E make_directory ${{runner.workspace}}/build
-    - name: Download CoolProp sources
-      run: |
-        mkdir externals
-        cd externals
-        git clone --recursive https://github.com/CoolProp/CoolProp.git CoolProp.git
-        cd CoolProp.git
-        git checkout tags/v7.1.0
-        git submodule update --init --recursive
+    - name: Restore CoolProp sources
+      uses: actions/cache/restore@v4
+      with:
+        key: coolprop-${{ needs.get-coolprop.outputs.coolprop-hash }}
+        path: externals/CoolProp.git
     - name: Configure with CMake
       working-directory: ${{runner.workspace}}/build
       run: |
@@ -95,6 +127,7 @@ jobs:
 
 
   build-linux:
+    needs: get-coolprop
     runs-on: ${{ matrix.platform }}
     strategy:
       # Only use one build here, otherwise we cannot control which build is included in the release zip package
@@ -110,14 +143,11 @@ jobs:
       run: |
         cmake --version
         cmake -E make_directory ${{runner.workspace}}/build
-    - name: Download CoolProp sources
-      run: |
-        mkdir externals
-        cd externals
-        git clone --recursive https://github.com/CoolProp/CoolProp.git CoolProp.git
-        cd CoolProp.git
-        git checkout tags/v7.1.0
-        git submodule update --init --recursive
+    - name: Restore CoolProp sources
+      uses: actions/cache/restore@v4
+      with:
+        key: coolprop-${{ needs.get-coolprop.outputs.coolprop-hash }}
+        path: externals/CoolProp.git
     - name: Configure with CMake
       working-directory: ${{runner.workspace}}/build
       run: |
@@ -137,6 +167,7 @@ jobs:
 
 
   build-windows:
+    needs: get-coolprop
     runs-on: ${{ matrix.platform }}
     strategy:
       # Use several builds here, Windows requires different builds for different compilers
@@ -153,14 +184,11 @@ jobs:
             toolset: v143
     steps:
     - uses: actions/checkout@v5
-    - name: Download CoolProp sources
-      run: |
-        mkdir externals
-        cd externals
-        git clone --recursive https://github.com/CoolProp/CoolProp.git CoolProp.git
-        cd CoolProp.git
-        git checkout tags/v7.1.0
-        git submodule update --init --recursive
+    - name: Restore CoolProp sources
+      uses: actions/cache/restore@v4
+      with:
+        key: coolprop-${{ needs.get-coolprop.outputs.coolprop-hash }}
+        path: externals/CoolProp.git
     - name: Create Build Environment
       run: |
         cmake --version
@@ -186,7 +214,7 @@ jobs:
   get-msys-openmodelica:
     runs-on: windows-latest
     outputs:
-      omdev-cache-key: ${{ steps.keyomdev.outputs.omdev-hash }}
+      omdev-hash: ${{ steps.keyomdev.outputs.omdev-hash }}
     steps:
     - name: Get OMDev version hash
       shell: bash
@@ -197,7 +225,7 @@ jobs:
       id: cacheomdev
       with:
         path: C:/OMDev
-        key: ${{ steps.keyomdev.outputs.omdev-hash }}
+        key: omdev-${{ steps.keyomdev.outputs.omdev-hash }}
         lookup-only: true
     - name: Create the OMDev environment
       if: steps.cacheomdev.outputs.cache-hit != 'true'
@@ -207,10 +235,10 @@ jobs:
       if: steps.cacheomdev.outputs.cache-hit != 'true'
       with:
         path: C:/OMDev
-        key: ${{ steps.keyomdev.outputs.omdev-hash }}
+        key: omdev-${{ steps.keyomdev.outputs.omdev-hash }}
 
   build-msys-openmodelica:
-    needs: get-msys-openmodelica
+    needs: [get-msys-openmodelica, get-coolprop]
     runs-on: windows-latest
     strategy:
       matrix:
@@ -222,16 +250,13 @@ jobs:
       id: cache-omdev
       with:
         path: C:/OMDev
-        key: ${{ needs.get-msys-openmodelica.outputs.omdev-cache-key }}
+        key: omdev-${{ needs.get-msys-openmodelica.outputs.omdev-hash }}
     - uses: actions/checkout@v5
-    - name: Download CoolProp sources
-      run: |
-        mkdir externals
-        cd externals
-        git clone --recursive https://github.com/CoolProp/CoolProp.git CoolProp.git
-        cd CoolProp.git
-        git checkout tags/v7.1.0
-        git submodule update --init --recursive    
+    - name: Restore CoolProp sources
+      uses: actions/cache/restore@v4
+      with:
+        key: coolprop-${{ needs.get-coolprop.outputs.coolprop-hash }}
+        path: externals/CoolProp.git
     - name: Configure with CMake for ${{ matrix.bitness }}bit
       working-directory: ${{runner.workspace}}
       run: |
@@ -251,17 +276,15 @@ jobs:
         path: Modelica
 
   build-msys:
+    needs: get-coolprop
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v5
-    - name: Download CoolProp sources
-      run: |
-        mkdir externals
-        cd externals
-        git clone --recursive https://github.com/CoolProp/CoolProp.git CoolProp.git
-        cd CoolProp.git
-        git checkout tags/v7.1.0
-        git submodule update --init --recursive
+    - name: Restore CoolProp sources
+      uses: actions/cache/restore@v4
+      with:
+        key: coolprop-${{ needs.get-coolprop.outputs.coolprop-hash }}
+        path: externals/CoolProp.git
     - name: Create Build Environment
       run: |
         cmake --version
@@ -284,18 +307,16 @@ jobs:
     #    path: Modelica
     
   build-docs:
+    needs: get-coolprop
     runs-on: ubuntu-latest
     steps:
 
     - uses: actions/checkout@v5
-    - name: Download CoolProp sources
-      run: |
-        mkdir externals
-        cd externals
-        git clone --recursive https://github.com/CoolProp/CoolProp.git CoolProp.git
-        cd CoolProp.git
-        git checkout tags/v7.1.0
-        git submodule update --init --recursive
+    - name: Restore CoolProp sources
+      uses: actions/cache/restore@v4
+      with:
+        key: coolprop-${{ needs.get-coolprop.outputs.coolprop-hash }}
+        path: externals/CoolProp.git
 
     - name: Build Doxygen sources
       uses: mattnotmitt/doxygen-action@v1
