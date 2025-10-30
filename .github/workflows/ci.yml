@@ -54,7 +54,8 @@ jobs:
   get-coolprop:
     runs-on: ubuntu-latest
     outputs:
-      coolprop-hash: ${{ steps.keycoolprop.outputs.coolprop-hash }}
+      coolprop-hash: ${{ steps.coolprop_hash.outputs.coolprop-hash }}
+      coolprop-check: ${{ steps.coolprop_check.outputs.coolprop-check }}
     env:
       COOLPROP_VERSION: v7.1.0
     steps:
@@ -69,8 +70,10 @@ jobs:
         key: coolprop-${{ steps.coolprop_hash.outputs.coolprop-hash }}
         path: externals/CoolProp.git
         lookup-only: true
+        enableCrossOsArchive: true
     - name: Download CoolProp sources
       if: steps.coolprop_cache.outputs.cache-hit != 'true'
+      shell: bash
       run: |
         mkdir externals
         cd externals
@@ -84,6 +87,23 @@ jobs:
       with:
         key: coolprop-${{ steps.coolprop_hash.outputs.coolprop-hash }}
         path: externals/CoolProp.git
+        enableCrossOsArchive: true
+    - name: Set CoolProp availability
+      id: coolprop_check
+      shell: bash
+      run: |
+        if ${{ steps.coolprop_cache.outputs.cache-hit }}; then
+          echo "CoolProp exists in the cache"
+          echo "coolprop-check=1" >> $GITHUB_OUTPUT
+        else
+          if [ -d "externals/CoolProp.git" ]; then
+            echo "CoolProp has been cloned successfully"
+            echo "coolprop-check=1" >> $GITHUB_OUTPUT
+          else
+            echo "CoolProp is NOT available"
+            echo "coolprop-check=0" >> $GITHUB_OUTPUT
+          fi
+        fi 
 
   build-macos:
     needs: get-coolprop
@@ -104,15 +124,18 @@ jobs:
         cmake --version
         cmake -E make_directory ${{runner.workspace}}/build
     - name: Restore CoolProp sources
+      if: needs.get-coolprop.outputs.coolprop-check == '1'
       uses: actions/cache/restore@v4
       with:
         key: coolprop-${{ needs.get-coolprop.outputs.coolprop-hash }}
         path: externals/CoolProp.git
+        fail-on-cache-miss: true
+        enableCrossOsArchive: true
     - name: Configure with CMake
       working-directory: ${{runner.workspace}}/build
       run: |
-       cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=${{ matrix.arch }} -DFLUIDPROP=0 -DCOOLPROP=1 || true
-       cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=${{ matrix.arch }} -DFLUIDPROP=0 -DCOOLPROP=1
+       cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=${{ matrix.arch }} -DFLUIDPROP=0 -DCOOLPROP=${{ needs.get-coolprop.outputs.coolprop-check }} || true
+       cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=${{ matrix.arch }} -DFLUIDPROP=0 -DCOOLPROP=${{ needs.get-coolprop.outputs.coolprop-check }}
     - name: Build with CMake
       working-directory: ${{runner.workspace}}/build
       run: cmake --build . --target ExternalMediaLib
@@ -144,15 +167,18 @@ jobs:
         cmake --version
         cmake -E make_directory ${{runner.workspace}}/build
     - name: Restore CoolProp sources
+      if: needs.get-coolprop.outputs.coolprop-check == '1'
       uses: actions/cache/restore@v4
       with:
         key: coolprop-${{ needs.get-coolprop.outputs.coolprop-hash }}
         path: externals/CoolProp.git
+        fail-on-cache-miss: true
+        enableCrossOsArchive: true
     - name: Configure with CMake
       working-directory: ${{runner.workspace}}/build
       run: |
-        cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=0 -DCOOLPROP=1 || true
-        cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=0 -DCOOLPROP=1
+        cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=0 -DCOOLPROP=${{ needs.get-coolprop.outputs.coolprop-check }} || true
+        cmake ${GITHUB_WORKSPACE}/Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=0 -DCOOLPROP=${{ needs.get-coolprop.outputs.coolprop-check }}
     - name: Build with CMake
       working-directory: ${{runner.workspace}}/build
       run: cmake --build . --target ExternalMediaLib
@@ -185,10 +211,13 @@ jobs:
     steps:
     - uses: actions/checkout@v5
     - name: Restore CoolProp sources
+      if: needs.get-coolprop.outputs.coolprop-check == '1'
       uses: actions/cache/restore@v4
       with:
         key: coolprop-${{ needs.get-coolprop.outputs.coolprop-hash }}
         path: externals/CoolProp.git
+        fail-on-cache-miss: true
+        enableCrossOsArchive: true
     - name: Create Build Environment
       run: |
         cmake --version
@@ -196,8 +225,8 @@ jobs:
     - name: Configure with CMake
       working-directory: ${{runner.workspace}}/build
       run: |
-        cmake ${{ runner.workspace }}/ExternalMedia/Projects -A ${{ matrix.arch }} -G "${{ matrix.generator }}" -T "${{ matrix.toolset }}" -DFLUIDPROP=1 -DCOOLPROP=1
-        cmake ${{ runner.workspace }}/ExternalMedia/Projects -A ${{ matrix.arch }} -G "${{ matrix.generator }}" -T "${{ matrix.toolset }}" -DFLUIDPROP=1 -DCOOLPROP=1
+        cmake ${{ runner.workspace }}/ExternalMedia/Projects -A ${{ matrix.arch }} -G "${{ matrix.generator }}" -T "${{ matrix.toolset }}" -DFLUIDPROP=1 -DCOOLPROP=${{ needs.get-coolprop.outputs.coolprop-check }}
+        cmake ${{ runner.workspace }}/ExternalMedia/Projects -A ${{ matrix.arch }} -G "${{ matrix.generator }}" -T "${{ matrix.toolset }}" -DFLUIDPROP=1 -DCOOLPROP=${{ needs.get-coolprop.outputs.coolprop-check }}
     - name: Build with CMake
       working-directory: ${{runner.workspace}}/build
       run: cmake --build . --target ExternalMediaLib --config Release
@@ -243,7 +272,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - bitness: [32, 64]
+          - bitness: 32
+          - bitness: 64
     steps:
     - name: Restore the OMDev cache
       uses: actions/cache/restore@v4
@@ -253,16 +283,19 @@ jobs:
         key: omdev-${{ needs.get-msys-openmodelica.outputs.omdev-hash }}
     - uses: actions/checkout@v5
     - name: Restore CoolProp sources
+      if: needs.get-coolprop.outputs.coolprop-check == '1'
       uses: actions/cache/restore@v4
       with:
         key: coolprop-${{ needs.get-coolprop.outputs.coolprop-hash }}
         path: externals/CoolProp.git
+        fail-on-cache-miss: true
+        enableCrossOsArchive: true
     - name: Configure with CMake for ${{ matrix.bitness }}bit
       working-directory: ${{runner.workspace}}
       run: |
         $env:Path = "${env:ProgramFiles}\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\mingw${{ matrix.bitness }}\bin;$env:Path"
-        cmake -B build -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
-        cmake -B build -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
+        cmake -B build -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=${{ needs.get-coolprop.outputs.coolprop-check }}
+        cmake -B build -S ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=${{ needs.get-coolprop.outputs.coolprop-check }}
     - name: Build with CMake for ${{ matrix.bitness }}bit
       working-directory: ${{runner.workspace}}
       run: |
@@ -281,10 +314,13 @@ jobs:
     steps:
     - uses: actions/checkout@v5
     - name: Restore CoolProp sources
+      if: needs.get-coolprop.outputs.coolprop-check == '1'
       uses: actions/cache/restore@v4
       with:
         key: coolprop-${{ needs.get-coolprop.outputs.coolprop-hash }}
         path: externals/CoolProp.git
+        fail-on-cache-miss: true
+        enableCrossOsArchive: true
     - name: Create Build Environment
       run: |
         cmake --version
@@ -292,8 +328,8 @@ jobs:
     - name: Configure with CMake
       working-directory: ${{runner.workspace}}/build
       run: |
-        cmake ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
-        cmake ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=1
+        cmake ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=${{ needs.get-coolprop.outputs.coolprop-check }}
+        cmake ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=${{ needs.get-coolprop.outputs.coolprop-check }}
     - name: Build with CMake
       working-directory: ${{runner.workspace}}/build
       run: cmake --build . --target ExternalMediaLib
@@ -313,10 +349,13 @@ jobs:
 
     - uses: actions/checkout@v5
     - name: Restore CoolProp sources
+      if: needs.get-coolprop.outputs.coolprop-check == '1'
       uses: actions/cache/restore@v4
       with:
         key: coolprop-${{ needs.get-coolprop.outputs.coolprop-hash }}
         path: externals/CoolProp.git
+        fail-on-cache-miss: true
+        enableCrossOsArchive: true
 
     - name: Build Doxygen sources
       uses: mattnotmitt/doxygen-action@v1
