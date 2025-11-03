@@ -57,7 +57,7 @@ jobs:
       coolprop-hash: ${{ steps.coolprop_hash.outputs.coolprop-hash }}
       coolprop-check: ${{ steps.coolprop_check.outputs.coolprop-check }}
     env:
-      COOLPROP_VERSION: v7.1.0
+      COOLPROP_VERSION: v7.2.0
     steps:
     - name: Get CoolProp version hash
       shell: bash
@@ -79,7 +79,7 @@ jobs:
         cd externals
         git clone --recursive https://github.com/CoolProp/CoolProp.git CoolProp.git
         cd CoolProp.git
-        git checkout tags/v7.1.0
+        git checkout tags/${COOLPROP_VERSION}
         git submodule update --init --recursive
     - name: Save the CoolProp cache
       uses: actions/cache/save@v4

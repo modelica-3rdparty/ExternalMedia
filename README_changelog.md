@@ -1,8 +1,8 @@
 # ExternalMedia Change Log
 
-## v4.1.1 - 2025/10/30
+## v4.1.1 - 2025/11/03
 - Uses Modelica Standard Library 4.1.0
-- CoolProp updated to v7.1.0
+- CoolProp updated to v7.2.0
 - Added binaries for macOS ARM (M1/M2)
 
 ## v4.1.0 - 2025/08/01
