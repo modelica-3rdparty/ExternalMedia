@@ -274,6 +274,9 @@ if(MINGW)
   endif()
   set(MODELICA_COMPILER "")
   message(WARNING "Discarded compiler information since OpenModelica expect the mingw32/64 platform.")
+  # Do not use the libstdc++-6.dll of the Modelica tool, which can come from
+  # another MSYS2 environment (e.g. UCRT64) and is not compatible.
+  target_link_libraries(${LIBRARY_NAME} PRIVATE -static-libgcc -static-libstdc++ -static)
 endif()
 
 set(MODELICA_INSTALL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia/Resources")

@@ -66,19 +66,17 @@ cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=OFF -DCOO
 
 ## Building OpenModelica libraries
 
-Get the OMDEV environment from the git repository:
+OpenModelica uses the UCRT64 environment of MSYS2. Get the OMDev environment from the git
+repository:
 
 ```shell
-git clone https://openmodelica.org/git/OMDev.git C:/OMDev
+git clone --depth 1 https://gitlab.liu.se/OpenModelica/OMDevUCRT.git C:/OMDev
 ```
 
-To install OMDEV in the `C:\OMDev` path, you should start `C:\OMDev\tools\msys\msys.bat`. This
-gives you a command window that looks like the emulation of a unix prompt. Afterwards, you can
-run the following commands
+Start the UCRT64 shell `C:\OMDev\tools\msys\ucrt64.exe` and run the following commands
 
 ```shell
-$ mount d:/Path_to_your_ExternalMediaLibrary_working_copy /ExternalMediaLibrary
-$ cd /ExternalMediaLibrary/
+$ cd /d/Path_to_your_ExternalMediaLibrary_working_copy
 $ cmake -B build -S Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release
 $ cmake --build build --target install
 ```
