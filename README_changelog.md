@@ -1,5 +1,11 @@
 # ExternalMedia Change Log
 
+## Unreleased
+- The OpenModelica DLL is built with the UCRT64 environment of MSYS2 (OMDevUCRT)
+- MinGW builds link libgcc, libstdc++ and winpthread statically
+- Fixed a crash in OpenModelica with tabular CoolProp media, e.g. `CO2|enable_BICUBIC=1`
+- Removed the 32-bit MinGW DLL (`win32/ExternalMediaLib.dll`), since OpenModelica has no 32-bit Windows build
+
 ## v4.1.1 - 2025/11/03
 - Uses Modelica Standard Library 4.1.0
 - CoolProp updated to v7.2.0

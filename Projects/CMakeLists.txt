@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8.2 FATAL_ERROR) # Due to the use of target_compile_definitions
+cmake_minimum_required(VERSION 3.13 FATAL_ERROR) # Due to the use of target_link_options
 include(ExternalProject)
 
 CMAKE_POLICY(SET CMP0053 NEW)
@@ -274,9 +274,12 @@ if(MINGW)
   endif()
   set(MODELICA_COMPILER "")
   message(WARNING "Discarded compiler information since OpenModelica expect the mingw32/64 platform.")
-  # Do not use the libstdc++-6.dll of the Modelica tool, which can come from
-  # another MSYS2 environment (e.g. UCRT64) and is not compatible.
-  target_link_libraries(${LIBRARY_NAME} PRIVATE -static-libgcc -static-libstdc++ -static)
+  # Link the GCC runtime statically for all MinGW builds. Otherwise the DLL uses
+  # the libstdc++-6.dll that the Modelica tool has loaded, which can come from
+  # another MSYS2 environment (e.g. UCRT64) and is not compatible. For g++,
+  # -static implies -static-libgcc and -static-libstdc++, and it also links
+  # winpthread statically, which the other two flags do not.
+  target_link_options(${LIBRARY_NAME} PRIVATE -static)
 endif()
 
 set(MODELICA_INSTALL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia/Resources")

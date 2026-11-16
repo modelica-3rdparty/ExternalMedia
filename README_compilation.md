@@ -37,13 +37,9 @@ default for the platform, you can use this command below:
 cmake --build build --config Release --target install-as-default
 ```
 
-You can override these settings manually using the command line switches for
-`MODELICA_PLATFORM` and `MODELICA_COMPILER`. The command 
-`cmake -B build -S Projects -DMODELICA_PLATFORM:STRING=mingw64 -DMODELICA_COMPILER:STRING=`
-would for example configure the installation folder to
-`Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/mingw64`, which is the
-preferred search path for OpenModelica that supports side-by-side installations with
-other compilers and configuration that support other Modelica tools.
+MinGW builds, which are used for OpenModelica, skip the compiler part and install
+directly into `Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/win64`. This is
+the folder that OpenModelica searches on Windows.
 
 ## Selecting the fluid property libraries
 
@@ -84,3 +80,6 @@ $ cmake --build build --target install
 This will build the dynamic library and copy it and the `externalmedia.h`
 header files in the Resource directories of the Modelica packages, so it can
 be used right away by just loading the Modelica package in OMC.
+
+MinGW builds link libgcc, libstdc++ and winpthread statically. The DLL thus does not
+depend on the runtime DLLs of MSYS2 or of the Modelica tool.
