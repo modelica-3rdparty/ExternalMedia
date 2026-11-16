@@ -208,6 +208,14 @@ jobs:
             generator: Visual Studio 18 2026
             arch: x64
             toolset: v143
+          - platform: windows-2025
+            generator: Visual Studio 18 2026
+            arch: Win32
+            toolset: v145
+          - platform: windows-2025
+            generator: Visual Studio 18 2026
+            arch: x64
+            toolset: v145
     steps:
     - uses: actions/checkout@v5
     - name: Restore CoolProp sources
