@@ -26,9 +26,9 @@ cmake --build build --config Release --target install
 
 By default, the libraries are installed in a subfolder with a name that is determined
 from the current operating system and the compiler, possible combinations are:
-- `Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/win32/vs2015`
-- `Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/win64/vs2019`
-- `Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/linux64/gcc81`
+- `Modelica/ExternalMedia/Resources/Library/win32/vs2015`
+- `Modelica/ExternalMedia/Resources/Library/win64/vs2019`
+- `Modelica/ExternalMedia/Resources/Library/linux64/gcc81`
 
 If you would like to skip the compiler part and make the current configuration the
 default for the platform, you can use this command below:
@@ -38,8 +38,8 @@ cmake --build build --config Release --target install-as-default
 ```
 
 MinGW builds, which are used for OpenModelica, skip the compiler part and install
-directly into `Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/win64`. This is
-the folder that OpenModelica searches on Windows.
+directly into `Modelica/ExternalMedia/Resources/Library/win64` (`win32` for a 32-bit
+build). This is the folder that OpenModelica searches on Windows.
 
 ## Selecting the fluid property libraries
 
