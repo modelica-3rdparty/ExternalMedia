@@ -118,7 +118,7 @@ jobs:
           - platform: macos-15-intel
             arch: x86_64
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v7
     - name: Create Build Environment
       run: |
         cmake --version
@@ -161,7 +161,7 @@ jobs:
           #- platform: ubuntu-20.04
           #- platform: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v7
     - name: Create Build Environment
       run: |
         cmake --version
@@ -217,7 +217,7 @@ jobs:
             arch: x64
             toolset: v145
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v7
     - name: Restore CoolProp sources
       if: needs.get-coolprop.outputs.coolprop-check == '1'
       uses: actions/cache/restore@v6
@@ -320,7 +320,7 @@ jobs:
     needs: get-coolprop
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v7
     - name: Restore CoolProp sources
       if: needs.get-coolprop.outputs.coolprop-check == '1'
       uses: actions/cache/restore@v6
@@ -355,7 +355,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v7
     - name: Restore CoolProp sources
       if: needs.get-coolprop.outputs.coolprop-check == '1'
       uses: actions/cache/restore@v6
