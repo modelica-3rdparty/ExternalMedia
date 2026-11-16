@@ -278,8 +278,9 @@ if(MINGW)
   # the libstdc++-6.dll that the Modelica tool has loaded, which can come from
   # another MSYS2 environment (e.g. UCRT64) and is not compatible. For g++,
   # -static implies -static-libgcc and -static-libstdc++, and it also links
-  # winpthread statically, which the other two flags do not.
-  target_link_options(${LIBRARY_NAME} PRIVATE -static)
+  # winpthread statically, which the other two flags do not. -s strips the
+  # symbol table and debug information from the DLL.
+  target_link_options(${LIBRARY_NAME} PRIVATE -static -s)
 endif()
 
 set(MODELICA_INSTALL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia/Resources")
