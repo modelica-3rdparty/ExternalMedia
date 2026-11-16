@@ -58,6 +58,30 @@ package Examples "Examples of external medium model definitions"
       SpecificEnthalpy(start=2e5));
   end CO2CoolPropTabular;
 
+  package R134aCoolProp "CoolProp model of R134a"
+    extends ExternalMedia.Media.CoolPropMedium(
+      mediumName = "R-134a",
+      substanceNames = {"R134a"},
+      ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.ph,
+      SpecificEnthalpy(start=2e5));
+  end R134aCoolProp;
+
+  package R134aCoolPropBicubic "CoolProp model of R134a using tabulated data and bicubic interpolation"
+    extends ExternalMedia.Media.CoolPropMedium(
+      mediumName = "R-134a",
+      substanceNames = {"R134a|enable_BICUBIC=1"},
+      ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.ph,
+      SpecificEnthalpy(start=2e5));
+  end R134aCoolPropBicubic;
+
+  package R134aCoolPropTaylor "CoolProp model of R134a using tabulated data and TTSE interpolation"
+    extends ExternalMedia.Media.CoolPropMedium(
+      mediumName = "R-134a",
+      substanceNames = {"R134a|enable_TTSE=1"},
+      ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.ph,
+      SpecificEnthalpy(start=2e5));
+  end R134aCoolPropTaylor;
+
   package WaterCoolProp "CoolProp model of water"
     extends ExternalMedia.Media.CoolPropMedium(
       mediumName = "Water",
