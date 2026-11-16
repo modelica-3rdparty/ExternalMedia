@@ -21,7 +21,9 @@
 #include "Solvers.h"
 #include "AbstractState.h"
 #include "externalmedialib.h"
-#include "crossplatform_shared_ptr.h"
+// crossplatform_shared_ptr.h was removed in CoolProp 8, std::shared_ptr is used directly
+#include <memory>
+using std::shared_ptr;
 //#include "include.h"
 //#include "coolpropsolver.h"
 //#include "basesolver.h"
@@ -164,6 +166,10 @@ int main()
 
 	std::cout << "\n3.8) ExternalMedia R245fa calc_transport=0|enable_TTSE=1|debug=10|rho_smoothing_xend=0.2" << std::endl;
 	TwoPhaseMedium_setState_ph_C_impl(8e5, 4E5, 1, pointer, "R245fa", "CoolProp", "R245fa|calc_transport=0|enable_TTSE=1|debug=100|rho_smoothing_xend=0.2");
+	printValues(pointer);
+
+	std::cout << "\n3.8b) ExternalMedia R245fa calc_transport=0|enable_SVDSBTL=1|debug=10" << std::endl;
+	TwoPhaseMedium_setState_ph_C_impl(8e5, 4E5, 1, pointer, "R245fa", "CoolProp", "R245fa|calc_transport=0|enable_SVDSBTL=1|debug=10");
 	printValues(pointer);
 
 	std::cout << "\n3.9)  ExternalMedia R245fa pT input" << std::endl;

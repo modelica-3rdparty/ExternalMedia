@@ -82,6 +82,22 @@ package Examples "Examples of external medium model definitions"
       SpecificEnthalpy(start=2e5));
   end R134aCoolPropTaylor;
 
+  package R134aCoolPropSVDSBTL "CoolProp model of R134a using SVD-compressed spline-based tables (SVDSBTL)"
+    extends ExternalMedia.Media.CoolPropMedium(
+      mediumName = "R-134a",
+      substanceNames = {"R134a|enable_SVDSBTL=1"},
+      ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.ph,
+      SpecificEnthalpy(start=2e5));
+  end R134aCoolPropSVDSBTL;
+
+  package CO2CoolPropSVDSBTL "CoolProp model of CO2 using SVD-compressed spline-based tables (SVDSBTL)"
+    extends ExternalMedia.Media.CoolPropMedium(
+      mediumName = "CarbonDioxide",
+      substanceNames = {"CO2|enable_SVDSBTL=1"},
+      ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.ph,
+      SpecificEnthalpy(start=2e5));
+  end CO2CoolPropSVDSBTL;
+
   package WaterCoolProp "CoolProp model of water"
     extends ExternalMedia.Media.CoolPropMedium(
       mediumName = "Water",
@@ -99,6 +115,15 @@ package Examples "Examples of external medium model definitions"
       AbsolutePressure(start=10e5),
       SpecificEnthalpy(start=2e5));
   end WaterCoolPropTabular;
+
+  package WaterCoolPropSVDSBTL "CoolProp model of water using SVD-compressed spline-based tables (SVDSBTL)"
+    extends ExternalMedia.Media.CoolPropMedium(
+      mediumName = "Water",
+      substanceNames = {"water|enable_SVDSBTL=1"},
+      ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.ph,
+      AbsolutePressure(start=10e5),
+      SpecificEnthalpy(start=2e5));
+  end WaterCoolPropSVDSBTL;
 
   package DowQCoolProp "DowthermQ properties from CoolProp"
     extends ExternalMedia.Media.IncompressibleCoolPropMedium(

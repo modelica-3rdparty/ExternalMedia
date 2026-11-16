@@ -6,7 +6,9 @@
 
 #include "basesolver.h"
 #include "AbstractState.h"
-#include "crossplatform_shared_ptr.h"
+// crossplatform_shared_ptr.h was removed in CoolProp 8, std::shared_ptr is used directly
+#include <memory>
+using std::shared_ptr;
 
 /*! CoolProp solver class */
 /*!
@@ -32,13 +34,30 @@ class CoolPropSolver : public BaseSolver{
 protected:
 	/* class CoolProp::AbstractState *state; */
 	shared_ptr<CoolProp::AbstractState> state;
-	bool enable_TTSE, enable_BICUBIC, calc_transport, extend_twophase, isCompressible;
+	bool enable_TTSE, enable_BICUBIC, enable_SVDSBTL, calc_transport, extend_twophase, isCompressible;
 	int debug_level;
 	double twophase_derivsmoothing_xend;
 	double rho_smoothing_xend;
 	double _p_eps   ; /* relative tolerance margin for subcritical pressure conditions */
 	double _delta_h ; /* delta_h for one-phase/two-phase discrimination */
 	ExternalSaturationProperties _satPropsClose2Crit; /* saturation properties close to  critical conditions */
+
+	/* SVDSBTL support.
+	   The SVDSBTL backend tabulates rho, T, h, s, u, speed of sound,
+	   viscosity and conductivity, but it does not provide cp, cv,
+	   partial derivatives, saturation derivatives or surface tension.
+	   The functions below compute the missing quantities from
+	   finite differences of the tabulated values, so they stay
+	   consistent with the tables. The few remaining calls that cannot
+	   be served by the tables (h-s inputs, generic partial derivatives
+	   and surface tension) are sent to the source (reference) backend. */
+	std::string source_backend; /* reference backend behind SVDSBTL, e.g. "HEOS" */
+	shared_ptr<CoolProp::AbstractState> source_state; /* reference state, created on first use */
+	shared_ptr<CoolProp::AbstractState> get_source_state();
+	void postStateChange_SVDSBTL(ExternalThermodynamicState *const properties);
+	void setSat_p_SVDSBTL(double p, ExternalSaturationProperties *const properties);
+	bool eval_ph_SVDSBTL(double h, double p, double &rho, double &T, bool &twophase);
+	void props_ph_SVDSBTL(double h, double p, ExternalThermodynamicState *const properties);
 
 	virtual void postStateChange(ExternalThermodynamicState *const properties);
 	long makeDerivString(const string &of, const string &wrt, const string &cst);
