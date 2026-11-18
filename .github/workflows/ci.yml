@@ -323,7 +323,7 @@ jobs:
       shell: bash
       run: |
         # Only Windows system DLLs should show up here, the GCC runtime is linked statically
-        /c/OMDev/tools/msys/ucrt64/bin/objdump.exe -p ExternalMedia/Modelica/ExternalMedia/Resources/Library/win64/*.dll | grep "DLL Name" | tee dlls.txt
+        /c/OMDev/tools/msys/ucrt64/bin/objdump.exe -p ExternalMedia/Modelica/ExternalMedia/Resources/Library/ucrt64/*.dll | grep "DLL Name" | tee dlls.txt
         if grep -i -E "libstdc|libgcc|libwinpthread" dlls.txt; then
           echo "The DLL depends on the GCC runtime DLLs listed above"
           exit 1

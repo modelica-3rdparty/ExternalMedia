@@ -85,7 +85,8 @@ $ cmake --build build --target install
 
 This will build the dynamic library and copy it and the `externalmedia.h`
 header files in the Resource directories of the Modelica packages, so it can
-be used right away by just loading the Modelica package in OMC.
+be used right away by just loading the Modelica package in OMC. A UCRT64 build
+is installed in `Resources/Library/ucrt64`, which OpenModelica searches first.
 
 CoolProp 8 and later refuse to configure outside an MSYS2 shell, they check the
 `MSYSTEM` environment variable. Any other MSYS2 UCRT64 installation works as well.

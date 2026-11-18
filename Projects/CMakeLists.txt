@@ -179,8 +179,11 @@ if(MINGW)
   # the DLL. Otherwise the DLL depends on libstdc++-6.dll and friends, and
   # at simulation time it would pick up whatever version OpenModelica ships,
   # which may be older than the compiler used here. The Windows system DLLs
-  # (ucrt, kernel32, ...) remain dynamically linked. This follows CoolProp.
-  target_link_libraries(${LIBRARY_NAME} -static-libgcc -static-libstdc++ -Wl,-Bstatic -lwinpthread -Wl,-Bdynamic)
+  # (ucrt, kernel32, ole32, ...) remain dynamically linked, MinGW only has
+  # import libraries for them. "-static" is used instead of only
+  # "-static-libgcc -static-libstdc++", since g++ adds the pthread library
+  # at the end of the link command and would link winpthread dynamically.
+  target_link_libraries(${LIBRARY_NAME} -static)
 endif()
 
 if(WIN32)
@@ -278,13 +281,22 @@ if(MINGW)
   # It looks like we need a global setting
   set(CMAKE_SHARED_LIBRARY_PREFIX "")
   #set_property(TARGET ${LIBRARY_NAME} PROPERTY SHARED_LIBRARY_PREFIX "")
-  if(CMAKE_SIZEOF_VOID_P MATCHES "8")
-    set(MODELICA_COMPILER "mingw64")
-  else()
-    set(MODELICA_COMPILER "mingw32")
+  # MinGW builds are meant for OpenModelica, which does not use the compiler
+  # subfolder. OpenModelica 1.23 and later (MSYS2 UCRT64) search the folders
+  # Library/ucrt64, Library/mingw64, Library/win64 and Library, in that order.
+  # A UCRT64 build goes to Library/ucrt64, which no other Modelica tool reads.
+  # The compiler defines _UCRT when it targets the UCRT runtime.
+  include(CheckCXXSourceCompiles)
+  check_cxx_source_compiles("#include <cstdio>
+#ifndef _UCRT
+#error not UCRT
+#endif
+int main() { return 0; }" MINGW_USES_UCRT)
+  if(MINGW_USES_UCRT AND CMAKE_SIZEOF_VOID_P MATCHES "8")
+    set(MODELICA_PLATFORM "ucrt64")
   endif()
   set(MODELICA_COMPILER "")
-  message(WARNING "Discarded compiler information, MinGW builds are installed for OpenModelica directly in the platform folder.")
+  message(STATUS "MinGW build, installing for OpenModelica in Library/${MODELICA_PLATFORM}")
 endif()
 
 set(MODELICA_INSTALL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia/Resources")
