@@ -113,7 +113,10 @@ jobs:
       # Check the use of the ${MODELICA_PLATFORM} and ${MODELICA_COMPILER} variables in the CMake files
       matrix:
         include:
-          - platform: macos-latest  #  currently macos-26, arm-only
+          # Pin the arm64 image instead of using macos-latest. macos-latest moved to
+          # macos-26, where jobs sat in the queue without a runner and were cancelled.
+          # An older image also keeps the minimum macOS version of the binaries low.
+          - platform: macos-15
             arch: arm64
           - platform: macos-15-intel
             arch: x86_64
