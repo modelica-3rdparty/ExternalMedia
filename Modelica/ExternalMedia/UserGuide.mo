@@ -6,12 +6,12 @@ package UserGuide "User's Guide"
     annotation (Documentation(info="<html>
 <p>The <b>ExternalMedia</b> library provides a framework for interfacing external codes computing fluid properties to Modelica.Media-compatible component models. The library has been designed with two main goals: maximizing the efficiency of the code, while minimizing the amount of extra code required to interface existing external codes to the library.</p>
 <p>The library provides medium packages covering pure fluids models, possibly two-phase, which are 100&percnt; compatible with the <a href=\"modelica://Modelica.Media.Interfaces.PartialTwoPhaseMedium\">Modelica.Media.Interfaces.PartialTwoPhaseMedium</a> interface. </p>
-<p>Two external sofwares for fluid property computation are currently suppored by the ExternalMedia library:</p>
+<p>Two external softwares for fluid property computation are currently supported by the ExternalMedia library:</p>
 <ul>
-<li><a href=\"http://www.fluidprop.com\">FluidProp</a>, formerly developed at TU Delft and currently devloped and maintained by Asimptote</li>
+<li><a href=\"http://www.fluidprop.com\">FluidProp</a>, formerly developed at TU Delft and currently developed and maintained by Asimptote</li>
 <li><a href=\"http://coolprop.org\">CoolProp</a>, developed at the University of Liege and at the Technical University of Denmark (DTU)</li>
 </ul>
-<p>The library has been tested successfully with Dymola 2022 and OpenModelica 1.20.0, both under Windows and Linux.</p>
+<p>The library has been tested with Dymola and OpenModelica, both under Windows and Linux. Precompiled binaries are included for Windows (Visual Studio, and OpenModelica 1.23 or later on 64 bit), Linux and macOS (Intel and Apple Silicon, macOS 11 or later).</p>
 <p>Please report any issue on the library <a href=\"https://github.com/modelica-3rdparty/ExternalMedia/issues\">GitHub issue tracker</a>.</p>
 </html>"));
   end Overview;
@@ -31,7 +31,7 @@ package UserGuide "User's Guide"
     class CoolProp "CoolProp medium models"
       extends Modelica.Icons.Information;
       annotation (Documentation(info="<html>
-<p>Pure (or pseudo-pure) medium models in <a href=\"http://www.coolprop.org/\">CoolProp</a> can be accessed by extending the <a href=\"modelica://ExternalMedia.Media.FluidPropMedium\">ExternalMedia.Media.CoolPropMedium</a> package.</p>
+<p>Pure (or pseudo-pure) medium models in <a href=\"http://www.coolprop.org/\">CoolProp</a> can be accessed by extending the <a href=\"modelica://ExternalMedia.Media.CoolPropMedium\">ExternalMedia.Media.CoolPropMedium</a> package.</p>
 <p>Set substanceNames to a single-element string array containing the name of the specific medium, as specified by the CoolProp documentation. Additional flags can be passed to CoolProp by separating them from the name of the medium,
 e.g., &quot;CO2|enable_BICUBIC=1&quot; or &quot;CO2|enable_TTSE=1|calc_transport=0&quot;. Useful flags include:
 <ul>

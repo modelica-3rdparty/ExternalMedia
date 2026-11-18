@@ -145,6 +145,16 @@ jobs:
     - name: Install with CMake
       working-directory: ${{runner.workspace}}/build
       run: cmake --build . --target install
+    - name: Check the minimum macOS version
+      run: |
+        # minos is the oldest macOS version the library loads on, it should be 11.0
+        status=0
+        for f in $(find Modelica -name "*.dylib"); do
+          minos=$(otool -l "$f" | grep -A4 LC_BUILD_VERSION | awk '/minos/ {print $2}')
+          echo "$f: minos $minos"
+          if [ "$minos" != "11.0" ]; then status=1; fi
+        done
+        exit $status
     - name: upload macos artifacts
       uses: actions/upload-artifact@v7
       with:

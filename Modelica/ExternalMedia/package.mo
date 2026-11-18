@@ -4,20 +4,20 @@ package ExternalMedia
   import SI = Modelica.Units.SI;
 
   annotation(uses(Modelica(version="4.1.0")),
-             version="4.1.1",
-             conversion(noneFromVersion="4.1.0", noneFromVersion="4.0.0"),
+             version="4.1.2",
+             conversion(noneFromVersion="4.1.1", noneFromVersion="4.1.0", noneFromVersion="4.0.0"),
   Documentation(info="<html>
 <p>The <b>ExternalMedia</b> library provides a framework for interfacing external codes computing fluid properties to Modelica.Media-compatible component models. The library has been designed with two main goals: maximizing the efficiency of the code, while minimizing the amount of extra code required to interface existing external codes to the library.</p>
 <p>The library covers pure fluids models, possibly two-phase, compliant with the <a href=\"modelica://Modelica.Media.Interfaces.PartialTwoPhaseMedium\">Modelica.Media.Interfaces.PartialTwoPhaseMedium</a> interface. </p>
 <p>Two external softwares for fluid property computation are currently supported by the ExternalMedia library:</p>
 <ul>
-<li><a href=\"http://www.fluidprop.com\">FluidProp</a>, formerly developed at TU Delft and currently devloped and maintained by Asimptote</li>
+<li><a href=\"http://www.fluidprop.com\">FluidProp</a>, formerly developed at TU Delft and currently developed and maintained by Asimptote</li>
 <li><a href=\"http://coolprop.org\">CoolProp</a>, developed at the University of Liege and at the Technical University of Denmark (DTU)</li>
 </ul>
 <p>A detailed documentation of the software is available in the <a href=\"modelica://ExternalMedia/Resources/manual.pdf\">technical manual</a>.</p>
-<p>The library has been tested with the Dymola and OpenModelica tools under the Windows and Linux operating system. If you are interested in the support of other tools, operating systems, and external fluid property computation codes, please contact the developers.</p>
+<p>The library has been tested with the Dymola and OpenModelica tools under the Windows and Linux operating systems. Precompiled binaries are included for Windows (Visual Studio, and OpenModelica 1.23 or later on 64 bit), Linux and macOS (Intel and Apple Silicon). If you are interested in the support of other tools, operating systems, and external fluid property computation codes, please contact the developers.</p>
 <p>Main contributors: Francesco Casella, Christoph Richter, Roberto Bonifetto, Ian Bell, Jorrit Wronski, Federico Terraneo.</p>
 <p><b>The code is licensed under the BSD 3-clause license. </b>For license conditions visit <a href=\"https://opensource.org/licenses/BSD-3-Clause\">https://opensource.org/licenses/BSD-3-Clause</a>. </p>
-<p>Copyright &copy; 2006-2024, Francesco Casella, Christoph Richter, Roberto Bonifetto, Ian Bell, Jorrit Wronski, Federico Terraneo.</p>
+<p>Copyright &copy; 2006-2026, Francesco Casella, Christoph Richter, Roberto Bonifetto, Ian Bell, Jorrit Wronski, Federico Terraneo.</p>
 </html>"));
 end ExternalMedia;

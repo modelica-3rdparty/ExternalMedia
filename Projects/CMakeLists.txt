@@ -7,6 +7,16 @@ CMAKE_POLICY(SET CMP0053 NEW)
 #         PROJECT INFORMATION         #
 #######################################
 
+# Oldest macOS version the binaries run on. Without this setting the
+# compiler uses the macOS version of the build machine, so binaries built
+# on a new Mac would refuse to load on older ones. 11.0 is the first
+# version for Apple Silicon (arm64) and fully supports C++17. It has to be
+# set before project(). Override it with -DCMAKE_OSX_DEPLOYMENT_TARGET=...
+# or the MACOSX_DEPLOYMENT_TARGET environment variable.
+if(NOT DEFINED CMAKE_OSX_DEPLOYMENT_TARGET AND NOT DEFINED ENV{MACOSX_DEPLOYMENT_TARGET})
+  set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "Minimum macOS version")
+endif()
+
 # Project name
 project ("ExternalMedia")
 
@@ -19,7 +29,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Project version
 set (VERSION_MAJOR 4)
 set (VERSION_MINOR 1)
-set (VERSION_PATCH 1)
+set (VERSION_PATCH 2)
 set (APP_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 message (STATUS "ExternalMedia library version: ${APP_VERSION}")
 set (LIBRARY_NAME "ExternalMediaLib")
@@ -302,6 +312,21 @@ int main() { return 0; }" MINGW_USES_UCRT)
   set(MODELICA_COMPILER "")
   message(STATUS "MinGW build, installing for OpenModelica in Library/${MODELICA_PLATFORM}")
 endif()
+
+# The platform and compiler names above are chosen automatically. They can
+# be overridden on the command line, e.g.
+#   -DMODELICA_PLATFORM:STRING=win64 -DMODELICA_COMPILER:STRING=
+# A value given with -D is stored in the CMake cache, while the automatic
+# choice above is a normal variable that hides the cached value. Hence we
+# copy the cached value back here if the user provided one.
+foreach(_var MODELICA_PLATFORM MODELICA_COMPILER)
+  get_property(_user_set CACHE ${_var} PROPERTY TYPE SET)
+  if(_user_set)
+    get_property(_user_value CACHE ${_var} PROPERTY VALUE)
+    set(${_var} "${_user_value}")
+    message(STATUS "${_var} set by the user: \"${_user_value}\"")
+  endif()
+endforeach()
 
 set(MODELICA_INSTALL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia/Resources")
 INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/${LIBRARY_HEADER}" DESTINATION "${MODELICA_INSTALL_PATH}/Include")

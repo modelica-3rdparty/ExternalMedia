@@ -6,6 +6,10 @@ The heavy-lifting regarding the project configuration is done using the CMake
 file `CMakeLists.txt`, which makes the [CMake software](https://cmake.org/)
 a prerequisite for compiling ExternalMedia.
 
+You also need a C++ compiler that supports C++17, which CoolProp 8 requires, and a
+working Python installation. CoolProp downloads some of its dependencies when you run
+the configure step, so you need internet access the first time you configure.
+
 Once you have installed CMake and can access it from a command prompt, you can
 go to the root folder of the GIT repository and run:
 
@@ -25,25 +29,21 @@ cmake --build build --config Release --target install
 ```
 
 By default, the libraries are installed in a subfolder with a name that is determined
-from the current operating system and the compiler, possible combinations are:
-- `Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/win32/vs2015`
-- `Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/win64/vs2019`
-- `Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/linux64/gcc81`
+from the current operating system and the compiler, for example:
+- `Modelica/ExternalMedia/Resources/Library/win32/vs2022`
+- `Modelica/ExternalMedia/Resources/Library/win64/vs2026`
+- `Modelica/ExternalMedia/Resources/Library/ucrt64` (MSYS2 UCRT64 build for OpenModelica)
+- `Modelica/ExternalMedia/Resources/Library/linux64/gcc152`
+- `Modelica/ExternalMedia/Resources/Library/aarch64-darwin/appleclang170`
 
-If you would like to skip the compiler part and make the current configuration the
-default for the platform, you can use this command below:
+On Linux and macOS, the library is also copied to the platform folder without the
+compiler part, e.g. `Library/linux64`, since OpenModelica and Dymola look for it there.
 
-```shell
-cmake --build build --config Release --target install-as-default
-```
-
-You can override these settings manually using the command line switches for
-`MODELICA_PLATFORM` and `MODELICA_COMPILER`. The command 
-`cmake -B build -S Projects -DMODELICA_PLATFORM:STRING=mingw64 -DMODELICA_COMPILER:STRING=`
+You can override the automatic choice using the command line switches for
+`MODELICA_PLATFORM` and `MODELICA_COMPILER`. The command
+`cmake -B build -S Projects -DMODELICA_PLATFORM:STRING=win64 -DMODELICA_COMPILER:STRING=`
 would for example configure the installation folder to
-`Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/mingw64`, which is the
-preferred search path for OpenModelica that supports side-by-side installations with
-other compilers and configuration that support other Modelica tools.
+`Modelica/ExternalMedia/Resources/Library/win64`.
 
 ## Selecting the fluid property libraries
 

@@ -36,8 +36,10 @@ Please refer to the [chapter on FluidProp](README_fluidprop.md) and the
 dedicated [chapter on CoolProp](README_coolprop.md) for further details.
 
 The latest releases were tested with Dymola and OpenModelica on Windows
-and Linux. Support for more tools and operating systems
-might be added in the future, please let us know if you want to contribute.
+and Linux. The released library includes precompiled binaries for Windows
+(Visual Studio, and OpenModelica 1.23 or later on 64 bit), Linux and macOS
+(Intel and Apple Silicon, macOS 11 or later). Support for more tools and operating
+systems might be added in the future, please let us know if you want to contribute.
 
 You can modify the library to add an interface to your own solver. If your
 solver is open-source, please contact the developers, so we can add it to the
@@ -48,7 +50,9 @@ official ExternalMedia library.
 For OpenModelica, you can install and manage ExternalMedia using the
 built-in [Package Manager](https://openmodelica.org/doc/OpenModelicaUsersGuide/latest/omedit.html#omedit-install-library-label).
 Please make sure you are using OpenModelica version 1.25.1 or later to ensure the correct libraries are loaded, in case you want
-to install more than one version of ExternalMedia on your computer. 
+to install more than one version of ExternalMedia on your computer. On Windows, the
+included OpenModelica binaries are built with the MSYS2 UCRT64 toolchain and require
+the 64 bit OpenModelica 1.23 or later.
 
 For use with Dymola, you can download the zip file with the library and
 unzip it in your file system. The released library already contains all
@@ -76,12 +80,14 @@ binary for your configuration, you should now be able to run the examples.
 
 ExternalMedia extensively relies of external functions using code from
 pre-compiled dynamic libraries. The released versions include binaries
-for Windows and Linux, supporting CoolProp and FluidProp. If you want
+for Windows, Linux and macOS, supporting CoolProp on all of them and FluidProp on Windows. If you want
 to experiment with other external codes or operating systems, you
 can build the ExternalMedia binary libraries yourself. All
 you need to compile ExternalMedia, besides your C/C++ compiler, is the 
 [CMake software](https://cmake.org/) by Kitware. If you would like to include
-the CoolProp library, you also need a working Python installation.
+the CoolProp library, you also need a working Python installation, a compiler
+that supports C++17 and internet access, since CoolProp downloads some of its
+dependencies when the build is configured.
 
 Please consult the [compilation guide](README_compilation.md) for further
 instructions and details on how to compile ExternalMedia for different Modelica
