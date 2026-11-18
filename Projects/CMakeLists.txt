@@ -10,11 +10,11 @@ CMAKE_POLICY(SET CMP0053 NEW)
 # Project name
 project ("ExternalMedia")
 
-if(APPLE)
-  # Latest version of coolprop only compiles with a modern C++ standard,
-  # and MacOS does not do that by default
-  set(CMAKE_CXX_STANDARD 14)
-endif()
+# CoolProp 8 and later require C++17, also for the headers included
+# by ExternalMedia. Set it explicitly since compilers such as MSVC
+# default to an older standard.
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Project version
 set (VERSION_MAJOR 4)
@@ -113,6 +113,10 @@ if(COOLPROP)
   if(EXISTS "${COOLPROP_SOURCES}/externals/fmtlib/include")
     list (APPEND INCLUDE_DIRS "${COOLPROP_SOURCES}/externals/fmtlib/include")
   endif()
+  # CoolProp 8 and later download their dependencies (fmt, Eigen, ...)
+  # at configure time, reuse the include directories CoolProp uses.
+  get_directory_property(COOLPROP_INCLUDE_DIRS DIRECTORY "${COOLPROP_SOURCES}" INCLUDE_DIRECTORIES)
+  list (APPEND INCLUDE_DIRS ${COOLPROP_INCLUDE_DIRS})
 endif()
 
 ## We use CMake to handle the dependency since the primary VCS for

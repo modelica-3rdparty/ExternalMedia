@@ -1,5 +1,11 @@
 # ExternalMedia Change Log
 
+## Unreleased
+- CoolProp updated to v8.0.0, the library is now compiled as C++17
+- Added the enable_SVDSBTL option, a third table-based interpolation method next to
+  enable_TTSE and enable_BICUBIC. It uses the SVD-compressed spline-based tables
+  (SVDSBTL backend) introduced in CoolProp 8 for pure fluids.
+
 ## v4.1.1 - 2025/11/03
 - Uses Modelica Standard Library 4.1.0
 - CoolProp updated to v7.2.0
