@@ -174,6 +174,15 @@ if(COOLPROP)
 add_dependencies(${LIBRARY_NAME} CoolProp)
 endif()
 
+if(MINGW)
+  # Link the GCC runtime (libgcc, libstdc++ and winpthread) statically into
+  # the DLL. Otherwise the DLL depends on libstdc++-6.dll and friends, and
+  # at simulation time it would pick up whatever version OpenModelica ships,
+  # which may be older than the compiler used here. The Windows system DLLs
+  # (ucrt, kernel32, ...) remain dynamically linked. This follows CoolProp.
+  target_link_libraries(${LIBRARY_NAME} -static-libgcc -static-libstdc++ -Wl,-Bstatic -lwinpthread -Wl,-Bdynamic)
+endif()
+
 if(WIN32)
   if(CMAKE_SIZEOF_VOID_P MATCHES "8")
     set(MODELICA_PLATFORM "win64")
@@ -275,7 +284,7 @@ if(MINGW)
     set(MODELICA_COMPILER "mingw32")
   endif()
   set(MODELICA_COMPILER "")
-  message(WARNING "Discarded compiler information since OpenModelica expect the mingw32/64 platform.")
+  message(WARNING "Discarded compiler information, MinGW builds are installed for OpenModelica directly in the platform folder.")
 endif()
 
 set(MODELICA_INSTALL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia/Resources")

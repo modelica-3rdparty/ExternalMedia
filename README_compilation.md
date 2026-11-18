@@ -66,19 +66,19 @@ cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=OFF -DCOO
 
 ## Building OpenModelica libraries
 
-Get the OMDEV environment from the git repository:
+OpenModelica 1.23 and later use the MSYS2 UCRT64 toolchain on Windows, which only
+supports 64 bit. Get the OMDev environment from the git repository:
 
 ```shell
-git clone https://openmodelica.org/git/OMDev.git C:/OMDev
+git clone --depth 1 https://gitlab.liu.se/OpenModelica/OMDevUCRT.git C:/OMDev
 ```
 
-To install OMDEV in the `C:\OMDev` path, you should start `C:\OMDev\tools\msys\msys.bat`. This
-gives you a command window that looks like the emulation of a unix prompt. Afterwards, you can
-run the following commands
+Follow the instructions in `C:\OMDev\INSTALL.md` and start the UCRT64 shell
+`C:\OMDev\tools\msys\ucrt64.exe`. This gives you a command window that looks like
+the emulation of a unix prompt. Afterwards, you can run the following commands
 
 ```shell
-$ mount d:/Path_to_your_ExternalMediaLibrary_working_copy /ExternalMediaLibrary
-$ cd /ExternalMediaLibrary/
+$ cd /d/Path_to_your_ExternalMediaLibrary_working_copy
 $ cmake -B build -S Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release
 $ cmake --build build --target install
 ```
@@ -86,3 +86,6 @@ $ cmake --build build --target install
 This will build the dynamic library and copy it and the `externalmedia.h`
 header files in the Resource directories of the Modelica packages, so it can
 be used right away by just loading the Modelica package in OMC.
+
+CoolProp 8 and later refuse to configure outside an MSYS2 shell, they check the
+`MSYSTEM` environment variable. Any other MSYS2 UCRT64 installation works as well.
