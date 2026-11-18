@@ -10,7 +10,6 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-#include <cmath>
 
 //double _p_eps   ; // relative tolerance margin for subcritical pressure conditions
 //double _T_eps   ; // relative tolerance margin for supercritical temperature conditions
@@ -28,7 +27,6 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 	// Set the defaults
 	enable_TTSE     = false;
 	enable_BICUBIC  = false;
-	enable_SVDSBTL  = false;
 	debug_level     = 0;
 	calc_transport  = true;
 	extend_twophase = true;
@@ -80,6 +78,7 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 				{
 					std::cout << "TTSE is on\n";
 					enable_TTSE = true;
+					backend = "TTSE&" + backend;
 				}
 				else if (!param_val[1].compare("0") || !param_val[1].compare("false"))
 				{
@@ -96,6 +95,7 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 				{
 					std::cout << "BICUBIC is on\n";
 					enable_BICUBIC = true;
+					backend = "BICUBIC&" + backend;
 				}
 				else if (!param_val[1].compare("0") || !param_val[1].compare("false"))
 				{
@@ -105,21 +105,6 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 				else
 					errorMessage((char*)format("I don't know how to handle this option [%s]",name_options[i].c_str()).c_str());
 					//throw NotImplementedError((char*)format("I don't know how to handle this option [%s]",name_options[i].c_str()).c_str());
-			}
-			else if (!param_val[0].compare("enable_SVDSBTL"))
-			{
-				if (!param_val[1].compare("1") || !param_val[1].compare("true"))
-				{
-					std::cout << "SVDSBTL is on\n";
-					enable_SVDSBTL = true;
-				}
-				else if (!param_val[1].compare("0") || !param_val[1].compare("false"))
-				{
-					std::cout << "SVDSBTL is off\n";
-					enable_SVDSBTL = false;
-				}
-				else
-					errorMessage((char*)format("I don't know how to handle this option [%s]",name_options[i].c_str()).c_str());
 			}
 			else if (!param_val[0].compare("calc_transport"))
 			{
@@ -169,33 +154,6 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 			// Some options were passed in, lets see what we have
 			std::cout << param_val[0] << " has the value of " << param_val[1] << std::endl;
 		}
-	}
-
-	// Apply the interpolation option, only one table method can be active at a time
-	if ((int)enable_TTSE + (int)enable_BICUBIC + (int)enable_SVDSBTL > 1)
-	{
-		errorMessage((char*)format("Only one of enable_TTSE, enable_BICUBIC and enable_SVDSBTL can be set for [%s]",substanceName.c_str()).c_str());
-	}
-	source_backend = backend;
-	if (enable_TTSE)
-	{
-		backend = "TTSE&" + backend;
-	}
-	else if (enable_BICUBIC)
-	{
-		backend = "BICUBIC&" + backend;
-	}
-	else if (enable_SVDSBTL)
-	{
-		// SVDSBTL needs the reference backend that fills its tables,
-		// for example "SVDSBTL&HEOS", "SVDSBTL&REFPROP" or "SVDSBTL&IF97".
-		// The smoothing options rely on CoolProp functions that SVDSBTL
-		// does not provide, so they are rejected here.
-		if (twophase_derivsmoothing_xend > 0.0 || rho_smoothing_xend > 0.0)
-		{
-			errorMessage((char*)format("The options twophase_derivsmoothing_xend and rho_smoothing_xend are not supported with enable_SVDSBTL [%s]",substanceName.c_str()).c_str());
-		}
-		backend = "SVDSBTL&" + backend;
 	}
 
 	// Handle the name
@@ -257,17 +215,7 @@ void CoolPropSolver::setFluidConstants(){
 
 void CoolPropSolver::postStateChange(ExternalThermodynamicState *const properties) {
     /// Some common code to avoid pitfalls from incompressibles
-    if (isCompressible && enable_SVDSBTL)
-    {
-        try{
-            this->postStateChange_SVDSBTL(properties);
-        }
-        catch(std::exception &e)
-        {
-            errorMessage((char*)e.what());
-        }
-    }
-    else if (isCompressible)
+    if (isCompressible)
     {
         try{
             // Set the values in the output structure
@@ -457,12 +405,6 @@ void CoolPropSolver::setSat_p(double &p, ExternalSaturationProperties *const pro
 
 	if (p > _satPropsClose2Crit.psat) { // supercritical conditions
 		fillCritSatState(properties, _satPropsClose2Crit);
-	} else if (enable_SVDSBTL) {
-	  try {
-		  setSat_p_SVDSBTL(p, properties);
-	  } catch(std::exception &e) {
-		errorMessage((char*)e.what());
-	  }
 	} else {
 	  //this->preStateChange();
 	  try {
@@ -502,16 +444,6 @@ void CoolPropSolver::setSat_T(double &T, ExternalSaturationProperties *const pro
 
 	if (T > _satPropsClose2Crit.Tsat) { // supercritical conditions
 		fillCritSatState(properties, _satPropsClose2Crit);
-	} else if (enable_SVDSBTL) {
-	  try {
-		  // Find the saturation pressure from the tables, then use the
-		  // pressure based routine. The input temperature is kept as Tsat.
-		  state->update(CoolProp::QT_INPUTS, 0, T);
-		  setSat_p_SVDSBTL(state->p(), properties);
-		  properties->Tsat = T;
-	  } catch(std::exception &e) {
-		errorMessage((char*)e.what());
-	  }
 	} else {
 	  //this->preStateChange();
 	  try
@@ -667,18 +599,7 @@ void CoolPropSolver::setState_hs(double &h, double &s, int &phase, ExternalTherm
 
 	try{
 		// Update the internal variables in the state instance
-		if (enable_SVDSBTL)
-		{
-			// SVDSBTL has no h-s table. Find the pressure with the
-			// reference backend and continue with the p-h table.
-			shared_ptr<CoolProp::AbstractState> src = get_source_state();
-			src->update(CoolProp::HmassSmass_INPUTS,h,s);
-			state->update(CoolProp::HmassP_INPUTS,h,src->p());
-		}
-		else
-		{
-			state->update(CoolProp::HmassSmass_INPUTS,h,s);
-		}
+		state->update(CoolProp::HmassSmass_INPUTS,h,s);
 
 		// Set the values in the output structure
 		this->postStateChange(properties);
@@ -698,20 +619,9 @@ double CoolPropSolver::partialDeriv_state(const string &of, const string &wrt, c
 
 	try{
 		//res = DerivTerms(derivTerm, properties->d, properties->T, this->substanceName);
-		if (enable_SVDSBTL)
-		{
-			// SVDSBTL does not provide generic partial derivatives,
-			// use the reference backend instead.
-			shared_ptr<CoolProp::AbstractState> src = get_source_state();
-			src->update(CoolProp::DmassT_INPUTS,properties->d,properties->T);
-			res = src->keyed_output(static_cast<CoolProp::parameters>(derivTerm));
-		}
-		else
-		{
-			state->update(CoolProp::DmassT_INPUTS,properties->d,properties->T);
-			// Get the output value
-			res = state->keyed_output(static_cast<CoolProp::parameters>(derivTerm));
-		}
+		state->update(CoolProp::DmassT_INPUTS,properties->d,properties->T);
+		// Get the output value
+		res = state->keyed_output(static_cast<CoolProp::parameters>(derivTerm));
 	} catch(std::exception &e) {
 		errorMessage((char*)e.what());
 	}
@@ -964,258 +874,6 @@ double CoolPropSolver::Tsat(ExternalSaturationProperties *const properties){
 	errorMessage((char*)"Internal error: Tsat() not implemented in the Solver object");
 	//throw NotImplementedError((char*)"Internal error: Tsat() not implemented in the Solver object");
 	return NAN;
-}
-
-/*
- * SVDSBTL support
- *
- * The SVDSBTL backend of CoolProp (v8 and later) stores density,
- * temperature, enthalpy, entropy, internal energy, speed of sound,
- * viscosity and conductivity on compressed tables. ExternalMedia
- * also needs cp, cv, kappa, beta, the density derivatives and the
- * saturation derivatives. These are computed below from finite
- * differences of the tabulated values on the p-h table:
- *
- *   rho_h = (d rho/d h)_p    rho_p = (d rho/d p)_h
- *   T_h   = (d T/d h)_p      T_p   = (d T/d p)_h
- *
- *   cp    = 1/T_h
- *   beta  = -1/rho (d rho/d T)_p = -rho_h/(rho T_h)
- *   kappa =  1/rho (d rho/d p)_T = (rho_p - rho_h T_p/T_h)/rho
- *   cv    = cp - T beta^2/(rho kappa)
- *
- * Central differences are used where both neighbours lie in the same
- * phase as the base point, one-sided differences otherwise (close to
- * the saturation lines). The finite differences move the internal
- * state, so all values at the state point are read first.
- */
-
-/* Relative step sizes of the finite differences. The tables are
-   cubic splines (C1 or better), so a small relative step gives
-   accurate derivatives without amplifying round-off errors. */
-static const double SVDSBTL_REL_STEP = 1e-5;
-/* Enthalpy scale in J/kg, keeps the enthalpy step finite around h = 0 */
-static const double SVDSBTL_H_SCALE_J_KG = 1e5;
-
-/// Enthalpy step for finite differences at specific enthalpy h [J/kg]
-static double svdsbtl_dh_J_kg(double h){
-	return SVDSBTL_REL_STEP*(std::abs(h) + SVDSBTL_H_SCALE_J_KG);
-}
-
-/// Derivative from a base value f0 and the values fp at x+dx and fm at x-dx.
-/// ok_p and ok_m tell whether the neighbours can be used.
-static double svdsbtl_fd(double f0, double fp, double fm, double dx, bool ok_p, bool ok_m){
-	if (ok_p && ok_m) return (fp - fm)/(2.0*dx);
-	if (ok_p) return (fp - f0)/dx;
-	if (ok_m) return (f0 - fm)/dx;
-	return NAN;
-}
-
-/// Reference (non-tabulated) state behind the SVDSBTL tables, created on first use
-shared_ptr<CoolProp::AbstractState> CoolPropSolver::get_source_state(){
-	if (!source_state){
-		source_state.reset(CoolProp::AbstractState::factory(source_backend, this->substanceName));
-	}
-	return source_state;
-}
-
-/// Evaluate density and temperature on the p-h table, returns false if the point is not valid
-bool CoolPropSolver::eval_ph_SVDSBTL(double h, double p, double &rho, double &T, bool &twophase){
-	try{
-		state->update(CoolProp::HmassP_INPUTS, h, p);
-		rho = state->rhomass();
-		T = state->T();
-		twophase = (state->phase() == CoolProp::iphase_twophase);
-	}
-	catch(std::exception &){
-		return false;
-	}
-	return ValidNumber(rho) && ValidNumber(T);
-}
-
-/// Fill a, eta, lambda, cp, cv, kappa, beta, ddhp and ddph at (h, p) from the p-h table.
-/// The state values (p, T, d, h, s, phase) are NOT written here.
-/// In the two-phase region only ddhp and ddph are set, the rest is NAN.
-void CoolPropSolver::props_ph_SVDSBTL(double h, double p, ExternalThermodynamicState *const properties){
-	double rho_0, T_0;
-	bool twophase_0;
-	if (!eval_ph_SVDSBTL(h, p, rho_0, T_0, twophase_0)){
-		throw CoolProp::ValueError(format("SVDSBTL p-h [%g, %g] failed for update",p,h));
-	}
-
-	// Values that come directly from the tables, read before the state moves
-	properties->a      = NAN;
-	properties->eta    = NAN;
-	properties->lambda = NAN;
-	if (!twophase_0){
-		properties->a = state->speed_sound();
-		if (calc_transport){
-			properties->eta    = state->viscosity();
-			properties->lambda = state->conductivity();
-		}
-	}
-
-	// Neighbours in enthalpy and pressure, only used if they are in the same phase
-	const double dh_J_kg = svdsbtl_dh_J_kg(h);
-	const double dp_Pa = SVDSBTL_REL_STEP*p;
-	double rho_hp, T_hp, rho_hm, T_hm, rho_pp, T_pp, rho_pm, T_pm;
-	bool tp_hp, tp_hm, tp_pp, tp_pm;
-	const bool ok_hp = eval_ph_SVDSBTL(h + dh_J_kg, p, rho_hp, T_hp, tp_hp) && (tp_hp == twophase_0);
-	const bool ok_hm = eval_ph_SVDSBTL(h - dh_J_kg, p, rho_hm, T_hm, tp_hm) && (tp_hm == twophase_0);
-	const bool ok_pp = eval_ph_SVDSBTL(h, p + dp_Pa, rho_pp, T_pp, tp_pp) && (tp_pp == twophase_0);
-	const bool ok_pm = eval_ph_SVDSBTL(h, p - dp_Pa, rho_pm, T_pm, tp_pm) && (tp_pm == twophase_0);
-
-	const double rho_h = svdsbtl_fd(rho_0, rho_hp, rho_hm, dh_J_kg, ok_hp, ok_hm);
-	const double rho_p = svdsbtl_fd(rho_0, rho_pp, rho_pm, dp_Pa, ok_pp, ok_pm);
-	properties->ddhp = rho_h;
-	properties->ddph = rho_p;
-
-	if (twophase_0){
-		properties->cp    = NAN;
-		properties->cv    = NAN;
-		properties->kappa = NAN;
-		properties->beta  = NAN;
-	}
-	else{
-		const double T_h = svdsbtl_fd(T_0, T_hp, T_hm, dh_J_kg, ok_hp, ok_hm);
-		const double T_p = svdsbtl_fd(T_0, T_pp, T_pm, dp_Pa, ok_pp, ok_pm);
-		properties->cp    = 1.0/T_h;
-		properties->beta  = -rho_h/(rho_0*T_h);
-		properties->kappa = (rho_p - rho_h*T_p/T_h)/rho_0;
-		properties->cv    = properties->cp - T_0*properties->beta*properties->beta/(rho_0*properties->kappa);
-	}
-}
-
-/// postStateChange for the SVDSBTL backend, see the comment block above
-void CoolPropSolver::postStateChange_SVDSBTL(ExternalThermodynamicState *const properties){
-	// State values from the update that was just made
-	properties->p = state->p();
-	properties->T = state->T();
-	properties->d = state->rhomass();
-	properties->h = state->hmass();
-	properties->s = state->smass();
-	const bool twophase = (state->phase() == CoolProp::iphase_twophase);
-	const double x = twophase ? state->Q() : -1.0;
-	properties->phase = twophase ? 2 : 1;
-
-	// Work on a copy so the state values above are not overwritten
-	ExternalThermodynamicState props_ph = *properties;
-	props_ph_SVDSBTL(properties->h, properties->p, &props_ph);
-	properties->ddhp = props_ph.ddhp;
-	properties->ddph = props_ph.ddph;
-
-	if (!twophase){
-		// The p-h table can classify a point that lies within a few J/kg
-		// of a saturation line differently than the input pair used for
-		// the update. Stop instead of returning NAN for cp and the rest.
-		if (!ValidNumber(props_ph.cp) || !ValidNumber(props_ph.a)){
-			throw CoolProp::ValueError(format("SVDSBTL could not compute the single-phase properties at p = %g Pa, h = %g J/kg",properties->p,properties->h));
-		}
-		properties->a      = props_ph.a;
-		properties->cp     = props_ph.cp;
-		properties->cv     = props_ph.cv;
-		properties->kappa  = props_ph.kappa;
-		properties->beta   = props_ph.beta;
-		properties->eta    = props_ph.eta;
-		properties->lambda = props_ph.lambda;
-	}
-	else if (extend_twophase){
-		// Interpolate between single-phase states just outside the
-		// bubble and dew lines, like the non-tabulated version does
-		// with the saturated states.
-		state->update(CoolProp::PQ_INPUTS, properties->p, 0);
-		const double h_l_J_kg = state->hmass();
-		state->update(CoolProp::PQ_INPUTS, properties->p, 1);
-		const double h_v_J_kg = state->hmass();
-		ExternalThermodynamicState props_l = *properties;
-		ExternalThermodynamicState props_v = *properties;
-		props_ph_SVDSBTL(h_l_J_kg - svdsbtl_dh_J_kg(h_l_J_kg), properties->p, &props_l);
-		props_ph_SVDSBTL(h_v_J_kg + svdsbtl_dh_J_kg(h_v_J_kg), properties->p, &props_v);
-
-		properties->cv = interp_linear(x, props_l.cv, props_v.cv);
-		properties->a  = interp_linear(x, props_l.a, props_v.a);
-		properties->cp = interp_linear(x, props_l.cp, props_v.cp);
-		properties->kappa = NAN;
-		properties->beta  = NAN;
-		if (calc_transport){
-			properties->eta    = interp_recip(x, props_l.eta, props_v.eta);
-			properties->lambda = interp_linear(x, props_l.lambda, props_v.lambda);
-		}
-		else{
-			properties->eta    = NAN;
-			properties->lambda = NAN;
-		}
-	}
-	else{
-		properties->cv     = NAN;
-		properties->a      = NAN;
-		properties->cp     = NAN;
-		properties->kappa  = NAN;
-		properties->beta   = NAN;
-		properties->eta    = NAN;
-		properties->lambda = NAN;
-	}
-}
-
-/// Saturation properties at pressure p [Pa] from the SVDSBTL tables
-void CoolPropSolver::setSat_p_SVDSBTL(double p, ExternalSaturationProperties *const properties){
-	// Bubble and dew line values at p, and at p +/- dp for the derivatives.
-	// Index 0: p, index 1: p + dp, index 2: p - dp
-	const double dp_Pa = SVDSBTL_REL_STEP*p;
-	const double p_Pa[3] = {p, p + dp_Pa, p - dp_Pa};
-	double T_K[3], d_l[3], h_l[3], d_v[3], h_v[3];
-	bool ok[3];
-	double s_l = NAN, s_v = NAN;
-	for (int i = 0; i < 3; i++){
-		try{
-			state->update(CoolProp::PQ_INPUTS, p_Pa[i], 0);
-			T_K[i] = state->T();
-			d_l[i] = state->rhomass();
-			h_l[i] = state->hmass();
-			if (i == 0) s_l = state->smass();
-			state->update(CoolProp::PQ_INPUTS, p_Pa[i], 1);
-			d_v[i] = state->rhomass();
-			h_v[i] = state->hmass();
-			if (i == 0) s_v = state->smass();
-			ok[i] = ValidNumber(T_K[i]) && ValidNumber(d_l[i]) && ValidNumber(h_l[i])
-			     && ValidNumber(d_v[i]) && ValidNumber(h_v[i]);
-		}
-		catch(std::exception &){
-			// The base point must work, the neighbours may fail close to the triple point
-			if (i == 0) throw;
-			ok[i] = false;
-		}
-	}
-	if (!ok[0]){
-		throw CoolProp::ValueError(format("SVDSBTL saturation at p = %g Pa failed",p));
-	}
-
-	properties->psat = p;
-	properties->Tsat = T_K[0];
-	properties->dl = d_l[0];
-	properties->hl = h_l[0];
-	properties->sl = s_l;
-	properties->dv = d_v[0];
-	properties->hv = h_v[0];
-	properties->sv = s_v;
-	properties->dTp   = svdsbtl_fd(T_K[0], T_K[1], T_K[2], dp_Pa, ok[1], ok[2]);
-	properties->ddldp = svdsbtl_fd(d_l[0], d_l[1], d_l[2], dp_Pa, ok[1], ok[2]);
-	properties->dhldp = svdsbtl_fd(h_l[0], h_l[1], h_l[2], dp_Pa, ok[1], ok[2]);
-	properties->ddvdp = svdsbtl_fd(d_v[0], d_v[1], d_v[2], dp_Pa, ok[1], ok[2]);
-	properties->dhvdp = svdsbtl_fd(h_v[0], h_v[1], h_v[2], dp_Pa, ok[1], ok[2]);
-
-	// Surface tension is not tabulated, use the reference backend
-	try{
-		shared_ptr<CoolProp::AbstractState> src = get_source_state();
-		src->update(CoolProp::PQ_INPUTS, p, 0);
-		properties->sigma = src->surface_tension();
-	}
-	catch(...){
-		properties->sigma = NAN;
-	}
-
-	// Reset the state (to be sure a new one is created before computing new values)
-	state->clear();
 }
 
 /// Interpolation routines

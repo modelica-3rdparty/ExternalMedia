@@ -37,20 +37,8 @@ e.g., &quot;CO2|enable_BICUBIC=1&quot; or &quot;CO2|enable_TTSE=1|calc_transport
 <ul>
 <li>enable_TTSE (default 0) Enables TTSE tabular interpolation</li>
 <li>enable_BICUBIC (default 0) Enables bicubic tabular interpolation</li>
-<li>enable_SVDSBTL (default 0) Enables the SVD-compressed spline-based table look-up (SVDSBTL) of CoolProp 8 or later, see below</li>
 <li>calc_transport (default 1) Enables the computation of transport properties</li>
 <li>debug (default 0) Set the debug level, 0-1000</li>
-</ul>
-</p>
-<p>Only one of enable_TTSE, enable_BICUBIC and enable_SVDSBTL can be set at a time.</p>
-<p>The SVDSBTL option (e.g., &quot;Water|enable_SVDSBTL=1&quot;) uses compressed tables of density, temperature, enthalpy, entropy, speed of sound and the transport properties on the p-h, p-T, d-T and p-s planes.
-The tables are built from the reference equation of state (HEOS by default, or the backend given in the name, e.g., &quot;REFPROP::Water|enable_SVDSBTL=1&quot; or &quot;IF97::Water|enable_SVDSBTL=1&quot;) the first time a fluid is used, and then stored in a cache folder in the CoolProp home directory, so the first simulation with a new fluid starts slower. Please note:
-<ul>
-<li>SVDSBTL supports pure fluids only, no mixtures and no incompressible fluids.</li>
-<li>cp, cv, the isothermal compressibility, the isobaric expansion coefficient, the density derivatives and the saturation derivatives are computed from finite differences of the tabulated values.</li>
-<li>The h-s inputs, the generic partial derivatives and the surface tension are computed with the reference equation of state.</li>
-<li>twophase_derivsmoothing_xend and rho_smoothing_xend cannot be combined with enable_SVDSBTL.</li>
-<li>Close to the saturation lines the tables are less accurate than in the rest of the single-phase region. Derivative-based quantities such as cv, the isothermal compressibility and the density derivatives of the slightly subcooled liquid can deviate by tens of percent from the reference equation of state there.</li>
 </ul>
 </p>
 <p>Set mediumName to a string that describes the medium (this only used for documentation purposes but has no effect in selecting the medium model).</p>

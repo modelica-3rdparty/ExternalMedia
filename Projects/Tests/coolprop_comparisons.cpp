@@ -168,10 +168,6 @@ int main()
 	TwoPhaseMedium_setState_ph_C_impl(8e5, 4E5, 1, pointer, "R245fa", "CoolProp", "R245fa|calc_transport=0|enable_TTSE=1|debug=100|rho_smoothing_xend=0.2");
 	printValues(pointer);
 
-	std::cout << "\n3.8b) ExternalMedia R245fa calc_transport=0|enable_SVDSBTL=1|debug=10" << std::endl;
-	TwoPhaseMedium_setState_ph_C_impl(8e5, 4E5, 1, pointer, "R245fa", "CoolProp", "R245fa|calc_transport=0|enable_SVDSBTL=1|debug=10");
-	printValues(pointer);
-
 	std::cout << "\n3.9)  ExternalMedia R245fa pT input" << std::endl;
 
 	TwoPhaseMedium_setState_pT_C_impl(8e5, 350, pointer, "R245fa", "CoolProp", "R245fa");

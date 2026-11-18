@@ -1159,10 +1159,6 @@ package Test "Test models for the different solvers"
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_BICUBIC=0");
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_BICUBIC=1");
         //
-        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_SVDSBTL");
-        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_SVDSBTL=0");
-        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_SVDSBTL=1");
-        //
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_EXTTP");
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_EXTTP=0");
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_EXTTP=1");
