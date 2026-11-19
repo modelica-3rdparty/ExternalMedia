@@ -46,7 +46,7 @@ partial package IncompressibleCoolPropMedium
     //SaturationProperties sat "saturation property record";
   equation
     phaseInput = 1 "Force one-phase property computation";
-    R  = Modelica.Constants.small "Gas constant (of mixture if applicable)";
+    R_s = Modelica.Constants.small "Specific gas constant (of mixture if applicable)";
     MM = 0.001 "Molar mass (of mixture or single fluid)";
     if (basePropertiesInputChoice == InputChoiceIncompressible.phX or
         basePropertiesInputChoice == InputChoiceIncompressible.ph) then
@@ -87,7 +87,7 @@ partial package IncompressibleCoolPropMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
     input SpecificEnthalpy h "specific enthalpy";
-    input MassFraction X[nX] "Mass fractions";
+    input MassFraction X[:] "Mass fractions";
     input Integer phase = 1 "2 for two-phase, 1 for one-phase, 0 if not known";
     output ThermodynamicState state;
   protected
@@ -152,7 +152,7 @@ partial package IncompressibleCoolPropMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
     input SpecificEntropy s "specific entropy";
-    input MassFraction X[nX] "Mass fractions";
+    input MassFraction X[:] "Mass fractions";
     input Integer phase = 1 "2 for two-phase, 1 for one-phase, 0 if not known";
     output ThermodynamicState state;
   protected
@@ -166,7 +166,7 @@ partial package IncompressibleCoolPropMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input SpecificEnthalpy h "Enthalpy";
-    input MassFraction X[nX] "Mass fractions";
+    input MassFraction X[:] "Mass fractions";
     input Integer phase=1 "2 for two-phase, 1 for one-phase, 0 if not known";
   //input ThermodynamicState state;
     output Density d "density";
@@ -180,7 +180,7 @@ partial package IncompressibleCoolPropMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input SpecificEnthalpy h "Enthalpy";
-    input MassFraction X[nX] "Mass fractions";
+    input MassFraction X[:] "Mass fractions";
     input ThermodynamicState state;
     output Density d "density";
   algorithm
@@ -195,7 +195,7 @@ partial package IncompressibleCoolPropMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input SpecificEnthalpy h "Specific enthalpy";
-    input MassFraction X[nX] "Mass fractions";
+    input MassFraction X[:] "Mass fractions";
     input ThermodynamicState state;
     input Real p_der "time derivative of pressure";
     input Real h_der "time derivative of specific enthalpy";
@@ -226,7 +226,7 @@ partial package IncompressibleCoolPropMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input SpecificEnthalpy h "Enthalpy";
-    input MassFraction X[nX] "Mass fractions";
+    input MassFraction X[:] "Mass fractions";
     input Integer phase=1 "2 for two-phase, 1 for one-phase, 0 if not known";
     output Temperature T "Temperature";
   algorithm
@@ -240,7 +240,7 @@ partial package IncompressibleCoolPropMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input SpecificEnthalpy h "Enthalpy";
-    input MassFraction X[nX] "Mass fractions";
+    input MassFraction X[:] "Mass fractions";
     input ThermodynamicState state;
     output Temperature T "Temperature";
   algorithm
@@ -255,7 +255,7 @@ partial package IncompressibleCoolPropMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input SpecificEnthalpy h "Specific Enthalpy";
-    input MassFraction X[nX] "Mass fractions";
+    input MassFraction X[:] "Mass fractions";
     input Integer phase=1 "2 for two-phase, 1 for one-phase, 0 if not known";
     output SpecificEntropy s "Specific Entropy";
   algorithm
@@ -269,7 +269,7 @@ partial package IncompressibleCoolPropMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input SpecificEnthalpy h "Specific Enthalpy";
-    input MassFraction X[nX] "Mass fractions";
+    input MassFraction X[:] "Mass fractions";
     input ThermodynamicState state;
     output SpecificEntropy s "Specific Entropy";
   algorithm
@@ -284,7 +284,7 @@ partial package IncompressibleCoolPropMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p;
     input SpecificEnthalpy h;
-    input MassFraction X[nX] "Mass fractions";
+    input MassFraction X[:] "Mass fractions";
     input ThermodynamicState state;
     input Real p_der "time derivative of pressure";
     input Real h_der "time derivative of specific enthalpy";
@@ -300,7 +300,7 @@ partial package IncompressibleCoolPropMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input Temperature T "Temperature";
-    input MassFraction X[nX] "Mass fractions";
+    input MassFraction X[:] "Mass fractions";
     input Integer phase=1 "2 for two-phase, 1 for one-phase, 0 if not known";
     output Density d "Density";
   algorithm
@@ -313,7 +313,7 @@ partial package IncompressibleCoolPropMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input Temperature T "Temperature";
-    input MassFraction X[nX] "Mass fractions";
+    input MassFraction X[:] "Mass fractions";
     input ThermodynamicState state;
     output Density d "Density";
   algorithm
@@ -328,7 +328,7 @@ partial package IncompressibleCoolPropMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input Temperature T "Temperature";
-    input MassFraction X[nX] "Mass fractions";
+    input MassFraction X[:] "Mass fractions";
     input Integer phase=1 "2 for two-phase, 1 for one-phase, 0 if not known";
     output SpecificEnthalpy h "specific enthalpy";
   algorithm
@@ -343,7 +343,7 @@ partial package IncompressibleCoolPropMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input Temperature T "Temperature";
-    input MassFraction X[nX] "Mass fractions";
+    input MassFraction X[:] "Mass fractions";
     input ThermodynamicState state;
     output SpecificEnthalpy h "specific enthalpy";
   algorithm
@@ -359,7 +359,7 @@ partial package IncompressibleCoolPropMedium
   extends Modelica.Icons.Function;
   input AbsolutePressure p "Pressure";
   input Temperature T "Temperature";
-  input MassFraction X[nX] "Mass fractions";
+  input MassFraction X[:] "Mass fractions";
   input Integer phase=1 "2 for two-phase, 1 for one-phase, 0 if not known";
   output SpecificEntropy s "Specific Entropy";
   algorithm
@@ -373,7 +373,7 @@ partial package IncompressibleCoolPropMedium
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input Temperature T "Temperature";
-    input MassFraction X[nX] "Mass fractions";
+    input MassFraction X[:] "Mass fractions";
     input ThermodynamicState state;
     output SpecificEntropy s "Specific Entropy";
   algorithm
