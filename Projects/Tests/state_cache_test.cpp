@@ -34,6 +34,19 @@ static const char *CACHED = "R134a";
 static const char *UNCACHED = "R134a|cache_size=0";
 static int failures = 0;
 
+// Set all bytes of the records to zero. ExternalThermodynamicState has
+// padding after the int phase, the solver never writes it, so without this
+// checkSame could report a difference in uninitialised padding bytes.
+template <class Record>
+static void clear(Record &a) {
+	memset(&a, 0, sizeof(Record));
+}
+template <class Record, class... More>
+static void clear(Record &a, More &... more) {
+	clear(a);
+	clear(more...);
+}
+
 // Compare two records byte by byte
 template <class Record>
 static void checkSame(const char *what, double x1, double x2, const Record &a, const Record &b) {
@@ -49,6 +62,7 @@ static void checkSame(const char *what, double x1, double x2, const Record &a, c
 template <class SetState>
 static void checkFlavour(const char *what, double x1, double x2, SetState setState) {
 	ExternalThermodynamicState uncached, miss, other, hit;
+	clear(uncached, miss, other, hit);
 	setState(x1, x2, &uncached, UNCACHED);
 	setState(x1, x2, &miss, CACHED);
 	TwoPhaseMedium_setState_ph_C_impl(1.234e5, 4.0e5, 0, &other, MEDIUM, LIBRARY, CACHED);
@@ -82,6 +96,7 @@ int main() {
 	double p_sat_Pa[] = {1e5, 1e6, 3e6};
 	for (double p : p_sat_Pa) {
 		ExternalSaturationProperties uncached, miss, other, hit;
+		clear(uncached, miss, other, hit);
 		TwoPhaseMedium_setSat_p_C_impl(p, &uncached, MEDIUM, LIBRARY, UNCACHED);
 		TwoPhaseMedium_setSat_p_C_impl(p, &miss, MEDIUM, LIBRARY, CACHED);
 		TwoPhaseMedium_setSat_p_C_impl(0.9 * p, &other, MEDIUM, LIBRARY, CACHED);
@@ -98,6 +113,7 @@ int main() {
 		checkSame("setSat_T", T, 0.0, uncached, hit);
 
 		ExternalThermodynamicState bubble_uncached, bubble_miss, bubble_hit;
+		clear(bubble_uncached, bubble_miss, bubble_hit);
 		TwoPhaseMedium_setBubbleState_C_impl(&uncached, 1, &bubble_uncached, MEDIUM, LIBRARY, UNCACHED);
 		TwoPhaseMedium_setBubbleState_C_impl(&uncached, 1, &bubble_miss, MEDIUM, LIBRARY, CACHED);
 		TwoPhaseMedium_setBubbleState_C_impl(&uncached, 1, &bubble_hit, MEDIUM, LIBRARY, CACHED);
@@ -109,6 +125,7 @@ int main() {
 	// for a dT call with the same numbers (20 Pa or 20 kg/m3, 300 K).
 	{
 		ExternalThermodynamicState state_pT, state_dT, state_dT_uncached;
+		clear(state_pT, state_dT, state_dT_uncached);
 		TwoPhaseMedium_setState_pT_C_impl(20.0, 300.0, &state_pT, MEDIUM, LIBRARY, CACHED);
 		TwoPhaseMedium_setState_dT_C_impl(20.0, 300.0, 0, &state_dT, MEDIUM, LIBRARY, CACHED);
 		TwoPhaseMedium_setState_dT_C_impl(20.0, 300.0, 0, &state_dT_uncached, MEDIUM, LIBRARY, UNCACHED);

@@ -49,7 +49,8 @@ protected:
 	/* Store computed saturation properties, unless the calculation failed */
 	void storeSat(int inputs, double x, const ExternalSaturationProperties *const properties);
 
-	virtual void postStateChange(ExternalThermodynamicState *const properties);
+	/* Fill the output record from the CoolProp state, returns false if a property call failed */
+	virtual bool postStateChange(ExternalThermodynamicState *const properties);
 	long makeDerivString(const string &of, const string &wrt, const string &cst);
 	double interp_linear(double Q, double valueL, double valueV);
 	double interp_recip(double Q, double valueL, double valueV);

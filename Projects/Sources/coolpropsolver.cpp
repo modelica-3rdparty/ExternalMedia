@@ -214,6 +214,8 @@ void CoolPropSolver::printCacheStatistics(){
 // Store a state in the cache. If the calculation failed without aborting
 // the simulation (possible on Windows, see errorMessage), the record holds
 // invalid numbers and must not be returned again for the same inputs.
+// The callers only store after postStateChange succeeded, this check is a
+// second guard for the main properties.
 void CoolPropSolver::storeState(int inputs, double x1, double x2, int phase, const ExternalThermodynamicState *const properties){
 	if (ValidNumber(properties->p) && ValidNumber(properties->T) && ValidNumber(properties->d) && ValidNumber(properties->h))
 		_stateCache.store(inputs, x1, x2, phase, *properties);
@@ -250,8 +252,9 @@ void CoolPropSolver::setFluidConstants(){
 }
 
 
-void CoolPropSolver::postStateChange(ExternalThermodynamicState *const properties) {
+bool CoolPropSolver::postStateChange(ExternalThermodynamicState *const properties) {
     /// Some common code to avoid pitfalls from incompressibles
+    bool success = true; // false if a property call failed, see the catch blocks
     if (isCompressible)
     {
         try{
@@ -345,6 +348,7 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
         }
         catch(std::exception &e)
         {
+            success = false;
             errorMessage((char*)e.what());
         }
     }
@@ -376,6 +380,7 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
         }
         catch(std::exception &e)
         {
+            success = false;
             errorMessage((char*)e.what());
         }
     }
@@ -388,6 +393,7 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
         std::cout << format("Setting enthalpy to %f \n",properties->h);
         std::cout << format("Setting entropy to %f \n",properties->s);
     }
+    return success;
 }
 
 void fillCritSatState(ExternalSaturationProperties* const properties, const ExternalSaturationProperties &_satPropsClose2Crit) {
@@ -572,10 +578,9 @@ void CoolPropSolver::setState_ph(double &p, double &h, int &phase, ExternalTherm
 		}
 
 		// Set the values in the output structure
-		this->postStateChange(properties);
-
-		// Store for later calls with the same inputs
-		storeState(CACHE_PH, p, h, phase, properties);
+		// and store it for later calls with the same inputs
+		if (this->postStateChange(properties))
+			storeState(CACHE_PH, p, h, phase, properties);
 	}
 	catch(std::exception &e)
 	{
@@ -600,10 +605,9 @@ void CoolPropSolver::setState_pT(double &p, double &T, ExternalThermodynamicStat
 		state->update(CoolProp::PT_INPUTS,p,T);
 
 		// Set the values in the output structure
-		this->postStateChange(properties);
-
-		// Store for later calls with the same inputs
-		storeState(CACHE_PT, p, T, 0, properties);
+		// and store it for later calls with the same inputs
+		if (this->postStateChange(properties))
+			storeState(CACHE_PT, p, T, 0, properties);
 	}
 	catch(std::exception &e)
 	{
@@ -631,10 +635,9 @@ void CoolPropSolver::setState_dT(double &d, double &T, int &phase, ExternalTherm
 		state->update(CoolProp::DmassT_INPUTS,d,T);
 
 		// Set the values in the output structure
-		this->postStateChange(properties);
-
-		// Store for later calls with the same inputs
-		storeState(CACHE_DT, d, T, phase, properties);
+		// and store it for later calls with the same inputs
+		if (this->postStateChange(properties))
+			storeState(CACHE_DT, d, T, phase, properties);
 	}
 	catch(std::exception &e)
 	{
@@ -660,10 +663,9 @@ void CoolPropSolver::setState_ps(double &p, double &s, int &phase, ExternalTherm
 		state->update(CoolProp::PSmass_INPUTS,p,s);
 
 		// Set the values in the output structure
-		this->postStateChange(properties);
-
-		// Store for later calls with the same inputs
-		storeState(CACHE_PS, p, s, phase, properties);
+		// and store it for later calls with the same inputs
+		if (this->postStateChange(properties))
+			storeState(CACHE_PS, p, s, phase, properties);
 	}
 	catch(std::exception &e)
 	{
@@ -690,10 +692,9 @@ void CoolPropSolver::setState_hs(double &h, double &s, int &phase, ExternalTherm
 		state->update(CoolProp::HmassSmass_INPUTS,h,s);
 
 		// Set the values in the output structure
-		this->postStateChange(properties);
-
-		// Store for later calls with the same inputs
-		storeState(CACHE_HS, h, s, phase, properties);
+		// and store it for later calls with the same inputs
+		if (this->postStateChange(properties))
+			storeState(CACHE_HS, h, s, phase, properties);
 	}
 	catch(std::exception &e)
 	{
