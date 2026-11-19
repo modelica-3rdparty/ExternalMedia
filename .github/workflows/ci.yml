@@ -25,11 +25,10 @@ jobs:
     - name: Copy the PDF manual
       run: cp ExternalMedia/Resources/manual.pdf ExternalMedia-${{ steps.ref_name.outputs.ref_name }}.pdf
     - name: Zip binaries
-      uses: papeloto/action-zip@v1.3
-      with:
-        files: ExternalMedia/
-        recursive: true
-        dest: ExternalMedia-${{ steps.ref_name.outputs.ref_name }}.zip
+      # Keep ExternalMedia/ as the top-level folder inside the zip, so that
+      # unpacking it gives a folder that Modelica tools recognise as the
+      # ExternalMedia package (see issue #124).
+      run: zip -r -q ExternalMedia-${{ steps.ref_name.outputs.ref_name }}.zip ExternalMedia
     - name: Display the file structure
       run: ls -R
     - name: Upload zipped binaries
