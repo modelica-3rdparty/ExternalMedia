@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ExternalMedia<span id="projectnumber">&#160;4.1.1</span>
+   <div id="projectname">ExternalMedia<span id="projectnumber">&#160;4.1.2</span>
    </div>
    <div id="projectbrief">A framework for Modelica.Media-compatible fluid properties</div>
   </td>
@@ -92,20 +92,22 @@ $(function(){ initResizable(false); });
 <h1><a class="anchor" id="autotoc_md16"></a>
 Quick-start guide</h1>
 <p>The heavy-lifting regarding the project configuration is done using the CMake file <code>CMakeLists.txt</code>, which makes the <a href="https://cmake.org/">CMake software</a> a prerequisite for compiling ExternalMedia.</p>
+<p>You also need a C++ compiler that supports C++17, which CoolProp 8 requires, and a working Python installation. CoolProp downloads some of its dependencies when you run the configure step, so you need internet access the first time you configure.</p>
 <p>Once you have installed CMake and can access it from a command prompt, you can go to the root folder of the GIT repository and run:</p>
 <div class="fragment"><div class="line">cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release</div>
 <div class="line">cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release</div>
 </div><!-- fragment --><p>NOTE: On Windows to select a 32 or 64 bit build you can append the option <code>-A Win32</code> or <code>-A x64</code> to the above command.</p>
 <p>Please note that there is no typing mistake in the lines above. The current version of ExternalMedia requires you to run the configure step twice. Now you should have a working project configuration and the actual compilation can be triggered using:</p>
 <div class="fragment"><div class="line">cmake --build build --config Release --target install</div>
-</div><!-- fragment --><p>By default, the libraries are installed in a subfolder with a name that is determined from the current operating system and the compiler, possible combinations are:</p><ul>
-<li><code>Modelica/ExternalMedia/Resources/Library/win32/vs2015</code></li>
-<li><code>Modelica/ExternalMedia/Resources/Library/win64/vs2019</code></li>
-<li><code>Modelica/ExternalMedia/Resources/Library/linux64/gcc81</code></li>
+</div><!-- fragment --><p>By default, the libraries are installed in a subfolder with a name that is determined from the current operating system and the compiler, for example:</p><ul>
+<li><code>Modelica/ExternalMedia/Resources/Library/win32/vs2022</code></li>
+<li><code>Modelica/ExternalMedia/Resources/Library/win64/vs2026</code></li>
+<li><code>Modelica/ExternalMedia/Resources/Library/ucrt64</code> (MSYS2 UCRT64 build for OpenModelica)</li>
+<li><code>Modelica/ExternalMedia/Resources/Library/linux64/gcc152</code></li>
+<li><code>Modelica/ExternalMedia/Resources/Library/aarch64-darwin/appleclang170</code></li>
 </ul>
-<p>If you would like to skip the compiler part and make the current configuration the default for the platform, you can use this command below:</p>
-<div class="fragment"><div class="line">cmake --build build --config Release --target install-as-default</div>
-</div><!-- fragment --><p>MinGW builds, which are used for OpenModelica, skip the compiler part and install directly into <code>Modelica/ExternalMedia/Resources/Library/win64</code> (<code>win32</code> for a 32-bit build). This is the folder that OpenModelica searches on Windows.</p>
+<p>On Linux and macOS, the library is also copied to the platform folder without the compiler part, e.g. <code>Library/linux64</code>, since OpenModelica and Dymola look for it there.</p>
+<p>You can override the automatic choice using the command line switches for <code>MODELICA_PLATFORM</code> and <code>MODELICA_COMPILER</code>. The command <code>cmake -B build -S Projects -DMODELICA_PLATFORM:STRING=win64 -DMODELICA_COMPILER:STRING=</code> would for example configure the installation folder to <code>Modelica/ExternalMedia/Resources/Library/win64</code>.</p>
 <h1><a class="anchor" id="autotoc_md17"></a>
 Selecting the fluid property libraries</h1>
 <p>You can disable and enable the FluidProp and the CoolProp integration with command line switches.</p>
@@ -117,14 +119,14 @@ Selecting the fluid property libraries</h1>
 <div class="line">cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=OFF -DCOOLPROP:BOOL=ON</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md18"></a>
 Building OpenModelica libraries</h1>
-<p>OpenModelica uses the UCRT64 environment of MSYS2. Get the OMDev environment from the git repository:</p>
+<p>OpenModelica 1.23 and later use the MSYS2 UCRT64 toolchain on Windows, which only supports 64 bit. Get the OMDev environment from the git repository:</p>
 <div class="fragment"><div class="line">git clone --depth 1 https://gitlab.liu.se/OpenModelica/OMDevUCRT.git C:/OMDev</div>
-</div><!-- fragment --><p>Start the UCRT64 shell <code>C:\OMDev\tools\msys\ucrt64.exe</code> and run the following commands</p>
+</div><!-- fragment --><p>Follow the instructions in <code>C:\OMDev\INSTALL.md</code> and start the UCRT64 shell <code>C:\OMDev\tools\msys\ucrt64.exe</code>. This gives you a command window that looks like the emulation of a unix prompt. Afterwards, you can run the following commands</p>
 <div class="fragment"><div class="line">$ cd /d/Path_to_your_ExternalMediaLibrary_working_copy</div>
 <div class="line">$ cmake -B build -S Projects -G &quot;MSYS Makefiles&quot; -DCMAKE_BUILD_TYPE=Release</div>
 <div class="line">$ cmake --build build --target install</div>
-</div><!-- fragment --><p>This will build the dynamic library and copy it and the <code>externalmedia.h</code> header files in the Resource directories of the Modelica packages, so it can be used right away by just loading the Modelica package in OMC.</p>
-<p>MinGW builds link libgcc, libstdc++ and winpthread statically. The DLL thus does not depend on the runtime DLLs of MSYS2 or of the Modelica tool. </p>
+</div><!-- fragment --><p>This will build the dynamic library and copy it and the <code>externalmedia.h</code> header files in the Resource directories of the Modelica packages, so it can be used right away by just loading the Modelica package in OMC. A UCRT64 build is installed in <code>Resources/Library/ucrt64</code>, which OpenModelica searches first.</p>
+<p>CoolProp 8 and later refuse to configure outside an MSYS2 shell, they check the <code>MSYSTEM</code> environment variable. Any other MSYS2 UCRT64 installation works as well. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->

@@ -25,7 +25,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ExternalMedia<span id="projectnumber">&#160;4.1.1</span>
+   <div id="projectname">ExternalMedia<span id="projectnumber">&#160;4.1.2</span>
    </div>
    <div id="projectbrief">A framework for Modelica.Media-compatible fluid properties</div>
   </td>
@@ -90,12 +90,17 @@ $(function(){ initResizable(false); });
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="autotoc_md7"></a></p>
 <h1><a class="anchor" id="autotoc_md8"></a>
-Unreleased</h1>
+v4.1.2 - unreleased</h1>
 <ul>
-<li>The OpenModelica DLL is built with the UCRT64 environment of MSYS2 (OMDevUCRT)</li>
-<li>MinGW builds link libgcc, libstdc++ and winpthread statically</li>
+<li>Uses Modelica Standard Library 4.1.0</li>
+<li>CoolProp updated to v8.0.0, the library is now compiled as C++17</li>
 <li>Fixed a crash in OpenModelica with tabular CoolProp media, e.g. <code>CO2|enable_BICUBIC=1</code></li>
-<li>Removed the 32-bit MinGW DLL (<code>win32/ExternalMediaLib.dll</code>), since OpenModelica has no 32-bit Windows build</li>
+<li>The OpenModelica DLL is built with the UCRT64 environment of MSYS2 (OMDevUCRT), as used by OpenModelica 1.23 and later, and installed in Resources/Library/ucrt64</li>
+<li>MinGW builds link libgcc, libstdc++ and winpthread statically</li>
+<li>Removed the 32-bit MinGW DLL (<code>win32/ExternalMediaLib.dll</code>), since OpenModelica has no 32-bit Windows build. There are no binaries for OpenModelica 1.22 and older anymore.</li>
+<li>New example media for R134a (CoolProp with and without TTSE and bicubic tables)</li>
+<li>Added binaries for Visual Studio 2026</li>
+<li>The macOS binaries require macOS 11 or later</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md9"></a>
 v4.1.1 - 2025/11/03</h1>
