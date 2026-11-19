@@ -26,9 +26,9 @@ cmake --build build --config Release --target install
 
 By default, the libraries are installed in a subfolder with a name that is determined
 from the current operating system and the compiler, possible combinations are:
-- `Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/win32/vs2015`
-- `Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/win64/vs2019`
-- `Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/linux64/gcc81`
+- `Modelica/ExternalMedia/Resources/Library/win32/vs2015`
+- `Modelica/ExternalMedia/Resources/Library/win64/vs2019`
+- `Modelica/ExternalMedia/Resources/Library/linux64/gcc81`
 
 If you would like to skip the compiler part and make the current configuration the
 default for the platform, you can use this command below:
@@ -37,13 +37,9 @@ default for the platform, you can use this command below:
 cmake --build build --config Release --target install-as-default
 ```
 
-You can override these settings manually using the command line switches for
-`MODELICA_PLATFORM` and `MODELICA_COMPILER`. The command 
-`cmake -B build -S Projects -DMODELICA_PLATFORM:STRING=mingw64 -DMODELICA_COMPILER:STRING=`
-would for example configure the installation folder to
-`Modelica/ExternalMedia ${APP_VERSION}/Resources/Library/mingw64`, which is the
-preferred search path for OpenModelica that supports side-by-side installations with
-other compilers and configuration that support other Modelica tools.
+MinGW builds, which are used for OpenModelica, skip the compiler part and install
+directly into `Modelica/ExternalMedia/Resources/Library/win64` (`win32` for a 32-bit
+build). This is the folder that OpenModelica searches on Windows.
 
 ## Selecting the fluid property libraries
 
@@ -66,19 +62,17 @@ cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=OFF -DCOO
 
 ## Building OpenModelica libraries
 
-Get the OMDEV environment from the git repository:
+OpenModelica uses the UCRT64 environment of MSYS2. Get the OMDev environment from the git
+repository:
 
 ```shell
-git clone https://openmodelica.org/git/OMDev.git C:/OMDev
+git clone --depth 1 https://gitlab.liu.se/OpenModelica/OMDevUCRT.git C:/OMDev
 ```
 
-To install OMDEV in the `C:\OMDev` path, you should start `C:\OMDev\tools\msys\msys.bat`. This
-gives you a command window that looks like the emulation of a unix prompt. Afterwards, you can
-run the following commands
+Start the UCRT64 shell `C:\OMDev\tools\msys\ucrt64.exe` and run the following commands
 
 ```shell
-$ mount d:/Path_to_your_ExternalMediaLibrary_working_copy /ExternalMediaLibrary
-$ cd /ExternalMediaLibrary/
+$ cd /d/Path_to_your_ExternalMediaLibrary_working_copy
 $ cmake -B build -S Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release
 $ cmake --build build --target install
 ```
@@ -86,3 +80,6 @@ $ cmake --build build --target install
 This will build the dynamic library and copy it and the `externalmedia.h`
 header files in the Resource directories of the Modelica packages, so it can
 be used right away by just loading the Modelica package in OMC.
+
+MinGW builds link libgcc, libstdc++ and winpthread statically. The DLL thus does not
+depend on the runtime DLLs of MSYS2 or of the Modelica tool.
