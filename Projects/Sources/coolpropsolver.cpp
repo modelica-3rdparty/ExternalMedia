@@ -631,14 +631,35 @@ double CoolPropSolver::partialDeriv_state(const string &of, const string &wrt, c
 	double res = NAN;
 
 	try{
-		// Restore the state, incompressibles do not support density-temperature inputs
-		if (isCompressible)
-			state->update(CoolProp::DmassT_INPUTS,properties->d,properties->T);
-		else
+		// Restore the state from the record. Incompressibles do not support
+		// density-temperature inputs. With rho_smoothing_xend, postStateChange
+		// replaces the density of two-phase states by a smoothed value, so d and T
+		// no longer describe the state and p and h are used instead.
+		if (!isCompressible)
 			state->update(CoolProp::PT_INPUTS,properties->p,properties->T);
-		// Inside the two-phase dome, the normal partial derivatives are not defined
-		if (isCompressible && state->phase() == CoolProp::iphase_twophase)
-			res = state->first_two_phase_deriv(iOf, iWrt, iCst);
+		else if (properties->phase == 2 && rho_smoothing_xend > 0.0)
+			state->update(CoolProp::HmassP_INPUTS,properties->h,properties->p);
+		else
+			state->update(CoolProp::DmassT_INPUTS,properties->d,properties->T);
+
+		if (isCompressible && state->phase() == CoolProp::iphase_twophase){
+			// Inside the two-phase dome, the normal partial derivatives are not defined.
+			// Apply the same smoothing as postStateChange, so that the result matches
+			// ddph and ddhp in the state record. CoolProp can only smooth the
+			// derivatives of density with respect to p and h.
+			bool rho_ph = (iOf == CoolProp::iDmass)
+				&& ((iWrt == CoolProp::iP && iCst == CoolProp::iHmass) || (iWrt == CoolProp::iHmass && iCst == CoolProp::iP));
+			double Q = state->Q();
+			double x_end = 0.0;
+			if (Q >= 0 && Q <= twophase_derivsmoothing_xend && twophase_derivsmoothing_xend > 0.0)
+				x_end = twophase_derivsmoothing_xend;
+			else if (Q >= 0 && Q <= rho_smoothing_xend && rho_smoothing_xend > 0.0)
+				x_end = rho_smoothing_xend;
+			if (rho_ph && x_end > 0.0)
+				res = state->first_two_phase_deriv_splined(iOf, iWrt, iCst, x_end);
+			else
+				res = state->first_two_phase_deriv(iOf, iWrt, iCst);
+		}
 		else
 			res = state->first_partial_deriv(iOf, iWrt, iCst);
 	} catch(std::exception &e) {
