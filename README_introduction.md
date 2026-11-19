@@ -123,9 +123,11 @@ FluidProp solver is implemented for an example.
 
 Finally, add the .cpp and .h files of the solver object to the C/C++ project,
 set the include.h file according to your needs and recompile it to a
-shared library. The compiled libraries and the externalmedialib.h
-files must then be copied into the Include subdirectory of the Modelica package
-so that the Modelica tool can link them when compiling the models.
+shared library. The compiled library must then be copied into the
+Resources/Library subdirectory and the externalmedialib.h file into the
+Resources/Include subdirectory of the Modelica package, so that the Modelica
+tool can link them when compiling the models. The install target of the CMake
+project does this for you.
 
 As already mentioned in the previous section, you might provide customized
 implementations where some of the properties are not computed by the setState
@@ -133,9 +135,8 @@ and setSat functions and stored in the cache records, but rather computed
 on demand, based on a smaller set of thermodynamic properties computed by the
 setState and setSat functions and stored in the state C struct.
 
-Please note that compiling ExternalMedia from source code might require
-the professional version of Microsoft Visual Studio, which includes the
-COM libraries used by the FluidProp interface. However, if you remove
-all the FluidProp files and references from the project, then you should be
-able to compile the source code with the Express edition, or possibly also
-with gcc. See the [compilation guide](README_compilation.md)for details.
+Please note that the FluidProp interface uses COM and is therefore only
+available on Windows. It compiles with Microsoft Visual Studio and with the
+MSYS2 UCRT64 gcc toolchain. If you do not need FluidProp, you can switch it off
+with the `-DFLUIDPROP=OFF` option. See the [compilation guide](README_compilation.md)
+for details.

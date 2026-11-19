@@ -6,6 +6,10 @@ The heavy-lifting regarding the project configuration is done using the CMake
 file `CMakeLists.txt`, which makes the [CMake software](https://cmake.org/)
 a prerequisite for compiling ExternalMedia.
 
+You also need a C++ compiler that supports C++17, which CoolProp 8 requires, and a
+working Python installation. CoolProp downloads some of its dependencies when you run
+the configure step, so you need internet access the first time you configure.
+
 Once you have installed CMake and can access it from a command prompt, you can
 go to the root folder of the GIT repository and run:
 
@@ -25,21 +29,21 @@ cmake --build build --config Release --target install
 ```
 
 By default, the libraries are installed in a subfolder with a name that is determined
-from the current operating system and the compiler, possible combinations are:
-- `Modelica/ExternalMedia/Resources/Library/win32/vs2015`
-- `Modelica/ExternalMedia/Resources/Library/win64/vs2019`
-- `Modelica/ExternalMedia/Resources/Library/linux64/gcc81`
+from the current operating system and the compiler, for example:
+- `Modelica/ExternalMedia/Resources/Library/win32/vs2022`
+- `Modelica/ExternalMedia/Resources/Library/win64/vs2026`
+- `Modelica/ExternalMedia/Resources/Library/ucrt64` (MSYS2 UCRT64 build for OpenModelica)
+- `Modelica/ExternalMedia/Resources/Library/linux64/gcc152`
+- `Modelica/ExternalMedia/Resources/Library/aarch64-darwin/appleclang170`
 
-If you would like to skip the compiler part and make the current configuration the
-default for the platform, you can use this command below:
+On Linux and macOS, the library is also copied to the platform folder without the
+compiler part, e.g. `Library/linux64`, since OpenModelica and Dymola look for it there.
 
-```shell
-cmake --build build --config Release --target install-as-default
-```
-
-MinGW builds, which are used for OpenModelica, skip the compiler part and install
-directly into `Modelica/ExternalMedia/Resources/Library/win64` (`win32` for a 32-bit
-build). This is the folder that OpenModelica searches on Windows.
+You can override the automatic choice using the command line switches for
+`MODELICA_PLATFORM` and `MODELICA_COMPILER`. The command
+`cmake -B build -S Projects -DMODELICA_PLATFORM:STRING=win64 -DMODELICA_COMPILER:STRING=`
+would for example configure the installation folder to
+`Modelica/ExternalMedia/Resources/Library/win64`.
 
 ## Selecting the fluid property libraries
 
@@ -62,14 +66,16 @@ cmake -B build -S Projects -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP:BOOL=OFF -DCOO
 
 ## Building OpenModelica libraries
 
-OpenModelica uses the UCRT64 environment of MSYS2. Get the OMDev environment from the git
-repository:
+OpenModelica 1.23 and later use the MSYS2 UCRT64 toolchain on Windows, which only
+supports 64 bit. Get the OMDev environment from the git repository:
 
 ```shell
 git clone --depth 1 https://gitlab.liu.se/OpenModelica/OMDevUCRT.git C:/OMDev
 ```
 
-Start the UCRT64 shell `C:\OMDev\tools\msys\ucrt64.exe` and run the following commands
+Follow the instructions in `C:\OMDev\INSTALL.md` and start the UCRT64 shell
+`C:\OMDev\tools\msys\ucrt64.exe`. This gives you a command window that looks like
+the emulation of a unix prompt. Afterwards, you can run the following commands
 
 ```shell
 $ cd /d/Path_to_your_ExternalMediaLibrary_working_copy
@@ -79,7 +85,8 @@ $ cmake --build build --target install
 
 This will build the dynamic library and copy it and the `externalmedia.h`
 header files in the Resource directories of the Modelica packages, so it can
-be used right away by just loading the Modelica package in OMC.
+be used right away by just loading the Modelica package in OMC. A UCRT64 build
+is installed in `Resources/Library/ucrt64`, which OpenModelica searches first.
 
-MinGW builds link libgcc, libstdc++ and winpthread statically. The DLL thus does not
-depend on the runtime DLLs of MSYS2 or of the Modelica tool.
+CoolProp 8 and later refuse to configure outside an MSYS2 shell, they check the
+`MSYSTEM` environment variable. Any other MSYS2 UCRT64 installation works as well.

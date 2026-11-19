@@ -21,7 +21,9 @@
 #include "Solvers.h"
 #include "AbstractState.h"
 #include "externalmedialib.h"
-#include "crossplatform_shared_ptr.h"
+// crossplatform_shared_ptr.h was removed in CoolProp 8, std::shared_ptr is used directly
+#include <memory>
+using std::shared_ptr;
 //#include "include.h"
 //#include "coolpropsolver.h"
 //#include "basesolver.h"

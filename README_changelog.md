@@ -1,10 +1,17 @@
 # ExternalMedia Change Log
 
-## Unreleased
-- The OpenModelica DLL is built with the UCRT64 environment of MSYS2 (OMDevUCRT)
-- MinGW builds link libgcc, libstdc++ and winpthread statically
+## v4.1.2 - unreleased
+- Uses Modelica Standard Library 4.1.0
+- CoolProp updated to v8.0.0, the library is now compiled as C++17
 - Fixed a crash in OpenModelica with tabular CoolProp media, e.g. `CO2|enable_BICUBIC=1`
-- Removed the 32-bit MinGW DLL (`win32/ExternalMediaLib.dll`), since OpenModelica has no 32-bit Windows build
+- The OpenModelica DLL is built with the UCRT64 environment of MSYS2 (OMDevUCRT), as used by
+  OpenModelica 1.23 and later, and installed in Resources/Library/ucrt64
+- MinGW builds link libgcc, libstdc++ and winpthread statically
+- Removed the 32-bit MinGW DLL (`win32/ExternalMediaLib.dll`), since OpenModelica has no 32-bit
+  Windows build. There are no binaries for OpenModelica 1.22 and older anymore.
+- New example media for R134a (CoolProp with and without TTSE and bicubic tables)
+- Added binaries for Visual Studio 2026
+- The macOS binaries require macOS 11 or later
 
 ## v4.1.1 - 2025/11/03
 - Uses Modelica Standard Library 4.1.0

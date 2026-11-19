@@ -57,7 +57,7 @@ jobs:
       coolprop-hash: ${{ steps.coolprop_hash.outputs.coolprop-hash }}
       coolprop-check: ${{ steps.coolprop_check.outputs.coolprop-check }}
     env:
-      COOLPROP_VERSION: v7.2.0
+      COOLPROP_VERSION: v8.0.0
     steps:
     - name: Get CoolProp version hash
       shell: bash
@@ -113,7 +113,10 @@ jobs:
       # Check the use of the ${MODELICA_PLATFORM} and ${MODELICA_COMPILER} variables in the CMake files
       matrix:
         include:
-          - platform: macos-latest  #  currently macos-26, arm-only
+          # Pin the arm64 image instead of using macos-latest. macos-latest moved to
+          # macos-26, where jobs sat in the queue without a runner and were cancelled.
+          # An older image also keeps the minimum macOS version of the binaries low.
+          - platform: macos-15
             arch: arm64
           - platform: macos-15-intel
             arch: x86_64
@@ -142,6 +145,16 @@ jobs:
     - name: Install with CMake
       working-directory: ${{runner.workspace}}/build
       run: cmake --build . --target install
+    - name: Check the minimum macOS version
+      run: |
+        # minos is the oldest macOS version the library loads on, it should be 11.0
+        status=0
+        for f in $(find Modelica -name "*.dylib"); do
+          minos=$(otool -l "$f" | grep -A4 LC_BUILD_VERSION | awk '/minos/ {print $2}')
+          echo "$f: minos $minos"
+          if [ "$minos" != "11.0" ]; then status=1; fi
+        done
+        exit $status
     - name: upload macos artifacts
       uses: actions/upload-artifact@v7
       with:
@@ -248,6 +261,8 @@ jobs:
         path: Modelica
 
 
+  # OpenModelica 1.23 and later use the MSYS2 UCRT64 toolchain from OMDevUCRT,
+  # 64 bit only. The old OMDev (mingw32/mingw64) is not used anymore.
   get-msys-openmodelica:
     runs-on: windows-latest
     outputs:
@@ -266,7 +281,11 @@ jobs:
         lookup-only: true
     - name: Create the OMDev environment
       if: steps.cacheomdev.outputs.cache-hit != 'true'
-      run: git clone --depth 1 https://gitlab.liu.se/OpenModelica/OMDevUCRT.git C:/OMDev
+      shell: bash
+      run: |
+        git clone --depth 1 https://gitlab.liu.se/OpenModelica/OMDevUCRT.git C:/OMDev
+        # The git history is not needed and only makes the cache bigger
+        rm -rf C:/OMDev/.git
     - name: Save the OMDev cache
       uses: actions/cache/save@v6
       if: steps.cacheomdev.outputs.cache-hit != 'true'
@@ -277,6 +296,9 @@ jobs:
   build-msys-openmodelica:
     needs: [get-msys-openmodelica, get-coolprop]
     runs-on: windows-latest
+    env:
+      # CoolProp checks this variable to detect the MSYS2 environment
+      MSYSTEM: UCRT64
     steps:
     - name: Restore the OMDev cache
       uses: actions/cache/restore@v6
@@ -284,6 +306,7 @@ jobs:
       with:
         path: C:/OMDev
         key: omdevucrt-${{ needs.get-msys-openmodelica.outputs.omdev-hash }}
+        fail-on-cache-miss: true
     - uses: actions/checkout@v7
     - name: Restore CoolProp sources
       if: needs.get-coolprop.outputs.coolprop-check == '1'
@@ -305,16 +328,38 @@ jobs:
         $env:Path = "${env:ProgramFiles}\CMake\bin;C:\OMDev\tools\msys\usr\bin;C:\OMDev\tools\msys\ucrt64\bin;$env:Path"
         cmake --build build --target ExternalMediaLib
         cmake --build build --target install
+    - name: List the DLL dependencies
+      working-directory: ${{runner.workspace}}
+      shell: bash
+      run: |
+        # Only Windows system DLLs should show up here, the GCC runtime is linked statically
+        /c/OMDev/tools/msys/ucrt64/bin/objdump.exe -p ExternalMedia/Modelica/ExternalMedia/Resources/Library/ucrt64/*.dll | grep "DLL Name" | tee dlls.txt
+        if grep -i -E "libstdc|libgcc|libwinpthread" dlls.txt; then
+          echo "The DLL depends on the GCC runtime DLLs listed above"
+          exit 1
+        fi
     - name: upload msys-openmodelica artifacts
       uses: actions/upload-artifact@v7
       with:
-        name: binaries-windows-msys-openmodelica
+        name: binaries-windows-msys-openmodelica-ucrt64
         path: Modelica
 
+  # Plain MSYS2 UCRT64 build to check the MinGW toolchain, the binaries are not released
   build-msys:
     needs: get-coolprop
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
     steps:
+    - uses: msys2/setup-msys2@v2
+      with:
+        msystem: UCRT64
+        update: false
+        install: >-
+          make
+          mingw-w64-ucrt-x86_64-gcc
+          mingw-w64-ucrt-x86_64-cmake
     - uses: actions/checkout@v7
     - name: Restore CoolProp sources
       if: needs.get-coolprop.outputs.coolprop-check == '1'
@@ -324,27 +369,16 @@ jobs:
         path: externals/CoolProp.git
         fail-on-cache-miss: true
         enableCrossOsArchive: true
-    - name: Create Build Environment
+    - name: Configure with CMake
       run: |
         cmake --version
-        cmake -E make_directory ${{runner.workspace}}/build
-    - name: Configure with CMake
-      working-directory: ${{runner.workspace}}/build
-      run: |
-        cmake ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=${{ needs.get-coolprop.outputs.coolprop-check }}
-        cmake ${{ runner.workspace }}/ExternalMedia/Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=${{ needs.get-coolprop.outputs.coolprop-check }}
+        cmake -B ../build -S Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=${{ needs.get-coolprop.outputs.coolprop-check }} || true
+        cmake -B ../build -S Projects -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DFLUIDPROP=1 -DCOOLPROP=${{ needs.get-coolprop.outputs.coolprop-check }}
     - name: Build with CMake
-      working-directory: ${{runner.workspace}}/build
-      run: cmake --build . --target ExternalMediaLib
+      run: cmake --build ../build --target ExternalMediaLib
     - name: Install with CMake
-      working-directory: ${{runner.workspace}}/build
-      run: cmake --build . --target install
-    #- name: upload msys artifacts
-    #  uses: actions/upload-artifact@v7
-    #  with:
-    #    name: binaries-msys
-    #    path: Modelica
-    
+      run: cmake --build ../build --target install
+
   build-docs:
     needs: get-coolprop
     runs-on: ubuntu-latest

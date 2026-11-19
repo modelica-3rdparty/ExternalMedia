@@ -7,19 +7,29 @@ CMAKE_POLICY(SET CMP0053 NEW)
 #         PROJECT INFORMATION         #
 #######################################
 
+# Oldest macOS version the binaries run on. Without this setting the
+# compiler uses the macOS version of the build machine, so binaries built
+# on a new Mac would refuse to load on older ones. 11.0 is the first
+# version for Apple Silicon (arm64) and fully supports C++17. It has to be
+# set before project(). Override it with -DCMAKE_OSX_DEPLOYMENT_TARGET=...
+# or the MACOSX_DEPLOYMENT_TARGET environment variable.
+if(NOT DEFINED CMAKE_OSX_DEPLOYMENT_TARGET AND NOT DEFINED ENV{MACOSX_DEPLOYMENT_TARGET})
+  set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "Minimum macOS version")
+endif()
+
 # Project name
 project ("ExternalMedia")
 
-if(APPLE)
-  # Latest version of coolprop only compiles with a modern C++ standard,
-  # and MacOS does not do that by default
-  set(CMAKE_CXX_STANDARD 14)
-endif()
+# CoolProp 8 and later require C++17, also for the headers included
+# by ExternalMedia. Set it explicitly since compilers such as MSVC
+# default to an older standard.
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Project version
 set (VERSION_MAJOR 4)
 set (VERSION_MINOR 1)
-set (VERSION_PATCH 1)
+set (VERSION_PATCH 2)
 set (APP_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 message (STATUS "ExternalMedia library version: ${APP_VERSION}")
 set (LIBRARY_NAME "ExternalMediaLib")
@@ -113,6 +123,10 @@ if(COOLPROP)
   if(EXISTS "${COOLPROP_SOURCES}/externals/fmtlib/include")
     list (APPEND INCLUDE_DIRS "${COOLPROP_SOURCES}/externals/fmtlib/include")
   endif()
+  # CoolProp 8 and later download their dependencies (fmt, Eigen, ...)
+  # at configure time, reuse the include directories CoolProp uses.
+  get_directory_property(COOLPROP_INCLUDE_DIRS DIRECTORY "${COOLPROP_SOURCES}" INCLUDE_DIRECTORIES)
+  list (APPEND INCLUDE_DIRS ${COOLPROP_INCLUDE_DIRS})
 endif()
 
 ## We use CMake to handle the dependency since the primary VCS for
@@ -269,13 +283,22 @@ if(MINGW)
   # It looks like we need a global setting
   set(CMAKE_SHARED_LIBRARY_PREFIX "")
   #set_property(TARGET ${LIBRARY_NAME} PROPERTY SHARED_LIBRARY_PREFIX "")
-  if(CMAKE_SIZEOF_VOID_P MATCHES "8")
-    set(MODELICA_COMPILER "mingw64")
-  else()
-    set(MODELICA_COMPILER "mingw32")
+  # MinGW builds are meant for OpenModelica, which does not use the compiler
+  # subfolder. OpenModelica 1.23 and later (MSYS2 UCRT64) search the folders
+  # Library/ucrt64, Library/mingw64, Library/win64 and Library, in that order.
+  # A UCRT64 build goes to Library/ucrt64, which no other Modelica tool reads.
+  # The compiler defines _UCRT when it targets the UCRT runtime.
+  include(CheckCXXSourceCompiles)
+  check_cxx_source_compiles("#include <cstdio>
+#ifndef _UCRT
+#error not UCRT
+#endif
+int main() { return 0; }" MINGW_USES_UCRT)
+  if(MINGW_USES_UCRT AND CMAKE_SIZEOF_VOID_P MATCHES "8")
+    set(MODELICA_PLATFORM "ucrt64")
   endif()
   set(MODELICA_COMPILER "")
-  message(WARNING "Discarded compiler information since OpenModelica expect the mingw32/64 platform.")
+  message(STATUS "MinGW build, installing for OpenModelica in Library/${MODELICA_PLATFORM}")
   # Link the GCC runtime statically for all MinGW builds. Otherwise the DLL uses
   # the libstdc++-6.dll that the Modelica tool has loaded, which can come from
   # another MSYS2 environment (e.g. UCRT64) and is not compatible. For g++,
@@ -284,6 +307,21 @@ if(MINGW)
   # symbol table and debug information from the DLL.
   target_link_options(${LIBRARY_NAME} PRIVATE -static -s)
 endif()
+
+# The platform and compiler names above are chosen automatically. They can
+# be overridden on the command line, e.g.
+#   -DMODELICA_PLATFORM:STRING=win64 -DMODELICA_COMPILER:STRING=
+# A value given with -D is stored in the CMake cache, while the automatic
+# choice above is a normal variable that hides the cached value. Hence we
+# copy the cached value back here if the user provided one.
+foreach(_var MODELICA_PLATFORM MODELICA_COMPILER)
+  get_property(_user_set CACHE ${_var} PROPERTY TYPE SET)
+  if(_user_set)
+    get_property(_user_value CACHE ${_var} PROPERTY VALUE)
+    set(${_var} "${_user_value}")
+    message(STATUS "${_var} set by the user: \"${_user_value}\"")
+  endif()
+endforeach()
 
 set(MODELICA_INSTALL_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../Modelica/ExternalMedia/Resources")
 INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Sources/${LIBRARY_HEADER}" DESTINATION "${MODELICA_INSTALL_PATH}/Include")
