@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8.2 FATAL_ERROR) # Due to the use of target_compile_definitions
+cmake_minimum_required(VERSION 3.13 FATAL_ERROR) # Due to the use of target_link_options
 include(ExternalProject)
 
 CMAKE_POLICY(SET CMP0053 NEW)
@@ -188,18 +188,6 @@ if(COOLPROP)
 add_dependencies(${LIBRARY_NAME} CoolProp)
 endif()
 
-if(MINGW)
-  # Link the GCC runtime (libgcc, libstdc++ and winpthread) statically into
-  # the DLL. Otherwise the DLL depends on libstdc++-6.dll and friends, and
-  # at simulation time it would pick up whatever version OpenModelica ships,
-  # which may be older than the compiler used here. The Windows system DLLs
-  # (ucrt, kernel32, ole32, ...) remain dynamically linked, MinGW only has
-  # import libraries for them. "-static" is used instead of only
-  # "-static-libgcc -static-libstdc++", since g++ adds the pthread library
-  # at the end of the link command and would link winpthread dynamically.
-  target_link_libraries(${LIBRARY_NAME} -static)
-endif()
-
 if(WIN32)
   if(CMAKE_SIZEOF_VOID_P MATCHES "8")
     set(MODELICA_PLATFORM "win64")
@@ -311,6 +299,13 @@ int main() { return 0; }" MINGW_USES_UCRT)
   endif()
   set(MODELICA_COMPILER "")
   message(STATUS "MinGW build, installing for OpenModelica in Library/${MODELICA_PLATFORM}")
+  # Link the GCC runtime statically for all MinGW builds. Otherwise the DLL uses
+  # the libstdc++-6.dll that the Modelica tool has loaded, which can come from
+  # another MSYS2 environment (e.g. UCRT64) and is not compatible. For g++,
+  # -static implies -static-libgcc and -static-libstdc++, and it also links
+  # winpthread statically, which the other two flags do not. -s strips the
+  # symbol table and debug information from the DLL.
+  target_link_options(${LIBRARY_NAME} PRIVATE -static -s)
 endif()
 
 # The platform and compiler names above are chosen automatically. They can
