@@ -598,3 +598,34 @@ void TwoPhaseMedium_setState_hs_C_impl_err(double h, double s, int phase, void *
     // Call the actual C implementation function
     TwoPhaseMedium_setState_hs_C_impl(h, s, phase, static_cast<ExternalThermodynamicState*>(state), mediumName, libraryName, substanceName);
 }
+
+// Library versions of the wrapper functions that are normally defined in the Include annotation
+// of ExternalTwoPhaseMedium. They are only called when a tool evaluates setState_xx during
+// translation without compiling the Include code, e.g. OpenModelica for parameters. No pointers
+// to ModelicaError and ModelicaWarning are available here, so errorMessage and warningMessage
+// fall back to looking up these functions themselves, like all other _C_impl functions do.
+
+void TwoPhaseMedium_setState_ph_C_impl_wrap(double p, double h, int phase, void *state, const char *mediumName, const char *libraryName, const char *substanceName)
+{
+    TwoPhaseMedium_setState_ph_C_impl(p, h, phase, state, mediumName, libraryName, substanceName);
+}
+
+void TwoPhaseMedium_setState_pT_C_impl_wrap(double p, double T, void *state, const char *mediumName, const char *libraryName, const char *substanceName)
+{
+    TwoPhaseMedium_setState_pT_C_impl(p, T, state, mediumName, libraryName, substanceName);
+}
+
+void TwoPhaseMedium_setState_dT_C_impl_wrap(double d, double T, int phase, void *state, const char *mediumName, const char *libraryName, const char *substanceName)
+{
+    TwoPhaseMedium_setState_dT_C_impl(d, T, phase, state, mediumName, libraryName, substanceName);
+}
+
+void TwoPhaseMedium_setState_ps_C_impl_wrap(double p, double s, int phase, void *state, const char *mediumName, const char *libraryName, const char *substanceName)
+{
+    TwoPhaseMedium_setState_ps_C_impl(p, s, phase, state, mediumName, libraryName, substanceName);
+}
+
+void TwoPhaseMedium_setState_hs_C_impl_wrap(double h, double s, int phase, void *state, const char *mediumName, const char *libraryName, const char *substanceName)
+{
+    TwoPhaseMedium_setState_hs_C_impl(h, s, phase, state, mediumName, libraryName, substanceName);
+}

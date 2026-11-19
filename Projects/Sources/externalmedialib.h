@@ -189,6 +189,17 @@ extern "C" {
 	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_ps_C_impl_err(double p, double s, int phase, void *state, const char *mediumName, const char *libraryName, const char *substanceName, void (*ModelicaErrorPtr)(const char *), void (*ModelicaWarningPtr)(const char *));
 	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_hs_C_impl_err(double h, double s, int phase, void *state, const char *mediumName, const char *libraryName, const char *substanceName, void (*ModelicaErrorPtr)(const char *), void (*ModelicaWarningPtr)(const char *));
 
+	/* The Modelica functions setState_xx call these wrappers. Their usual definition is the C code in the Include
+	   annotation of ExternalTwoPhaseMedium, which passes ModelicaError and ModelicaWarning to the _err functions above.
+	   Some tools, e.g. OpenModelica, evaluate setState_xx during translation by calling the shared library directly,
+	   without compiling the Include code, so the library exports the wrappers as well. A definition in the compiled
+	   model code takes precedence over the library version. */
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_ph_C_impl_wrap(double p, double h, int phase, void *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_pT_C_impl_wrap(double p, double T,            void *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_dT_C_impl_wrap(double d, double T, int phase, void *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_ps_C_impl_wrap(double p, double s, int phase, void *state, const char *mediumName, const char *libraryName, const char *substanceName);
+	EXTERNALMEDIA_EXPORT void TwoPhaseMedium_setState_hs_C_impl_wrap(double h, double s, int phase, void *state, const char *mediumName, const char *libraryName, const char *substanceName);
+
 	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_partialDeriv_state_C_impl(const char *of, const char *wrt, const char *cst, void *state, const char *mediumName, const char *libraryName, const char *substanceName);
 
 	EXTERNALMEDIA_EXPORT double TwoPhaseMedium_prandtlNumber_C_impl(void *state, const char *mediumName, const char *libraryName, const char *substanceName);
