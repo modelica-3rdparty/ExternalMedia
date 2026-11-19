@@ -1,7 +1,7 @@
 within ExternalMedia.Media;
 package FluidPropMedium "Medium package accessing the FluidProp solver"
   extends BaseClasses.ExternalTwoPhaseMedium;
-  redeclare replaceable function setBubbleState
+  redeclare replaceable pure function setBubbleState
     "Set the thermodynamic state on the bubble line"
     extends Modelica.Icons.Function;
     input SaturationProperties sat "saturation point";
@@ -13,7 +13,7 @@ package FluidPropMedium "Medium package accessing the FluidProp solver"
     annotation(Inline = true);
   end setBubbleState;
 
-  redeclare replaceable function setDewState
+  redeclare replaceable pure function setDewState
     "Set the thermodynamic state on the dew line"
     extends Modelica.Icons.Function;
     input SaturationProperties sat "saturation point";

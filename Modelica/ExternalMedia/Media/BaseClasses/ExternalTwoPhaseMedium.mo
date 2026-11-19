@@ -184,31 +184,31 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     MM := fluidConstants[1].molarMass;
   end molarMass;
 
-  replaceable function getMolarMass
+  replaceable pure function getMolarMass
     output MolarMass MM "molar mass";
     external "C" MM = TwoPhaseMedium_getMolarMass_C_impl(mediumName, libraryName, substanceName)
       annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end getMolarMass;
 
-  replaceable function getCriticalTemperature
+  replaceable pure function getCriticalTemperature
     output Temperature Tc "Critical temperature";
     external "C" Tc = TwoPhaseMedium_getCriticalTemperature_C_impl(mediumName, libraryName, substanceName)
       annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end getCriticalTemperature;
 
-  replaceable function getCriticalPressure
+  replaceable pure function getCriticalPressure
     output AbsolutePressure pc "Critical temperature";
     external "C" pc = TwoPhaseMedium_getCriticalPressure_C_impl(mediumName, libraryName, substanceName)
       annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end getCriticalPressure;
 
-  replaceable function getCriticalMolarVolume
+  replaceable pure function getCriticalMolarVolume
     output MolarVolume vc "Critical molar volume";
     external "C" vc = TwoPhaseMedium_getCriticalMolarVolume_C_impl(mediumName, libraryName, substanceName)
       annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end getCriticalMolarVolume;
 
-  redeclare replaceable function setState_ph
+  redeclare replaceable pure function setState_ph
     "Return thermodynamic state record from p and h"
     extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
@@ -232,7 +232,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     ");
   end setState_ph;
 
-  redeclare replaceable function setState_pT
+  redeclare replaceable pure function setState_pT
     "Return thermodynamic state record from p and T"
     extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
@@ -256,7 +256,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     ");
   end setState_pT;
 
-  function setState_pT_noErr
+  pure function setState_pT_noErr
     "Return thermodynamic state record from p and T - does not use workaround to handle ModelicaError"
     extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
@@ -269,7 +269,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     Include="#include \"externalmedialib.h\"");
   end setState_pT_noErr;
 
-  redeclare replaceable function setState_dT
+  redeclare replaceable pure function setState_dT
     "Return thermodynamic state record from d and T"
     extends Modelica.Icons.Function;
     input Density d "density";
@@ -293,7 +293,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     ");
   end setState_dT;
 
-  redeclare replaceable function setState_ps
+  redeclare replaceable pure function setState_ps
     "Return thermodynamic state record from p and s"
     extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
@@ -317,7 +317,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     ");
   end setState_ps;
 
-  replaceable function setState_hs
+  replaceable pure function setState_hs
     "Return thermodynamic state record from h and s"
     extends Modelica.Icons.Function;
     input SpecificEnthalpy h "specific enthalpy";
@@ -341,7 +341,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     ");
   end setState_hs;
 
-  replaceable function partialDeriv_state
+  replaceable pure function partialDeriv_state
     "Return partial derivative from a thermodynamic state record"
     extends Modelica.Icons.Function;
     input String of "The property to differentiate";
@@ -530,7 +530,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     inverse(p=pressure_dT_state(d=d, T=T, state=state)));
   end density_pT_state;
 
-  replaceable function density_pT_der "Total derivative of density_pT"
+  replaceable pure function density_pT_der "Total derivative of density_pT"
     extends Modelica.Icons.Function;
     input AbsolutePressure p "Pressure";
     input Temperature T "Temperature";
@@ -877,7 +877,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     LateInline=true);
   end temperature_hs_state;
 
-  redeclare function extends prandtlNumber "Returns Prandtl number"
+  redeclare pure function extends prandtlNumber "Returns Prandtl number"
     /*  // If special definition in "C"
   external "C" T=  TwoPhaseMedium_prandtlNumber_C_impl(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
@@ -885,7 +885,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end prandtlNumber;
 
-  redeclare replaceable function extends temperature
+  redeclare replaceable pure function extends temperature
     "Return temperature from state"
     // Standard definition
   algorithm
@@ -897,7 +897,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end temperature;
 
-  redeclare replaceable function extends velocityOfSound
+  redeclare replaceable pure function extends velocityOfSound
     "Return velocity of sound from state"
     // Standard definition
   algorithm
@@ -909,7 +909,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end velocityOfSound;
 
-  redeclare replaceable function extends isobaricExpansionCoefficient
+  redeclare replaceable pure function extends isobaricExpansionCoefficient
     "Return isobaric expansion coefficient from state"
     // Standard definition
   algorithm
@@ -928,7 +928,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     gamma := density(state) / pressure(state) * velocityOfSound(state) * velocityOfSound(state);
   end isentropicExponent;
 
-  redeclare replaceable function extends specificHeatCapacityCp
+  redeclare replaceable pure function extends specificHeatCapacityCp
     "Return specific heat capacity cp from state"
     // Standard definition
   algorithm
@@ -940,7 +940,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end specificHeatCapacityCp;
 
-  redeclare replaceable function extends specificHeatCapacityCv
+  redeclare replaceable pure function extends specificHeatCapacityCv
     "Return specific heat capacity cv from state"
     // Standard definition
   algorithm
@@ -952,7 +952,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end specificHeatCapacityCv;
 
-  redeclare replaceable function extends density "Return density from state"
+  redeclare replaceable pure function extends density "Return density from state"
     // Standard definition
   algorithm
     d := state.d;
@@ -963,7 +963,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end density;
 
-  redeclare replaceable function extends density_derh_p
+  redeclare replaceable pure function extends density_derh_p
     "Return derivative of density wrt enthalpy at constant pressure from state"
     // Standard definition
   algorithm
@@ -975,7 +975,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end density_derh_p;
 
-  redeclare replaceable function extends density_derp_h
+  redeclare replaceable pure function extends density_derp_h
     "Return derivative of density wrt pressure at constant enthalpy from state"
     // Standard definition
   algorithm
@@ -997,7 +997,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     ddTp :=-state.beta*state.d;
   end density_derT_p;
 
-  redeclare replaceable function extends dynamicViscosity
+  redeclare replaceable pure function extends dynamicViscosity
     "Return dynamic viscosity from state"
     // Standard definition
   algorithm
@@ -1009,7 +1009,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end dynamicViscosity;
 
-  redeclare replaceable function extends specificEnthalpy
+  redeclare replaceable pure function extends specificEnthalpy
     "Return specific enthalpy from state"
     // Standard definition
   algorithm
@@ -1028,7 +1028,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     u := specificEnthalpy(state) - pressure(state)/density(state);
   end specificInternalEnergy;
 
-  redeclare replaceable function extends isothermalCompressibility
+  redeclare replaceable pure function extends isothermalCompressibility
     "Return isothermal compressibility from state"
     // Standard definition
   algorithm
@@ -1040,7 +1040,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end isothermalCompressibility;
 
-  redeclare replaceable function extends thermalConductivity
+  redeclare replaceable pure function extends thermalConductivity
     "Return thermal conductivity from state"
     // Standard definition
   algorithm
@@ -1052,7 +1052,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end thermalConductivity;
 
-  redeclare replaceable function extends pressure "Return pressure from state"
+  redeclare replaceable pure function extends pressure "Return pressure from state"
     // Standard definition
   algorithm
     p := state.p;
@@ -1063,7 +1063,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end pressure;
 
-  redeclare replaceable function extends specificEntropy
+  redeclare replaceable pure function extends specificEntropy
     "Return specific entropy from state"
     // Standard definition
   algorithm
@@ -1075,13 +1075,13 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end specificEntropy;
 
-  redeclare replaceable function extends isentropicEnthalpy
+  redeclare replaceable pure function extends isentropicEnthalpy
   external "C" h_is = TwoPhaseMedium_isentropicEnthalpy_C_impl(p_downstream, refState,
    mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end isentropicEnthalpy;
 
-  redeclare replaceable function setSat_p "Return saturation properties from p"
+  redeclare replaceable pure function setSat_p "Return saturation properties from p"
     extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
     output SaturationProperties sat "saturation property record";
@@ -1089,7 +1089,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end setSat_p;
 
-  replaceable function setSat_p_state
+  replaceable pure function setSat_p_state
     "Return saturation properties from the state"
     extends Modelica.Icons.Function;
     input ThermodynamicState state;
@@ -1105,7 +1105,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end setSat_p_state;
 
-  redeclare replaceable function setSat_T "Return saturation properties from p"
+  redeclare replaceable pure function setSat_T "Return saturation properties from p"
     extends Modelica.Icons.Function;
     input Temperature T "temperature";
     output SaturationProperties sat "saturation property record";
@@ -1113,7 +1113,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end setSat_T;
 
-  replaceable function setSat_T_state
+  replaceable pure function setSat_T_state
     "Return saturation properties from the state"
     extends Modelica.Icons.Function;
     input ThermodynamicState state;
@@ -1129,7 +1129,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end setSat_T_state;
 
-  redeclare replaceable function extends setBubbleState
+  redeclare replaceable pure function extends setBubbleState
     "set the thermodynamic state on the bubble line"
     extends Modelica.Icons.Function;
     input SaturationProperties sat "saturation point";
@@ -1145,7 +1145,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end setBubbleState;
 
-  redeclare replaceable function extends setDewState
+  redeclare replaceable pure function extends setDewState
     "set the thermodynamic state on the dew line"
     extends Modelica.Icons.Function;
     input SaturationProperties sat "saturation point";
@@ -1161,7 +1161,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end setDewState;
 
-  redeclare replaceable function extends saturationTemperature
+  redeclare replaceable pure function extends saturationTemperature
     // Standard definition
   algorithm
     T :=saturationTemperature_sat(setSat_p(p));
@@ -1177,13 +1177,13 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end saturationTemperature_sat;
 
-  redeclare replaceable function extends saturationTemperature_derp "Returns derivative of saturation temperature w.r.t.. pressureBeing this function inefficient, it is strongly recommended to use saturationTemperature_derp_sat
+  redeclare replaceable pure function extends saturationTemperature_derp "Returns derivative of saturation temperature w.r.t.. pressureBeing this function inefficient, it is strongly recommended to use saturationTemperature_derp_sat
      and never use saturationTemperature_derp directly"
   external "C" dTp = TwoPhaseMedium_saturationTemperature_derp_C_impl(p, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end saturationTemperature_derp;
 
-  redeclare replaceable function saturationTemperature_derp_sat
+  redeclare replaceable pure function saturationTemperature_derp_sat
     "Returns derivative of saturation temperature w.r.t.. pressure"
     extends Modelica.Icons.Function;
     input SaturationProperties sat "saturation property record";
@@ -1198,7 +1198,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end saturationTemperature_derp_sat;
 
-  redeclare replaceable function extends dBubbleDensity_dPressure
+  redeclare replaceable pure function extends dBubbleDensity_dPressure
     "Returns bubble point density derivative"
     // Standard definition
   algorithm
@@ -1210,7 +1210,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end dBubbleDensity_dPressure;
 
-  redeclare replaceable function extends dDewDensity_dPressure
+  redeclare replaceable pure function extends dDewDensity_dPressure
     "Returns dew point density derivative"
     // Standard definition
   algorithm
@@ -1222,7 +1222,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end dDewDensity_dPressure;
 
-  redeclare replaceable function extends dBubbleEnthalpy_dPressure
+  redeclare replaceable pure function extends dBubbleEnthalpy_dPressure
     "Returns bubble point specific enthalpy derivative"
     // Standard definition
   algorithm
@@ -1234,7 +1234,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end dBubbleEnthalpy_dPressure;
 
-  redeclare replaceable function extends dDewEnthalpy_dPressure
+  redeclare replaceable pure function extends dDewEnthalpy_dPressure
     "Returns dew point specific enthalpy derivative"
     // Standard definition
   algorithm
@@ -1246,7 +1246,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end dDewEnthalpy_dPressure;
 
-  redeclare replaceable function extends bubbleDensity
+  redeclare replaceable pure function extends bubbleDensity
     "Returns bubble point density"
     // Standard definition
   algorithm
@@ -1258,7 +1258,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end bubbleDensity;
 
-  redeclare replaceable function extends dewDensity "Returns dew point density"
+  redeclare replaceable pure function extends dewDensity "Returns dew point density"
     // Standard definition
   algorithm
     dv := sat.dv;
@@ -1269,7 +1269,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end dewDensity;
 
-  redeclare replaceable function extends bubbleEnthalpy
+  redeclare replaceable pure function extends bubbleEnthalpy
     "Returns bubble point specific enthalpy"
     // Standard definition
   algorithm
@@ -1281,7 +1281,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end bubbleEnthalpy;
 
-  redeclare replaceable function extends dewEnthalpy
+  redeclare replaceable pure function extends dewEnthalpy
     "Returns dew point specific enthalpy"
     // Standard definition
   algorithm
@@ -1293,7 +1293,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end dewEnthalpy;
 
-  redeclare replaceable function extends saturationPressure
+  redeclare replaceable pure function extends saturationPressure
     // Standard definition
   algorithm
     p :=saturationPressure_sat(setSat_T(T));
@@ -1322,7 +1322,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end saturationPressure_sat;
 
-  redeclare replaceable function extends surfaceTension
+  redeclare replaceable pure function extends surfaceTension
     "Returns surface tension sigma in the two phase region"
     //Standard definition
   algorithm
@@ -1334,7 +1334,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end surfaceTension;
 
-  redeclare replaceable function extends bubbleEntropy
+  redeclare replaceable pure function extends bubbleEntropy
     "Returns bubble point specific entropy"
     //Standard definition
   algorithm
@@ -1346,7 +1346,7 @@ package ExternalTwoPhaseMedium "Generic external two phase medium package"
     annotation(Inline = true);
   end bubbleEntropy;
 
-  redeclare replaceable function extends dewEntropy
+  redeclare replaceable pure function extends dewEntropy
     "Returns dew point specific entropy"
     //Standard definition
   algorithm

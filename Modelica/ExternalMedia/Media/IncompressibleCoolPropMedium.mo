@@ -97,7 +97,7 @@ partial package IncompressibleCoolPropMedium
   state := setState_ph_library(p, h, phase, name);
   end setState_phX;
 
-  function setState_ph_library "Return thermodynamic state record from p and h"
+  pure function setState_ph_library "Return thermodynamic state record from p and h"
     extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
     input SpecificEnthalpy h "specific enthalpy";
@@ -136,7 +136,7 @@ partial package IncompressibleCoolPropMedium
   state := setState_pT_library(p, T, phase, name);
   end setState_pTX;
 
-  function setState_pT_library "Return thermodynamic state record from p and T"
+  pure function setState_pT_library "Return thermodynamic state record from p and T"
     extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
     input Temperature T "temperature";
@@ -147,7 +147,7 @@ partial package IncompressibleCoolPropMedium
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
   end setState_pT_library;
 
-  redeclare replaceable function setState_psX
+  redeclare replaceable pure function setState_psX
     "Return thermodynamic state record from p and s"
     extends Modelica.Icons.Function;
     input AbsolutePressure p "pressure";
@@ -390,7 +390,7 @@ partial package IncompressibleCoolPropMedium
     annotation(Inline = true);
   end density;
 
-  redeclare replaceable function extends pressure "Return pressure from state"
+  redeclare replaceable pure function extends pressure "Return pressure from state"
     // Standard definition
   algorithm
     p := state.p;
@@ -425,7 +425,7 @@ partial package IncompressibleCoolPropMedium
     annotation(Inline = true);
   end temperature;
 
-  redeclare function extends prandtlNumber
+  redeclare pure function extends prandtlNumber
     /*  // If special definition in "C"
   external "C" T=  TwoPhaseMedium_prandtlNumber_(state, mediumName, libraryName, substanceName)
     annotation(Include="#include \"externalmedialib.h\"", Library="ExternalMediaLib", IncludeDirectory="modelica://ExternalMedia/Resources/Include", LibraryDirectory="modelica://ExternalMedia/Resources/Library");
@@ -433,7 +433,7 @@ partial package IncompressibleCoolPropMedium
     annotation(Inline = true);
   end prandtlNumber;
 
-  redeclare replaceable function extends velocityOfSound
+  redeclare replaceable pure function extends velocityOfSound
     "Return velocity of sound from state"
     // Standard definition
   algorithm
@@ -445,7 +445,7 @@ partial package IncompressibleCoolPropMedium
     annotation(Inline = true);
   end velocityOfSound;
 
-  redeclare replaceable function extends specificHeatCapacityCp
+  redeclare replaceable pure function extends specificHeatCapacityCp
     "Return specific heat capacity cp from state"
     // Standard definition
   algorithm
@@ -457,7 +457,7 @@ partial package IncompressibleCoolPropMedium
     annotation(Inline = true);
   end specificHeatCapacityCp;
 
-  redeclare replaceable function extends specificHeatCapacityCv
+  redeclare replaceable pure function extends specificHeatCapacityCv
     "Return specific heat capacity cv from state"
     // Standard definition
   algorithm
@@ -469,7 +469,7 @@ partial package IncompressibleCoolPropMedium
     annotation(Inline = true);
   end specificHeatCapacityCv;
 
-  redeclare replaceable function extends dynamicViscosity
+  redeclare replaceable pure function extends dynamicViscosity
     "Return dynamic viscosity from state"
     // Standard definition
   algorithm
@@ -481,7 +481,7 @@ partial package IncompressibleCoolPropMedium
     annotation(Inline = true);
   end dynamicViscosity;
 
-  redeclare replaceable function extends thermalConductivity
+  redeclare replaceable pure function extends thermalConductivity
     "Return thermal conductivity from state"
     // Standard definition
   algorithm
