@@ -35,12 +35,15 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 
 	//Check if a backend has been added to the fluid name (ex: REFPROP::Propane)
     std::string backend;
-    CoolProp::extract_backend(name_options[0], backend, this->substanceName);
-
     // Set the default composition
     std::vector<double> fractions(1, 1.0);
     const std::vector<double> *fractions_ptr = NULL;
-    this->substanceName = CoolProp::extract_fractions(this->substanceName, fractions);
+    try{
+        CoolProp::extract_backend(name_options[0], backend, this->substanceName);
+        this->substanceName = CoolProp::extract_fractions(this->substanceName, fractions);
+    } catch(std::exception &e) {
+        errorMessage((char*)e.what());
+    }
     fractions_ptr = &fractions;
 
 	if (backend == "?") // If no backend found in the fluid name
@@ -162,25 +165,31 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 	// Check if incompressible
 	isCompressible = (backend.find("INCOMP") == std::string::npos);
 
-	// Create the state class
-	//this->state = CoolProp::AbstractState::factory(backend, this->substanceName);
-	this->state.reset(CoolProp::AbstractState::factory(backend, this->substanceName));
-    if (this->state->using_mole_fractions()){
-        // Skip predefined mixtures and pure fluids
-        if (this->state->get_mole_fractions().empty()){
-            this->state->set_mole_fractions(*fractions_ptr);
-        }
-    } else if (this->state->using_mass_fractions()){
-        this->state->set_mass_fractions(*fractions_ptr);
-    } else if (this->state->using_volu_fractions()){
-        this->state->set_volu_fractions(*fractions_ptr);
-    } else {
-        if (debug_level > 5) std::cout << format("%s:%d: CoolPropSolver could not set composition, defaulting to mole fractions.\n",__FILE__,__LINE__);
-        this->state->set_mole_fractions(*fractions_ptr);
-    }
+	// CoolProp reports problems, such as an unknown fluid name, with C++ exceptions.
+	// They must not leave the library, translate them into an ExternalMedia error.
+	try{
+		// Create the state class
+		//this->state = CoolProp::AbstractState::factory(backend, this->substanceName);
+		this->state.reset(CoolProp::AbstractState::factory(backend, this->substanceName));
+	    if (this->state->using_mole_fractions()){
+	        // Skip predefined mixtures and pure fluids
+	        if (this->state->get_mole_fractions().empty()){
+	            this->state->set_mole_fractions(*fractions_ptr);
+	        }
+	    } else if (this->state->using_mass_fractions()){
+	        this->state->set_mass_fractions(*fractions_ptr);
+	    } else if (this->state->using_volu_fractions()){
+	        this->state->set_volu_fractions(*fractions_ptr);
+	    } else {
+	        if (debug_level > 5) std::cout << format("%s:%d: CoolPropSolver could not set composition, defaulting to mole fractions.\n",__FILE__,__LINE__);
+	        this->state->set_mole_fractions(*fractions_ptr);
+	    }
 
-    // ... all is set, start using the state class.
-	this->setFluidConstants();
+	    // ... all is set, start using the state class.
+		this->setFluidConstants();
+	} catch(std::exception &e) {
+		errorMessage((char*)e.what());
+	}
 }
 
 
@@ -614,41 +623,39 @@ double CoolPropSolver::partialDeriv_state(const string &of, const string &wrt, c
 	if (debug_level > 5)
 		std::cout << format("partialDeriv_state(of=%s,wrt=%s,cst=%s,state)\n",of.c_str(),wrt.c_str(),cst.c_str());
 
-	long derivTerm = makeDerivString(of,wrt,cst);
+	// Translate the variable names before entering the try block, the
+	// translation reports unknown names via errorMessage itself.
+	CoolProp::parameters iOf  = static_cast<CoolProp::parameters>(derivParameter(of,  "Derivatives of"));
+	CoolProp::parameters iWrt = static_cast<CoolProp::parameters>(derivParameter(wrt, "Derivatives with respect to"));
+	CoolProp::parameters iCst = static_cast<CoolProp::parameters>(derivParameter(cst, "Derivatives at constant"));
 	double res = NAN;
 
 	try{
-		//res = DerivTerms(derivTerm, properties->d, properties->T, this->substanceName);
-		state->update(CoolProp::DmassT_INPUTS,properties->d,properties->T);
-		// Get the output value
-		res = state->keyed_output(static_cast<CoolProp::parameters>(derivTerm));
+		// Restore the state, incompressibles do not support density-temperature inputs
+		if (isCompressible)
+			state->update(CoolProp::DmassT_INPUTS,properties->d,properties->T);
+		else
+			state->update(CoolProp::PT_INPUTS,properties->p,properties->T);
+		// Inside the two-phase dome, the normal partial derivatives are not defined
+		if (isCompressible && state->phase() == CoolProp::iphase_twophase)
+			res = state->first_two_phase_deriv(iOf, iWrt, iCst);
+		else
+			res = state->first_partial_deriv(iOf, iWrt, iCst);
 	} catch(std::exception &e) {
 		errorMessage((char*)e.what());
 	}
 	return res;
 }
 
-long CoolPropSolver::makeDerivString(const string &of, const string &wrt, const string &cst){
-	std::string derivTerm;
-	     if (!of.compare("d")){ derivTerm = "drho"; }
-	else if (!of.compare("p")){ derivTerm = "dp"; }
-	else {
-		errorMessage((char*) format("Internal error: Derivatives of %s are not defined in the Solver object.",of.c_str()).c_str());
-	}
-	if      (!wrt.compare("p")){ derivTerm.append("dp"); }
-	else if (!wrt.compare("h")){ derivTerm.append("dh"); }
-	else if (!wrt.compare("T")){ derivTerm.append("dT"); }
-	else {
-		errorMessage((char*) format("Internal error: Derivatives with respect to %s are not defined in the Solver object.",wrt.c_str()).c_str());
-	}
-	if      (!cst.compare("p")){ derivTerm.append("|p"); }
-	else if (!cst.compare("h")){ derivTerm.append("|h"); }
-	else if (!cst.compare("d")){ derivTerm.append("|rho"); }
-	else {
-		errorMessage((char*) format("Internal error: Derivatives at constant %s are not defined in the Solver object.",cst.c_str()).c_str());
-	}
-	long iOutput = CoolProp::get_parameter_index(derivTerm.c_str());
-	return iOutput;
+long CoolPropSolver::derivParameter(const string &name, const char *role){
+	// Map the ExternalMedia variable names to CoolProp parameter indices
+	     if (!name.compare("p")){ return CoolProp::iP; }
+	else if (!name.compare("T")){ return CoolProp::iT; }
+	else if (!name.compare("d")){ return CoolProp::iDmass; }
+	else if (!name.compare("h")){ return CoolProp::iHmass; }
+	else if (!name.compare("s")){ return CoolProp::iSmass; }
+	errorMessage((char*) format("Internal error: %s %s are not defined in the Solver object.",role,name.c_str()).c_str());
+	return CoolProp::iundefined_parameter;
 }
 
 

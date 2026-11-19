@@ -4,6 +4,10 @@
 - Uses Modelica Standard Library 4.1.0
 - CoolProp updated to v8.0.0, the library is now compiled as C++17
 - Fixed a crash in OpenModelica with tabular CoolProp media, e.g. `CO2|enable_BICUBIC=1`
+- `partialDeriv_state` works again with CoolProp, it used derivative names like `drhodp|h` that
+  CoolProp no longer accepts, and the resulting exception terminated the process
+- An unknown CoolProp fluid or backend name now raises an ExternalMedia error instead of
+  terminating the process
 - The OpenModelica DLL is built with the UCRT64 environment of MSYS2 (OMDevUCRT), as used by
   OpenModelica 1.23 and later, and installed in Resources/Library/ucrt64
 - MinGW builds link libgcc, libstdc++ and winpthread statically

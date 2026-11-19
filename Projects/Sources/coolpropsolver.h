@@ -43,7 +43,7 @@ protected:
 	ExternalSaturationProperties _satPropsClose2Crit; /* saturation properties close to  critical conditions */
 
 	virtual void postStateChange(ExternalThermodynamicState *const properties);
-	long makeDerivString(const string &of, const string &wrt, const string &cst);
+	long derivParameter(const string &name, const char *role);
 	double interp_linear(double Q, double valueL, double valueV);
 	double interp_recip(double Q, double valueL, double valueV);
 
