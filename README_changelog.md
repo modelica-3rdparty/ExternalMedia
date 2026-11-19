@@ -10,6 +10,8 @@
 - Removed the 32-bit MinGW DLL (`win32/ExternalMediaLib.dll`), since OpenModelica has no 32-bit
   Windows build. There are no binaries for OpenModelica 1.22 and older anymore.
 - New example media for R134a (CoolProp with and without TTSE and bicubic tables)
+- The library exports the `TwoPhaseMedium_setState_xx_C_impl_wrap` functions, which fixes the error
+  "External function ... could not be found" when OpenModelica evaluates setState_xx in parameters (#113)
 - Added binaries for Visual Studio 2026
 - The macOS binaries require macOS 11 or later
 
