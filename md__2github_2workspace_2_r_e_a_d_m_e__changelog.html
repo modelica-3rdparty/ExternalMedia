@@ -99,6 +99,7 @@ v4.1.2 - unreleased</h1>
 <li>MinGW builds link libgcc, libstdc++ and winpthread statically</li>
 <li>Removed the 32-bit MinGW DLL (<code>win32/ExternalMediaLib.dll</code>), since OpenModelica has no 32-bit Windows build. There are no binaries for OpenModelica 1.22 and older anymore.</li>
 <li>New example media for R134a (CoolProp with and without TTSE and bicubic tables)</li>
+<li>The library exports the <code>TwoPhaseMedium_setState_xx_C_impl_wrap</code> functions, which fixes the error "External function ... could not be found" when OpenModelica evaluates setState_xx in parameters (#113)</li>
 <li>Added binaries for Visual Studio 2026</li>
 <li>The macOS binaries require macOS 11 or later</li>
 </ul>
