@@ -9,6 +9,7 @@
 #include "AbstractState.h"
 #include <iostream>
 #include <string>
+#include <cstring>
 #include <stdlib.h>
 
 //double _p_eps   ; // relative tolerance margin for subcritical pressure conditions
@@ -23,6 +24,11 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 	// The string can be composed like "Propane|enable_TTSE=1|calc_transport=0"
 	std::vector<std::string> name_options = strsplit(substanceName,'|');
 	std::vector<std::string> library_options = strsplit(libraryName,'|');
+
+	// Empty setState_ph cache
+	for (int i = 0; i < PH_CACHE_SIZE; i++) _phCache[i].valid = false;
+	_phCacheHits = 0;
+	_phCacheMisses = 0;
 
 	// Set the defaults
 	enable_TTSE     = false;
@@ -185,8 +191,23 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 
 
 CoolPropSolver::~CoolPropSolver(){
+	if (debug_level > 0)
+		std::cout << format("setState_ph cache for %s: %llu hits, %llu misses\n",
+		                    substanceName.c_str(), _phCacheHits, _phCacheMisses);
 	//delete state;
 };
+
+// Slot of (p, h) in the setState_ph cache: hash of the exact bit patterns.
+int CoolPropSolver::phCacheIndex(double p, double h){
+	unsigned long long bp, bh;
+	memcpy(&bp, &p, sizeof(bp));
+	memcpy(&bh, &h, sizeof(bh));
+	unsigned long long x = bp * 0x9E3779B97F4A7C15ULL ^ (bh + 0x632BE59BD9B4E019ULL + (bp << 6) + (bp >> 2));
+	x ^= x >> 31;
+	x *= 0xBF58476D1CE4E5B9ULL;
+	x ^= x >> 29;
+	return (int)(x % PH_CACHE_SIZE);
+}
 
 
 void CoolPropSolver::setFluidConstants(){
@@ -504,6 +525,15 @@ void CoolPropSolver::setState_ph(double &p, double &h, int &phase, ExternalTherm
 	if (debug_level > 5)
 		std::cout << format("setState_ph(p=%0.16e,h=%0.16e)\n",p,h);
 
+	// Same (p, h) bit pattern as a stored call: return the stored state
+	PhCacheEntry &entry = _phCache[phCacheIndex(p, h)];
+	if (entry.valid && memcmp(&entry.p, &p, sizeof(double)) == 0 && memcmp(&entry.h, &h, sizeof(double)) == 0) {
+		*properties = entry.state;
+		_phCacheHits++;
+		return;
+	}
+	_phCacheMisses++;
+
 	//this->preStateChange();
 
 	try{
@@ -517,6 +547,12 @@ void CoolPropSolver::setState_ph(double &p, double &h, int &phase, ExternalTherm
 
 		// Set the values in the output structure
 		this->postStateChange(properties);
+
+		// Store for later calls with the same inputs
+		entry.valid = true;
+		entry.p = p;
+		entry.h = h;
+		entry.state = *properties;
 	}
 	catch(std::exception &e)
 	{
