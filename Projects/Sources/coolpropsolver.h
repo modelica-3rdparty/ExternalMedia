@@ -34,13 +34,27 @@ class CoolPropSolver : public BaseSolver{
 protected:
 	/* class CoolProp::AbstractState *state; */
 	shared_ptr<CoolProp::AbstractState> state;
-	bool enable_TTSE, enable_BICUBIC, calc_transport, extend_twophase, isCompressible;
+	bool enable_TTSE, enable_BICUBIC, enable_SVDSBTL, calc_transport, extend_twophase, isCompressible;
 	int debug_level;
 	double twophase_derivsmoothing_xend;
 	double rho_smoothing_xend;
 	double _p_eps   ; /* relative tolerance margin for subcritical pressure conditions */
 	double _delta_h ; /* delta_h for one-phase/two-phase discrimination */
 	ExternalSaturationProperties _satPropsClose2Crit; /* saturation properties close to  critical conditions */
+
+	/* SVDSBTL support, see the comment block "SVDSBTL support" in
+	   coolpropsolver.cpp. With enable_SVDSBTL, `state` stays the
+	   reference equation of state (HEOS, REFPROP or IF97) and all
+	   outputs come from it. The SVDSBTL tables in `table_state` only
+	   provide the starting values T and rho for a few Newton steps. */
+	shared_ptr<CoolProp::AbstractState> table_state; /* SVDSBTL tables, NULL without enable_SVDSBTL */
+	CoolProp::phases svdsbtl_phase_label(double T_K, double rho_kg_m3, double p_Pa);
+	void svdsbtl_eval_Trho(double T_K, double rho_kg_m3, CoolProp::phases phase);
+	bool svdsbtl_solve_p_y(CoolProp::input_pairs table_inputs, double p_Pa, double y_in, CoolProp::parameters y_key, double y_scale);
+	bool svdsbtl_solve_pT(double p_Pa, double T_K);
+	bool svdsbtl_sat(double p_Pa, double T_K, double rho_l_kg_m3, double rho_v_kg_m3, ExternalSaturationProperties *const properties);
+	bool svdsbtl_setSat_p(double p_Pa, ExternalSaturationProperties *const properties);
+	bool svdsbtl_setSat_T(double T_K, ExternalSaturationProperties *const properties);
 
 	virtual void postStateChange(ExternalThermodynamicState *const properties);
 	long makeDerivString(const string &of, const string &wrt, const string &cst);
