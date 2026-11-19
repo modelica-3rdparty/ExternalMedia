@@ -25,6 +25,7 @@ protected
     "enable_EXTTP",
     "twophase_derivsmoothing_xend",
     "rho_smoothing_xend",
+    "cache_size",
     "debug"};
   String[:] defaultOptions = {
     "1",
@@ -33,6 +34,7 @@ protected
     "1",
     "0.0",
     "0.0",
+    "1024",
     "0"};
   // predefined delimiters
   String delimiter1 = "|";

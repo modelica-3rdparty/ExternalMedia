@@ -14,6 +14,10 @@
   "External function ... could not be found" when OpenModelica evaluates setState_xx in parameters (#113)
 - Added binaries for Visual Studio 2026
 - The macOS binaries require macOS 11 or later
+- The CoolProp solver keeps the results of recent setState_xx, setSat_p and setSat_T calls and
+  returns them again for exactly the same inputs, which avoids repeated CoolProp calls during
+  numerical Jacobian evaluations. The new substance option `cache_size` (default 1024, 0 switches
+  the cache off) sets the number of stored results per medium, e.g. `R134a|cache_size=4096`.
 
 ## v4.1.1 - 2025/11/03
 - Uses Modelica Standard Library 4.1.0

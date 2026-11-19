@@ -38,6 +38,7 @@ e.g., &quot;CO2|enable_BICUBIC=1&quot; or &quot;CO2|enable_TTSE=1|calc_transport
 <li>enable_TTSE (default 0) Enables TTSE tabular interpolation</li>
 <li>enable_BICUBIC (default 0) Enables bicubic tabular interpolation</li>
 <li>calc_transport (default 1) Enables the computation of transport properties</li>
+<li>cache_size (default 1024) Number of stored results per medium. A call with exactly the same inputs as a stored call returns the stored result without calling CoolProp, which saves time when the solver re-evaluates many unchanged states, e.g. for a numerical Jacobian. Set to 0 to switch the cache off.</li>
 <li>debug (default 0) Set the debug level, 0-1000</li>
 </ul>
 </p>

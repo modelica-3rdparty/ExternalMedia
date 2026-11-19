@@ -1171,6 +1171,9 @@ package Test "Test models for the different solvers"
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|rho_smoothing_xend=0.0");
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|rho_smoothing_xend=0.1");
         //
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|cache_size=0");
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|cache_size=4096");
+        //
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|debug");
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|debug=0");
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|debug=100");

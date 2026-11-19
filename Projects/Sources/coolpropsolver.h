@@ -42,19 +42,12 @@ protected:
 	double _delta_h ; /* delta_h for one-phase/two-phase discrimination */
 	ExternalSaturationProperties _satPropsClose2Crit; /* saturation properties close to  critical conditions */
 
-	/* Cache of setState_ph results, keyed on the exact bits of (p, h). A numerical
-	   Jacobian re-evaluates all states although most inputs are unchanged, so a
-	   repeated (p, h) is common; a hit returns the stored state without calling
-	   CoolProp. Direct-mapped, one cache per solver (i.e. per fluid). */
-	static const int PH_CACHE_SIZE = 64;
-	struct PhCacheEntry {
-		bool valid;
-		double p, h;
-		ExternalThermodynamicState state;
-	};
-	PhCacheEntry _phCache[PH_CACHE_SIZE];
-	unsigned long long _phCacheHits, _phCacheMisses;
-	static int phCacheIndex(double p, double h);
+	/* Statistics output of the state caches, see BaseSolver::_stateCache */
+	void printCacheStatistics();
+	/* Store a computed state, unless the calculation failed */
+	void storeState(int inputs, double x1, double x2, int phase, const ExternalThermodynamicState *const properties);
+	/* Store computed saturation properties, unless the calculation failed */
+	void storeSat(int inputs, double x, const ExternalSaturationProperties *const properties);
 
 	virtual void postStateChange(ExternalThermodynamicState *const properties);
 	long makeDerivString(const string &of, const string &wrt, const string &cst);
