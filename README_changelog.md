@@ -1,5 +1,17 @@
 # ExternalMedia Change Log
 
+## v4.2.0 - unreleased
+- New CoolProp option enable_SVDSBTL, e.g. "Water|enable_SVDSBTL=1". It uses the
+  SVDSBTL tables of CoolProp 8 only as starting values for T and density and then
+  evaluates the reference equation of state (HEOS) at the input state with a few
+  Newton steps, so all properties and derivatives are those of HEOS. For
+  single-phase p-h states this was 7 to 20 times faster than the plain model in
+  the tests (water, CO2, R134a) with results within 4e-5 of it. Pure fluids with
+  the HEOS (and, untested, REFPROP) backends only. The first use of a fluid builds
+  the tables, which takes up to a few minutes. See UserGuide.Usage.CoolPropSVDSBTL.
+- New example media WaterCoolPropSVDSBTL, CO2CoolPropSVDSBTL, R134aCoolPropSVDSBTL
+  and test suite Test.CoolProp.CO2_SVDSBTL
+
 ## v4.1.2 - unreleased
 - Uses Modelica Standard Library 4.1.0
 - CoolProp updated to v8.0.0, the library is now compiled as C++17
