@@ -22,12 +22,14 @@ protected
     "calc_transport",
     "enable_TTSE",
     "enable_BICUBIC",
+    "enable_SVDSBTL",
     "enable_EXTTP",
     "twophase_derivsmoothing_xend",
     "rho_smoothing_xend",
     "debug"};
   String[:] defaultOptions = {
     "1",
+    "0",
     "0",
     "0",
     "1",

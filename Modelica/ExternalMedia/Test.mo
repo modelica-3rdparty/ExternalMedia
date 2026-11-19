@@ -1014,6 +1014,108 @@ package Test "Test models for the different solvers"
       end TestBasePropertiesTranscritical;
     end CO2_Tabular;
 
+    package CO2_SVDSBTL
+      "Test suite for the CoolProp CO2 medium model with SVDSBTL tables"
+       extends Modelica.Icons.ExamplesPackage;
+      model TestStatesSupercritical
+        "Test case with state records, supercritical conditions"
+        extends Modelica.Icons.Example;
+        extends GenericModels.TestStates(
+          redeclare package Medium = ExternalMedia.Examples.CO2CoolPropSVDSBTL);
+      equation
+        p1 = 8e6;
+        h1 = 1.0e5 + 6e5*time;
+        p2 = 8e6;
+        T2 = 280 + 50*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
+      end TestStatesSupercritical;
+
+      model TestStatesTranscritical
+        "Test case with state records, transcritical conditions"
+        extends Modelica.Icons.Example;
+        extends GenericModels.TestStates(
+          redeclare package Medium = ExternalMedia.Examples.CO2CoolPropSVDSBTL);
+      equation
+        p1 = 1e6 + time*10e6;
+        h1 = 1.0e5;
+        p2 = 1e6 + time*10e6;
+        T2 = 330;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
+      end TestStatesTranscritical;
+
+      model TestStatesSatSubcritical
+        "Test case state + sat records, subcritical conditions"
+        extends Modelica.Icons.Example;
+        extends GenericModels.TestStatesSat(
+          redeclare package Medium = ExternalMedia.Examples.CO2CoolPropSVDSBTL);
+      equation
+        p1 = 1e6;
+        h1 = 1.0e5 + 6e5*time;
+        p2 = 1e6;
+        T2 = 250 + 50*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
+      end TestStatesSatSubcritical;
+
+      model TestBasePropertiesExplicit
+        "Test case using BaseProperties and explicit equations"
+        extends Modelica.Icons.Example;
+        extends GenericModels.TestBasePropertiesExplicit(
+          redeclare package Medium = ExternalMedia.Examples.CO2CoolPropSVDSBTL);
+      equation
+        p1 = 8e6;
+        h1 = 1.0e5 + 6e5*time;
+        p2 = 1e6;
+        h2 = 1.0e5 + 6e5*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
+      end TestBasePropertiesExplicit;
+
+      model TestBasePropertiesImplicit
+        "Test case using BaseProperties and implicit equations"
+        extends Modelica.Icons.Example;
+        extends GenericModels.TestBasePropertiesImplicit(
+          redeclare package Medium = ExternalMedia.Examples.CO2CoolPropSVDSBTL, hstart=1e5);
+      equation
+        p1 = 8e6;
+        T1 = 280 + 50*time;
+        p2 = 1e6;
+        T2 = 280 + 50*time;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
+      end TestBasePropertiesImplicit;
+
+      model TestBasePropertiesDynamic
+        "Test case using BaseProperties and dynamic equations"
+        extends Modelica.Icons.Example;
+        extends GenericModels.TestBasePropertiesDynamic(
+          redeclare package Medium = ExternalMedia.Examples.CO2CoolPropSVDSBTL,
+          Tstart=300,
+          hstart=4e5,
+          pstart=1e6,
+          Kv0=1.00801e-4,
+          V=0.1);
+      equation
+        // Inlet equations
+        win = 1;
+        hin = 5e5;
+        // Input variables
+        Kv = if time < 50 then Kv0 else Kv0*1.1;
+        Q = if time < 1 then 0 else 1e4;
+        annotation (experiment(StopTime=80, Tolerance=1e-007, Interval = 0.1));
+      end TestBasePropertiesDynamic;
+
+      model TestBasePropertiesTranscritical
+        "Test case using BaseProperties and explicit equations"
+        extends Modelica.Icons.Example;
+        extends GenericModels.TestBasePropertiesExplicit(
+          redeclare package Medium = ExternalMedia.Examples.CO2CoolPropSVDSBTL);
+      equation
+        p1 = 1e6 + time*10e6;
+        h1 = 1.0e5;
+        p2 = 1e6 + time*10e6;
+        h2 = 7.0e5;
+        annotation(experiment(StopTime = 1, Interval = 0.001));
+      end TestBasePropertiesTranscritical;
+    end CO2_SVDSBTL;
+
     package Incompressible
                            extends Modelica.Icons.ExamplesPackage;
       model IncompressibleCoolPropMedium
@@ -1158,6 +1260,10 @@ package Test "Test models for the different solvers"
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_BICUBIC");
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_BICUBIC=0");
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_BICUBIC=1");
+        //
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_SVDSBTL");
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_SVDSBTL=0");
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_SVDSBTL=1");
         //
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_EXTTP");
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_EXTTP=0");
