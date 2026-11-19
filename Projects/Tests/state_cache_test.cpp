@@ -19,12 +19,20 @@
 #include "externalmedialib.h"
 
 // The library reports errors through the Modelica utility functions,
-// outside of a Modelica tool they have to be provided here.
-extern "C" void ModelicaError(const char *msg) {
+// outside of a Modelica tool they have to be provided here. On Windows the
+// library finds them with GetProcAddress (see importer.h), which only sees
+// exported symbols. Without the export, errorMessage prints and returns, and
+// a failed calculation would pass the comparisons instead of exiting.
+#ifdef _WIN32
+#define TEST_EXPORT __declspec(dllexport)
+#else
+#define TEST_EXPORT
+#endif
+extern "C" TEST_EXPORT void ModelicaError(const char *msg) {
 	printf("ModelicaError: %s\n", msg);
 	exit(2);
 }
-extern "C" void ModelicaWarning(const char *msg) {
+extern "C" TEST_EXPORT void ModelicaWarning(const char *msg) {
 	printf("ModelicaWarning: %s\n", msg);
 }
 

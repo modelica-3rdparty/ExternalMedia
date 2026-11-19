@@ -139,9 +139,15 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 			}
 			else if (!param_val[0].compare("cache_size"))
 			{
-				cache_size = (int)strtol(param_val[1].c_str(),NULL,0);
-				if (cache_size<0 || cache_size > 1048576)
+				long size = strtol(param_val[1].c_str(),NULL,0); // check before the cast to int
+				if (size<0 || size > 1048576)
+				{
 					errorMessage((char*)format("I don't know how to handle this cache size [%s]",param_val[1].c_str()).c_str());
+					// errorMessage can return on Windows, switch the caches off
+					// rather than allocating a rejected size
+					size = 0;
+				}
+				cache_size = (int)size;
 			}
 			else if (!param_val[0].compare("debug"))
 			{
@@ -205,7 +211,8 @@ void CoolPropSolver::printCacheStatistics(){
 	if (debug_level <= 0) return;
 	unsigned long long n_state = _stateCache.hits() + _stateCache.misses();
 	unsigned long long n_sat = _satCache.hits() + _satCache.misses();
-	if ((n_state + n_sat) % 1048576 == 0)
+	// switched-off caches never count, n = 0 must not print on every call
+	if (n_state + n_sat > 0 && (n_state + n_sat) % 1048576 == 0)
 		std::cout << format("State cache for %s: %llu hits, %llu misses; saturation cache: %llu hits, %llu misses\n",
 		                    substanceName.c_str(), _stateCache.hits(), _stateCache.misses(),
 		                    _satCache.hits(), _satCache.misses());
