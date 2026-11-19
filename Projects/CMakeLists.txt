@@ -79,21 +79,33 @@ if(COOLPROP)
         COMMAND ${CMAKE_COMMAND} -E copy_directory "${COOLPROP_SOURCES_GIT}" "${COOLPROP_SOURCES}"
       )
     else()
-      message(STATUS "Downloading CoolProp sources from the released archive")
-      file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/6.7.0/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
-      #file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/6.5.0/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
-      #file(DOWNLOAD https://sourceforge.net/projects/coolprop/files/CoolProp/nightly/source/CoolProp_sources.zip/download "${CMAKE_BINARY_DIR}/coolprop.zip")
-      # Unpack the sources for CoolProp
-      if(${CMAKE_VERSION} VERSION_LESS "3.18")
-        execute_process(
-          COMMAND ${CMAKE_COMMAND} -E tar xjf "${CMAKE_BINARY_DIR}/coolprop.zip"
-          WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
-        )
-      else()
-        file(ARCHIVE_EXTRACT INPUT "${CMAKE_BINARY_DIR}/coolprop.zip" DESTINATION "${CMAKE_BINARY_DIR}")
+      # Clone the release tag with git instead of downloading a zip archive.
+      # CoolProp 8 or later is required, see the check below.
+      set(COOLPROP_GIT_TAG "v8.0.0")
+      message(STATUS "Cloning CoolProp ${COOLPROP_GIT_TAG} into ${COOLPROP_SOURCES}")
+      find_package(Git REQUIRED)
+      execute_process(
+        COMMAND "${GIT_EXECUTABLE}" clone --recursive --depth 1 --shallow-submodules --branch "${COOLPROP_GIT_TAG}" https://github.com/CoolProp/CoolProp.git "${COOLPROP_SOURCES}"
+        RESULT_VARIABLE COOLPROP_CLONE_RESULT
+      )
+      if(NOT COOLPROP_CLONE_RESULT EQUAL 0)
+        file(REMOVE_RECURSE "${COOLPROP_SOURCES}")
+        message(FATAL_ERROR "Could not clone CoolProp ${COOLPROP_GIT_TAG}. Clone it into externals/CoolProp.git yourself, see README_compilation.md.")
       endif()
-      file(RENAME "${CMAKE_BINARY_DIR}/source" "${COOLPROP_SOURCES}")
     endif()
+  endif()
+  # The CoolProp solver needs CoolProp 8 or later (C++17 headers and the
+  # SVDSBTL backend). Reject older sources, e.g. a CoolProp.sources folder
+  # left over from an earlier build, instead of failing later in the compiler.
+  set(COOLPROP_CONFIG_KEYS "${COOLPROP_SOURCES}/include/CoolProp/detail/configuration_keys.h")
+  if(EXISTS "${COOLPROP_CONFIG_KEYS}")
+    file(STRINGS "${COOLPROP_CONFIG_KEYS}" COOLPROP_SVDSBTL_KEY REGEX "SVDSBTL_SAMPLING_THREADS")
+  else()
+    set(COOLPROP_SVDSBTL_KEY "")
+  endif()
+  if(NOT COOLPROP_SVDSBTL_KEY)
+    message(FATAL_ERROR "The CoolProp sources in ${COOLPROP_SOURCES} are older than CoolProp 8.0.0. "
+      "Delete that folder and update externals/CoolProp.git (or remove it to clone CoolProp 8.0.0), then configure again.")
   endif()
   # Prepare the CoolProp build, "${COOLPROP_SOURCES}" is ready now
   file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
