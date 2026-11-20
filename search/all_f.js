@@ -6,5 +6,6 @@ var searchData=
   ['library_20overview_3',['Library overview',['../index.html#autotoc_md1',1,'']]],
   ['libraryname_4',['libraryName',['../class_base_solver.html#a62463955cca1ceafbdda667ba391ff2f',1,'BaseSolver']]],
   ['license_5',['License',['../index.html#autotoc_md5',1,'']]],
-  ['log_6',['ExternalMedia Change Log',['../md__2github_2workspace_2_r_e_a_d_m_e__changelog.html',1,'']]]
+  ['log_6',['ExternalMedia Change Log',['../md__2github_2workspace_2_r_e_a_d_m_e__changelog.html',1,'']]],
+  ['lookup_7',['lookup',['../class_state_cache.html#a4313b9a33b653dd4c2452534499115d2',1,'StateCache']]]
 ];

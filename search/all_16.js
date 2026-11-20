@@ -14,11 +14,16 @@ var searchData=
   ['setstate_5fps_11',['setState_ps',['../class_base_solver.html#a2f87bf46aa4e999ac138b8346c50e00e',1,'BaseSolver::setState_ps()'],['../class_cool_prop_solver.html#a41752f627a66f02d9f5884adb6ad4033',1,'CoolPropSolver::setState_ps()'],['../class_test_solver.html#aa4b93c3aee28ce770f96f6cd08855d81',1,'TestSolver::setState_ps()']]],
   ['setstate_5fpt_12',['setState_pT',['../class_base_solver.html#a3ec5f548721d07bc0260b80f4572a7c7',1,'BaseSolver::setState_pT()'],['../class_cool_prop_solver.html#a24623628b15970db81ba91967cd822be',1,'CoolPropSolver::setState_pT()'],['../class_test_solver.html#a6220dcbb279a215d2166b6eda85082f8',1,'TestSolver::setState_pT()']]],
   ['sigma_13',['sigma',['../struct_external_saturation_properties.html#af9c2bd0662ebcce6f49108a944fb6bc3',1,'ExternalSaturationProperties::sigma'],['../class_base_solver.html#a7d4e539759b2f9d241711cc7c0ec676d',1,'BaseSolver::sigma()'],['../class_cool_prop_solver.html#a84fbe5f3701f883b3293f1372ff06d2c',1,'CoolPropSolver::sigma()']]],
-  ['sl_14',['sl',['../struct_external_saturation_properties.html#a6ef6177a08c0fc330b33fc31becf37e1',1,'ExternalSaturationProperties::sl'],['../class_base_solver.html#a202e3352782e2df17e075ae0608094ea',1,'BaseSolver::sl()'],['../class_cool_prop_solver.html#ad09623aad9b73a9c0bbe322378d306c2',1,'CoolPropSolver::sl()']]],
-  ['solverkey_15',['solverKey',['../class_solver_map.html#a256664f04bf390e71ec6bb9bbc70242f',1,'SolverMap']]],
-  ['solvermap_16',['SolverMap',['../class_solver_map.html',1,'']]],
-  ['sources_17',['Compiling ExternalMedia from sources',['../index.html#autotoc_md4',1,'']]],
-  ['start_20guide_18',['Quick-start guide',['../md__2github_2workspace_2_r_e_a_d_m_e__compilation.html#autotoc_md16',1,'']]],
-  ['substancename_19',['substanceName',['../class_base_solver.html#a8c07fcb970182389aa09882003bbe493',1,'BaseSolver']]],
-  ['sv_20',['sv',['../struct_external_saturation_properties.html#a0122158204ccad63836de9ded0cf6382',1,'ExternalSaturationProperties::sv'],['../class_base_solver.html#a6bcfc52563926b8d87d0be43f29677cd',1,'BaseSolver::sv()'],['../class_cool_prop_solver.html#a28e214443d0c613f04984d7a96d10204',1,'CoolPropSolver::sv()']]]
+  ['size_14',['size',['../class_state_cache.html#a9dfdd7e50b5eaf44550b112f332ae111',1,'StateCache']]],
+  ['sl_15',['sl',['../struct_external_saturation_properties.html#a6ef6177a08c0fc330b33fc31becf37e1',1,'ExternalSaturationProperties::sl'],['../class_base_solver.html#a202e3352782e2df17e075ae0608094ea',1,'BaseSolver::sl()'],['../class_cool_prop_solver.html#ad09623aad9b73a9c0bbe322378d306c2',1,'CoolPropSolver::sl()']]],
+  ['solverkey_16',['solverKey',['../class_solver_map.html#a256664f04bf390e71ec6bb9bbc70242f',1,'SolverMap']]],
+  ['solvermap_17',['SolverMap',['../class_solver_map.html',1,'']]],
+  ['sources_18',['Compiling ExternalMedia from sources',['../index.html#autotoc_md4',1,'']]],
+  ['start_20guide_19',['Quick-start guide',['../md__2github_2workspace_2_r_e_a_d_m_e__compilation.html#autotoc_md16',1,'']]],
+  ['statecache_20',['StateCache',['../class_state_cache.html',1,'']]],
+  ['statecache_3c_20externalsaturationproperties_20_3e_21',['StateCache&lt; ExternalSaturationProperties &gt;',['../class_state_cache.html',1,'']]],
+  ['statecache_3c_20externalthermodynamicstate_20_3e_22',['StateCache&lt; ExternalThermodynamicState &gt;',['../class_state_cache.html',1,'']]],
+  ['store_23',['store',['../class_state_cache.html#a19c649549d4df096e44d81d3551db4c9',1,'StateCache']]],
+  ['substancename_24',['substanceName',['../class_base_solver.html#a8c07fcb970182389aa09882003bbe493',1,'BaseSolver']]],
+  ['sv_25',['sv',['../struct_external_saturation_properties.html#a0122158204ccad63836de9ded0cf6382',1,'ExternalSaturationProperties::sv'],['../class_base_solver.html#a6bcfc52563926b8d87d0be43f29677cd',1,'BaseSolver::sv()'],['../class_cool_prop_solver.html#a28e214443d0c613f04984d7a96d10204',1,'CoolPropSolver::sv()']]]
 ];

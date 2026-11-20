@@ -288,6 +288,10 @@ Public Attributes</h2></td></tr>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:ad9cf00c4e7af14ce93fa08da723e8162" id="r_ad9cf00c4e7af14ce93fa08da723e8162"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_fluid_constants.html">FluidConstants</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9cf00c4e7af14ce93fa08da723e8162">_fluidConstants</a></td></tr>
 <tr class="separator:ad9cf00c4e7af14ce93fa08da723e8162"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b682f601693ce8c164f406f678d0971" id="r_a9b682f601693ce8c164f406f678d0971"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_state_cache.html">StateCache</a>&lt; <a class="el" href="struct_external_thermodynamic_state.html">ExternalThermodynamicState</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b682f601693ce8c164f406f678d0971">_stateCache</a></td></tr>
+<tr class="separator:a9b682f601693ce8c164f406f678d0971"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a22b2ea1d19a3421a21c484cc373229" id="r_a4a22b2ea1d19a3421a21c484cc373229"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_state_cache.html">StateCache</a>&lt; <a class="el" href="struct_external_saturation_properties.html">ExternalSaturationProperties</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a22b2ea1d19a3421a21c484cc373229">_satCache</a></td></tr>
+<tr class="separator:a4a22b2ea1d19a3421a21c484cc373229"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base solver class.</p>
@@ -2093,6 +2097,53 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Fluid constants </p>
+
+</div>
+</div>
+<a id="a4a22b2ea1d19a3421a21c484cc373229" name="a4a22b2ea1d19a3421a21c484cc373229"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a22b2ea1d19a3421a21c484cc373229">&#9670;&#160;</a></span>_satCache</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_state_cache.html">StateCache</a>&lt;<a class="el" href="struct_external_saturation_properties.html">ExternalSaturationProperties</a>&gt; BaseSolver::_satCache</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Cache of computed saturation properties (setSat_p and setSat_T) </p>
+
+</div>
+</div>
+<a id="a9b682f601693ce8c164f406f678d0971" name="a9b682f601693ce8c164f406f678d0971"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b682f601693ce8c164f406f678d0971">&#9670;&#160;</a></span>_stateCache</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_state_cache.html">StateCache</a>&lt;<a class="el" href="struct_external_thermodynamic_state.html">ExternalThermodynamicState</a>&gt; BaseSolver::_stateCache</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Cache of computed thermodynamic states (setState_XX functions)</p>
+<p>The caches are switched off (size 0) by default. A solver that wants to use them calls resize() in its constructor, then lookup() before and store() after each property calculation. The cache key contains the phase input, so a solver that uses the phase input can use the cache without changes. See <a class="el" href="statecache_8h_source.html">statecache.h</a> for details. </p>
 
 </div>
 </div>

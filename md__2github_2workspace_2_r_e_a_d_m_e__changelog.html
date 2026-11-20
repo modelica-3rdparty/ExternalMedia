@@ -102,6 +102,7 @@ v4.1.2 - unreleased</h1>
 <li>The library exports the <code>TwoPhaseMedium_setState_xx_C_impl_wrap</code> functions, which fixes the error "External function ... could not be found" when OpenModelica evaluates setState_xx in parameters (#113)</li>
 <li>Added binaries for Visual Studio 2026</li>
 <li>The macOS binaries require macOS 11 or later</li>
+<li>The CoolProp solver keeps the results of recent setState_xx, setSat_p and setSat_T calls and returns them again for exactly the same inputs, which avoids repeated CoolProp calls during numerical Jacobian evaluations. The new substance option <code>cache_size</code> (default 1024, 0 switches the cache off) sets the number of stored results per medium, e.g. <code>R134a|cache_size=4096</code>.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md9"></a>
 v4.1.1 - 2025/11/03</h1>

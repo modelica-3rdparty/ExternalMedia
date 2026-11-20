@@ -280,8 +280,17 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>criticalEntropy</b>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:aa40ece64215ca76f9e91ceae32cb5fec" id="r_aa40ece64215ca76f9e91ceae32cb5fec"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa40ece64215ca76f9e91ceae32cb5fec">postStateChange</a> (<a class="el" href="struct_external_thermodynamic_state.html">ExternalThermodynamicState</a> *const properties)</td></tr>
-<tr class="separator:aa40ece64215ca76f9e91ceae32cb5fec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a205b95e79fd247fe02ee34786f6e471a" id="r_a205b95e79fd247fe02ee34786f6e471a"><td class="memItemLeft" align="right" valign="top"><a id="a205b95e79fd247fe02ee34786f6e471a" name="a205b95e79fd247fe02ee34786f6e471a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>printCacheStatistics</b> ()</td></tr>
+<tr class="separator:a205b95e79fd247fe02ee34786f6e471a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a22590a174b6ecdf74c72f021695887" id="r_a1a22590a174b6ecdf74c72f021695887"><td class="memItemLeft" align="right" valign="top"><a id="a1a22590a174b6ecdf74c72f021695887" name="a1a22590a174b6ecdf74c72f021695887"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>storeState</b> (int inputs, double x1, double x2, int <a class="el" href="#aeda9a8f107fcaf941f1319af72cf56b6">phase</a>, const <a class="el" href="struct_external_thermodynamic_state.html">ExternalThermodynamicState</a> *const properties)</td></tr>
+<tr class="separator:a1a22590a174b6ecdf74c72f021695887"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42bf107c587b661e91ac4208e809c892" id="r_a42bf107c587b661e91ac4208e809c892"><td class="memItemLeft" align="right" valign="top"><a id="a42bf107c587b661e91ac4208e809c892" name="a42bf107c587b661e91ac4208e809c892"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>storeSat</b> (int inputs, double x, const <a class="el" href="struct_external_saturation_properties.html">ExternalSaturationProperties</a> *const properties)</td></tr>
+<tr class="separator:a42bf107c587b661e91ac4208e809c892"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b40500499644afe27d99e2c0e47db7c" id="r_a9b40500499644afe27d99e2c0e47db7c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b40500499644afe27d99e2c0e47db7c">postStateChange</a> (<a class="el" href="struct_external_thermodynamic_state.html">ExternalThermodynamicState</a> *const properties)</td></tr>
+<tr class="separator:a9b40500499644afe27d99e2c0e47db7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06d4d04934bd6782d2c77cf0aae92bc6" id="r_a06d4d04934bd6782d2c77cf0aae92bc6"><td class="memItemLeft" align="right" valign="top"><a id="a06d4d04934bd6782d2c77cf0aae92bc6" name="a06d4d04934bd6782d2c77cf0aae92bc6"></a>
 long&#160;</td><td class="memItemRight" valign="bottom"><b>makeDerivString</b> (const string &amp;of, const string &amp;wrt, const string &amp;cst)</td></tr>
 <tr class="separator:a06d4d04934bd6782d2c77cf0aae92bc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -334,6 +343,10 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>_delta_h</b></td></
 <tr class="inherit_header pro_attribs_class_base_solver"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_class_base_solver')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_base_solver.html">BaseSolver</a></td></tr>
 <tr class="memitem:ad9cf00c4e7af14ce93fa08da723e8162 inherit pro_attribs_class_base_solver" id="r_ad9cf00c4e7af14ce93fa08da723e8162"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_fluid_constants.html">FluidConstants</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_solver.html#ad9cf00c4e7af14ce93fa08da723e8162">_fluidConstants</a></td></tr>
 <tr class="separator:ad9cf00c4e7af14ce93fa08da723e8162 inherit pro_attribs_class_base_solver"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b682f601693ce8c164f406f678d0971 inherit pro_attribs_class_base_solver" id="r_a9b682f601693ce8c164f406f678d0971"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_state_cache.html">StateCache</a>&lt; <a class="el" href="struct_external_thermodynamic_state.html">ExternalThermodynamicState</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_solver.html#a9b682f601693ce8c164f406f678d0971">_stateCache</a></td></tr>
+<tr class="separator:a9b682f601693ce8c164f406f678d0971 inherit pro_attribs_class_base_solver"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a22b2ea1d19a3421a21c484cc373229 inherit pro_attribs_class_base_solver" id="r_a4a22b2ea1d19a3421a21c484cc373229"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_state_cache.html">StateCache</a>&lt; <a class="el" href="struct_external_saturation_properties.html">ExternalSaturationProperties</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_solver.html#a4a22b2ea1d19a3421a21c484cc373229">_satCache</a></td></tr>
+<tr class="separator:a4a22b2ea1d19a3421a21c484cc373229 inherit pro_attribs_class_base_solver"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -1278,8 +1291,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="aa40ece64215ca76f9e91ceae32cb5fec" name="aa40ece64215ca76f9e91ceae32cb5fec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa40ece64215ca76f9e91ceae32cb5fec">&#9670;&#160;</a></span>postStateChange()</h2>
+<a id="a9b40500499644afe27d99e2c0e47db7c" name="a9b40500499644afe27d99e2c0e47db7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b40500499644afe27d99e2c0e47db7c">&#9670;&#160;</a></span>postStateChange()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1288,7 +1301,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void CoolPropSolver::postStateChange </td>
+          <td class="memname">bool CoolPropSolver::postStateChange </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="struct_external_thermodynamic_state.html">ExternalThermodynamicState</a> *const</td>          <td class="paramname"><span class="paramname"><em>properties</em></span></td><td>)</td>
           <td></td>

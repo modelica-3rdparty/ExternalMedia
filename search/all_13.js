@@ -6,7 +6,7 @@ var searchData=
   ['partialderiv_5fstate_3',['partialDeriv_state',['../class_base_solver.html#ad730eb33658e131b9d64a79c4a7f8b8a',1,'BaseSolver::partialDeriv_state()'],['../class_cool_prop_solver.html#a4612432624bda50865f13226397cc9b8',1,'CoolPropSolver::partialDeriv_state()']]],
   ['pc_4',['pc',['../struct_fluid_constants.html#a6f7e4a14d4f62baeace340cc1ef3841a',1,'FluidConstants']]],
   ['phase_5',['phase',['../struct_external_thermodynamic_state.html#a580d6978ab095f7b178ccf844c528d0f',1,'ExternalThermodynamicState::phase'],['../class_base_solver.html#a390124092a5e8729980e838b114abfce',1,'BaseSolver::phase()'],['../class_cool_prop_solver.html#aeda9a8f107fcaf941f1319af72cf56b6',1,'CoolPropSolver::phase(ExternalThermodynamicState *const properties)']]],
-  ['poststatechange_6',['postStateChange',['../class_cool_prop_solver.html#aa40ece64215ca76f9e91ceae32cb5fec',1,'CoolPropSolver']]],
+  ['poststatechange_6',['postStateChange',['../class_cool_prop_solver.html#a9b40500499644afe27d99e2c0e47db7c',1,'CoolPropSolver']]],
   ['pr_7',['Pr',['../class_base_solver.html#ae7cc55f5f0a4590a317fa8653e5a2e81',1,'BaseSolver::Pr()'],['../class_cool_prop_solver.html#a8ce18abd1a0ed5811892ca68acba2ee0',1,'CoolPropSolver::Pr()']]],
   ['pre_20packaged_20releases_20with_20fluidprop_8',['Using the pre-packaged releases with FluidProp',['../md__2github_2workspace_2_r_e_a_d_m_e__fluidprop.html',1,'']]],
   ['property_20libraries_9',['Selecting the fluid property libraries',['../md__2github_2workspace_2_r_e_a_d_m_e__compilation.html#autotoc_md17',1,'']]],
