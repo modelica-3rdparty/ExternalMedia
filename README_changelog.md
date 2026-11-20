@@ -22,6 +22,16 @@
   returns them again for exactly the same inputs, which avoids repeated CoolProp calls during
   numerical Jacobian evaluations. The new substance option `cache_size` (default 1024, 0 switches
   the cache off) sets the number of stored results per medium, e.g. `R134a|cache_size=4096`.
+- New CoolProp option enable_SVDSBTL, e.g. "Water|enable_SVDSBTL=1". It uses the
+  SVDSBTL tables of CoolProp 8 only as starting values for T and density and then
+  evaluates the reference equation of state (HEOS) at the input state with a few
+  Newton steps, so all properties and derivatives are those of HEOS. For
+  single-phase p-h states this was 7 to 20 times faster than the plain model in
+  the tests (water, CO2, R134a) with results within 4e-5 of it. Pure fluids with
+  the HEOS (and, untested, REFPROP) backends only. The first use of a fluid builds
+  the tables, which takes up to a few minutes. See UserGuide.Usage.CoolPropSVDSBTL.
+- New example media WaterCoolPropSVDSBTL, CO2CoolPropSVDSBTL, R134aCoolPropSVDSBTL
+  and test suite Test.CoolProp.CO2_SVDSBTL
 
 ## v4.1.1 - 2025/11/03
 - Uses Modelica Standard Library 4.1.0

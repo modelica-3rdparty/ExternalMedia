@@ -7,9 +7,29 @@
 #include "CoolPropLib.h"
 #include "CoolProp.h"
 #include "AbstractState.h"
+#include "CoolProp/Configuration.h"
 #include <iostream>
 #include <string>
 #include <stdlib.h>
+#include <cmath>
+#include <algorithm>
+
+/*
+ * Settings of the SVDSBTL option, see the comment block "SVDSBTL support"
+ * further down.
+ */
+/* Convergence tolerance of the Newton steps: relative change of density
+   and relative change of the second input (h or s) */
+static const double SVDSBTL_TOL = 1e-9;
+/* At most this many Newton steps in p-h and p-s. The measurements in
+   Projects/Tests/svdsbtl_prototype_results.md never needed more than 2. */
+static const int SVDSBTL_MAX_STEPS = 5;
+/* At most this many Newton steps in p-T, where the table guess can be
+   poor close to the saturation line and near the critical point */
+static const int SVDSBTL_MAX_STEPS_PT = 20;
+/* Scales that keep the tolerance on h and s finite where h or s is zero */
+static const double SVDSBTL_H_SCALE_J_KG = 1e5;
+static const double SVDSBTL_S_SCALE_J_KGK = 1e3;
 
 //double _p_eps   ; // relative tolerance margin for subcritical pressure conditions
 //double _T_eps   ; // relative tolerance margin for supercritical temperature conditions
@@ -28,6 +48,7 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 	_valid          = false;
 	enable_TTSE     = false;
 	enable_BICUBIC  = false;
+	enable_SVDSBTL  = false;
 	debug_level     = 0;
 	calc_transport  = true;
 	extend_twophase = true;
@@ -87,7 +108,6 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 				{
 					std::cout << "TTSE is on\n";
 					enable_TTSE = true;
-					backend = "TTSE&" + backend;
 				}
 				else if (!param_val[1].compare("0") || !param_val[1].compare("false"))
 				{
@@ -104,7 +124,6 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 				{
 					std::cout << "BICUBIC is on\n";
 					enable_BICUBIC = true;
-					backend = "BICUBIC&" + backend;
 				}
 				else if (!param_val[1].compare("0") || !param_val[1].compare("false"))
 				{
@@ -114,6 +133,21 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 				else
 					errorMessage((char*)format("I don't know how to handle this option [%s]",name_options[i].c_str()).c_str());
 					//throw NotImplementedError((char*)format("I don't know how to handle this option [%s]",name_options[i].c_str()).c_str());
+			}
+			else if (!param_val[0].compare("enable_SVDSBTL"))
+			{
+				if (!param_val[1].compare("1") || !param_val[1].compare("true"))
+				{
+					std::cout << "SVDSBTL is on\n";
+					enable_SVDSBTL = true;
+				}
+				else if (!param_val[1].compare("0") || !param_val[1].compare("false"))
+				{
+					std::cout << "SVDSBTL is off\n";
+					enable_SVDSBTL = false;
+				}
+				else
+					errorMessage((char*)format("I don't know how to handle this option [%s]",name_options[i].c_str()).c_str());
 			}
 			else if (!param_val[0].compare("calc_transport"))
 			{
@@ -177,6 +211,24 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 		}
 	}
 
+	// Apply the table option. Only one table method can be active at a time.
+	if ((int)enable_TTSE + (int)enable_BICUBIC + (int)enable_SVDSBTL > 1)
+	{
+		errorMessage((char*)format("Only one of enable_TTSE, enable_BICUBIC and enable_SVDSBTL can be set for [%s]",substanceName.c_str()).c_str());
+	}
+	// The reference backend, e.g. "HEOS", "REFPROP" or "IF97"
+	const std::string source_backend = backend;
+	if (enable_TTSE)
+	{
+		backend = "TTSE&" + backend;
+	}
+	else if (enable_BICUBIC)
+	{
+		backend = "BICUBIC&" + backend;
+	}
+	// With enable_SVDSBTL the main state keeps the reference backend,
+	// the SVDSBTL tables are created below in table_state.
+
 	// Handle the name
 	if (debug_level > 5) std::cout << "Check passed, reducing " << substanceName << " to fluid " << this->substanceName << ", with " << backend << " backend."<< std::endl;
 
@@ -202,6 +254,55 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 	        if (debug_level > 5) std::cout << format("%s:%d: CoolPropSolver could not set composition, defaulting to mole fractions.\n",__FILE__,__LINE__);
 	        this->state->set_mole_fractions(*fractions_ptr);
 	    }
+
+	    if (enable_SVDSBTL)
+	    {
+	        // The SVDSBTL tables only serve as starting values for the
+	        // reference equation of state, which is evaluated at (T, rho).
+	        // This works for HEOS and REFPROP. IF97 cannot be evaluated at
+	        // (T, rho), and it is fast without tables anyway.
+	        if (source_backend != "HEOS" && source_backend != "REFPROP")
+	        {
+	            names_ok = false;
+	            errorMessage((char*)format("enable_SVDSBTL is only available with the HEOS and REFPROP backends, not with %s [%s]",source_backend.c_str(),substanceName.c_str()).c_str());
+	        }
+	        if (!isCompressible)
+	        {
+	            names_ok = false;
+	            errorMessage((char*)format("enable_SVDSBTL is not available for incompressible fluids [%s]",substanceName.c_str()).c_str());
+	        }
+	        if (this->state->get_mole_fractions().size() != 1)
+	        {
+	            names_ok = false;
+	            errorMessage((char*)format("enable_SVDSBTL is only available for pure fluids, not for mixtures [%s]",substanceName.c_str()).c_str());
+	        }
+	        try
+	        {
+	            // The first use of a fluid builds the tables (tens of seconds to
+	            // a few minutes) and stores them in the CoolProp cache folder,
+	            // later runs load them from there. Use all processor cores for
+	            // the first build, unless the user chose a number of threads
+	            // with the environment variable COOLPROP_SVDSBTL_SAMPLING_THREADS.
+	            // This is a global CoolProp setting, it only affects table builds.
+	            if (std::getenv("COOLPROP_SVDSBTL_SAMPLING_THREADS") == NULL)
+	            {
+	                CoolProp::set_config_int(SVDSBTL_SAMPLING_THREADS, 0);
+	            }
+	            // SVDSBTL names its cache files after the fluid name as given,
+	            // so "water" and "Water" would build two sets of tables. Use the
+	            // name of the reference state, which is the canonical one.
+	            std::string table_fluid = this->substanceName;
+	            const std::vector<std::string> names = this->state->fluid_names();
+	            if (names.size() == 1 && !names[0].empty()) table_fluid = names[0];
+	            this->table_state.reset(CoolProp::AbstractState::factory("SVDSBTL&" + source_backend, table_fluid));
+	        }
+	        catch(std::exception &e)
+	        {
+	            names_ok = false;
+	            errorMessage((char*)format("Could not create the SVDSBTL tables for [%s] with the %s backend: %s",substanceName.c_str(),source_backend.c_str(),e.what()).c_str());
+	        }
+	    }
+
 
 	    // Switch on the state caches, see BaseSolver::_stateCache
 	    _stateCache.resize(cache_size);
@@ -468,6 +569,8 @@ void CoolPropSolver::setSat_p(double &p, ExternalSaturationProperties *const pro
 	if (debug_level > 5)
 		std::cout << format("setSat_p(%0.16e)\n",p);
 
+	if (enable_SVDSBTL) state->unspecify_phase();
+
 	if (p > _satPropsClose2Crit.psat) { // supercritical conditions
 		fillCritSatState(properties, _satPropsClose2Crit);
 	} else {
@@ -475,6 +578,12 @@ void CoolPropSolver::setSat_p(double &p, ExternalSaturationProperties *const pro
 	  bool hit = _satCache.lookup(CACHE_SAT_P, p, 0.0, 0, properties);
 	  printCacheStatistics();
 	  if (hit) return;
+
+	  // With enable_SVDSBTL: HEOS with the table as starting guess
+	  if (enable_SVDSBTL && svdsbtl_setSat_p(p, properties)) {
+		  storeSat(CACHE_SAT_P, p, properties);
+		  return;
+	  }
 
 	  //this->preStateChange();
 	  try {
@@ -514,6 +623,8 @@ void CoolPropSolver::setSat_T(double &T, ExternalSaturationProperties *const pro
 	if (debug_level > 5)
 		std::cout << format("setSat_T(%0.16e)\n",T);
 
+	if (enable_SVDSBTL) state->unspecify_phase();
+
 	if (T > _satPropsClose2Crit.Tsat) { // supercritical conditions
 		fillCritSatState(properties, _satPropsClose2Crit);
 	} else {
@@ -521,6 +632,12 @@ void CoolPropSolver::setSat_T(double &T, ExternalSaturationProperties *const pro
 	  bool hit = _satCache.lookup(CACHE_SAT_T, T, 0.0, 0, properties);
 	  printCacheStatistics();
 	  if (hit) return;
+
+	  // With enable_SVDSBTL: HEOS with the table as starting guess
+	  if (enable_SVDSBTL && svdsbtl_setSat_T(T, properties)) {
+		  storeSat(CACHE_SAT_T, T, properties);
+		  return;
+	  }
 
 	  //this->preStateChange();
 	  try
@@ -591,6 +708,25 @@ void CoolPropSolver::setState_ph(double &p, double &h, int &phase, ExternalTherm
 	//this->preStateChange();
 
 	try{
+		if (enable_SVDSBTL)
+		{
+			state->unspecify_phase();
+			if (svdsbtl_solve_p_y(CoolProp::HmassP_INPUTS, p, h, CoolProp::iHmass, SVDSBTL_H_SCALE_J_KG))
+			{
+				// Single-phase state from HEOS at the exact input pair
+				// The returned p and h are the inputs, the state matches them
+				// to the Newton tolerance
+				const bool success = this->postStateChange(properties);
+				properties->p = p;
+				properties->h = h;
+				state->unspecify_phase();
+				if (success)
+					storeState(CACHE_PH, p, h, phase, properties);
+				return;
+			}
+			// Two-phase state, or the table route failed: plain flash below
+		}
+
 		// Update the internal variables in the state instance
 		state->update(CoolProp::HmassP_INPUTS,h,p);
 
@@ -623,6 +759,24 @@ void CoolPropSolver::setState_pT(double &p, double &T, ExternalThermodynamicStat
 	//this->preStateChange();
 
 	try{
+		if (enable_SVDSBTL)
+		{
+			state->unspecify_phase();
+			if (svdsbtl_solve_pT(p, T))
+			{
+				// The returned p and T are the inputs, the state matches them
+				// to the Newton tolerance
+				const bool success = this->postStateChange(properties);
+				properties->p = p;
+				properties->T = T;
+				state->unspecify_phase();
+				if (success)
+					storeState(CACHE_PT, p, T, 0, properties);
+				return;
+			}
+			// The table route failed: plain flash below
+		}
+
 		// Update the internal variables in the state instance
 		state->update(CoolProp::PT_INPUTS,p,T);
 
@@ -652,6 +806,9 @@ void CoolPropSolver::setState_dT(double &d, double &T, int &phase, ExternalTherm
 	//this->preStateChange();
 
 	try{
+		// With enable_SVDSBTL, d-T inputs go to the reference equation of
+		// state directly: it is explicit in (T, rho), a table brings nothing.
+		if (enable_SVDSBTL) state->unspecify_phase();
 
 		// Update the internal variables in the state instance
 		state->update(CoolProp::DmassT_INPUTS,d,T);
@@ -681,6 +838,25 @@ void CoolPropSolver::setState_ps(double &p, double &s, int &phase, ExternalTherm
 	//this->preStateChange();
 
 	try{
+		if (enable_SVDSBTL)
+		{
+			state->unspecify_phase();
+			if (svdsbtl_solve_p_y(CoolProp::PSmass_INPUTS, p, s, CoolProp::iSmass, SVDSBTL_S_SCALE_J_KGK))
+			{
+				// Single-phase state from HEOS at the exact input pair
+				// The returned p and s are the inputs, the state matches them
+				// to the Newton tolerance
+				const bool success = this->postStateChange(properties);
+				properties->p = p;
+				properties->s = s;
+				state->unspecify_phase();
+				if (success)
+					storeState(CACHE_PS, p, s, phase, properties);
+				return;
+			}
+			// Two-phase state, or the table route failed: plain flash below
+		}
+
 		// Update the internal variables in the state instance
 		state->update(CoolProp::PSmass_INPUTS,p,s);
 
@@ -710,6 +886,10 @@ void CoolPropSolver::setState_hs(double &h, double &s, int &phase, ExternalTherm
 	//this->preStateChange();
 
 	try{
+		// With enable_SVDSBTL, h-s inputs go to the reference equation of
+		// state directly, there is no h-s table.
+		if (enable_SVDSBTL) state->unspecify_phase();
+
 		// Update the internal variables in the state instance
 		state->update(CoolProp::HmassSmass_INPUTS,h,s);
 
@@ -736,6 +916,8 @@ double CoolPropSolver::partialDeriv_state(const string &of, const string &wrt, c
 	double res = NAN;
 
 	try{
+		// The SVDSBTL route can leave an imposed phase behind, release it
+		if (enable_SVDSBTL) state->unspecify_phase();
 		// Restore the state from the record. Incompressibles do not support
 		// density-temperature inputs. With rho_smoothing_xend, postStateChange
 		// replaces the density of two-phase states by a smoothed value, so d and T
@@ -1007,6 +1189,296 @@ double CoolPropSolver::Tsat(ExternalSaturationProperties *const properties){
 	errorMessage((char*)"Internal error: Tsat() not implemented in the Solver object");
 	//throw NotImplementedError((char*)"Internal error: Tsat() not implemented in the Solver object");
 	return NAN;
+}
+
+/*
+ * SVDSBTL support
+ *
+ * The SVDSBTL backend of CoolProp 8 stores T, rho, h, s, u, the speed of
+ * sound and the transport properties on compressed tables over the p-h,
+ * p-T, p-s and d-T planes. It does not provide cp, cv or any derivative.
+ *
+ * A Helmholtz equation of state such as HEOS is explicit in (T, rho):
+ * every property and every derivative at a given (T, rho) is a direct
+ * evaluation. The expensive part of a HEOS call with (p, h) inputs is
+ * the iteration that finds (T, rho), plus the check whether the state
+ * lies inside the two-phase region.
+ *
+ * With enable_SVDSBTL the solver therefore uses the table only to find
+ * T and rho, and evaluates the reference equation of state (`state`) at
+ * that point with the phase imposed, so CoolProp skips its own iteration
+ * and phase check. The table values of T and rho are not exact, so a
+ * few Newton steps on HEOS correct them until p and h (or p and s) match
+ * the inputs. All outputs, including cp, cv, kappa, beta, ddph, ddhp and
+ * the transport properties, then come from HEOS at the input state, and
+ * postStateChange is the same as without tables.
+ *
+ * Newton step for the inputs p_in and y_in (y = h or s), unknowns T, rho:
+ *
+ *   residuals    r_p = p(T, rho) - p_in,   r_y = y(T, rho) - y_in
+ *   Jacobian     J = | dp/dT  dp/drho |    (partial derivatives of HEOS,
+ *                    | dy/dT  dy/drho |     analytical)
+ *   correction   (dT, drho) = J^-1 (r_p, r_y)
+ *   new values   T = T - dT,   rho = rho - drho
+ *
+ * The iteration stops when kappa*|r_p| < SVDSBTL_TOL and
+ * |r_y| < SVDSBTL_TOL*(|y_in| + scale). The pressure residual is measured
+ * by the relative density change it corresponds to (kappa is the
+ * isothermal compressibility), because p computed from (T, rho) of a
+ * stiff liquid carries a round-off error that is larger than 1e-9 p at
+ * low pressure.
+ *
+ * Two-phase states (the table says two-phase) and everything that fails
+ * on the table route go to the plain flash of the reference equation of
+ * state, which is as fast as the table route in the two-phase region.
+ * So the two-phase behaviour, extend_twophase and the smoothing options
+ * are the same as without tables.
+ *
+ * The saturation routines take T_sat and the saturated densities from
+ * the table (SVDSBTL uses the CoolProp SuperAncillary functions for
+ * these, which match HEOS to round-off), evaluate HEOS on the liquid and
+ * on the vapour side, and compute the derivatives along the saturation
+ * line from the Clausius-Clapeyron equation (see svdsbtl_sat).
+ *
+ * The measurements behind this design are in
+ * Projects/Tests/svdsbtl_prototype_results.md.
+ */
+
+/// CoolProp phase label of a single-phase state at T [K], rho [kg/m3] and p [Pa].
+/// SVDSBTL only reports whether a point is two-phase. Any single-phase
+/// label makes HEOS skip its phase check at (T, rho), so a simple rule is
+/// enough: supercritical above the critical temperature or pressure,
+/// otherwise liquid if denser than the critical density, else vapour.
+CoolProp::phases CoolPropSolver::svdsbtl_phase_label(double T_K, double rho_kg_m3, double p_Pa){
+	if (T_K >= _fluidConstants.Tc && p_Pa >= _fluidConstants.pc) return CoolProp::iphase_supercritical;
+	if (T_K >= _fluidConstants.Tc) return CoolProp::iphase_supercritical_gas;
+	if (p_Pa >= _fluidConstants.pc) return CoolProp::iphase_supercritical_liquid;
+	return (rho_kg_m3 > _fluidConstants.dc) ? CoolProp::iphase_liquid : CoolProp::iphase_gas;
+}
+
+/// Evaluate the reference equation of state at T [K] and rho [kg/m3] with the phase imposed
+void CoolPropSolver::svdsbtl_eval_Trho(double T_K, double rho_kg_m3, CoolProp::phases phase){
+	state->specify_phase(phase);
+	state->update(CoolProp::DmassT_INPUTS, rho_kg_m3, T_K);
+}
+
+/// Single-phase state for the inputs p [Pa] and y_in, with y = h [J/kg]
+/// (table_inputs = HmassP_INPUTS, y_key = iHmass) or y = s [J/(kg K)]
+/// (PSmass_INPUTS, iSmass). Returns true if `state` holds the converged
+/// state, with the phase still imposed. Returns false for two-phase
+/// states and for any failure; the phase is then released.
+bool CoolPropSolver::svdsbtl_solve_p_y(CoolProp::input_pairs table_inputs, double p_Pa, double y_in, CoolProp::parameters y_key, double y_scale){
+	if (!table_state) return false;
+	double T_K, rho_kg_m3;
+	// 1. Starting values from the table
+	try{
+		if (table_inputs == CoolProp::HmassP_INPUTS)
+			table_state->update(table_inputs, y_in, p_Pa);
+		else
+			table_state->update(table_inputs, p_Pa, y_in);
+		if (table_state->phase() == CoolProp::iphase_twophase) return false;
+		T_K = table_state->T();
+		rho_kg_m3 = table_state->rhomass();
+	}
+	catch(std::exception &e){
+		if (debug_level > 5) std::cout << format("SVDSBTL table failed at p = %g Pa, y = %g: %s\n", p_Pa, y_in, e.what());
+		return false;
+	}
+	if (!ValidNumber(T_K) || !ValidNumber(rho_kg_m3) || T_K <= 0 || rho_kg_m3 <= 0) return false;
+	const CoolProp::phases phase = svdsbtl_phase_label(T_K, rho_kg_m3, p_Pa);
+
+	// 2. HEOS at the table point, then Newton steps until the inputs match
+	try{
+		svdsbtl_eval_Trho(T_K, rho_kg_m3, phase);
+		for (int step = 0; ; step++){
+			const double r_p = state->p() - p_Pa;
+			const double r_y = state->keyed_output(y_key) - y_in;
+			const double kappa = state->isothermal_compressibility();
+			if (!ValidNumber(r_p) || !ValidNumber(r_y) || !ValidNumber(kappa)) break;
+			if (std::abs(r_p*kappa) < SVDSBTL_TOL && std::abs(r_y) < SVDSBTL_TOL*(std::abs(y_in) + y_scale)){
+				if (debug_level > 50) std::cout << format("SVDSBTL converged after %d Newton steps\n", step);
+				return true;
+			}
+			if (step == SVDSBTL_MAX_STEPS) break;
+			const double dp_dT   = state->first_partial_deriv(CoolProp::iP, CoolProp::iT, CoolProp::iDmass);
+			const double dp_drho = state->first_partial_deriv(CoolProp::iP, CoolProp::iDmass, CoolProp::iT);
+			const double dy_dT   = state->first_partial_deriv(y_key, CoolProp::iT, CoolProp::iDmass);
+			const double dy_drho = state->first_partial_deriv(y_key, CoolProp::iDmass, CoolProp::iT);
+			const double det = dp_dT*dy_drho - dp_drho*dy_dT;
+			if (!ValidNumber(det) || det == 0) break;
+			// Solve the 2x2 system J*(dT, drho) = (r_p, r_y) by Cramer's rule
+			T_K       -= (r_p*dy_drho - r_y*dp_drho)/det;
+			rho_kg_m3 -= (dp_dT*r_y - dy_dT*r_p)/det;
+			if (!ValidNumber(T_K) || !ValidNumber(rho_kg_m3) || T_K <= 0 || rho_kg_m3 <= 0) break;
+			svdsbtl_eval_Trho(T_K, rho_kg_m3, phase);
+		}
+	}
+	catch(std::exception &e){
+		if (debug_level > 5) std::cout << format("SVDSBTL Newton step failed at p = %g Pa, y = %g: %s\n", p_Pa, y_in, e.what());
+	}
+	if (debug_level > 5) std::cout << format("SVDSBTL did not converge at p = %g Pa, y = %g, using the plain flash\n", p_Pa, y_in);
+	state->unspecify_phase();
+	return false;
+}
+
+/// Single-phase state for the inputs p [Pa] and T [K], see svdsbtl_solve_p_y.
+/// The SVDSBTL p-T table is a poor starting guess close to the saturation
+/// line (within about 0.01 K it can return the density of the other
+/// phase) and near the critical point (errors of 10 to 30 % in density).
+/// So below the critical point the phase is decided by comparing T with
+/// T_sat(p), and the table density is moved to the right side of the
+/// saturated density if needed. Then a 1-D Newton iteration in rho at
+/// fixed T solves p(T, rho) = p_in:
+///   rho = rho - (p(T, rho) - p_in) / (dp/drho)_T
+bool CoolPropSolver::svdsbtl_solve_pT(double p_Pa, double T_K){
+	if (!table_state) return false;
+	try{
+		table_state->update(CoolProp::PT_INPUTS, p_Pa, T_K);
+		double rho_kg_m3 = table_state->rhomass();
+		if (!ValidNumber(rho_kg_m3) || rho_kg_m3 <= 0) return false;
+		CoolProp::phases phase;
+		if (p_Pa < _fluidConstants.pc && T_K < _fluidConstants.Tc){
+			table_state->update(CoolProp::PQ_INPUTS, p_Pa, 0);
+			const double T_sat_K = table_state->T();
+			const double rho_l_kg_m3 = table_state->rhomass();
+			table_state->update(CoolProp::PQ_INPUTS, p_Pa, 1);
+			const double rho_v_kg_m3 = table_state->rhomass();
+			if (T_K < T_sat_K){
+				phase = CoolProp::iphase_liquid;
+				rho_kg_m3 = std::max(rho_kg_m3, rho_l_kg_m3);
+			}
+			else{
+				phase = CoolProp::iphase_gas;
+				rho_kg_m3 = std::min(rho_kg_m3, rho_v_kg_m3);
+			}
+		}
+		else{
+			phase = svdsbtl_phase_label(T_K, rho_kg_m3, p_Pa);
+		}
+		for (int step = 0; step <= SVDSBTL_MAX_STEPS_PT; step++){
+			svdsbtl_eval_Trho(T_K, rho_kg_m3, phase);
+			const double r_p = state->p() - p_Pa;
+			const double kappa = state->isothermal_compressibility();
+			if (!ValidNumber(r_p) || !ValidNumber(kappa)) break;
+			if (std::abs(r_p*kappa) < SVDSBTL_TOL) return true;
+			const double dp_drho = state->first_partial_deriv(CoolProp::iP, CoolProp::iDmass, CoolProp::iT);
+			if (!ValidNumber(dp_drho) || dp_drho == 0) break;
+			rho_kg_m3 -= r_p/dp_drho;
+			if (!ValidNumber(rho_kg_m3) || rho_kg_m3 <= 0) break;
+		}
+	}
+	catch(std::exception &e){
+		if (debug_level > 5) std::cout << format("SVDSBTL p-T failed at p = %g Pa, T = %g K: %s\n", p_Pa, T_K, e.what());
+	}
+	if (debug_level > 5) std::cout << format("SVDSBTL p-T did not converge at p = %g Pa, T = %g K, using the plain flash\n", p_Pa, T_K);
+	state->unspecify_phase();
+	return false;
+}
+
+/// Saturation properties from the reference equation of state at the
+/// saturation pressure p [Pa], temperature T [K] and the saturated
+/// densities rho_l and rho_v [kg/m3] from the table.
+///
+/// Along the saturation line T = T_sat(p). The slope follows from the
+/// Clausius-Clapeyron equation
+///   dT_sat/dp = T (v_v - v_l) / (h_v - h_l)
+/// and the derivatives of the saturated density and enthalpy follow
+/// from the single-phase derivatives on each side, for example
+///   d rho_l/dp|sat = (d rho/dp)_T + (d rho/dT)_p * dT_sat/dp
+/// Returns false if a value is not finite.
+bool CoolPropSolver::svdsbtl_sat(double p_Pa, double T_K, double rho_l_kg_m3, double rho_v_kg_m3, ExternalSaturationProperties *const properties){
+	if (!ValidNumber(p_Pa) || !ValidNumber(T_K) || !ValidNumber(rho_l_kg_m3) || !ValidNumber(rho_v_kg_m3)) return false;
+	// Liquid side
+	svdsbtl_eval_Trho(T_K, rho_l_kg_m3, CoolProp::iphase_liquid);
+	const double h_l_J_kg = state->hmass();
+	const double s_l_J_kgK = state->smass();
+	const double drho_dp_T_l = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iP, CoolProp::iT);
+	const double drho_dT_p_l = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iT, CoolProp::iP);
+	const double dh_dp_T_l   = state->first_partial_deriv(CoolProp::iHmass, CoolProp::iP, CoolProp::iT);
+	const double dh_dT_p_l   = state->first_partial_deriv(CoolProp::iHmass, CoolProp::iT, CoolProp::iP);
+	// Vapour side
+	svdsbtl_eval_Trho(T_K, rho_v_kg_m3, CoolProp::iphase_gas);
+	const double h_v_J_kg = state->hmass();
+	const double s_v_J_kgK = state->smass();
+	const double drho_dp_T_v = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iP, CoolProp::iT);
+	const double drho_dT_p_v = state->first_partial_deriv(CoolProp::iDmass, CoolProp::iT, CoolProp::iP);
+	const double dh_dp_T_v   = state->first_partial_deriv(CoolProp::iHmass, CoolProp::iP, CoolProp::iT);
+	const double dh_dT_p_v   = state->first_partial_deriv(CoolProp::iHmass, CoolProp::iT, CoolProp::iP);
+	// Surface tension: CoolProp only gives it for a state flagged as
+	// two-phase. It depends on T only, and a QT update of HEOS is cheap
+	// (SuperAncillary), so use one here.
+	double sigma_N_m;
+	try{
+		state->specify_phase(CoolProp::iphase_twophase);
+		state->update(CoolProp::QT_INPUTS, 0, T_K);
+		sigma_N_m = state->surface_tension();
+	}
+	catch(...){
+		sigma_N_m = NAN;
+	}
+	state->clear();
+	state->unspecify_phase();
+
+	// Clausius-Clapeyron
+	const double dTp_K_Pa = T_K*(1.0/rho_v_kg_m3 - 1.0/rho_l_kg_m3)/(h_v_J_kg - h_l_J_kg);
+
+	ExternalSaturationProperties sat = *properties;
+	sat.psat  = p_Pa;
+	sat.Tsat  = T_K;
+	sat.dTp   = dTp_K_Pa;
+	sat.dl    = rho_l_kg_m3;
+	sat.hl    = h_l_J_kg;
+	sat.sl    = s_l_J_kgK;
+	sat.ddldp = drho_dp_T_l + drho_dT_p_l*dTp_K_Pa;
+	sat.dhldp = dh_dp_T_l + dh_dT_p_l*dTp_K_Pa;
+	sat.dv    = rho_v_kg_m3;
+	sat.hv    = h_v_J_kg;
+	sat.sv    = s_v_J_kgK;
+	sat.ddvdp = drho_dp_T_v + drho_dT_p_v*dTp_K_Pa;
+	sat.dhvdp = dh_dp_T_v + dh_dT_p_v*dTp_K_Pa;
+	sat.sigma = sigma_N_m;
+	const double check[] = {sat.dTp, sat.hl, sat.sl, sat.ddldp, sat.dhldp, sat.hv, sat.sv, sat.ddvdp, sat.dhvdp};
+	for (double v : check){
+		if (!ValidNumber(v)) return false;
+	}
+	*properties = sat;
+	return true;
+}
+
+/// Saturation properties at p [Pa], false if the table route fails
+bool CoolPropSolver::svdsbtl_setSat_p(double p_Pa, ExternalSaturationProperties *const properties){
+	if (!table_state) return false;
+	try{
+		table_state->update(CoolProp::PQ_INPUTS, p_Pa, 0);
+		const double T_K = table_state->T();
+		const double rho_l_kg_m3 = table_state->rhomass();
+		table_state->update(CoolProp::PQ_INPUTS, p_Pa, 1);
+		const double rho_v_kg_m3 = table_state->rhomass();
+		if (svdsbtl_sat(p_Pa, T_K, rho_l_kg_m3, rho_v_kg_m3, properties)) return true;
+	}
+	catch(std::exception &e){
+		if (debug_level > 5) std::cout << format("SVDSBTL saturation failed at p = %g Pa: %s\n", p_Pa, e.what());
+	}
+	state->unspecify_phase();
+	return false;
+}
+
+/// Saturation properties at T [K], false if the table route fails
+bool CoolPropSolver::svdsbtl_setSat_T(double T_K, ExternalSaturationProperties *const properties){
+	if (!table_state) return false;
+	try{
+		table_state->update(CoolProp::QT_INPUTS, 0, T_K);
+		const double p_Pa = table_state->p();
+		const double rho_l_kg_m3 = table_state->rhomass();
+		table_state->update(CoolProp::QT_INPUTS, 1, T_K);
+		const double rho_v_kg_m3 = table_state->rhomass();
+		if (svdsbtl_sat(p_Pa, T_K, rho_l_kg_m3, rho_v_kg_m3, properties)) return true;
+	}
+	catch(std::exception &e){
+		if (debug_level > 5) std::cout << format("SVDSBTL saturation failed at T = %g K: %s\n", T_K, e.what());
+	}
+	state->unspecify_phase();
+	return false;
 }
 
 /// Interpolation routines
