@@ -25,6 +25,7 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 	std::vector<std::string> library_options = strsplit(libraryName,'|');
 
 	// Set the defaults
+	_valid          = false;
 	enable_TTSE     = false;
 	enable_BICUBIC  = false;
 	debug_level     = 0;
@@ -39,10 +40,14 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
     // Set the default composition
     std::vector<double> fractions(1, 1.0);
     const std::vector<double> *fractions_ptr = NULL;
+    // errorMessage does not return on most platforms. Where it does (Windows
+    // before ModelicaError is found), this flag keeps the solver invalid.
+    bool names_ok = true;
     try{
         CoolProp::extract_backend(name_options[0], backend, this->substanceName);
         this->substanceName = CoolProp::extract_fractions(this->substanceName, fractions);
     } catch(std::exception &e) {
+        names_ok = false;
         errorMessage((char*)e.what());
     }
     fractions_ptr = &fractions;
@@ -204,6 +209,7 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 
 	    // ... all is set, start using the state class.
 		this->setFluidConstants();
+		_valid = names_ok;
 	} catch(std::exception &e) {
 		errorMessage((char*)e.what());
 	}

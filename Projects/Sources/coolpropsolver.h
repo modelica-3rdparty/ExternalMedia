@@ -35,6 +35,7 @@ protected:
 	/* class CoolProp::AbstractState *state; */
 	shared_ptr<CoolProp::AbstractState> state;
 	bool enable_TTSE, enable_BICUBIC, calc_transport, extend_twophase, isCompressible;
+	bool _valid; /* true once the CoolProp state is set up */
 	int debug_level;
 	double twophase_derivsmoothing_xend;
 	double rho_smoothing_xend;
@@ -59,6 +60,7 @@ public:
 	CoolPropSolver(const std::string &mediumName, const std::string &libraryName, const std::string &substanceName);
 	~CoolPropSolver();
 	virtual void setFluidConstants();
+	virtual bool isValid() const { return _valid; }
 
 	virtual void setSat_p(double &p, ExternalSaturationProperties *const properties);
 	virtual void setSat_T(double &T, ExternalSaturationProperties *const properties);
