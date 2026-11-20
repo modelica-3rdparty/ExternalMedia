@@ -45,6 +45,7 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 	std::vector<std::string> library_options = strsplit(libraryName,'|');
 
 	// Set the defaults
+	_valid          = false;
 	enable_TTSE     = false;
 	enable_BICUBIC  = false;
 	enable_SVDSBTL  = false;
@@ -53,15 +54,23 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 	extend_twophase = true;
 	twophase_derivsmoothing_xend = 0;
 	rho_smoothing_xend = 0;
+	int cache_size  = 1024; // slots in the state caches, 0 switches them off
 
 	//Check if a backend has been added to the fluid name (ex: REFPROP::Propane)
     std::string backend;
-    CoolProp::extract_backend(name_options[0], backend, this->substanceName);
-
     // Set the default composition
     std::vector<double> fractions(1, 1.0);
     const std::vector<double> *fractions_ptr = NULL;
-    this->substanceName = CoolProp::extract_fractions(this->substanceName, fractions);
+    // errorMessage does not return on most platforms. Where it does (Windows
+    // before ModelicaError is found), this flag keeps the solver invalid.
+    bool names_ok = true;
+    try{
+        CoolProp::extract_backend(name_options[0], backend, this->substanceName);
+        this->substanceName = CoolProp::extract_fractions(this->substanceName, fractions);
+    } catch(std::exception &e) {
+        names_ok = false;
+        errorMessage((char*)e.what());
+    }
     fractions_ptr = &fractions;
 
 	if (backend == "?") // If no backend found in the fluid name
@@ -170,6 +179,18 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 				if (rho_smoothing_xend<0 || rho_smoothing_xend > 1)
 					errorMessage((char*)format("I don't know how to handle this rho_smoothing_xend value [%d]",param_val[0].c_str()).c_str());
 			}
+			else if (!param_val[0].compare("cache_size"))
+			{
+				long size = strtol(param_val[1].c_str(),NULL,0); // check before the cast to int
+				if (size<0 || size > 1048576)
+				{
+					errorMessage((char*)format("I don't know how to handle this cache size [%s]",param_val[1].c_str()).c_str());
+					// errorMessage can return on Windows, switch the caches off
+					// rather than allocating a rejected size
+					size = 0;
+				}
+				cache_size = (int)size;
+			}
 			else if (!param_val[0].compare("debug"))
 			{
 				debug_level = (int)strtol(param_val[1].c_str(),NULL,0);
@@ -214,75 +235,120 @@ CoolPropSolver::CoolPropSolver(const std::string &mediumName, const std::string 
 	// Check if incompressible
 	isCompressible = (backend.find("INCOMP") == std::string::npos);
 
-	// Create the state class
-	//this->state = CoolProp::AbstractState::factory(backend, this->substanceName);
-	this->state.reset(CoolProp::AbstractState::factory(backend, this->substanceName));
-    if (this->state->using_mole_fractions()){
-        // Skip predefined mixtures and pure fluids
-        if (this->state->get_mole_fractions().empty()){
-            this->state->set_mole_fractions(*fractions_ptr);
-        }
-    } else if (this->state->using_mass_fractions()){
-        this->state->set_mass_fractions(*fractions_ptr);
-    } else if (this->state->using_volu_fractions()){
-        this->state->set_volu_fractions(*fractions_ptr);
-    } else {
-        if (debug_level > 5) std::cout << format("%s:%d: CoolPropSolver could not set composition, defaulting to mole fractions.\n",__FILE__,__LINE__);
-        this->state->set_mole_fractions(*fractions_ptr);
-    }
+	// CoolProp reports problems, such as an unknown fluid name, with C++ exceptions.
+	// They must not leave the library, translate them into an ExternalMedia error.
+	try{
+		// Create the state class
+		//this->state = CoolProp::AbstractState::factory(backend, this->substanceName);
+		this->state.reset(CoolProp::AbstractState::factory(backend, this->substanceName));
+	    if (this->state->using_mole_fractions()){
+	        // Skip predefined mixtures and pure fluids
+	        if (this->state->get_mole_fractions().empty()){
+	            this->state->set_mole_fractions(*fractions_ptr);
+	        }
+	    } else if (this->state->using_mass_fractions()){
+	        this->state->set_mass_fractions(*fractions_ptr);
+	    } else if (this->state->using_volu_fractions()){
+	        this->state->set_volu_fractions(*fractions_ptr);
+	    } else {
+	        if (debug_level > 5) std::cout << format("%s:%d: CoolPropSolver could not set composition, defaulting to mole fractions.\n",__FILE__,__LINE__);
+	        this->state->set_mole_fractions(*fractions_ptr);
+	    }
 
-    if (enable_SVDSBTL)
-    {
-        // The SVDSBTL tables only serve as starting values for the
-        // reference equation of state, which is evaluated at (T, rho).
-        // This works for HEOS and REFPROP. IF97 cannot be evaluated at
-        // (T, rho), and it is fast without tables anyway.
-        if (source_backend != "HEOS" && source_backend != "REFPROP")
-        {
-            errorMessage((char*)format("enable_SVDSBTL is only available with the HEOS and REFPROP backends, not with %s [%s]",source_backend.c_str(),substanceName.c_str()).c_str());
-        }
-        if (!isCompressible)
-        {
-            errorMessage((char*)format("enable_SVDSBTL is not available for incompressible fluids [%s]",substanceName.c_str()).c_str());
-        }
-        if (this->state->get_mole_fractions().size() != 1)
-        {
-            errorMessage((char*)format("enable_SVDSBTL is only available for pure fluids, not for mixtures [%s]",substanceName.c_str()).c_str());
-        }
-        try
-        {
-            // The first use of a fluid builds the tables (tens of seconds to
-            // a few minutes) and stores them in the CoolProp cache folder,
-            // later runs load them from there. Use all processor cores for
-            // the first build, unless the user chose a number of threads
-            // with the environment variable COOLPROP_SVDSBTL_SAMPLING_THREADS.
-            // This is a global CoolProp setting, it only affects table builds.
-            if (std::getenv("COOLPROP_SVDSBTL_SAMPLING_THREADS") == NULL)
-            {
-                CoolProp::set_config_int(SVDSBTL_SAMPLING_THREADS, 0);
-            }
-            // SVDSBTL names its cache files after the fluid name as given,
-            // so "water" and "Water" would build two sets of tables. Use the
-            // name of the reference state, which is the canonical one.
-            std::string table_fluid = this->substanceName;
-            const std::vector<std::string> names = this->state->fluid_names();
-            if (names.size() == 1 && !names[0].empty()) table_fluid = names[0];
-            this->table_state.reset(CoolProp::AbstractState::factory("SVDSBTL&" + source_backend, table_fluid));
-        }
-        catch(std::exception &e)
-        {
-            errorMessage((char*)format("Could not create the SVDSBTL tables for [%s] with the %s backend: %s",substanceName.c_str(),source_backend.c_str(),e.what()).c_str());
-        }
-    }
+	    if (enable_SVDSBTL)
+	    {
+	        // The SVDSBTL tables only serve as starting values for the
+	        // reference equation of state, which is evaluated at (T, rho).
+	        // This works for HEOS and REFPROP. IF97 cannot be evaluated at
+	        // (T, rho), and it is fast without tables anyway.
+	        if (source_backend != "HEOS" && source_backend != "REFPROP")
+	        {
+	            names_ok = false;
+	            errorMessage((char*)format("enable_SVDSBTL is only available with the HEOS and REFPROP backends, not with %s [%s]",source_backend.c_str(),substanceName.c_str()).c_str());
+	        }
+	        if (!isCompressible)
+	        {
+	            names_ok = false;
+	            errorMessage((char*)format("enable_SVDSBTL is not available for incompressible fluids [%s]",substanceName.c_str()).c_str());
+	        }
+	        if (this->state->get_mole_fractions().size() != 1)
+	        {
+	            names_ok = false;
+	            errorMessage((char*)format("enable_SVDSBTL is only available for pure fluids, not for mixtures [%s]",substanceName.c_str()).c_str());
+	        }
+	        try
+	        {
+	            // The first use of a fluid builds the tables (tens of seconds to
+	            // a few minutes) and stores them in the CoolProp cache folder,
+	            // later runs load them from there. Use all processor cores for
+	            // the first build, unless the user chose a number of threads
+	            // with the environment variable COOLPROP_SVDSBTL_SAMPLING_THREADS.
+	            // This is a global CoolProp setting, it only affects table builds.
+	            if (std::getenv("COOLPROP_SVDSBTL_SAMPLING_THREADS") == NULL)
+	            {
+	                CoolProp::set_config_int(SVDSBTL_SAMPLING_THREADS, 0);
+	            }
+	            // SVDSBTL names its cache files after the fluid name as given,
+	            // so "water" and "Water" would build two sets of tables. Use the
+	            // name of the reference state, which is the canonical one.
+	            std::string table_fluid = this->substanceName;
+	            const std::vector<std::string> names = this->state->fluid_names();
+	            if (names.size() == 1 && !names[0].empty()) table_fluid = names[0];
+	            this->table_state.reset(CoolProp::AbstractState::factory("SVDSBTL&" + source_backend, table_fluid));
+	        }
+	        catch(std::exception &e)
+	        {
+	            names_ok = false;
+	            errorMessage((char*)format("Could not create the SVDSBTL tables for [%s] with the %s backend: %s",substanceName.c_str(),source_backend.c_str(),e.what()).c_str());
+	        }
+	    }
 
-    // ... all is set, start using the state class.
-	this->setFluidConstants();
+
+	    // Switch on the state caches, see BaseSolver::_stateCache
+	    _stateCache.resize(cache_size);
+	    _satCache.resize(cache_size);
+
+	    // ... all is set, start using the state class.
+		this->setFluidConstants();
+		_valid = names_ok;
+	} catch(std::exception &e) {
+		errorMessage((char*)e.what());
+	}
 }
 
 
 CoolPropSolver::~CoolPropSolver(){
 	//delete state;
 };
+
+// Print the hit and miss counts of the state caches every 2^20 lookups.
+// The solver objects are never deleted, so this cannot be done in the destructor.
+void CoolPropSolver::printCacheStatistics(){
+	if (debug_level <= 0) return;
+	unsigned long long n_state = _stateCache.hits() + _stateCache.misses();
+	unsigned long long n_sat = _satCache.hits() + _satCache.misses();
+	// switched-off caches never count, n = 0 must not print on every call
+	if (n_state + n_sat > 0 && (n_state + n_sat) % 1048576 == 0)
+		std::cout << format("State cache for %s: %llu hits, %llu misses; saturation cache: %llu hits, %llu misses\n",
+		                    substanceName.c_str(), _stateCache.hits(), _stateCache.misses(),
+		                    _satCache.hits(), _satCache.misses());
+}
+
+// Store a state in the cache. If the calculation failed without aborting
+// the simulation (possible on Windows, see errorMessage), the record holds
+// invalid numbers and must not be returned again for the same inputs.
+// The callers only store after postStateChange succeeded, this check is a
+// second guard for the main properties.
+void CoolPropSolver::storeState(int inputs, double x1, double x2, int phase, const ExternalThermodynamicState *const properties){
+	if (ValidNumber(properties->p) && ValidNumber(properties->T) && ValidNumber(properties->d) && ValidNumber(properties->h))
+		_stateCache.store(inputs, x1, x2, phase, *properties);
+}
+
+void CoolPropSolver::storeSat(int inputs, double x, const ExternalSaturationProperties *const properties){
+	if (ValidNumber(properties->psat) && ValidNumber(properties->Tsat) && ValidNumber(properties->hl) && ValidNumber(properties->hv)
+	    && ValidNumber(properties->dl) && ValidNumber(properties->dv))
+		_satCache.store(inputs, x, 0.0, 0, *properties);
+}
 
 
 void CoolPropSolver::setFluidConstants(){
@@ -309,8 +375,9 @@ void CoolPropSolver::setFluidConstants(){
 }
 
 
-void CoolPropSolver::postStateChange(ExternalThermodynamicState *const properties) {
+bool CoolPropSolver::postStateChange(ExternalThermodynamicState *const properties) {
     /// Some common code to avoid pitfalls from incompressibles
+    bool success = true; // false if a property call failed, see the catch blocks
     if (isCompressible)
     {
         try{
@@ -404,6 +471,7 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
         }
         catch(std::exception &e)
         {
+            success = false;
             errorMessage((char*)e.what());
         }
     }
@@ -435,6 +503,7 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
         }
         catch(std::exception &e)
         {
+            success = false;
             errorMessage((char*)e.what());
         }
     }
@@ -447,6 +516,7 @@ void CoolPropSolver::postStateChange(ExternalThermodynamicState *const propertie
         std::cout << format("Setting enthalpy to %f \n",properties->h);
         std::cout << format("Setting entropy to %f \n",properties->s);
     }
+    return success;
 }
 
 void fillCritSatState(ExternalSaturationProperties* const properties, const ExternalSaturationProperties &_satPropsClose2Crit) {
@@ -503,9 +573,18 @@ void CoolPropSolver::setSat_p(double &p, ExternalSaturationProperties *const pro
 
 	if (p > _satPropsClose2Crit.psat) { // supercritical conditions
 		fillCritSatState(properties, _satPropsClose2Crit);
-	} else if (enable_SVDSBTL && svdsbtl_setSat_p(p, properties)) {
-		// Done, the saturation state comes from HEOS with the table as starting guess
 	} else {
+	  // Same p as a stored call: return the stored properties
+	  bool hit = _satCache.lookup(CACHE_SAT_P, p, 0.0, 0, properties);
+	  printCacheStatistics();
+	  if (hit) return;
+
+	  // With enable_SVDSBTL: HEOS with the table as starting guess
+	  if (enable_SVDSBTL && svdsbtl_setSat_p(p, properties)) {
+		  storeSat(CACHE_SAT_P, p, properties);
+		  return;
+	  }
+
 	  //this->preStateChange();
 	  try {
 		  /* Use of ancillary equations possible - fast but not 100% consistent with the rest                      **
@@ -531,6 +610,8 @@ void CoolPropSolver::setSat_p(double &p, ExternalSaturationProperties *const pro
 		  state->clear();
           state->unspecify_phase();
 
+		  storeSat(CACHE_SAT_P, p, properties);
+
 	  } catch(std::exception &e) {
 		errorMessage((char*)e.what());
 	  }
@@ -546,9 +627,18 @@ void CoolPropSolver::setSat_T(double &T, ExternalSaturationProperties *const pro
 
 	if (T > _satPropsClose2Crit.Tsat) { // supercritical conditions
 		fillCritSatState(properties, _satPropsClose2Crit);
-	} else if (enable_SVDSBTL && svdsbtl_setSat_T(T, properties)) {
-		// Done, the saturation state comes from HEOS with the table as starting guess
 	} else {
+	  // Same T as a stored call: return the stored properties
+	  bool hit = _satCache.lookup(CACHE_SAT_T, T, 0.0, 0, properties);
+	  printCacheStatistics();
+	  if (hit) return;
+
+	  // With enable_SVDSBTL: HEOS with the table as starting guess
+	  if (enable_SVDSBTL && svdsbtl_setSat_T(T, properties)) {
+		  storeSat(CACHE_SAT_T, T, properties);
+		  return;
+	  }
+
 	  //this->preStateChange();
 	  try
 	  {
@@ -569,6 +659,8 @@ void CoolPropSolver::setSat_T(double &T, ExternalSaturationProperties *const pro
 		  // Reset the state (to be sure a new one is created before computing new values):
 		  state->clear();
 		  state->unspecify_phase();
+
+		  storeSat(CACHE_SAT_T, T, properties);
 
 	  } catch(std::exception &e) {
 		errorMessage((char*)e.what());
@@ -608,6 +700,11 @@ void CoolPropSolver::setState_ph(double &p, double &h, int &phase, ExternalTherm
 	if (debug_level > 5)
 		std::cout << format("setState_ph(p=%0.16e,h=%0.16e)\n",p,h);
 
+	// Same inputs as a stored call: return the stored state
+	bool hit = _stateCache.lookup(CACHE_PH, p, h, phase, properties);
+	printCacheStatistics();
+	if (hit) return;
+
 	//this->preStateChange();
 
 	try{
@@ -617,10 +714,14 @@ void CoolPropSolver::setState_ph(double &p, double &h, int &phase, ExternalTherm
 			if (svdsbtl_solve_p_y(CoolProp::HmassP_INPUTS, p, h, CoolProp::iHmass, SVDSBTL_H_SCALE_J_KG))
 			{
 				// Single-phase state from HEOS at the exact input pair
-				this->postStateChange(properties);
+				// The returned p and h are the inputs, the state matches them
+				// to the Newton tolerance
+				const bool success = this->postStateChange(properties);
 				properties->p = p;
 				properties->h = h;
 				state->unspecify_phase();
+				if (success)
+					storeState(CACHE_PH, p, h, phase, properties);
 				return;
 			}
 			// Two-phase state, or the table route failed: plain flash below
@@ -635,7 +736,9 @@ void CoolPropSolver::setState_ph(double &p, double &h, int &phase, ExternalTherm
 		}
 
 		// Set the values in the output structure
-		this->postStateChange(properties);
+		// and store it for later calls with the same inputs
+		if (this->postStateChange(properties))
+			storeState(CACHE_PH, p, h, phase, properties);
 	}
 	catch(std::exception &e)
 	{
@@ -648,6 +751,11 @@ void CoolPropSolver::setState_pT(double &p, double &T, ExternalThermodynamicStat
 	if (debug_level > 5)
 		std::cout << format("setState_pT(p=%0.16e,T=%0.16e)\n",p,T);
 
+	// Same inputs as a stored call: return the stored state
+	bool hit = _stateCache.lookup(CACHE_PT, p, T, 0, properties);
+	printCacheStatistics();
+	if (hit) return;
+
 	//this->preStateChange();
 
 	try{
@@ -656,10 +764,14 @@ void CoolPropSolver::setState_pT(double &p, double &T, ExternalThermodynamicStat
 			state->unspecify_phase();
 			if (svdsbtl_solve_pT(p, T))
 			{
-				this->postStateChange(properties);
+				// The returned p and T are the inputs, the state matches them
+				// to the Newton tolerance
+				const bool success = this->postStateChange(properties);
 				properties->p = p;
 				properties->T = T;
 				state->unspecify_phase();
+				if (success)
+					storeState(CACHE_PT, p, T, 0, properties);
 				return;
 			}
 			// The table route failed: plain flash below
@@ -669,7 +781,9 @@ void CoolPropSolver::setState_pT(double &p, double &T, ExternalThermodynamicStat
 		state->update(CoolProp::PT_INPUTS,p,T);
 
 		// Set the values in the output structure
-		this->postStateChange(properties);
+		// and store it for later calls with the same inputs
+		if (this->postStateChange(properties))
+			storeState(CACHE_PT, p, T, 0, properties);
 	}
 	catch(std::exception &e)
 	{
@@ -684,6 +798,11 @@ void CoolPropSolver::setState_dT(double &d, double &T, int &phase, ExternalTherm
 	if (debug_level > 5)
 		std::cout << format("setState_dT(d=%0.16e,T=%0.16e)\n",d,T);
 
+	// Same inputs as a stored call: return the stored state
+	bool hit = _stateCache.lookup(CACHE_DT, d, T, phase, properties);
+	printCacheStatistics();
+	if (hit) return;
+
 	//this->preStateChange();
 
 	try{
@@ -695,7 +814,9 @@ void CoolPropSolver::setState_dT(double &d, double &T, int &phase, ExternalTherm
 		state->update(CoolProp::DmassT_INPUTS,d,T);
 
 		// Set the values in the output structure
-		this->postStateChange(properties);
+		// and store it for later calls with the same inputs
+		if (this->postStateChange(properties))
+			storeState(CACHE_DT, d, T, phase, properties);
 	}
 	catch(std::exception &e)
 	{
@@ -709,6 +830,11 @@ void CoolPropSolver::setState_ps(double &p, double &s, int &phase, ExternalTherm
 	if (debug_level > 5)
 		std::cout << format("setState_ps(p=%0.16e,s=%0.16e)\n",p,s);
 
+	// Same inputs as a stored call: return the stored state
+	bool hit = _stateCache.lookup(CACHE_PS, p, s, phase, properties);
+	printCacheStatistics();
+	if (hit) return;
+
 	//this->preStateChange();
 
 	try{
@@ -718,10 +844,14 @@ void CoolPropSolver::setState_ps(double &p, double &s, int &phase, ExternalTherm
 			if (svdsbtl_solve_p_y(CoolProp::PSmass_INPUTS, p, s, CoolProp::iSmass, SVDSBTL_S_SCALE_J_KGK))
 			{
 				// Single-phase state from HEOS at the exact input pair
-				this->postStateChange(properties);
+				// The returned p and s are the inputs, the state matches them
+				// to the Newton tolerance
+				const bool success = this->postStateChange(properties);
 				properties->p = p;
 				properties->s = s;
 				state->unspecify_phase();
+				if (success)
+					storeState(CACHE_PS, p, s, phase, properties);
 				return;
 			}
 			// Two-phase state, or the table route failed: plain flash below
@@ -731,7 +861,9 @@ void CoolPropSolver::setState_ps(double &p, double &s, int &phase, ExternalTherm
 		state->update(CoolProp::PSmass_INPUTS,p,s);
 
 		// Set the values in the output structure
-		this->postStateChange(properties);
+		// and store it for later calls with the same inputs
+		if (this->postStateChange(properties))
+			storeState(CACHE_PS, p, s, phase, properties);
 	}
 	catch(std::exception &e)
 	{
@@ -746,6 +878,11 @@ void CoolPropSolver::setState_hs(double &h, double &s, int &phase, ExternalTherm
 	if (debug_level > 5)
 		std::cout << format("setState_hs(h=%0.16e,s=%0.16e)\n",h,s);
 
+	// Same inputs as a stored call: return the stored state
+	bool hit = _stateCache.lookup(CACHE_HS, h, s, phase, properties);
+	printCacheStatistics();
+	if (hit) return;
+
 	//this->preStateChange();
 
 	try{
@@ -757,7 +894,9 @@ void CoolPropSolver::setState_hs(double &h, double &s, int &phase, ExternalTherm
 		state->update(CoolProp::HmassSmass_INPUTS,h,s);
 
 		// Set the values in the output structure
-		this->postStateChange(properties);
+		// and store it for later calls with the same inputs
+		if (this->postStateChange(properties))
+			storeState(CACHE_HS, h, s, phase, properties);
 	}
 	catch(std::exception &e)
 	{
@@ -769,42 +908,62 @@ double CoolPropSolver::partialDeriv_state(const string &of, const string &wrt, c
 	if (debug_level > 5)
 		std::cout << format("partialDeriv_state(of=%s,wrt=%s,cst=%s,state)\n",of.c_str(),wrt.c_str(),cst.c_str());
 
-	long derivTerm = makeDerivString(of,wrt,cst);
+	// Translate the variable names before entering the try block, the
+	// translation reports unknown names via errorMessage itself.
+	CoolProp::parameters iOf  = static_cast<CoolProp::parameters>(derivParameter(of,  "Derivatives of"));
+	CoolProp::parameters iWrt = static_cast<CoolProp::parameters>(derivParameter(wrt, "Derivatives with respect to"));
+	CoolProp::parameters iCst = static_cast<CoolProp::parameters>(derivParameter(cst, "Derivatives at constant"));
 	double res = NAN;
 
 	try{
-		//res = DerivTerms(derivTerm, properties->d, properties->T, this->substanceName);
+		// The SVDSBTL route can leave an imposed phase behind, release it
 		if (enable_SVDSBTL) state->unspecify_phase();
-		state->update(CoolProp::DmassT_INPUTS,properties->d,properties->T);
-		// Get the output value
-		res = state->keyed_output(static_cast<CoolProp::parameters>(derivTerm));
+		// Restore the state from the record. Incompressibles do not support
+		// density-temperature inputs. With rho_smoothing_xend, postStateChange
+		// replaces the density of two-phase states by a smoothed value, so d and T
+		// no longer describe the state and p and h are used instead.
+		if (!isCompressible)
+			state->update(CoolProp::PT_INPUTS,properties->p,properties->T);
+		else if (properties->phase == 2 && rho_smoothing_xend > 0.0)
+			state->update(CoolProp::HmassP_INPUTS,properties->h,properties->p);
+		else
+			state->update(CoolProp::DmassT_INPUTS,properties->d,properties->T);
+
+		if (isCompressible && state->phase() == CoolProp::iphase_twophase){
+			// Inside the two-phase dome, the normal partial derivatives are not defined.
+			// Apply the same smoothing as postStateChange, so that the result matches
+			// ddph and ddhp in the state record. CoolProp can only smooth the
+			// derivatives of density with respect to p and h.
+			bool rho_ph = (iOf == CoolProp::iDmass)
+				&& ((iWrt == CoolProp::iP && iCst == CoolProp::iHmass) || (iWrt == CoolProp::iHmass && iCst == CoolProp::iP));
+			double Q = state->Q();
+			double x_end = 0.0;
+			if (Q >= 0 && Q <= twophase_derivsmoothing_xend && twophase_derivsmoothing_xend > 0.0)
+				x_end = twophase_derivsmoothing_xend;
+			else if (Q >= 0 && Q <= rho_smoothing_xend && rho_smoothing_xend > 0.0)
+				x_end = rho_smoothing_xend;
+			if (rho_ph && x_end > 0.0)
+				res = state->first_two_phase_deriv_splined(iOf, iWrt, iCst, x_end);
+			else
+				res = state->first_two_phase_deriv(iOf, iWrt, iCst);
+		}
+		else
+			res = state->first_partial_deriv(iOf, iWrt, iCst);
 	} catch(std::exception &e) {
 		errorMessage((char*)e.what());
 	}
 	return res;
 }
 
-long CoolPropSolver::makeDerivString(const string &of, const string &wrt, const string &cst){
-	std::string derivTerm;
-	     if (!of.compare("d")){ derivTerm = "drho"; }
-	else if (!of.compare("p")){ derivTerm = "dp"; }
-	else {
-		errorMessage((char*) format("Internal error: Derivatives of %s are not defined in the Solver object.",of.c_str()).c_str());
-	}
-	if      (!wrt.compare("p")){ derivTerm.append("dp"); }
-	else if (!wrt.compare("h")){ derivTerm.append("dh"); }
-	else if (!wrt.compare("T")){ derivTerm.append("dT"); }
-	else {
-		errorMessage((char*) format("Internal error: Derivatives with respect to %s are not defined in the Solver object.",wrt.c_str()).c_str());
-	}
-	if      (!cst.compare("p")){ derivTerm.append("|p"); }
-	else if (!cst.compare("h")){ derivTerm.append("|h"); }
-	else if (!cst.compare("d")){ derivTerm.append("|rho"); }
-	else {
-		errorMessage((char*) format("Internal error: Derivatives at constant %s are not defined in the Solver object.",cst.c_str()).c_str());
-	}
-	long iOutput = CoolProp::get_parameter_index(derivTerm.c_str());
-	return iOutput;
+long CoolPropSolver::derivParameter(const string &name, const char *role){
+	// Map the ExternalMedia variable names to CoolProp parameter indices
+	     if (!name.compare("p")){ return CoolProp::iP; }
+	else if (!name.compare("T")){ return CoolProp::iT; }
+	else if (!name.compare("d")){ return CoolProp::iDmass; }
+	else if (!name.compare("h")){ return CoolProp::iHmass; }
+	else if (!name.compare("s")){ return CoolProp::iSmass; }
+	errorMessage((char*) format("Internal error: %s %s are not defined in the Solver object.",role,name.c_str()).c_str());
+	return CoolProp::iundefined_parameter;
 }
 
 

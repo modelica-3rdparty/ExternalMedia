@@ -39,6 +39,7 @@ e.g., &quot;CO2|enable_BICUBIC=1&quot; or &quot;CO2|enable_TTSE=1|calc_transport
 <li>enable_BICUBIC (default 0) Enables bicubic tabular interpolation</li>
 <li>enable_SVDSBTL (default 0) Uses the SVDSBTL tables of CoolProp 8 as starting values for the reference equation of state, see <a href=\"modelica://ExternalMedia.UserGuide.Usage.CoolPropSVDSBTL\">CoolPropSVDSBTL</a></li>
 <li>calc_transport (default 1) Enables the computation of transport properties</li>
+<li>cache_size (default 1024) Number of stored results per medium. A call with exactly the same inputs as a stored call returns the stored result without calling CoolProp, which saves time when the solver re-evaluates many unchanged states, e.g. for a numerical Jacobian. Set to 0 to switch the cache off.</li>
 <li>debug (default 0) Set the debug level, 0-1000</li>
 </ul>
 </p>

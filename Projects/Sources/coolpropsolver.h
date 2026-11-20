@@ -35,6 +35,7 @@ protected:
 	/* class CoolProp::AbstractState *state; */
 	shared_ptr<CoolProp::AbstractState> state;
 	bool enable_TTSE, enable_BICUBIC, enable_SVDSBTL, calc_transport, extend_twophase, isCompressible;
+	bool _valid; /* true once the CoolProp state is set up */
 	int debug_level;
 	double twophase_derivsmoothing_xend;
 	double rho_smoothing_xend;
@@ -44,7 +45,7 @@ protected:
 
 	/* SVDSBTL support, see the comment block "SVDSBTL support" in
 	   coolpropsolver.cpp. With enable_SVDSBTL, `state` stays the
-	   reference equation of state (HEOS, REFPROP or IF97) and all
+	   reference equation of state (HEOS or REFPROP) and all
 	   outputs come from it. The SVDSBTL tables in `table_state` only
 	   provide the starting values T and rho for a few Newton steps. */
 	shared_ptr<CoolProp::AbstractState> table_state; /* SVDSBTL tables, NULL without enable_SVDSBTL */
@@ -56,8 +57,16 @@ protected:
 	bool svdsbtl_setSat_p(double p_Pa, ExternalSaturationProperties *const properties);
 	bool svdsbtl_setSat_T(double T_K, ExternalSaturationProperties *const properties);
 
-	virtual void postStateChange(ExternalThermodynamicState *const properties);
-	long makeDerivString(const string &of, const string &wrt, const string &cst);
+	/* Statistics output of the state caches, see BaseSolver::_stateCache */
+	void printCacheStatistics();
+	/* Store a computed state, unless the calculation failed */
+	void storeState(int inputs, double x1, double x2, int phase, const ExternalThermodynamicState *const properties);
+	/* Store computed saturation properties, unless the calculation failed */
+	void storeSat(int inputs, double x, const ExternalSaturationProperties *const properties);
+
+	/* Fill the output record from the CoolProp state, returns false if a property call failed */
+	virtual bool postStateChange(ExternalThermodynamicState *const properties);
+	long derivParameter(const string &name, const char *role);
 	double interp_linear(double Q, double valueL, double valueV);
 	double interp_recip(double Q, double valueL, double valueV);
 
@@ -65,6 +74,7 @@ public:
 	CoolPropSolver(const std::string &mediumName, const std::string &libraryName, const std::string &substanceName);
 	~CoolPropSolver();
 	virtual void setFluidConstants();
+	virtual bool isValid() const { return _valid; }
 
 	virtual void setSat_p(double &p, ExternalSaturationProperties *const properties);
 	virtual void setSat_T(double &T, ExternalSaturationProperties *const properties);

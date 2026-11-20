@@ -97,7 +97,8 @@ tools and operating systems.
 
 This Modelica package is free software and the use is completely at your own
 risk; it can be redistributed and/or modified under the terms of the
-[BSD 3-clause license](https://opensource.org/licenses/BSD-3-Clause).
+[BSD 3-clause license](https://opensource.org/licenses/BSD-3-Clause),
+see the [LICENSE](LICENSE) file.
 
 ## Development and contribution
 

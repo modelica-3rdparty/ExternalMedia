@@ -1277,6 +1277,9 @@ package Test "Test models for the different solvers"
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|rho_smoothing_xend=0.0");
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|rho_smoothing_xend=0.1");
         //
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|cache_size=0");
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|cache_size=4096");
+        //
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|debug");
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|debug=0");
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|debug=100");
@@ -1351,6 +1354,33 @@ package Test "Test models for the different solvers"
           p_start=100000)
         annotation(experiment(StopTime = 1, Interval = 0.001));
       end WaterComparison;
+
+      model SetStateParameters
+        "Evaluate all setState functions with constant inputs, see issue #113"
+        extends Modelica.Icons.Example;
+        // OpenModelica evaluates record parameters with constant inputs during
+        // translation by calling the shared library directly, without
+        // compiling the Include annotations. This only works if the library
+        // exports the setState wrapper functions. Modelica.Fluid does this,
+        // e.g. in GenericResistances.VolumeFlowRate.
+        package Medium = ExternalMedia.Examples.WaterCoolProp;
+        constant Medium.AbsolutePressure p = 1e5 "pressure";
+        constant Medium.Temperature T = 300 "temperature";
+        constant Medium.SpecificEnthalpy h = 112653.68 "specific enthalpy at p and T";
+        constant Medium.SpecificEntropy s = 393.0624 "specific entropy at p and T";
+        constant Medium.Density d = 996.55634 "density at p and T";
+        parameter Medium.ThermodynamicState state_pT = Medium.setState_pT(p, T)
+          "state from p and T";
+        parameter Medium.ThermodynamicState state_ph = Medium.setState_ph(p, h)
+          "state from p and h";
+        parameter Medium.ThermodynamicState state_ps = Medium.setState_ps(p, s)
+          "state from p and s";
+        parameter Medium.ThermodynamicState state_dT = Medium.setState_dT(d, T)
+          "state from d and T";
+        parameter Medium.ThermodynamicState state_hs = Medium.setState_hs(h, s)
+          "state from h and s";
+        annotation(experiment(StopTime = 1));
+      end SetStateParameters;
     end Misc;
 
   end CoolProp;

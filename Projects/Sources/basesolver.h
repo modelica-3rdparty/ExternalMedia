@@ -4,6 +4,7 @@
 #include "include.h"
 #include "fluidconstants.h"
 #include "externalmedialib.h"
+#include "statecache.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -36,6 +37,9 @@ public:
 	double criticalEntropy() const;
 
 	virtual void setFluidConstants();
+
+	/* False if the solver could not be set up, SolverMap does not keep such solvers */
+	virtual bool isValid() const { return true; }
 
 	virtual void setState_ph(double &p, double &h, int &phase, ExternalThermodynamicState *const properties);
 	virtual void setState_pT(double &p, double &T, ExternalThermodynamicState *const properties);
@@ -100,6 +104,18 @@ public:
 protected:
 	/*! Fluid constants */
 	FluidConstants _fluidConstants;
+
+	/*! Cache of computed thermodynamic states (setState_XX functions) */
+	/*!
+	  The caches are switched off (size 0) by default. A solver that wants
+	  to use them calls resize() in its constructor, then lookup() before
+	  and store() after each property calculation. The cache key contains
+	  the phase input, so a solver that uses the phase input can use the
+	  cache without changes. See statecache.h for details.
+	*/
+	StateCache<ExternalThermodynamicState> _stateCache;
+	/*! Cache of computed saturation properties (setSat_p and setSat_T) */
+	StateCache<ExternalSaturationProperties> _satCache;
 };
 
 #endif /* BASESOLVER_H_ */

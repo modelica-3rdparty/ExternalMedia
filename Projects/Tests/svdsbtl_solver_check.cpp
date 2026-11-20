@@ -172,7 +172,10 @@ static double us_per_call(const std::vector<Pt>& pts, const char* sub) {
     return best;
 }
 
-static double check_fluid(const std::string& fluid, const std::string& extra) {
+static double check_fluid(const std::string& fluid, const std::string& extra_in) {
+    // The state cache is switched off, so that every call is computed and
+    // the timing loop below does not measure cache hits
+    const std::string extra = extra_in + "|cache_size=0";
     const std::string ref = fluid + extra;
     const std::string svd = fluid + "|enable_SVDSBTL=1" + extra;
     const char* r = ref.c_str();
