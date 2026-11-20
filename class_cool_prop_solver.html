@@ -113,6 +113,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a76da1286d6fe1790cef29d93202ddec4" id="r_a76da1286d6fe1790cef29d93202ddec4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a76da1286d6fe1790cef29d93202ddec4">setFluidConstants</a> ()</td></tr>
 <tr class="memdesc:a76da1286d6fe1790cef29d93202ddec4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set fluid constants.  <br /></td></tr>
 <tr class="separator:a76da1286d6fe1790cef29d93202ddec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4ae5355546c9252c2304aec23edde33" id="r_ab4ae5355546c9252c2304aec23edde33"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4ae5355546c9252c2304aec23edde33">isValid</a> () const</td></tr>
+<tr class="separator:ab4ae5355546c9252c2304aec23edde33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a129b498edc2af997d8538284470b92d8" id="r_a129b498edc2af997d8538284470b92d8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a129b498edc2af997d8538284470b92d8">setSat_p</a> (double &amp;<a class="el" href="#a4ece1bad97ffc04977797cb8b399e14c">p</a>, <a class="el" href="struct_external_saturation_properties.html">ExternalSaturationProperties</a> *const properties)</td></tr>
 <tr class="memdesc:a129b498edc2af997d8538284470b92d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set saturation properties from p.  <br /></td></tr>
 <tr class="separator:a129b498edc2af997d8538284470b92d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -291,9 +293,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>storeSat</b> (int inp
 <tr class="separator:a42bf107c587b661e91ac4208e809c892"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b40500499644afe27d99e2c0e47db7c" id="r_a9b40500499644afe27d99e2c0e47db7c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b40500499644afe27d99e2c0e47db7c">postStateChange</a> (<a class="el" href="struct_external_thermodynamic_state.html">ExternalThermodynamicState</a> *const properties)</td></tr>
 <tr class="separator:a9b40500499644afe27d99e2c0e47db7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06d4d04934bd6782d2c77cf0aae92bc6" id="r_a06d4d04934bd6782d2c77cf0aae92bc6"><td class="memItemLeft" align="right" valign="top"><a id="a06d4d04934bd6782d2c77cf0aae92bc6" name="a06d4d04934bd6782d2c77cf0aae92bc6"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>makeDerivString</b> (const string &amp;of, const string &amp;wrt, const string &amp;cst)</td></tr>
-<tr class="separator:a06d4d04934bd6782d2c77cf0aae92bc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39fc4ecd6fe66b2aea0e6c4d68b148d7" id="r_a39fc4ecd6fe66b2aea0e6c4d68b148d7"><td class="memItemLeft" align="right" valign="top"><a id="a39fc4ecd6fe66b2aea0e6c4d68b148d7" name="a39fc4ecd6fe66b2aea0e6c4d68b148d7"></a>
+long&#160;</td><td class="memItemRight" valign="bottom"><b>derivParameter</b> (const string &amp;name, const char *role)</td></tr>
+<tr class="separator:a39fc4ecd6fe66b2aea0e6c4d68b148d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30f0b88c55400101d1d20d8de36a9dbb" id="r_a30f0b88c55400101d1d20d8de36a9dbb"><td class="memItemLeft" align="right" valign="top"><a id="a30f0b88c55400101d1d20d8de36a9dbb" name="a30f0b88c55400101d1d20d8de36a9dbb"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>interp_linear</b> (double Q, double valueL, double valueV)</td></tr>
 <tr class="memdesc:a30f0b88c55400101d1d20d8de36a9dbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interpolation routines. <br /></td></tr>
@@ -322,6 +324,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>extend_twophase</b></
 <tr class="memitem:aefcc339cb09313427fc62ba65d165632" id="r_aefcc339cb09313427fc62ba65d165632"><td class="memItemLeft" align="right" valign="top"><a id="aefcc339cb09313427fc62ba65d165632" name="aefcc339cb09313427fc62ba65d165632"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isCompressible</b></td></tr>
 <tr class="separator:aefcc339cb09313427fc62ba65d165632"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5a51d62204dac5c18936f35174660d4" id="r_ac5a51d62204dac5c18936f35174660d4"><td class="memItemLeft" align="right" valign="top"><a id="ac5a51d62204dac5c18936f35174660d4" name="ac5a51d62204dac5c18936f35174660d4"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>_valid</b></td></tr>
+<tr class="separator:ac5a51d62204dac5c18936f35174660d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5dd04f96b0c35520858fa39fc998413c" id="r_a5dd04f96b0c35520858fa39fc998413c"><td class="memItemLeft" align="right" valign="top"><a id="a5dd04f96b0c35520858fa39fc998413c" name="a5dd04f96b0c35520858fa39fc998413c"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>debug_level</b></td></tr>
 <tr class="separator:a5dd04f96b0c35520858fa39fc998413c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1088,6 +1093,33 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 
 <p>Reimplemented from <a class="el" href="class_base_solver.html#a873ae3236f1fbf393b057a5905c3134e">BaseSolver</a>.</p>
+
+</div>
+</div>
+<a id="ab4ae5355546c9252c2304aec23edde33" name="ab4ae5355546c9252c2304aec23edde33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4ae5355546c9252c2304aec23edde33">&#9670;&#160;</a></span>isValid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool CoolPropSolver::isValid </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="class_base_solver.html">BaseSolver</a>.</p>
 
 </div>
 </div>
