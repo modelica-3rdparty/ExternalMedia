@@ -38,6 +38,9 @@ public:
 
 	virtual void setFluidConstants();
 
+	/* False if the solver could not be set up, SolverMap does not keep such solvers */
+	virtual bool isValid() const { return true; }
+
 	virtual void setState_ph(double &p, double &h, int &phase, ExternalThermodynamicState *const properties);
 	virtual void setState_pT(double &p, double &T, ExternalThermodynamicState *const properties);
 	virtual void setState_dT(double &d, double &T, int &phase, ExternalThermodynamicState *const properties);
