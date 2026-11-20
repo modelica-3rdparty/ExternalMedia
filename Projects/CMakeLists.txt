@@ -342,4 +342,8 @@ endif()
 if (COOLPROP)
   add_executable (main EXCLUDE_FROM_ALL ${CMAKE_CURRENT_SOURCE_DIR}/Tests/coolprop_comparisons.cpp ${LIB_SOURCES})
   add_dependencies (main CoolProp)
+  # Compares cached and uncached CoolProp states, see Tests/state_cache_test.cpp
+  add_executable (state_cache_test EXCLUDE_FROM_ALL ${CMAKE_CURRENT_SOURCE_DIR}/Tests/state_cache_test.cpp)
+  target_include_directories (state_cache_test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Sources)
+  target_link_libraries (state_cache_test ${LIBRARY_NAME})
 endif()

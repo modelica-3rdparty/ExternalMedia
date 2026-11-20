@@ -42,7 +42,15 @@ protected:
 	double _delta_h ; /* delta_h for one-phase/two-phase discrimination */
 	ExternalSaturationProperties _satPropsClose2Crit; /* saturation properties close to  critical conditions */
 
-	virtual void postStateChange(ExternalThermodynamicState *const properties);
+	/* Statistics output of the state caches, see BaseSolver::_stateCache */
+	void printCacheStatistics();
+	/* Store a computed state, unless the calculation failed */
+	void storeState(int inputs, double x1, double x2, int phase, const ExternalThermodynamicState *const properties);
+	/* Store computed saturation properties, unless the calculation failed */
+	void storeSat(int inputs, double x, const ExternalSaturationProperties *const properties);
+
+	/* Fill the output record from the CoolProp state, returns false if a property call failed */
+	virtual bool postStateChange(ExternalThermodynamicState *const properties);
 	long derivParameter(const string &name, const char *role);
 	double interp_linear(double Q, double valueL, double valueV);
 	double interp_recip(double Q, double valueL, double valueV);
