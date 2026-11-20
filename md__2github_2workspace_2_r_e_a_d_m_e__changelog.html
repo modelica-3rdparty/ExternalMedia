@@ -105,6 +105,8 @@ v4.1.2 - unreleased</h1>
 <li>Added binaries for Visual Studio 2026</li>
 <li>The macOS binaries require macOS 11 or later</li>
 <li>The CoolProp solver keeps the results of recent setState_xx, setSat_p and setSat_T calls and returns them again for exactly the same inputs, which avoids repeated CoolProp calls during numerical Jacobian evaluations. The new substance option <code>cache_size</code> (default 1024, 0 switches the cache off) sets the number of stored results per medium, e.g. <code>R134a|cache_size=4096</code>.</li>
+<li>New CoolProp option enable_SVDSBTL, e.g. "Water|enable_SVDSBTL=1". It uses the SVDSBTL tables of CoolProp 8 only as starting values for T and density and then evaluates the reference equation of state (HEOS) at the input state with a few Newton steps, so all properties and derivatives are those of HEOS. For single-phase p-h states this was 7 to 20 times faster than the plain model in the tests (water, CO2, R134a) with results within 4e-5 of it. Pure fluids with the HEOS (and, untested, REFPROP) backends only. The first use of a fluid builds the tables, which takes up to a few minutes. See UserGuide.Usage.CoolPropSVDSBTL.</li>
+<li>New example media WaterCoolPropSVDSBTL, CO2CoolPropSVDSBTL, R134aCoolPropSVDSBTL and test suite Test.CoolProp.CO2_SVDSBTL</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md9"></a>
 v4.1.1 - 2025/11/03</h1>

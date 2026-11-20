@@ -282,6 +282,26 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>criticalEntropy</b>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:a9758e08a3984dd8d857452dcec096ab7" id="r_a9758e08a3984dd8d857452dcec096ab7"><td class="memItemLeft" align="right" valign="top">CoolProp::phases&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9758e08a3984dd8d857452dcec096ab7">svdsbtl_phase_label</a> (double T_K, double rho_kg_m3, double p_Pa)</td></tr>
+<tr class="separator:a9758e08a3984dd8d857452dcec096ab7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fd2fe4c71362eb0eff122d1f9867e04" id="r_a1fd2fe4c71362eb0eff122d1f9867e04"><td class="memItemLeft" align="right" valign="top"><a id="a1fd2fe4c71362eb0eff122d1f9867e04" name="a1fd2fe4c71362eb0eff122d1f9867e04"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>svdsbtl_eval_Trho</b> (double T_K, double rho_kg_m3, CoolProp::phases <a class="el" href="#aeda9a8f107fcaf941f1319af72cf56b6">phase</a>)</td></tr>
+<tr class="memdesc:a1fd2fe4c71362eb0eff122d1f9867e04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate the reference equation of state at T [K] and rho [kg/m3] with the phase imposed. <br /></td></tr>
+<tr class="separator:a1fd2fe4c71362eb0eff122d1f9867e04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae94933a0cbd9dd8b2174db6da5e011d4" id="r_ae94933a0cbd9dd8b2174db6da5e011d4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae94933a0cbd9dd8b2174db6da5e011d4">svdsbtl_solve_p_y</a> (CoolProp::input_pairs table_inputs, double p_Pa, double y_in, CoolProp::parameters y_key, double y_scale)</td></tr>
+<tr class="separator:ae94933a0cbd9dd8b2174db6da5e011d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0f256f81ab57d82350b2efbe29f0ef5" id="r_ae0f256f81ab57d82350b2efbe29f0ef5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae0f256f81ab57d82350b2efbe29f0ef5">svdsbtl_solve_pT</a> (double p_Pa, double T_K)</td></tr>
+<tr class="separator:ae0f256f81ab57d82350b2efbe29f0ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3a734483447d8cf597f0d74129c4f1c" id="r_af3a734483447d8cf597f0d74129c4f1c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3a734483447d8cf597f0d74129c4f1c">svdsbtl_sat</a> (double p_Pa, double T_K, double rho_l_kg_m3, double rho_v_kg_m3, <a class="el" href="struct_external_saturation_properties.html">ExternalSaturationProperties</a> *const properties)</td></tr>
+<tr class="separator:af3a734483447d8cf597f0d74129c4f1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98567323a4c6ae396b99f67b3df2b845" id="r_a98567323a4c6ae396b99f67b3df2b845"><td class="memItemLeft" align="right" valign="top"><a id="a98567323a4c6ae396b99f67b3df2b845" name="a98567323a4c6ae396b99f67b3df2b845"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>svdsbtl_setSat_p</b> (double p_Pa, <a class="el" href="struct_external_saturation_properties.html">ExternalSaturationProperties</a> *const properties)</td></tr>
+<tr class="memdesc:a98567323a4c6ae396b99f67b3df2b845"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saturation properties at p [Pa], false if the table route fails. <br /></td></tr>
+<tr class="separator:a98567323a4c6ae396b99f67b3df2b845"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac020b69d738a73be47913d736797f476" id="r_ac020b69d738a73be47913d736797f476"><td class="memItemLeft" align="right" valign="top"><a id="ac020b69d738a73be47913d736797f476" name="ac020b69d738a73be47913d736797f476"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>svdsbtl_setSat_T</b> (double T_K, <a class="el" href="struct_external_saturation_properties.html">ExternalSaturationProperties</a> *const properties)</td></tr>
+<tr class="memdesc:ac020b69d738a73be47913d736797f476"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saturation properties at T [K], false if the table route fails. <br /></td></tr>
+<tr class="separator:ac020b69d738a73be47913d736797f476"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a205b95e79fd247fe02ee34786f6e471a" id="r_a205b95e79fd247fe02ee34786f6e471a"><td class="memItemLeft" align="right" valign="top"><a id="a205b95e79fd247fe02ee34786f6e471a" name="a205b95e79fd247fe02ee34786f6e471a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>printCacheStatistics</b> ()</td></tr>
 <tr class="separator:a205b95e79fd247fe02ee34786f6e471a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -315,6 +335,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>enable_TTSE</b></td><
 <tr class="memitem:a99ad62b44c53e5ae6c4d71f6fca7ce75" id="r_a99ad62b44c53e5ae6c4d71f6fca7ce75"><td class="memItemLeft" align="right" valign="top"><a id="a99ad62b44c53e5ae6c4d71f6fca7ce75" name="a99ad62b44c53e5ae6c4d71f6fca7ce75"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>enable_BICUBIC</b></td></tr>
 <tr class="separator:a99ad62b44c53e5ae6c4d71f6fca7ce75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c61cce01d9505c09330aee16d7cab83" id="r_a1c61cce01d9505c09330aee16d7cab83"><td class="memItemLeft" align="right" valign="top"><a id="a1c61cce01d9505c09330aee16d7cab83" name="a1c61cce01d9505c09330aee16d7cab83"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>enable_SVDSBTL</b></td></tr>
+<tr class="separator:a1c61cce01d9505c09330aee16d7cab83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0e2250cbcb2af5a8949be31fc66c4cd" id="r_ab0e2250cbcb2af5a8949be31fc66c4cd"><td class="memItemLeft" align="right" valign="top"><a id="ab0e2250cbcb2af5a8949be31fc66c4cd" name="ab0e2250cbcb2af5a8949be31fc66c4cd"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>calc_transport</b></td></tr>
 <tr class="separator:ab0e2250cbcb2af5a8949be31fc66c4cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -345,6 +368,9 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>_delta_h</b></td></
 <tr class="memitem:a3f0c180a2c1ef7393ad44d123504000d" id="r_a3f0c180a2c1ef7393ad44d123504000d"><td class="memItemLeft" align="right" valign="top"><a id="a3f0c180a2c1ef7393ad44d123504000d" name="a3f0c180a2c1ef7393ad44d123504000d"></a>
 <a class="el" href="struct_external_saturation_properties.html">ExternalSaturationProperties</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_satPropsClose2Crit</b></td></tr>
 <tr class="separator:a3f0c180a2c1ef7393ad44d123504000d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa67d87addc596b6da9792fd6b443e9f4" id="r_aa67d87addc596b6da9792fd6b443e9f4"><td class="memItemLeft" align="right" valign="top"><a id="aa67d87addc596b6da9792fd6b443e9f4" name="aa67d87addc596b6da9792fd6b443e9f4"></a>
+shared_ptr&lt; CoolProp::AbstractState &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>table_state</b></td></tr>
+<tr class="separator:aa67d87addc596b6da9792fd6b443e9f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_base_solver"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_class_base_solver')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_base_solver.html">BaseSolver</a></td></tr>
 <tr class="memitem:ad9cf00c4e7af14ce93fa08da723e8162 inherit pro_attribs_class_base_solver" id="r_ad9cf00c4e7af14ce93fa08da723e8162"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_fluid_constants.html">FluidConstants</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_base_solver.html#ad9cf00c4e7af14ce93fa08da723e8162">_fluidConstants</a></td></tr>
 <tr class="separator:ad9cf00c4e7af14ce93fa08da723e8162 inherit pro_attribs_class_base_solver"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2010,6 +2036,162 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 
 <p>Reimplemented from <a class="el" href="class_base_solver.html#a6bcfc52563926b8d87d0be43f29677cd">BaseSolver</a>.</p>
+
+</div>
+</div>
+<a id="a9758e08a3984dd8d857452dcec096ab7" name="a9758e08a3984dd8d857452dcec096ab7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9758e08a3984dd8d857452dcec096ab7">&#9670;&#160;</a></span>svdsbtl_phase_label()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">CoolProp::phases CoolPropSolver::svdsbtl_phase_label </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>T_K</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>rho_kg_m3</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>p_Pa</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>CoolProp phase label of a single-phase state at T [K], rho [kg/m3] and p [Pa]. SVDSBTL only reports whether a point is two-phase. Any single-phase label makes HEOS skip its phase check at (T, rho), so a simple rule is enough: supercritical above the critical temperature or pressure, otherwise liquid if denser than the critical density, else vapour. </p>
+
+</div>
+</div>
+<a id="af3a734483447d8cf597f0d74129c4f1c" name="af3a734483447d8cf597f0d74129c4f1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3a734483447d8cf597f0d74129c4f1c">&#9670;&#160;</a></span>svdsbtl_sat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CoolPropSolver::svdsbtl_sat </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>p_Pa</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>T_K</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>rho_l_kg_m3</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>rho_v_kg_m3</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_external_saturation_properties.html">ExternalSaturationProperties</a> *const</td>          <td class="paramname"><span class="paramname"><em>properties</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Saturation properties from the reference equation of state at the saturation pressure p [Pa], temperature T [K] and the saturated densities rho_l and rho_v [kg/m3] from the table.</p>
+<p>Along the saturation line T = T_sat(p). The slope follows from the Clausius-Clapeyron equation dT_sat/dp = T (v_v - v_l) / (h_v - h_l) and the derivatives of the saturated density and enthalpy follow from the single-phase derivatives on each side, for example d rho_l/dp|sat = (d rho/dp)_T + (d rho/dT)_p * dT_sat/dp Returns false if a value is not finite. </p>
+
+</div>
+</div>
+<a id="ae94933a0cbd9dd8b2174db6da5e011d4" name="ae94933a0cbd9dd8b2174db6da5e011d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae94933a0cbd9dd8b2174db6da5e011d4">&#9670;&#160;</a></span>svdsbtl_solve_p_y()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CoolPropSolver::svdsbtl_solve_p_y </td>
+          <td>(</td>
+          <td class="paramtype">CoolProp::input_pairs</td>          <td class="paramname"><span class="paramname"><em>table_inputs</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>p_Pa</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>y_in</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CoolProp::parameters</td>          <td class="paramname"><span class="paramname"><em>y_key</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>y_scale</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Single-phase state for the inputs p [Pa] and y_in, with y = h [J/kg] (table_inputs = HmassP_INPUTS, y_key = iHmass) or y = s [J/(kg K)] (PSmass_INPUTS, iSmass). Returns true if <code>state</code> holds the converged state, with the phase still imposed. Returns false for two-phase states and for any failure; the phase is then released. </p>
+
+</div>
+</div>
+<a id="ae0f256f81ab57d82350b2efbe29f0ef5" name="ae0f256f81ab57d82350b2efbe29f0ef5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0f256f81ab57d82350b2efbe29f0ef5">&#9670;&#160;</a></span>svdsbtl_solve_pT()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CoolPropSolver::svdsbtl_solve_pT </td>
+          <td>(</td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>p_Pa</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>T_K</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Single-phase state for the inputs p [Pa] and T [K], see svdsbtl_solve_p_y. The SVDSBTL p-T table is a poor starting guess close to the saturation line (within about 0.01 K it can return the density of the other phase) and near the critical point (errors of 10 to 30 % in density). So below the critical point the phase is decided by comparing T with T_sat(p), and the table density is moved to the right side of the saturated density if needed. Then a 1-D Newton iteration in rho at fixed T solves p(T, rho) = p_in: rho = rho - (p(T, rho) - p_in) / (dp/drho)_T </p>
 
 </div>
 </div>

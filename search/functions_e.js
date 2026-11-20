@@ -16,5 +16,12 @@ var searchData=
   ['sl_13',['sl',['../class_base_solver.html#a202e3352782e2df17e075ae0608094ea',1,'BaseSolver::sl()'],['../class_cool_prop_solver.html#ad09623aad9b73a9c0bbe322378d306c2',1,'CoolPropSolver::sl()']]],
   ['solverkey_14',['solverKey',['../class_solver_map.html#a256664f04bf390e71ec6bb9bbc70242f',1,'SolverMap']]],
   ['store_15',['store',['../class_state_cache.html#a19c649549d4df096e44d81d3551db4c9',1,'StateCache']]],
-  ['sv_16',['sv',['../class_base_solver.html#a6bcfc52563926b8d87d0be43f29677cd',1,'BaseSolver::sv()'],['../class_cool_prop_solver.html#a28e214443d0c613f04984d7a96d10204',1,'CoolPropSolver::sv()']]]
+  ['sv_16',['sv',['../class_base_solver.html#a6bcfc52563926b8d87d0be43f29677cd',1,'BaseSolver::sv()'],['../class_cool_prop_solver.html#a28e214443d0c613f04984d7a96d10204',1,'CoolPropSolver::sv(ExternalSaturationProperties *const properties)']]],
+  ['svdsbtl_5feval_5ftrho_17',['svdsbtl_eval_Trho',['../class_cool_prop_solver.html#a1fd2fe4c71362eb0eff122d1f9867e04',1,'CoolPropSolver']]],
+  ['svdsbtl_5fphase_5flabel_18',['svdsbtl_phase_label',['../class_cool_prop_solver.html#a9758e08a3984dd8d857452dcec096ab7',1,'CoolPropSolver']]],
+  ['svdsbtl_5fsat_19',['svdsbtl_sat',['../class_cool_prop_solver.html#af3a734483447d8cf597f0d74129c4f1c',1,'CoolPropSolver']]],
+  ['svdsbtl_5fsetsat_5fp_20',['svdsbtl_setSat_p',['../class_cool_prop_solver.html#a98567323a4c6ae396b99f67b3df2b845',1,'CoolPropSolver']]],
+  ['svdsbtl_5fsetsat_5ft_21',['svdsbtl_setSat_T',['../class_cool_prop_solver.html#ac020b69d738a73be47913d736797f476',1,'CoolPropSolver']]],
+  ['svdsbtl_5fsolve_5fp_5fy_22',['svdsbtl_solve_p_y',['../class_cool_prop_solver.html#ae94933a0cbd9dd8b2174db6da5e011d4',1,'CoolPropSolver']]],
+  ['svdsbtl_5fsolve_5fpt_23',['svdsbtl_solve_pT',['../class_cool_prop_solver.html#ae0f256f81ab57d82350b2efbe29f0ef5',1,'CoolPropSolver']]]
 ];
