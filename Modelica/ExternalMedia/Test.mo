@@ -1200,7 +1200,7 @@ package Test "Test models for the different solvers"
           "Derivative of average density by pressure";
       equation
         //p = 1E5;
-        h = 0 + time*1E6;
+        h = 3E5 + time*3E5;
         s = 1500;  //600 + time*2000;
         fluid.p = p;
         fluid.s = s;
