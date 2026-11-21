@@ -1285,7 +1285,7 @@ package Test "Test models for the different solvers"
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|debug=100");
         //
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_TTSE=1|debug=0|enable_EXTTP",debug=true);
-        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_TTSE=1|debug=0|enableEXTTP=1");
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_TTSE=1|debug=0|enable_EXTTP=1");
       end CheckOptions;
 
       model RhoSmoothing "Test of two-phase CoolProp medium with density smoothing"
