@@ -4,7 +4,7 @@
 
 The heavy-lifting regarding the project configuration is done using the CMake
 file `CMakeLists.txt`, which makes the [CMake software](https://cmake.org/)
-a prerequisite for compiling ExternalMedia.
+a prerequisite for compiling ExternalMedia. CoolProp 8.1 needs CMake 3.15 or later.
 
 You also need a C++ compiler that supports C++17, which CoolProp 8 requires, and a
 working Python installation. CoolProp downloads some of its dependencies when you run

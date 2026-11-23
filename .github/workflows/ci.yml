@@ -56,7 +56,8 @@ jobs:
       coolprop-hash: ${{ steps.coolprop_hash.outputs.coolprop-hash }}
       coolprop-check: ${{ steps.coolprop_check.outputs.coolprop-check }}
     env:
-      COOLPROP_VERSION: v8.0.0
+      # Keep in line with COOLPROP_GIT_TAG in Projects/CMakeLists.txt
+      COOLPROP_VERSION: v8.1.0
     steps:
     - name: Get CoolProp version hash
       shell: bash
