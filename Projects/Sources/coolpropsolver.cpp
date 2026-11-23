@@ -1157,7 +1157,9 @@ double CoolPropSolver::hv(ExternalSaturationProperties *const properties){
 }
 
 double CoolPropSolver::sigma(ExternalSaturationProperties *const properties){
-	// setSat_p and setSat_T fill properties->sigma
+	// setSat_p and setSat_T fill properties->sigma, with NAN if CoolProp has no surface tension
+	if (!ValidNumber(properties->sigma))
+		errorMessage((char*)"CoolProp does not provide the surface tension for this fluid");
 	return properties->sigma;
 }
 
