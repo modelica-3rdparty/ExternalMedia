@@ -32,7 +32,7 @@
   evaluates the reference equation of state (HEOS) at the input state with a few
   Newton steps, so all properties and derivatives are those of HEOS. For
   single-phase p-h states this was 7 to 20 times faster than the plain model in
-  the tests (water, CO2, R134a) with results within 4e-5 of it. Pure fluids with
+  the tests (water, CO2, R134a, CoolProp 8.0.0) with results within 4e-5 of it. Pure fluids with
   the HEOS (and, untested, REFPROP) backends only. The first use of a fluid builds
   the tables, which takes up to a few minutes. See UserGuide.Usage.CoolPropSVDSBTL.
 - New example media WaterCoolPropSVDSBTL, CO2CoolPropSVDSBTL, R134aCoolPropSVDSBTL

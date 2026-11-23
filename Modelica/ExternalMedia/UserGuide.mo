@@ -39,7 +39,7 @@ e.g., &quot;CO2|enable_BICUBIC=1&quot; or &quot;CO2|enable_TTSE=1|calc_transport
 <li>enable_BICUBIC (default 0) Enables bicubic tabular interpolation</li>
 <li>enable_SVDSBTL (default 0) Uses the SVDSBTL tables of CoolProp 8 as starting values for the reference equation of state, see <a href=\"modelica://ExternalMedia.UserGuide.Usage.CoolPropSVDSBTL\">CoolPropSVDSBTL</a></li>
 <li>calc_transport (default 1) Enables the computation of transport properties</li>
-<li>cache_size (default 1024) Number of stored results per medium. A call with exactly the same inputs as a stored call returns the stored result without calling CoolProp, which saves time when the solver re-evaluates many unchanged states, e.g. for a numerical Jacobian. Set to 0 to switch the cache off.</li>
+<li>cache_size (default 1024) Number of stored results per medium. A call with exactly the same inputs as a stored call returns the stored result without calling CoolProp, which saves time when the solver re-evaluates many unchanged states, e.g. for a numerical Jacobian. Set to 0 to switch the cache off, the largest accepted value is 1048576.</li>
 <li>debug (default 0) Set the debug level, 0-1000</li>
 </ul>
 </p>
@@ -58,7 +58,7 @@ e.g., &quot;CO2|enable_BICUBIC=1&quot; or &quot;CO2|enable_TTSE=1|calc_transport
 <ol>
 <li>looks up T and d for the given inputs in the SVDSBTL tables of CoolProp 8 (SVD-compressed spline-based tables of the p-h, p-T and p-s planes),</li>
 <li>evaluates the reference equation of state at that (T, d), with the phase given, so CoolProp skips its own iteration and phase check, and</li>
-<li>corrects T and d with Newton steps on the reference equation of state until p and h (or p and s, or p at the given T) match the inputs to a relative tolerance of 1e-9. One or two steps are usually enough.</li>
+<li>corrects T and d with Newton steps on the reference equation of state until p and h (or p and s, or p at the given T) match the inputs, to a relative tolerance of 1e-9 in density and in h (or s). One or two steps are usually enough.</li>
 </ol>
 <p>All outputs, including cp, cv, the speed of sound, the isothermal compressibility, the isobaric expansion coefficient, the density derivatives and the transport properties, are then evaluated by the reference equation of state at the input state, with its analytical derivatives. The table never provides an output value, it only provides the starting point.</p>
 <p>The saturation properties (setSat_p, setSat_T) work the same way: the table gives the saturation temperature and the saturated densities (from the CoolProp SuperAncillary functions), the reference equation of state is evaluated on the liquid and vapour side, and the derivatives along the saturation line follow from the Clausius-Clapeyron equation. Inputs of density and temperature, of specific enthalpy and entropy, and all two-phase states go to the reference equation of state directly, as without the option.</p>
@@ -73,7 +73,7 @@ e.g., &quot;CO2|enable_BICUBIC=1&quot; or &quot;CO2|enable_TTSE=1|calc_transport
 <li>Saturation properties and their derivatives agree to 1e-14.</li>
 <li>No call failed. The tables classified every test point as one-phase or two-phase in the same way as the reference equation of state.</li>
 </ul>
-<p>A prototype study with 6000 additional random points close to the saturation lines and around the critical point gave the same picture (Projects/Tests/svdsbtl_prototype_results.md). For comparison, the derivatives from the TTSE and bicubic tables (enable_TTSE, enable_BICUBIC) deviate by 3 to 60 &percnt; near the saturation lines and by several percent elsewhere.</p>
+<p>A prototype study with 6000 additional random points close to the saturation lines and around the critical point gave the same picture (Projects/Tests/svdsbtl_prototype_results.md). For comparison, the derivatives from the TTSE and bicubic tables (enable_TTSE, enable_BICUBIC) deviate by 3 to 60 &percnt; near the saturation lines and by up to 10 &percnt; elsewhere in the liquid and vapour region.</p>
 
 <h4>Measured speed</h4>
 <p>Time per call of setState_ph through the ExternalMedia interface, CoolProp 8.0.0, Linux, GCC 13 release build, one core of an Intel Xeon at 2.1 GHz, single-phase test points as above:</p>
@@ -95,7 +95,7 @@ e.g., &quot;CO2|enable_BICUBIC=1&quot; or &quot;CO2|enable_TTSE=1|calc_transport
 <li>The state matches the inputs to a relative tolerance of 1e-9 in density and specific enthalpy (or entropy), not exactly. The returned p and h (or s, or T) are the inputs.</li>
 <li>If the table route fails (outside the table range, or no convergence), the plain flash of the reference equation of state is used for that call, so the call is slower but the result is the same.</li>
 <li>Close to the saturation line the tables decide whether a state is one-phase or two-phase. SVDSBTL checks such points against the same saturation functions that the reference equation of state uses, and no difference was found in the tests, but a state within a fraction of a J/kg of the saturation line could in principle be computed as a (metastable) single-phase state where the plain model gives a two-phase state with a vapour quality of practically 0 or 1.</li>
-<li>Tested with CoolProp 8.0.0 for water, CO2 and R134a on Linux, including the test suite <a href=\"modelica://ExternalMedia.Test.CoolProp.CO2_SVDSBTL\">Test.CoolProp.CO2_SVDSBTL</a> in OpenModelica.</li>
+<li>Measured and tested with CoolProp 8.0.0 for water, CO2 and R134a on Linux, including the test suite <a href=\"modelica://ExternalMedia.Test.CoolProp.CO2_SVDSBTL\">Test.CoolProp.CO2_SVDSBTL</a> in OpenModelica. The library ships with CoolProp 8.1.0, the figures above were not measured again with it.</li>
 </ul>
 
 <h4>Alternatives</h4>
