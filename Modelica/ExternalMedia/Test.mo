@@ -935,7 +935,7 @@ package Test "Test models for the different solvers"
           redeclare package Medium = ExternalMedia.Examples.CO2CoolPropTabular);
       equation
         p1 = 1e6 + time*10e6;
-        h1 = 1.0e5;
+        h1 = 1.3e5;
         p2 = 1e6 + time*10e6;
         T2 = 330;
         annotation(experiment(StopTime = 1, Interval = 0.001));
@@ -948,7 +948,7 @@ package Test "Test models for the different solvers"
           redeclare package Medium = ExternalMedia.Examples.CO2CoolPropTabular);
       equation
         p1 = 1e6;
-        h1 = 1.0e5 + 6e5*time;
+        h1 = 1.3e5 + 6e5*time;
         p2 = 1e6;
         T2 = 250 + 50*time;
         annotation(experiment(StopTime = 1, Interval = 0.001));
@@ -963,7 +963,7 @@ package Test "Test models for the different solvers"
         p1 = 8e6;
         h1 = 1.0e5 + 6e5*time;
         p2 = 1e6;
-        h2 = 1.0e5 + 6e5*time;
+        h2 = 1.3e5 + 6e5*time;
         annotation(experiment(StopTime = 1, Interval = 0.001));
       end TestBasePropertiesExplicit;
 
@@ -971,7 +971,7 @@ package Test "Test models for the different solvers"
         "Test case using BaseProperties and implicit equations"
         extends Modelica.Icons.Example;
         extends GenericModels.TestBasePropertiesImplicit(
-          redeclare package Medium = ExternalMedia.Examples.CO2CoolPropTabular, hstart=1e5);
+          redeclare package Medium = ExternalMedia.Examples.CO2CoolPropTabular, hstart=3e5);
       equation
         p1 = 8e6;
         T1 = 280 + 50*time;
@@ -1007,7 +1007,7 @@ package Test "Test models for the different solvers"
           redeclare package Medium = ExternalMedia.Examples.CO2CoolPropTabular);
       equation
         p1 = 1e6 + time*10e6;
-        h1 = 1.0e5;
+        h1 = 1.3e5;
         p2 = 1e6 + time*10e6;
         h2 = 7.0e5;
         annotation(experiment(StopTime = 1, Interval = 0.001));
@@ -1200,7 +1200,7 @@ package Test "Test models for the different solvers"
           "Derivative of average density by pressure";
       equation
         //p = 1E5;
-        h = 0 + time*1E6;
+        h = 3E5 + time*3E5;
         s = 1500;  //600 + time*2000;
         fluid.p = p;
         fluid.s = s;
@@ -1285,7 +1285,7 @@ package Test "Test models for the different solvers"
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|debug=100");
         //
         test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_TTSE=1|debug=0|enable_EXTTP",debug=true);
-        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_TTSE=1|debug=0|enableEXTTP=1");
+        test := ExternalMedia.Common.CheckCoolPropOptions("LiBr|enable_TTSE=1|debug=0|enable_EXTTP=1");
       end CheckOptions;
 
       model RhoSmoothing "Test of two-phase CoolProp medium with density smoothing"
