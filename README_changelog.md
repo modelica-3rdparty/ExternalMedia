@@ -2,7 +2,12 @@
 
 ## v4.1.2 - unreleased
 - Uses Modelica Standard Library 4.1.0
-- CoolProp updated to v8.0.0, the library is now compiled as C++17
+- CoolProp updated to v8.1.0, the library is now compiled as C++17. CoolProp 8.1.0 fixes the
+  density smoothing (`rho_smoothing_xend`) of tabular media, which failed with "rhomolar is less
+  than zero" in 8.0.0, and contains the HEOS p,T flash fix (CoolProp PR 3360) needed by
+  `Test.CoolProp.Misc.BranchingPipeWaterCoolProp`. CoolProp 8.1.0 also ships new transport property correlations for several fluids
+  (e.g. nitrogen, methane, ammonia, R32, R1234yf, R245fa), so viscosity and thermal conductivity
+  of these fluids change compared to 8.0.0. Building from source needs CMake 3.15 or later.
 - Fixed a crash in OpenModelica with tabular CoolProp media, e.g. `CO2|enable_BICUBIC=1`
 - `partialDeriv_state` works again with CoolProp, it used derivative names like `drhodp|h` that
   CoolProp no longer accepts, and the resulting exception terminated the process

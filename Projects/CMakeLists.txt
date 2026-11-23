@@ -66,6 +66,9 @@ option(FLUIDPROP "Include the FluidProp library for fluid properties" OFF)
 if(COOLPROP)
   # Get the CoolProp code
   set(COOLPROP_SOURCES "${CMAKE_BINARY_DIR}/CoolProp.sources")
+  # CoolProp release that is cloned when no sources are given, keep it in
+  # line with COOLPROP_VERSION in .github/workflows/ci.yml
+  set(COOLPROP_GIT_TAG "v8.1.0")
   #file(REMOVE_RECURSE "${COOLPROP_SOURCES}")
   if(EXISTS "${COOLPROP_SOURCES}")
     message(STATUS "Using existing CoolProp sources from ${COOLPROP_SOURCES}")
@@ -81,7 +84,6 @@ if(COOLPROP)
     else()
       # Clone the release tag with git instead of downloading a zip archive.
       # CoolProp 8 or later is required, see the check below.
-      set(COOLPROP_GIT_TAG "v8.0.0")
       message(STATUS "Cloning CoolProp ${COOLPROP_GIT_TAG} into ${COOLPROP_SOURCES}")
       find_package(Git REQUIRED)
       execute_process(
@@ -105,7 +107,7 @@ if(COOLPROP)
   endif()
   if(NOT COOLPROP_SVDSBTL_KEY)
     message(FATAL_ERROR "The CoolProp sources in ${COOLPROP_SOURCES} are older than CoolProp 8.0.0. "
-      "Delete that folder and update externals/CoolProp.git (or remove it to clone CoolProp 8.0.0), then configure again.")
+      "Delete that folder and update externals/CoolProp.git (or remove it to clone CoolProp ${COOLPROP_GIT_TAG}), then configure again.")
   endif()
   # Prepare the CoolProp build, "${COOLPROP_SOURCES}" is ready now
   file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/CoolProp")
