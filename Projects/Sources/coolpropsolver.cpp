@@ -1157,10 +1157,10 @@ double CoolPropSolver::hv(ExternalSaturationProperties *const properties){
 }
 
 double CoolPropSolver::sigma(ExternalSaturationProperties *const properties){
-    // Base function returns an error if called - should be redeclared by the solver object
-	errorMessage((char*)"Internal error: sigma() not implemented in the Solver object");
-	//throw NotImplementedError((char*)"Internal error: sigma() not implemented in the Solver object");
-	return NAN;
+	// setSat_p and setSat_T fill properties->sigma, with NAN if CoolProp has no surface tension
+	if (!ValidNumber(properties->sigma))
+		errorMessage((char*)"CoolProp does not provide the surface tension for this fluid");
+	return properties->sigma;
 }
 
 double CoolPropSolver::sl(ExternalSaturationProperties *const properties){
