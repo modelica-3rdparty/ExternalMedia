@@ -73,6 +73,6 @@ package CoolPropMedium "Medium package accessing the CoolProp solver"
     input SaturationProperties sat "saturation property record";
     output SurfaceTension sigma "Surface tension sigma in the two phase region";
   algorithm
-    assert(false, "The CoolProp solver does not provide surface tension");
+    sigma := sat.sigma;
   end surfaceTension;
 end CoolPropMedium;
