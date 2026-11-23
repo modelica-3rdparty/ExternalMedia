@@ -109,7 +109,7 @@ of useful insights and explains how the software became what it is today.
 Current main developers: 
  - [Francesco Casella](mailto:francesco.casella@polimi.it) started the
    development in 2006 and coordinates the current development effort.
- - [Jorrit Wronski](mailto:jowr@ipu.dk) and Ian Bell took care of the
+ - [Jorrit Wronski](mailto:jow@cleanheatpartners.com) and Ian Bell took care of the
    integration of CoolProp in the library and of CMake-based compilation.
  - [Federico Terraneo](mailto:federico.terraneo@polimi.it) helped getting
    the library to work with different Modelica tools and operating systems.

@@ -121,7 +121,7 @@ e.g., &quot;CO2|enable_BICUBIC=1&quot; or &quot;CO2|enable_TTSE=1|calc_transport
 <br>I-20133 Milano ITALY<br>
 <a href=\"mailto:francesco.casella@polimi.it\">francesco.casella@polimi.it</a></p>
 <p>Submit bug reports to <a href=\"https://github.com/modelica-3rdparty/ExternalMedia/issues\">
-https://github.com/modelica-3rdparty/ExternalMedia/issues</p>
+https://github.com/modelica-3rdparty/ExternalMedia/issues</a></p>
 </html>"));
   end Contact;
   annotation(DocumentationClass = true);
