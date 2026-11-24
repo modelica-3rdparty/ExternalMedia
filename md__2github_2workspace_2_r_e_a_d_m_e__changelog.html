@@ -106,8 +106,15 @@ v4.1.2 - unreleased</h1>
 <li>Added binaries for Visual Studio 2026</li>
 <li>The macOS binaries require macOS 11 or later</li>
 <li>The CoolProp solver keeps the results of recent setState_xx, setSat_p and setSat_T calls and returns them again for exactly the same inputs, which avoids repeated CoolProp calls during numerical Jacobian evaluations. The new substance option <code>cache_size</code> (default 1024, 0 switches the cache off) sets the number of stored results per medium, e.g. <code>R134a|cache_size=4096</code>.</li>
-<li>New CoolProp option enable_SVDSBTL, e.g. "Water|enable_SVDSBTL=1". It uses the SVDSBTL tables of CoolProp 8 only as starting values for T and density and then evaluates the reference equation of state (HEOS) at the input state with a few Newton steps, so all properties and derivatives are those of HEOS. For single-phase p-h states this was 7 to 20 times faster than the plain model in the tests (water, CO2, R134a) with results within 4e-5 of it. Pure fluids with the HEOS (and, untested, REFPROP) backends only. The first use of a fluid builds the tables, which takes up to a few minutes. See UserGuide.Usage.CoolPropSVDSBTL.</li>
+<li>New CoolProp option enable_SVDSBTL, e.g. "Water|enable_SVDSBTL=1". It uses the SVDSBTL tables of CoolProp 8 only as starting values for T and density and then evaluates the reference equation of state (HEOS) at the input state with a few Newton steps, so all properties and derivatives are those of HEOS. For single-phase p-h states this was 7 to 20 times faster than the plain model in the tests (water, CO2, R134a, CoolProp 8.0.0) with results within 4e-5 of it. Pure fluids with the HEOS (and, untested, REFPROP) backends only. The first use of a fluid builds the tables, which takes up to a few minutes. See UserGuide.Usage.CoolPropSVDSBTL.</li>
 <li>New example media WaterCoolPropSVDSBTL, CO2CoolPropSVDSBTL, R134aCoolPropSVDSBTL and test suite Test.CoolProp.CO2_SVDSBTL</li>
+<li><code>CoolPropMedium.surfaceTension</code> returns the surface tension from CoolProp instead of failing with an assert. Fluids without a surface tension model in CoolProp (e.g. mixtures) report an error.</li>
+<li>All functions with an external "C" call are declared <code>pure</code>, which removes the purity warnings in OpenModelica (#108)</li>
+<li>Fixed <code>IncompressibleCoolPropMedium</code>, which did not translate with MSL 4 (<code>BaseProperties.R_s</code> and the mass fraction inputs) (#96)</li>
+<li>Media extending <code>ExternalTwoPhaseMedium</code> translate again in Dymola 2026x and later (<code>externalFluidConstants</code> uses the two-phase <code><a class="el" href="struct_fluid_constants.html">FluidConstants</a></code> type)</li>
+<li>A solver whose setup failed, e.g. for an unknown fluid name, is no longer kept. Later calls report the error again instead of crashing on Windows.</li>
+<li>The release zip keeps the <code>ExternalMedia</code> folder at the top level, so Dymola can load the unpacked library directly (#124)</li>
+<li>Added a LICENSE file with the BSD 3-clause license text</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md9"></a>
 v4.1.1 - 2025/11/03</h1>
