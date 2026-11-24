@@ -23,7 +23,7 @@ using std::shared_ptr;
   University of Liege,
   Liege, Belgium
 
-  Jorrit Wronski (jowr@mek.dtu.dk)
+  Jorrit Wronski (jow@cleanheatpartners.com)
   Technical University of Denmark,
   Kgs. Lyngby, Denmark
 

@@ -32,11 +32,24 @@
   evaluates the reference equation of state (HEOS) at the input state with a few
   Newton steps, so all properties and derivatives are those of HEOS. For
   single-phase p-h states this was 7 to 20 times faster than the plain model in
-  the tests (water, CO2, R134a) with results within 4e-5 of it. Pure fluids with
+  the tests (water, CO2, R134a, CoolProp 8.0.0) with results within 4e-5 of it. Pure fluids with
   the HEOS (and, untested, REFPROP) backends only. The first use of a fluid builds
   the tables, which takes up to a few minutes. See UserGuide.Usage.CoolPropSVDSBTL.
 - New example media WaterCoolPropSVDSBTL, CO2CoolPropSVDSBTL, R134aCoolPropSVDSBTL
   and test suite Test.CoolProp.CO2_SVDSBTL
+- `CoolPropMedium.surfaceTension` returns the surface tension from CoolProp instead of failing
+  with an assert. Fluids without a surface tension model in CoolProp (e.g. mixtures) report an error.
+- All functions with an external "C" call are declared `pure`, which removes the purity warnings
+  in OpenModelica (#108)
+- Fixed `IncompressibleCoolPropMedium`, which did not translate with MSL 4 (`BaseProperties.R_s`
+  and the mass fraction inputs) (#96)
+- Media extending `ExternalTwoPhaseMedium` translate again in Dymola 2026x and later
+  (`externalFluidConstants` uses the two-phase `FluidConstants` type)
+- A solver whose setup failed, e.g. for an unknown fluid name, is no longer kept. Later calls
+  report the error again instead of crashing on Windows.
+- The release zip keeps the `ExternalMedia` folder at the top level, so Dymola can load the
+  unpacked library directly (#124)
+- Added a LICENSE file with the BSD 3-clause license text
 
 ## v4.1.1 - 2025/11/03
 - Uses Modelica Standard Library 4.1.0

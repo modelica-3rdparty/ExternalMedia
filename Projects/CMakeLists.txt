@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13 FATAL_ERROR) # Due to the use of target_link_options
+cmake_minimum_required(VERSION 3.15 FATAL_ERROR) # CoolProp 8.1 needs 3.15, target_link_options needs 3.13
 include(ExternalProject)
 
 CMAKE_POLICY(SET CMP0053 NEW)
